@@ -93,7 +93,7 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onTickUpdate)>
-			@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+			@Override public void tick(BlockState state, World world, BlockPos pos, Random random) {
 				super.tick(state, world, pos, random);
 				int x = pos.getX();
 				int y = pos.getY();
@@ -135,8 +135,9 @@ import net.minecraft.block.material.Material;
 					continue;
 			</#if>
 
-			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, new LakesFeature(BlockStateFeatureConfig::deserialize) {
-					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS,
+				Biome.createDecoratedFeature(new LakesFeature(LakesConfig::deserialize) {
+					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, LakesConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 
@@ -168,8 +169,7 @@ import net.minecraft.block.material.Material;
 					</#if>
 
 					return super.place(world, generator, rand, pos, config);
-				}}.withConfiguration(new BlockStateFeatureConfig(block.getDefaultState()))
-					.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(${data.frequencyOnChunks}))));
+				}}, new LakesConfig(block.getDefaultState()), Placement.WATER_LAKE, new LakeChanceConfig(${data.frequencyOnChunks})));
 		}
 	}
 	</#if>
