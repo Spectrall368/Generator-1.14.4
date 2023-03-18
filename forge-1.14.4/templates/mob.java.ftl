@@ -849,10 +849,37 @@ import net.minecraft.block.material.Material;
 			super(er);
 		}
 
-		public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing,
-				float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(new ResourceLocation("${modid}:textures/${data.mobModelGlowTexture}")));
-			this.getEntityModel().render(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+		public void render(T entityIn, float l1, float l2, float l3, float l4, float l5, float l6, float l7) {
+			this.bindTexture(GLOW_TEXTURE);
+			GlStateManager.enableBlend();
+			GlStateManager.disableAlphaTest();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+			if (entityIn.isInvisible())
+				GlStateManager.depthMask(false);
+			else
+				GlStateManager.depthMask(true);
+
+			int i = 61680;
+			int j = i % 65536;
+			int k = i / 65536;
+			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float)j, (float)k);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+			gamerenderer.setupFogColor(true);
+			((EntityModel<T>)this.getEntityModel()).render(entityIn, l1, l2, l4, l5, l6, l7);
+			gamerenderer.setupFogColor(false);
+			i = entityIn.getBrightnessForRender();
+			j = i % 65536;
+			k = i / 65536;
+			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float)j, (float)k);
+			this.func_215334_a(entityIn);
+			GlStateManager.depthMask(true);
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlphaTest();
+		}
+
+		public boolean shouldCombineTextures() {
+			return false;
 		}
 
 	}
