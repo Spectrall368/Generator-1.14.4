@@ -796,8 +796,8 @@ import net.minecraft.block.material.Material;
 					}
 
 					this.prevLimbSwingAmount = this.limbSwingAmount;
-					double d1 = this.getPosX() - this.prevPosX;
-					double d0 = this.getPosZ() - this.prevPosZ;
+					double d1 = this.posX - this.prevPosX;
+					double d0 = this.posZ - this.prevPosZ;
 					float f1 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
 					if (f1 > 1.0F) f1 = 1.0F;
 					this.limbSwingAmount += (f1 - this.limbSwingAmount) * 0.4F;
