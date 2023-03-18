@@ -72,6 +72,23 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
+		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
+			entity.setActiveHand(hand);
+			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
+		}
+
+		<#if hasProcedure(data.onEntitySwing)>
+		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
+			boolean retval = super.onEntitySwing(itemstack, entity);
+			double x = entity.PosX();
+			double y = entity.PosY();
+			double z = entity.PosZ();
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntitySwing/>
+			return retval;
+		}
+		</#if>
+
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
@@ -85,23 +102,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return UseAction.${data.animation?upper_case};
 		}
 
-		<#if hasProcedure(data.onEntitySwing)>
-		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-			boolean retval = super.onEntitySwing(itemstack, entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			World world = entity.world;
-			<@procedureOBJToCode data.onEntitySwing/>
-			return retval;
-		}
-		</#if>
-
-		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
-			entity.setActiveHand(hand);
-			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
-		}
-
 		@Override public int getUseDuration(ItemStack itemstack) {
 			return 72000;
 		}
@@ -111,9 +111,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		    <#if hasCondition(data.glowCondition)>
 			PlayerEntity entity = Minecraft.getInstance().player;
 			World world = entity.world;
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.PosX();
+			double y = entity.PosY();
+			double z = entity.PosZ();
         	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
         	    return false;
         	}
@@ -138,13 +138,13 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				World world = entityLiving.world;
 				if (!world.isRemote && entityLiving instanceof ServerPlayerEntity) {
 					ServerPlayerEntity entity = (ServerPlayerEntity) entityLiving;
-					double x = entity.posX;
-					double y = entity.posY;
-					double z = entity.posZ;
+					double x = entity.PosX();
+					double y = entity.PosY();
+					double z = entity.PosZ();
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
+						entity.stopActiveHand();
 					}
-					entity.stopActiveHand();
 				}
 			}
         <#else>
@@ -152,9 +152,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entityLiving, int timeLeft) {
 				if (!world.isRemote && entityLiving instanceof ServerPlayerEntity) {
 					ServerPlayerEntity entity = (ServerPlayerEntity) entityLiving;
-					double x = entity.posX;
-					double y = entity.posY;
-					double z = entity.posZ;
+					double x = entity.PosX();
+					double y = entity.PosY();
+					double z = entity.PosZ();
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
 					}
@@ -207,9 +207,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override public void onCollideWithPlayer(PlayerEntity entity) {
 			super.onCollideWithPlayer(entity);
 			Entity sourceentity = this.getShooter();
-			double x = this.posX;
-			double y = this.posY;
-			double z = this.posZ;
+			double x = this.PosX();
+			double y = this.PosY();
+			double z = this.PosZ();
 			World world = this.world;
 			<@procedureOBJToCode data.onBulletHitsPlayer/>
 		}
@@ -220,9 +220,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			entity.setArrowCountInEntity(entity.getArrowCountInEntity() - 1); <#-- #53957 -->
 			<#if hasProcedure(data.onBulletHitsEntity)>
 				Entity sourceentity = this.getShooter();
-				double x = this.posX;
-				double y = this.posY;
-				double z = this.posZ;
+				double x = this.PosX();
+				double y = this.PosY();
+				double z = this.PosZ();
 				World world = this.world;
 				<@procedureOBJToCode data.onBulletHitsEntity/>
 			</#if>
@@ -230,9 +230,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		@Override public void tick() {
 			super.tick();
-			double x = this.posX;
-			double y = this.posY;
-			double z = this.posZ;
+			double x = this.PosX();
+			double y = this.PosY();
+			double z = this.PosZ();
 			World world = this.world;
 			Entity entity = this.getShooter();
 			<@procedureOBJToCode data.onBulletFlyingTick/>
@@ -278,7 +278,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
 		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
 		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")
-	}
+		}
+
+	</#if>
 
 </#if>
 
@@ -294,9 +296,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 		world.addEntity(entityarrow);
 
-		double x = entity.posX;
-		double y = entity.posY;
-		double z = entity.posZ;
+		double x = entity.getPosX();
+		double y = entity.getPosY();
+		double z = entity.getPosZ();
 		world.playSound((PlayerEntity) null, (double) x, (double) y, (double) z, (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 
@@ -305,10 +307,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 	public static ArrowCustomEntity shoot(LivingEntity entity, LivingEntity target) {
 		ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, entity, entity.world);
-		double d0 = target.posY + (double) target.getEyeHeight() - 1.1;
-		double d1 = target.posX - entity.posX;
-		double d3 = target.posZ - entity.posZ;
-		entityarrow.shoot(d1, d0 - entityarrow.posY + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, ${data.bulletPower}f * 2, 12.0F);
+		double d0 = target.getPosY() + (double) target.getEyeHeight() - 1.1;
+		double d1 = target.getPosX() - entity.getPosX();
+		double d3 = target.getPosZ() - entity.getPosZ();
+		entityarrow.shoot(d1, d0 - entityarrow.getPosY() + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, ${data.bulletPower}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
 		entityarrow.setDamage(${data.bulletDamage});
@@ -319,9 +321,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 		entity.world.addEntity(entityarrow);
 
-		double x = entity.posX;
-		double y = entity.posY;
-		double z = entity.posZ;
+		double x = entity.getPosX();
+		double y = entity.getPosY();
+		double z = entity.getPosZ();
 		entity.world.playSound((PlayerEntity) null, (double) x, (double) y, (double) z, (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
 
