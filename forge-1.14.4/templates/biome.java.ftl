@@ -182,8 +182,8 @@ package ${package}.world.biome;
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.CACTUS, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_DOUBLE, new FrequencyConfig(${data.cactiPerChunk})));
 			</#if>
 
-			<#if (data.sandPathcesPerChunk > 0)>
-			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.DISK, new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})), Placement.COUNT_TOP_SOLID, new FrequencyConfig(${data.sandPathcesPerChunk})));
+			<#if (data.sandPatchesPerChunk > 0)>
+			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.DISK, new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})), Placement.COUNT_TOP_SOLID, new FrequencyConfig(${data.sandPatchesPerChunk})));
 			</#if>
 
 			<#if (data.gravelPatchesPerChunk > 0)>
@@ -315,7 +315,7 @@ package ${package}.world.biome;
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()){
 
-								<#if data.spawnVines>
+								<#if !data.treeVines.isEmpty()>
 								if (genh > 0) {
 									if (rand.nextInt(3) > 0 && world.isAirBlock(position.add(-1, genh, 0)))
 										setTreeBlockState(changedBlocks, world, position.add(-1, genh, 0), ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
@@ -333,7 +333,7 @@ package ${package}.world.biome;
 							}
 						}
 
-						<#if data.spawnVines>
+						<#if !data.treeVines.isEmpty()>
 							for (int genh = position.getY() - 3 + height; genh <= position.getY() + height; genh++) {
 								int k4 = (int) (1 - (genh - (position.getY() + height)) * 0.5);
 								for (int genx = position.getX() - k4; genx <= position.getX() + k4; genx++) {
@@ -365,6 +365,7 @@ package ${package}.world.biome;
 							}
                         </#if>
 
+						<#if !data.treeFruits.isEmpty()>
 						if (rand.nextInt(4) == 0 && height > 5) {
 							for (int hlevel = 0; hlevel < 2; hlevel++) {
 								for (Direction Direction : Direction.Plane.HORIZONTAL) {
@@ -376,6 +377,7 @@ package ${package}.world.biome;
 								}
 							}
 						}
+						</#if>
 
 						return true;
 					} else {
