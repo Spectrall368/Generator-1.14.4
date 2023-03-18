@@ -171,9 +171,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				<#if data.jumpFactor != 1.0>
 					.jumpFactor(${data.jumpFactor}f)
 				</#if>
-				<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
-					.notSolid()
-				</#if>
 				<#if data.tickRandomly>
 					.tickRandomly()
 				</#if>
@@ -265,7 +262,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 		</#if>
-
+		<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+                 @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+			return false;
+		}
+		</#if>
 		<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 			<#if data.isBoundingBoxEmpty()>
