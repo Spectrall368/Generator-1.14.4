@@ -96,7 +96,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					return ${data.efficiency}f;
 				}
 		<#else>
-        	new ItemToolCustom(){
+        	new ItemToolCustom() {
 		</#if>
 
 		<#if data.stayInGridWhenCrafting>
@@ -105,18 +105,28 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			}
 
 			<#if data.damageOnCrafting && data.usageCount != 0>
-			@Override public ItemStack getContainerItem(ItemStack itemstack) {
-				ItemStack retval = new ItemStack(this);
-				retval.setDamage(itemstack.getDamage() + 1);
-				if(retval.getDamage() >= retval.getMaxDamage()) {
-					return ItemStack.EMPTY;
+				@Override public ItemStack getContainerItem(ItemStack itemstack) {
+					ItemStack retval = new ItemStack(this);
+					retval.setDamage(itemstack.getDamage() + 1);
+					if(retval.getDamage() >= retval.getMaxDamage()) {
+						return ItemStack.EMPTY;
+					}
+					return retval;
 				}
-				return retval;
-			}
+
+				@Override public boolean isRepairable(ItemStack itemstack) {
+					return false;
+				}
 			<#else>
-			@Override public ItemStack getContainerItem(ItemStack itemstack) {
-				return new ItemStack(this);
-			}
+				@Override public ItemStack getContainerItem(ItemStack itemstack) {
+					return new ItemStack(this);
+				}
+
+				<#if data.usageCount != 0>
+				@Override public boolean isRepairable(ItemStack itemstack) {
+					return false;
+				}
+				</#if>
 			</#if>
 		</#if>
 
@@ -131,11 +141,11 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if hasProcedure(data.onRightClickedInAir)>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand){
-			ActionResult<ItemStack> retval=super.onItemRightClick(world,entity,hand);
-			ItemStack itemstack=retval.getResult();
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			ActionResult<ItemStack> retval = super.onItemRightClick(world,entity,hand);
+			ItemStack itemstack = retval.getResult();
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			<@procedureOBJToCode data.onRightClickedInAir/>
 			return retval;
 		}
@@ -171,9 +181,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onCrafted)>
 		@Override public void onCreated(ItemStack itemstack, World world, PlayerEntity entity){
 			super.onCreated(itemstack,world,entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			<@procedureOBJToCode data.onCrafted/>
 		}
 		</#if>
@@ -181,9 +191,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onEntityHitWith)>
 		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity){
 			boolean retval = super.hitEntity(itemstack,entity,sourceentity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			World world = entity.world;
 			<@procedureOBJToCode data.onEntityHitWith/>
 			return retval;
@@ -193,9 +203,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 			boolean retval = super.onEntitySwing(itemstack, entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			World world = entity.world;
 			<@procedureOBJToCode data.onEntitySwing/>
 			return retval;
@@ -205,9 +215,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onStoppedUsing)>
 		@Override public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entity, int time){
 			super.onPlayerStoppedUsing(itemstack,world,entity,time);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			<@procedureOBJToCode data.onStoppedUsing/>
 		}
 		</#if>
@@ -215,9 +225,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
 		@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
 			super.inventoryTick(itemstack, world, entity, slot, selected);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
     		<#if hasProcedure(data.onItemInUseTick)>
 			if (selected)
     	    <@procedureOBJToCode data.onItemInUseTick/>
@@ -231,9 +241,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		    <#if hasCondition(data.glowCondition)>
 			PlayerEntity entity = Minecraft.getInstance().player;
 			World world = entity.world;
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
         	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
         	    return false;
         	}
