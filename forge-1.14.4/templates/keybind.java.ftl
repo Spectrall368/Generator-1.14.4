@@ -50,8 +50,7 @@ import ${package}.${JavaModName};
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public void initElements() {
-		keys = new KeyBinding("key.mcreator.${registryname}", GLFW.GLFW_KEY_${generator.map(data.triggerKey, "keybuttons")},
-				"key.categories.${data.keyBindingCategoryKey}");
+		keys = new KeyBinding("key.${modid}.${registryname}", GLFW.GLFW_KEY_${generator.map(data.triggerKey, "keybuttons")}, "key.categories.${data.keyBindingCategoryKey}");
 		ClientRegistry.registerKeyBinding(keys);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -60,7 +59,7 @@ import ${package}.${JavaModName};
 		<#if hasProcedure(data.onKeyPressed) || hasProcedure(data.onKeyReleased)>
 			if (Minecraft.getInstance().currentScreen == null) {
 				if (event.getKey() == keys.getKey().getKeyCode()) {
-				if(event.getAction() == GLFW.GLFW_PRESS) {
+					if(event.getAction() == GLFW.GLFW_PRESS) {
 						<#if hasProcedure(data.onKeyPressed)>
 							${JavaModName}.PACKET_HANDLER.sendToServer(new KeyBindingPressedMessage(0, 0));
 							pressAction(Minecraft.getInstance().player, 0, 0);
@@ -69,7 +68,7 @@ import ${package}.${JavaModName};
 						<#if hasProcedure(data.onKeyReleased)>
 						lastpress = System.currentTimeMillis();
 						</#if>
-				}
+					}
 					<#if hasProcedure(data.onKeyReleased)>
 					else if (event.getAction() == GLFW.GLFW_RELEASE) {
 						int dt = (int) (System.currentTimeMillis() - lastpress);
@@ -79,7 +78,7 @@ import ${package}.${JavaModName};
 					</#if>
 				}
 			}
-		</#if>
+    	</#if>
 	}
 
 	public static class KeyBindingPressedMessage {
@@ -107,8 +106,8 @@ import ${package}.${JavaModName};
 				<#if hasProcedure(data.onKeyPressed) || hasProcedure(data.onKeyReleased)>
 				pressAction(context.getSender(), message.type, message.pressedms);
 				</#if>
-			});
-			context.setPacketHandled(true);
+    		});
+    		context.setPacketHandled(true);
 		}
 
 	}
