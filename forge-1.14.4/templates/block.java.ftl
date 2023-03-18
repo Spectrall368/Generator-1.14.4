@@ -72,13 +72,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	<#if data.transparencyType != "SOLID">
 	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		<#if data.transparencyType == "CUTOUT">
-		BlockRenderLayer.setRenderLayer(block, RenderType.getCutout());
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.CUTOUT;
 		<#elseif data.transparencyType == "CUTOUT_MIPPED">
-		BlockRenderLayer.setRenderLayer(block, RenderType.getCutoutMipped());
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.CUTOUT_MIPPED;
 		<#elseif data.transparencyType == "TRANSLUCENT">
-		BlockRenderLayer.setRenderLayer(block, RenderType.getTranslucent());
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.TRANSLUCENT;
 		<#else>
-		BlockRenderLayer.setRenderLayer(block, RenderType.getSolid());
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.getSolid();
 		</#if>
 	}
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
@@ -242,12 +246,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
-		}
-		</#if>
-
-		<#if data.hasTransparency>
-        @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			return false;
 		}
 		</#if>
 
