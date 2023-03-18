@@ -72,13 +72,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	<#if data.transparencyType != "SOLID">
 	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		<#if data.transparencyType == "CUTOUT">
-		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
+		BlockRenderLayer.setRenderLayer(block, RenderType.getCutout());
 		<#elseif data.transparencyType == "CUTOUT_MIPPED">
-		RenderTypeLookup.setRenderLayer(block, RenderType.getCutoutMipped());
+		BlockRenderLayer.setRenderLayer(block, RenderType.getCutoutMipped());
 		<#elseif data.transparencyType == "TRANSLUCENT">
-		RenderTypeLookup.setRenderLayer(block, RenderType.getTranslucent());
+		BlockRenderLayer.setRenderLayer(block, RenderType.getTranslucent());
 		<#else>
-		RenderTypeLookup.setRenderLayer(block, RenderType.getSolid());
+		BlockRenderLayer.setRenderLayer(block, RenderType.getSolid());
 		</#if>
 	}
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
