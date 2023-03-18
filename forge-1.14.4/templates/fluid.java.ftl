@@ -58,11 +58,6 @@ import net.minecraft.block.material.Material;
 		event.getRegistry().register(flowing);
 	}
 
-	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(still, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(flowing, RenderType.getTranslucent());
-	}
-
 	@Override public void initElements() {
 		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing, FluidAttributes
 				.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
