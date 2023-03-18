@@ -50,9 +50,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	public static class FoodItemCustom extends Item {
 
 		public FoodItemCustom() {
-			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize})
-			.rarity(Rarity.${data.rarity}).food((new Food.Builder()).hunger(${data.nutritionalValue})
-			.saturation(${data.saturation}f)
+			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize}).rarity(Rarity.${data.rarity})
+				.food((new Food.Builder()).hunger(${data.nutritionalValue}).saturation(${data.saturation}f)
 				<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 				<#if data.forDogs>.meat()</#if>
 				.build()
@@ -71,9 +70,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		    <#if hasCondition(data.glowCondition)>
 			PlayerEntity entity = Minecraft.getInstance().player;
 			World world = entity.world;
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
         	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
         	    return false;
         	}
@@ -81,6 +80,16 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return true;
 		}
         </#if>
+
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
+		}
+
+		<#if data.animation == "drink">
+		@Override public net.minecraft.util.SoundEvent getEatSound() {
+			return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
+		}
+		</#if>
 
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
@@ -91,33 +100,33 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public UseAction getUseAction(ItemStack itemstack) {
-			return UseAction.${data.animation?upper_case};
-		}
-
 		<#if hasProcedure(data.onRightClicked)>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			ActionResult<ItemStack> ar = super.onItemRightClick(world, entity, hand);
 			ItemStack itemstack = ar.getResult();
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			<@procedureOBJToCode data.onRightClicked/>
 			return ar;
 		}
         </#if>
 
-		<#if hasProcedure(data.onEntitySwing)>
-		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-			boolean retval = super.onEntitySwing(itemstack, entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			World world = entity.world;
-			<@procedureOBJToCode data.onEntitySwing/>
+		<#if hasProcedure(data.onRightClickedOnBlock)>
+		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
+			ActionResultType retval = super.onItemUseFirst(stack, context);
+			World world = context.getWorld();
+      		BlockPos pos = context.getPos();
+      		PlayerEntity entity = context.getPlayer();
+      		Direction direction = context.getFace();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			ItemStack itemstack = context.getItem();
+			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
 		}
-		</#if>
+        </#if>
 
 		<#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
 		@Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
@@ -128,9 +137,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			super.onItemUseFinish(itemstack, world, entity);
 
 			<#if hasProcedure(data.onEaten)>
-				double x = entity.posX;
-				double y = entity.posY;
-				double z = entity.posZ;
+				double x = entity.getPosX();
+				double y = entity.getPosY();
+				double z = entity.getPosZ();
 				<@procedureOBJToCode data.onEaten/>
 			</#if>
 
@@ -149,16 +158,65 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				return retval;
 			</#if>
 		}
+        </#if>
+
+		<#if hasProcedure(data.onEntityHitWith)>
+		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+			boolean retval = super.hitEntity(itemstack, entity, sourceentity);
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntityHitWith/>
+			return retval;
+		}
+        </#if>
+
+		<#if hasProcedure(data.onEntitySwing)>
+		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
+			boolean retval = super.onEntitySwing(itemstack, entity);
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntitySwing/>
+			return retval;
+		}
 		</#if>
 
 		<#if hasProcedure(data.onCrafted)>
 		@Override public void onCreated(ItemStack itemstack, World world, PlayerEntity entity) {
 			super.onCreated(itemstack, world, entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
 			<@procedureOBJToCode data.onCrafted/>
 		}
+        </#if>
+
+		<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
+		@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
+			super.inventoryTick(itemstack, world, entity, slot, selected);
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
+    		<#if hasProcedure(data.onItemInUseTick)>
+			if (selected)
+    	    <@procedureOBJToCode data.onItemInUseTick/>
+    		</#if>
+    		<@procedureOBJToCode data.onItemInInventoryTick/>
+		}
+		</#if>
+
+		<#if hasProcedure(data.onDroppedByPlayer)>
+        @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+            double x = entity.getPosX();
+            double y = entity.getPosY();
+            double z = entity.getPosZ();
+            World world = entity.world;
+            <@procedureOBJToCode data.onDroppedByPlayer/>
+            return true;
+        }
         </#if>
 	}
 
