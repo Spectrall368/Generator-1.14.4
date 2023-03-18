@@ -169,7 +169,7 @@ import net.minecraft.block.material.Material;
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
 								dimensionCriteria = true;
 						</#if>
 					</#list>
@@ -220,7 +220,7 @@ import net.minecraft.block.material.Material;
             				if(dimensionType == DimensionType.THE_END)
             					dimensionCriteria = true;
             			<#else>
-            				if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+            				if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
             					dimensionCriteria = true;
             			</#if>
             		</#list>
