@@ -1,12 +1,12 @@
 @SubscribeEvent public void onPlayerXPLevelChange(PlayerXpEvent.LevelChange event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		double i=entity.posX;
-		double j=entity.posY;
-		double k=entity.posZ;
+		double i = entity.PosX();
+		double j = entity.PosY();
+		double k = entity.PosZ();
 		int amount = event.getLevels();
 		World world = entity.world;
-		java.util.HashMap<String, Object> dependencies = new java.util.HashMap<>();
+		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
 		dependencies.put("y", j);
 		dependencies.put("z", k);
