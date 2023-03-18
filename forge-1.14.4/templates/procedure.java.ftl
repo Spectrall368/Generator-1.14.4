@@ -45,7 +45,7 @@ public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
 		<#list dependencies as dependency>
 		if(dependencies.get("${dependency.getName()}") == null) {
 			if(!dependencies.containsKey("${dependency.getName()}"))
-				System.err.println("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
+				${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
 			<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
 		}
         </#list>
@@ -55,9 +55,9 @@ public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
 				double ${dependency.getName()} = dependencies.get("${dependency.getName()}") instanceof Integer
 					? (int) dependencies.get("${dependency.getName()}") : (double) dependencies.get("${dependency.getName()}");
 			<#else>
-            	${dependency.getType(generator.getWorkspace())} ${dependency.getName()} = (${dependency.getType(generator.getWorkspace())}) dependencies.get("${dependency.getName()}");
+				${dependency.getType(generator.getWorkspace())} ${dependency.getName()} = (${dependency.getType(generator.getWorkspace())}) dependencies.get("${dependency.getName()}");
 			</#if>
-        </#list>
+		</#list>
 
 		${procedurecode}
 
