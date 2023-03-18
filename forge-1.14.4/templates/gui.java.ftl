@@ -366,8 +366,6 @@ import ${package}.${JavaModName};
 
 		@Override protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 			GL11.glColor4f(1, 1, 1, 1);
-			GL11.glEnableBlend();
-			GL11.glDefaultBlendFunc();
 
 			<#if data.renderBgLayer>
 			Minecraft.getInstance().getTextureManager().bindTexture(texture);
