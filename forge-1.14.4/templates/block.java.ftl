@@ -260,11 +260,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 		</#if>
+		
 		<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
                  @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
 			return false;
 		}
 		</#if>
+		
 		<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 			<#if data.isBoundingBoxEmpty()>
@@ -484,7 +486,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 				if(!dropsOriginal.isEmpty())
-					return dropsOriginal;
+						return dropsOriginal;
 				return Collections.singletonList(new ItemStack(this, state.get(TYPE) == SlabType.DOUBLE ? 2 : 1));
 			}
 			<#else>
@@ -947,7 +949,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
 								dimensionCriteria = true;
 						</#if>
 					</#list>
