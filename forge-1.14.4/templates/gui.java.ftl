@@ -366,6 +366,8 @@ import ${package}.${JavaModName};
 
 		@Override protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 			GL11.glColor4f(1, 1, 1, 1);
+			GL11.glEnableBlend();
+			GL11.glDefaultBlendFunc();
 
 			<#if data.renderBgLayer>
 			Minecraft.getInstance().getTextureManager().bindTexture(texture);
@@ -376,9 +378,7 @@ import ${package}.${JavaModName};
 
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName() == "Image">
-					<#if hasCondition(component.displayCondition)>
-					if (<@procedureOBJToConditionCode component.displayCondition/>) {
-					</#if>
+					<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
@@ -473,10 +473,20 @@ import ${package}.${JavaModName};
 				<#elseif component.getClass().getSimpleName() == "Button">
                     this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 						${component.width}, ${component.height}, "${component.text}", e -> {
-						${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
-
-						handleButtonAction(entity, ${btid}, x, y, z);
-					}));
+							if (<@procedureOBJToConditionCode component.displayCondition/>) {
+								${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
+								handleButtonAction(entity, ${btid}, x, y, z);
+							}
+						}
+					)
+					<#if hasCondition(component.displayCondition)>
+					{
+						@Override public void render(int par2, int par3, float ticks) {
+							if (<@procedureOBJToConditionCode component.displayCondition/>)
+								super.render(int par2, int par3, float ticks);
+						}
+					}
+					</#if>);
 					<#assign btid +=1>
 				</#if>
 			</#list>
