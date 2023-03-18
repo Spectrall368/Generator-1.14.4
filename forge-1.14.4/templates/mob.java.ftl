@@ -282,9 +282,9 @@ import net.minecraft.block.material.Material;
 						CustomEntity.this.setMotion(CustomEntity.this.getMotion().add(0, 0.005, 0));
 
 					if (this.action == MovementController.Action.MOVE_TO && !CustomEntity.this.getNavigator().noPath()) {
-						double dx = this.posX - CustomEntity.this.getPosX();
-						double dy = this.posY - CustomEntity.this.getPosY();
-						double dz = this.posZ - CustomEntity.this.getPosZ();
+						double dx = this.posX - CustomEntity.this.posX;
+						double dy = this.posY - CustomEntity.this.posY;
+						double dz = this.posZ - CustomEntity.this.posZ;
 						dy = dy / (double)MathHelper.sqrt(dx * dx + dy * dy + dz * dz);
 						CustomEntity.this.rotationYaw = this.limitAngle(CustomEntity.this.rotationYaw,
 								(float)(MathHelper.atan2(dz, dx) * (double) (180 / (float) Math.PI)) - 90, 90);
