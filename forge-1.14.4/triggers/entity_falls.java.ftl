@@ -1,13 +1,13 @@
 @SubscribeEvent public void onEntityFall(LivingFallEvent event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		int i = (int) entity.posX;
-		int j = (int) entity.posY;
-		int k = (int) entity.posZ;
+		double i = entity.PosX();
+		double j = entity.PosY();
+		double k = entity.PosZ();
 		double damagemultiplier = event.getDamageMultiplier();
     	double distance = event.getDistance();
 		World world = entity.world;
-		java.util.HashMap<String, Object> dependencies = new java.util.HashMap<>();
+		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
 		dependencies.put("y", j);
 		dependencies.put("z", k);
