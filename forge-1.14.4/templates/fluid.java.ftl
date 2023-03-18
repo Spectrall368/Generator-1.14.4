@@ -32,6 +32,8 @@
 
 package ${package}.block;
 
+import net.minecraft.block.material.Material;
+
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
@@ -54,6 +56,11 @@ package ${package}.block;
 	@SubscribeEvent public void registerFluids(RegistryEvent.Register<Fluid> event) {
 		event.getRegistry().register(still);
 		event.getRegistry().register(flowing);
+	}
+
+	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
+		RenderTypeLookup.setRenderLayer(still, RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(flowing, RenderType.getTranslucent());
 	}
 
 	@Override public void initElements() {
@@ -91,7 +98,7 @@ package ${package}.block;
 			</#if>
 
 			<#if hasProcedure(data.onTickUpdate)>
-			@Override public void tick(BlockState state, World world, BlockPos pos, Random random) {
+			@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 				super.tick(state, world, pos, random);
 				int x = pos.getX();
 				int y = pos.getY();
@@ -133,9 +140,8 @@ package ${package}.block;
 					continue;
 			</#if>
 
-			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS,
-				Biome.createDecoratedFeature(new LakesFeature(LakesConfig::deserialize) {
-					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, LakesConfig config) {
+			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, new LakesFeature(BlockStateFeatureConfig::deserialize) {
+					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 
@@ -167,7 +173,8 @@ package ${package}.block;
 					</#if>
 
 					return super.place(world, generator, rand, pos, config);
-				}}, new LakesConfig(block.getDefaultState()), Placement.WATER_LAKE, new LakeChanceConfig(${data.frequencyOnChunks})));
+				}}.withConfiguration(new BlockStateFeatureConfig(block.getDefaultState()))
+					.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(${data.frequencyOnChunks}))));
 		}
 	}
 	</#if>
