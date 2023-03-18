@@ -125,7 +125,11 @@ import org.apache.logging.log4j.util.Supplier;
         </#if>
 
 		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(float cangle, float ticks) {
+			<#if data.airColor?has_content>
 			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
+			<#else>
+			return new Vec3d(0.753f, 0.847f, 1);
+			</#if>
 		}
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
