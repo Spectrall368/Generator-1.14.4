@@ -70,25 +70,21 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	</#if>
 
 	<#if data.transparencyType != "SOLID">
-	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-		<#if data.transparencyType == "CUTOUT">
 		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+		<#if data.transparencyType == "CUTOUT">
 			return BlockRenderLayer.CUTOUT;
 		<#elseif data.transparencyType == "CUTOUT_MIPPED">
-		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 			return BlockRenderLayer.CUTOUT_MIPPED;
 		<#elseif data.transparencyType == "TRANSLUCENT">
-		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 			return BlockRenderLayer.TRANSLUCENT;
 		<#else>
-		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
-			return BlockRenderLayer.getSolid();
+			return BlockRenderLayer.${data.transparencyType};
 		</#if>
-	}
+		}
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
 		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 			return BlockRenderLayer.CUTOUT;
-	}
+		}
 	</#if>
 
 	<#if data.tintType != "No tint">
@@ -149,7 +145,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         <#if data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
-
+	
 		<#macro blockProterties>
 			Block.Properties.create(Material.${data.material})
 				.sound(SoundType.${data.soundOnStep})
@@ -172,9 +168,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				<#if data.speedFactor != 1.0>
 					.speedFactor(${data.speedFactor}f)
 				</#if>
-				<#if data.jumpFactor != 1.0>
-					.jumpFactor(${data.jumpFactor}f)
-				</#if>
 				<#if data.tickRandomly>
 					.tickRandomly()
 				</#if>
@@ -182,12 +175,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(() -> new Block(<@blockProterties/>).getDefaultState(),
+			super(new Block(Block.Properties.create(Material.ROCK)
+					<#if data.unbreakable>
+					.hardnessAndResistance(-1, 3600000)
+					<#else>
+					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+					</#if>
+					).getDefaultState(),
+			<#elseif data.blockBase?has_content && data.blockBase == "Wall">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
+			super(
 			<#else>
 			super(
 			</#if>
-			<@blockProterties/>
-			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
             this.setDefaultState(this.stateContainer.getBaseState()
@@ -249,6 +250,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
+		<#if data.hasTransparency>
+        @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+			return false;
+		}
+		</#if>
+
 		<#if data.connectedSides>
         @OnlyIn(Dist.CLIENT) public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
 			return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
@@ -260,13 +267,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 		</#if>
-		
-		<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
-                 @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			return false;
-		}
-		</#if>
-		
+
 		<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 			<#if data.isBoundingBoxEmpty()>
@@ -486,7 +487,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 				if(!dropsOriginal.isEmpty())
-						return dropsOriginal;
+					return dropsOriginal;
 				return Collections.singletonList(new ItemStack(this, state.get(TYPE) == SlabType.DOUBLE ? 2 : 1));
 			}
 			<#else>
