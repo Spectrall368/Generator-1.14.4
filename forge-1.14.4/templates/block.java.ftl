@@ -86,8 +86,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 	}
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
-	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.CUTOUT;
 	}
 	</#if>
 
@@ -949,7 +949,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
 								dimensionCriteria = true;
 						</#if>
 					</#list>
