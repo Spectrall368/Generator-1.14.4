@@ -84,16 +84,16 @@ package ${package}.world.biome;
 				.surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(
 				${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
 				<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-				.setAmbientSound((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
+				.setAmbientSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.ambientSound}")))
                                 </#if>
 				<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-                                .setMoodSound(new MoodSoundAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
+                                .setMoodSound(new MoodSoundAmbience(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
                                 </#if>
 				<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-                                .setAdditionsSound(new SoundAdditionsAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
+                                .setAdditionsSound(new SoundAdditionsAmbience(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.additionsSound}")), 0.0111D))
                                 </#if>
 				<#if data.music?has_content && data.music.getMappedValue()?has_content>
-                                .setMusic(new BackgroundMusicSelector((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")), 12000, 24000, true))
+                                .setMusic(new BackgroundMusicSelector(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.music}")), 12000, 24000, true))
                                 </#if>
                                 <#if data.spawnParticles>
                                 .setParticle(new ParticleEffectAmbience(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
