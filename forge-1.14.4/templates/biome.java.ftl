@@ -83,18 +83,6 @@ package ${package}.world.biome;
 				</#if>
 				.surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(
 				${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
-				<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-				.setAmbientSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.ambientSound}")))
-                                </#if>
-				<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-                                .setMoodSound(new MoodSoundAmbience(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
-                                </#if>
-				<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-                                .setAdditionsSound(new SoundAdditionsAmbience(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.additionsSound}")), 0.0111D))
-                                </#if>
-				<#if data.music?has_content && data.music.getMappedValue()?has_content>
-                                .setMusic(new BackgroundMusicSelector(SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.music}")), 12000, 24000, true))
-                                </#if>
                                 <#if data.spawnParticles>
                                 .setParticle(new ParticleEffectAmbience(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
                                 </#if>
