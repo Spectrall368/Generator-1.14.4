@@ -31,6 +31,14 @@
 <#include "tokens.ftl">
 <#include "procedures.java.ftl">
 
+<#assign hasTextures = data.baseTexture?has_content>
+<#list data.components as component>
+	<#if component.getClass().getSimpleName() == "Image">
+		<#assign hasTextures = true>
+		<#break>
+	</#if>
+</#list>
+
 package ${package}.gui.overlay;
 
 @${JavaModName}Elements.ModElement.Tag
@@ -60,50 +68,50 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 			double y = entity.posY;
 			double z = entity.posZ;
 
+			<#if hasTextures>
+				RenderSystem.disableDepthTest();
+      			RenderSystem.depthMask(false);
+      			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+      			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+      			RenderSystem.disableAlphaTest();
+			</#if>
+
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-					GlStateManager.disableDepthTest();
-      				GlStateManager.depthMask(false);
-      				GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-      				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-      				GlStateManager.disableAlphaTest();
 
 					Minecraft.getInstance().getTextureManager()
 								.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
 					Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight(),
 							event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
-
-					GlStateManager.depthMask(true);
-      				GlStateManager.enableDepthTest();
-      				GlStateManager.enableAlphaTest();
-      				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				</#if>
 
 				<#list data.components as component>
 					<#assign x = component.x - 213>
 					<#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
+						<#if hasCondition(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+						</#if>
 						Minecraft.getInstance().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
-						GlStateManager.disableDepthTest();
-						GlStateManager.depthMask(false);
-						GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-						GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-						GlStateManager.disableAlphaTest();
-
+						<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-
-						GlStateManager.depthMask(true);
-      					GlStateManager.enableDepthTest();
-      					GlStateManager.enableAlphaTest();
-      					GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+						<#if hasCondition(component.displayCondition)>}</#if>
 	                </#if>
 	            </#list>
 			}
+
+			<#if hasTextures>
+				RenderSystem.depthMask(true);
+      			RenderSystem.enableDepthTest();
+      			RenderSystem.enableAlphaTest();
+      			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			</#if>
+
 		}
 
 	}
