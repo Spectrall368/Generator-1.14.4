@@ -230,7 +230,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
 			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if data.tickRate != 10>
 		@Override public int tickRate(IWorldReader world) {
@@ -240,11 +240,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-      		<#if data.isWaterloggable>
-                builder.add(FACING, WATERLOGGED);
-            <#elseif data.rotationMode != 0>
-                builder.add(FACING);
-            </#if>
+		    <#if data.isWaterloggable>
+      		    builder.add(FACING, WATERLOGGED);
+      		<#else>
+      		    builder.add(FACING);
+      		</#if>
    		}
 
 			<#if data.rotationMode != 5>
@@ -271,9 +271,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
 		    <#if data.rotationMode == 4>
-            Direction facing = context.getFace();
-            </#if>
-            <#if data.rotationMode == 5>
+		    Direction facing = context.getFace();
+		    </#if>
+		    <#if data.rotationMode == 5>
             Direction facing = context.getFace();
             if (facing == Direction.WEST || facing == Direction.EAST)
                 facing = Direction.UP;
@@ -286,30 +286,30 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
             </#if>;
 			<#if data.rotationMode != 3>
-            return this.getDefaultState()
-                <#if data.rotationMode == 1>
-            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
-            	<#elseif data.rotationMode == 2>
-            	.with(FACING, context.getNearestLookingDirection().getOpposite())
-                <#elseif data.rotationMode == 4 || data.rotationMode == 5>
-            	.with(FACING, facing)
-            	</#if>
-            	<#if data.isWaterloggable>
-            	.with(WATERLOGGED, false)
-            	</#if>
-            	<#elseif data.rotationMode == 3>
-                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-                    return this.getDefaultState()
-                               .with(FACING, Direction.NORTH)
-                               <#if data.isWaterloggable>
-                               .with(WATERLOGGED, flag)
-                               </#if>;
+			return this.getDefaultState()
+			        <#if data.rotationMode == 1>
+			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+			        <#elseif data.rotationMode == 2>
+			        .with(FACING, context.getNearestLookingDirection().getOpposite())
+                    <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+			        .with(FACING, facing)
+			        </#if>
+			        <#if data.isWaterloggable>
+			        .with(WATERLOGGED, flag)
+			        </#if>
+			<#elseif data.rotationMode == 3>
+            if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
                 return this.getDefaultState()
-                            .with(FACING, context.getFace())
-                            <#if data.isWaterloggable>
-                            .with(WATERLOGGED, flag)
-                            </#if>
-            	</#if>;
+                        .with(FACING, Direction.NORTH)
+                        <#if data.isWaterloggable>
+                        .with(WATERLOGGED, flag)
+                        </#if>;
+            return this.getDefaultState()
+                    .with(FACING, context.getFace())
+                    <#if data.isWaterloggable>
+                    .with(WATERLOGGED, flag)
+                    </#if>
+			</#if>;
 		}
         </#if>
 
@@ -604,6 +604,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
+			
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
