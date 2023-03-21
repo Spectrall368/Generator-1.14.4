@@ -208,7 +208,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 		}
         </#if>
-		</#if>
 
 		<#if data.tickRate != 10>
 		@Override public int tickRate(IWorldReader world) {
