@@ -146,33 +146,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 	
-		<#macro blockProterties>
-			Block.Properties.create(Material.${data.material})
-				.sound(SoundType.${data.soundOnStep})
-				<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-				<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-				</#if>
-					.lightValue(${data.luminance})
-				<#if data.destroyTool != "Not specified" && data.destroyTool != "hoe">
-					.harvestLevel(${data.breakHarvestLevel})
-					.harvestTool(ToolType.${data.destroyTool?upper_case})
-				</#if>
-				<#if data.isNotColidable>
-					.doesNotBlockMovement()
-				</#if>
-				<#if data.slipperiness != 0.6>
-					.slipperiness(${data.slipperiness}f)
-				</#if>
-				<#if data.speedFactor != 1.0>
-					.speedFactor(${data.speedFactor}f)
-				</#if>
-				<#if data.tickRandomly>
-					.tickRandomly()
-				</#if>
-		</#macro>
-
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
 			super(new Block(Block.Properties.create(Material.ROCK)
@@ -189,6 +162,29 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#else>
 			super(
 			</#if>
+
+			Block.Properties.create(Material.${data.material})
+					.sound(SoundType.${data.soundOnStep})
+					<#if data.unbreakable>
+					.hardnessAndResistance(-1, 3600000)
+					<#else>
+					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+					</#if>
+					.lightValue(${data.luminance})
+					<#if data.destroyTool != "Not specified">
+					.harvestLevel(${data.breakHarvestLevel})
+					.harvestTool(ToolType.${data.destroyTool?upper_case})
+					</#if>
+					<#if data.isNotColidable>
+					.doesNotBlockMovement()
+					</#if>
+					<#if data.slipperiness != 0.6>
+					.slipperiness(${data.slipperiness}f)
+					</#if>
+					<#if data.tickRandomly>
+					.tickRandomly()
+					</#if>
+			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
             this.setDefaultState(this.stateContainer.getBaseState()
@@ -232,15 +228,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if data.emissiveRendering>
-        @OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
-			return true;
+		<#if data.transparencyType != "SOLID">
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.${data.transparencyType};
 		}
-		</#if>
-
-		<#if data.displayFluidOverlay>
-		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
-			return true;
+		<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.CUTOUT;
 		}
 		</#if>
 
@@ -382,6 +376,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	        }
 	        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
         }
+        </#if>
+
+		<#if data.isBeaconBase>
+		@Override public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
+			return true;
+		}
+        </#if>
         </#if>
 
 		<#if data.enchantPowerBonus != 0>
