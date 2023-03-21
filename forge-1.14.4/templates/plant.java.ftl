@@ -28,13 +28,10 @@
 -->
 
 <#-- @formatter:off -->
-<#include "boundingboxes.java.ftl">
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
 
 package ${package}.block;
-
-import net.minecraft.block.material.Material;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
@@ -49,7 +46,7 @@ import net.minecraft.block.material.Material;
 	public ${name}Block(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasTileEntity || data.tintType != "No tint">
+		<#if data.hasTileEntity>
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -65,60 +62,25 @@ import net.minecraft.block.material.Material;
 	}
 	</#if>
 
-	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
-	}
-
-	<#if data.tintType != "No tint">
-	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
-		event.getBlockColors().register((bs, world, pos, index) -> {
-			return world != null && pos != null ?
-			<#if data.tintType == "Grass">
-				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
-			<#elseif data.tintType == "Foliage">
-				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-			<#elseif data.tintType == "Water">
-				BiomeColors.getWaterColor(world, pos) : -1;
-			<#elseif data.tintType == "Sky">
-				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
-			<#else>
-				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
-			</#if>
-		}, block);
-	}
-
-		<#if data.isItemTinted>
-		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
-			event.getItemColors().register((stack, index) -> {
-				<#if data.tintType == "Grass">
-					return GrassColors.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage">
-					return FoliageColors.getDefault();
-				<#elseif data.tintType == "Water">
-					return 3694022;
-				<#elseif data.tintType == "Sky">
-					return 8562943;
-				<#else>
-					return 329011;
-				</#if>
-			}, block);
-		}
-		</#if>
-	</#if>
-
 	<#if (data.spawnWorldTypes?size > 0)>
 	@Override public void init(FMLCommonSetupEvent event) {
 		<#if data.plantType == "normal">
 			<#if data.staticPlantGenerationType == "Flower">
-			FlowersFeature feature = new DefaultFlowersFeature(BlockClusterFeatureConfig::deserialize) {
-				@Override public BlockState getFlowerToPlace(Random random, BlockPos bp, BlockClusterFeatureConfig fc) {
+			FlowersFeature feature = new FlowersFeature(NoFeatureConfig::deserialize) {
+				@Override public BlockState getRandomFlower(Random random, BlockPos pos) {
       				return block.getDefaultState();
    				}
-   			<#else>
-			RandomPatchFeature feature = new RandomPatchFeature(BlockClusterFeatureConfig::deserialize) {
+			<#else>
+			GrassFeature feature = new GrassFeature(GrassFeatureConfig::deserialize) {
 			</#if>
 
-				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
+				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos,
+						<#if data.staticPlantGenerationType == "Flower">
+						NoFeatureConfig config
+						<#else>
+						GrassFeatureConfig config
+						</#if>
+				) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 
@@ -133,7 +95,7 @@ import net.minecraft.block.material.Material;
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
 								dimensionCriteria = true;
 						</#if>
 					</#list>
@@ -153,8 +115,8 @@ import net.minecraft.block.material.Material;
 				}
 			};
 		<#elseif data.plantType == "growapable">
-			Feature<BlockClusterFeatureConfig> feature = new Feature<BlockClusterFeatureConfig>(BlockClusterFeatureConfig::deserialize) {
-				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
+			Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
+				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 
@@ -169,7 +131,7 @@ import net.minecraft.block.material.Material;
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
 								dimensionCriteria = true;
 						</#if>
 					</#list>
@@ -204,41 +166,60 @@ import net.minecraft.block.material.Material;
 				}
 			};
 		<#elseif data.plantType == "double">
-        	RandomPatchFeature feature = new RandomPatchFeature(BlockClusterFeatureConfig::deserialize) {
-            	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
-            		DimensionType dimensionType = world.getDimension().getType();
-            		boolean dimensionCriteria = false;
+		    <#if data.doublePlantGenerationType == "Flower"> DoublePlantFeature feature = new DoublePlantFeature(DoublePlantConfig::deserialize)
+		    <#else> Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) </#if> {
+		        @Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos,
+		        <#if data.doublePlantGenerationType == "Flower">DoublePlant<#else>NoFeature</#if>Config config) {
+                					DimensionType dimensionType = world.getDimension().getType();
+                		boolean dimensionCriteria = false;
 
-                	<#list data.spawnWorldTypes as worldType>
-            	    	<#if worldType=="Surface">
-            		        if(dimensionType == DimensionType.OVERWORLD)
-            					dimensionCriteria = true;
-            			<#elseif worldType=="Nether">
-            				if(dimensionType == DimensionType.THE_NETHER)
-            					dimensionCriteria = true;
-            			<#elseif worldType=="End">
-            				if(dimensionType == DimensionType.THE_END)
-            					dimensionCriteria = true;
-            			<#else>
-            				if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}.type)
-            					dimensionCriteria = true;
-            			</#if>
-            		</#list>
+                    	<#list data.spawnWorldTypes as worldType>
+                			<#if worldType=="Surface">
+                				if(dimensionType == DimensionType.OVERWORLD)
+                					dimensionCriteria = true;
+                			<#elseif worldType=="Nether">
+                				if(dimensionType == DimensionType.THE_NETHER)
+                					dimensionCriteria = true;
+                			<#elseif worldType=="End">
+                				if(dimensionType == DimensionType.THE_END)
+                					dimensionCriteria = true;
+                			<#else>
+                		    	if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+                		    		dimensionCriteria = true;
+                			</#if>
+                		</#list>
 
-            		if(!dimensionCriteria)
-            			return false;
+                		if(!dimensionCriteria)
+                			return false;
 
-            		<#if hasCondition(data.generateCondition)>
-            		    int x = pos.getX();
-            			int y = pos.getY();
-            			int z = pos.getZ();
-            			if (!<@procedureOBJToConditionCode data.generateCondition/>)
-            				return false;
-            		</#if>
+                		<#if hasCondition(data.generateCondition)>
+                		    int x = pos.getX();
+                		    int y = pos.getY();
+                		    int z = pos.getZ();
+                		    if (!<@procedureOBJToConditionCode data.generateCondition/>)
+                		    	return false;
+                		</#if>
 
-            		return super.place(world, generator, random, pos, config);
-            		}
-            	};
+                        <#if data.doublePlantGenerationType == "Flower">
+                	    return super.place(world, generator, random, pos, config);
+                	    <#else>
+                	    for (BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES))
+                        			&& pos.getY() > 0; blockstate = world.getBlockState(pos)) {
+                        	pos = pos.down();
+                        }
+                        int i = 0;
+                        for (int j = 0; j < 128; ++j) {
+                        	BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4),
+                        			random.nextInt(8) - random.nextInt(8));
+                        	if (world.isAirBlock(blockpos) && block.getDefaultState().isValidPosition(world, blockpos)) {
+                        		((DoublePlantBlock) block).placeAt(world, blockpos, 2);
+                        		++i;
+                        	}
+                        }
+                        return i > 0;
+                	    </#if>
+                    }
+                };
 		</#if>
 
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
@@ -254,16 +235,17 @@ import net.minecraft.block.material.Material;
 					continue;
 			</#if>
 
-      		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, feature
-					.withConfiguration((new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.getDefaultState()), new <#if data.plantType == "double">DoublePlant<#else>Simple</#if>BlockPlacer()))
-					.tries(64)
-						<#if data.plantType == "double" && data.doublePlantGenerationType == "Flower">.func_227317_b_()</#if>.build()).withPlacement(
-						<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
-						Placement.NOISE_HEIGHTMAP_32.configure(new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks}))
-						<#else>
-						Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>.configure(new FrequencyConfig(${data.frequencyOnChunks}))
-						</#if>
-					));
+			<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
+			    new <#if data.plantType == "normal">GrassFeatureConfig(block.getDefaultState())<#else>NoFeatureConfig()</#if>,
+					Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
+			));
+			<#else>
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
+			<#if data.plantType == "double">new DoublePlantConfig(block.getDefaultState())<#else>IFeatureConfig.NO_FEATURE_CONFIG</#if>,
+					Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
+			));
+			</#if>
 		}
 	}
 	</#if>
@@ -272,7 +254,7 @@ import net.minecraft.block.material.Material;
 
 		public BlockCustomFlower() {
 			super(<#if data.plantType == "normal">Effects.SATURATION, 0,</#if>
-					<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+					<#if data.colorOnMap != "DEFAULT">
 					Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 					<#else>
 					Block.Properties.create(Material.PLANTS)
@@ -287,31 +269,23 @@ import net.minecraft.block.material.Material;
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					<#if data.speedFactor != 1.0>
-					.speedFactor(${data.speedFactor}f)
-					</#if>
-					<#if data.jumpFactor != 1.0>
-					.jumpFactor(${data.jumpFactor}f)
-					</#if>
 					.lightValue(${data.luminance})
 			);
 			setRegistryName("${registryname}");
 		}
 
-		<#if data.customBoundingBox && data.boundingBoxes??>
-		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-			<#if data.isBoundingBoxEmpty()>
-				return VoxelShapes.empty();
-			<#else>
-				<#if !data.disableOffset> Vec3d offset = state.getOffset(world, pos); </#if>
-				<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
-			</#if>
+		<#if data.specialInfo?has_content>
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, world, list, flag);
+			<#list data.specialInfo as entry>
+			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
 		}
 		</#if>
 
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-			return useContext.getItem().getItem() != this.asItem();
+			return true;
 		}
         </#if>
 
@@ -333,21 +307,6 @@ import net.minecraft.block.material.Material;
 		}
 		</#if>
 
-		<#if data.emissiveRendering>
-        @OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
-			return true;
-		}
-		</#if>
-
-		<#if data.specialInfo?has_content>
-		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
-
 		<#if data.fireSpreadSpeed != 0>
 		@Override public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 			return ${data.fireSpreadSpeed};
@@ -360,39 +319,45 @@ import net.minecraft.block.material.Material;
     	}
         </#if>
 
+		<#if data.emissiveRendering>
+        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+			return 15728880;
+		}
+		</#if>
+
         <#if !data.useLootTableForDrops>
 		    <#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			    <#if data.plantType == "double">
+                <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
 
-                List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
 		    }
 		    <#elseif data.customDrop?? && !data.customDrop.isEmpty()>
 		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			    <#if data.plantType == "double">
+                <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
 
-                List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
 		    }
 		    <#else>
 		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			    <#if data.plantType == "double">
+                <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
 
-                List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(new ItemStack(this, 1));
@@ -400,70 +365,8 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
-		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
-			<#if data.plantType != "growapable">
-			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-				<#if hasCondition(data.placingCondition)>
-				boolean additionalCondition = true;
-				if (worldIn instanceof IWorldReader) {
-					World world = ((IWorldReader)worldIn).getDimension().getWorld();
-					int x = pos.getX();
-					int y = pos.getY() + 1;
-					int z = pos.getZ();
-					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
-				}
-
-				Block block = state.getBlock();
-
-				</#if>
-				return
-				<#if (data.canBePlacedOn?size > 0)>(
-					<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
-						<#if canBePlacedOn?has_next>||</#if>
-					</#list>)
-				</#if>
-				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
-			}
-			</#if>
-
-			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-				BlockPos blockpos = pos.down();
-				BlockState blockstate = worldIn.getBlockState(blockpos);
-
-				<#if data.plantType = "normal">
-					return this.isValidGround(blockstate, worldIn, blockpos)
-				<#elseif data.plantType == "growapable">
-					<#if hasCondition(data.placingCondition)>
-					World world = worldIn.getDimension().getWorld();
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					boolean additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
-					</#if>
-
-					Block block = blockstate.getBlock();
-
-					return block == this ||
-					<#if (data.canBePlacedOn?size > 0)>(
-						<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
-						<#if canBePlacedOn?has_next>||</#if>
-					</#list>)</#if>
-					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
-				<#else>
-					if (state.get(HALF) == DoubleBlockHalf.UPPER)
-						return block == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
-					else
-						return this.isValidGround(blockstate, worldIn, blockpos)
-				</#if>;
-			}
-		</#if>
-
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-			return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
+			return PlantType.${data.growapableSpawnType};
 		}
 
         <#if hasProcedure(data.onBlockAdded)>
@@ -477,7 +380,7 @@ import net.minecraft.block.material.Material;
         </#if>
 
         <#if hasProcedure(data.onTickUpdate) || data.plantType == "growapable">
-		@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		@Override public void tick(BlockState state, World world, BlockPos pos, Random random) {
 			<#if hasProcedure(data.onTickUpdate)>
                 int x = pos.getX();
 			    int y = pos.getY();
@@ -583,14 +486,14 @@ import net.minecraft.block.material.Material;
         </#if>
 
         <#if hasProcedure(data.onRightClicked)>
-		@Override public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-			super.onBlockActivated(state, world, pos, entity, hand, hit);
+		@Override public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
+			boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
 			Direction direction = hit.getFace();
 			<@procedureOBJToCode data.onRightClicked/>
-			return ActionResultType.SUCCESS;
+			return true;
 		}
         </#if>
 
