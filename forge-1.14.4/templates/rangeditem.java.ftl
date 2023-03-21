@@ -39,18 +39,17 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	@ObjectHolder("${modid}:${registryname}")
 	public static final Item block = null;
 
-	@ObjectHolder("${modid}:entitybullet${registryname}")
-	public static final EntityType arrow = null;
+	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
+			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
+			.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
 
-	public ${name}Item (${JavaModName}Elements instance) {
+	public ${name}Item(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 	}
 
 	@Override public void initElements() {
 		elements.items.add(() -> new ItemRanged());
-		elements.entities.add(() -> (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
-					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
-					.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}"));
+		elements.entities.add(() -> arrow);
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public void init(FMLCommonSetupEvent event) {
@@ -72,9 +71,17 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
-		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
-			entity.setActiveHand(hand);
-			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
+		<#if data.specialInfo?has_content>
+		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, world, list, flag);
+			<#list data.specialInfo as entry>
+			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		}
+		</#if>
+
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
 		}
 
 		<#if hasProcedure(data.onEntitySwing)>
@@ -89,17 +96,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		<#if data.specialInfo?has_content>
-		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
-
-		@Override public UseAction getUseAction(ItemStack itemstack) {
-			return UseAction.${data.animation?upper_case};
+		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
+			entity.setActiveHand(hand);
+			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
 		}
 
 		@Override public int getUseDuration(ItemStack itemstack) {
@@ -143,8 +142,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					double z = entity.posZ;
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
-						entity.stopActiveHand();
 					}
+					entity.stopActiveHand();
 				}
 			}
         <#else>
@@ -278,9 +277,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
 		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
 		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")
-		}
-
-	</#if>
+	}
 
 </#if>
 
