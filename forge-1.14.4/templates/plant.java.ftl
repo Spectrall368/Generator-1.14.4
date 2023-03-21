@@ -46,7 +46,7 @@ package ${package}.block;
 	public ${name}Block(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasTileEntity>
+		<#if data.hasTileEntity || data.tintType != "No tint">
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -60,6 +60,35 @@ package ${package}.block;
 	@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
 		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("${registryname}"));
 	}
+	</#if>
+
+	<#if data.tintType != "No tint">
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+		event.getBlockColors().register((bs, world, pos, index) -> {
+			return world != null && pos != null ?
+			<#if data.tintType == "Grass">
+				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+			<#elseif data.tintType == "Foliage">
+				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+			<#else>
+				BiomeColors.getWaterColor(world, pos) : -1;
+			</#if>
+		}, block);
+	}
+
+		<#if data.isItemTinted>
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+			event.getItemColors().register((stack, index) -> {
+				<#if data.tintType == "Grass">
+					return GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					return FoliageColors.getDefault();
+				<#else>
+					return 3694022;
+				</#if>
+			}, block);
+		}
+		</#if>
 	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
