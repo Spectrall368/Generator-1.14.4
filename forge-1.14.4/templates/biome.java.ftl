@@ -84,7 +84,7 @@ package ${package}.world.biome;
 				.surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(
 				${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
                                 <#if data.spawnParticles>
-                                .setParticle(new ParticleEffectAmbience(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
+				.setParticle(ParticleTypes.${data.particleToSpawn}.get(), ParticleEffect.Type.AMBIENT, ${data.particlesProbability / 100}f)
                                 </#if>
 			);
 
