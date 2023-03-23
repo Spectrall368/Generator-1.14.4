@@ -85,10 +85,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return UseAction.${data.animation?upper_case};
 		}
 
-		<#if data.animation == "drink">
-		@Override public net.minecraft.util.SoundEvent getEatSound() {
-			return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
-		}
 		</#if>
 
 		<#if data.specialInfo?has_content>
