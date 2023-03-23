@@ -108,22 +108,6 @@ import org.apache.logging.log4j.util.Supplier;
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
 
-		<#if !data.hasWeather>
-		@Override public void calculateInitialWeather() {
-		}
-
-    	@Override public void updateWeather(Runnable defaultWeather) {
-		}
-
-		@Override public boolean canDoLightning(Chunk chunk) {
-			return false;
-		}
-
-		@Override public boolean canDoRainSnowIce(Chunk chunk) {
-			return false;
-		}
-        </#if>
-
 		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
 			<#if data.airColor?has_content>
 			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
