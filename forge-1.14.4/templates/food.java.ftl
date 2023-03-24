@@ -70,9 +70,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		    <#if hasCondition(data.glowCondition)>
 			PlayerEntity entity = Minecraft.getInstance().player;
 			World world = entity.world;
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
         	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
         	    return false;
         	}
@@ -98,9 +98,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			ActionResult<ItemStack> ar = super.onItemRightClick(world, entity, hand);
 			ItemStack itemstack = ar.getResult();
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
 			<@procedureOBJToCode data.onRightClicked/>
 			return ar;
 		}
@@ -113,9 +113,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
       		BlockPos pos = context.getPos();
       		PlayerEntity entity = context.getPlayer();
       		Direction direction = context.getFace();
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
+			int x = pos.posX;
+			int y = pos.posY;
+			int z = pos.posZ;
 			ItemStack itemstack = context.getItem();
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
@@ -131,9 +131,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			super.onItemUseFinish(itemstack, world, entity);
 
 			<#if hasProcedure(data.onEaten)>
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
+				double x = entity.posX;
+				double y = entity.posY;
+				double z = entity.posZ;
 				<@procedureOBJToCode data.onEaten/>
 			</#if>
 
@@ -157,9 +157,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onEntityHitWith)>
 		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 			boolean retval = super.hitEntity(itemstack, entity, sourceentity);
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
 			World world = entity.world;
 			<@procedureOBJToCode data.onEntityHitWith/>
 			return retval;
@@ -169,9 +169,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 			boolean retval = super.onEntitySwing(itemstack, entity);
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
 			World world = entity.world;
 			<@procedureOBJToCode data.onEntitySwing/>
 			return retval;
@@ -181,9 +181,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onCrafted)>
 		@Override public void onCreated(ItemStack itemstack, World world, PlayerEntity entity) {
 			super.onCreated(itemstack, world, entity);
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
 			<@procedureOBJToCode data.onCrafted/>
 		}
         </#if>
@@ -191,9 +191,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
 		@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
 			super.inventoryTick(itemstack, world, entity, slot, selected);
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
     		<#if hasProcedure(data.onItemInUseTick)>
 			if (selected)
     	    <@procedureOBJToCode data.onItemInUseTick/>
@@ -204,9 +204,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if hasProcedure(data.onDroppedByPlayer)>
         @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
+		double x = entity.posX;
+		double y = entity.posY;
+		double z = entity.posZ;
             World world = entity.world;
             <@procedureOBJToCode data.onDroppedByPlayer/>
             return true;
