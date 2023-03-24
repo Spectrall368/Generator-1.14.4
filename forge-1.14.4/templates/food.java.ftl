@@ -204,9 +204,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if hasProcedure(data.onDroppedByPlayer)>
         @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
-		double x = entity.posX;
-		double y = entity.posY;
-		double z = entity.posZ;
+            double x = entity.posX;
+            double y = entity.posY;
+            double z = entity.posZ;
             World world = entity.world;
             <@procedureOBJToCode data.onDroppedByPlayer/>
             return true;
