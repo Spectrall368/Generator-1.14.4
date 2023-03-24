@@ -1,9 +1,9 @@
 @SubscribeEvent public void onPlayerXPChange(PlayerXpEvent.XpChange event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		double i = entity.PosX();
-		double j = entity.PosY();
-		double k = entity.PosZ();
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		int amount = event.getAmount();
 		World world = entity.world;
 		Map<String, Object> dependencies = new HashMap<>();
