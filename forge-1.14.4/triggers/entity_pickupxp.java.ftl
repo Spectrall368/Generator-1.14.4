@@ -1,9 +1,9 @@
 @SubscribeEvent public void onPickupXP(PlayerXpEvent.PickupXp event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		double i = entity.PosX();
-		double j = entity.PosY();
-		double k = entity.PosZ();
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		World world = entity.world;
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
