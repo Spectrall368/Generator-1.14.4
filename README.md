@@ -11,6 +11,7 @@ Please check https://mcreator.net/wiki/understand-plugins for installation guide
 
 This plugin is intended for generator plugin developers to offer name mappings to work from and offer
 examples on how to use Freemarker mechanics and to see what data is available in the templates.
+This Generator is built over the old official generator, but this one is NOT official, and is not being maintained by the MCreator Team.
 
 MCreator's official website: https://mcreator.net/
 
