@@ -5,7 +5,7 @@ MCreator generator plugin for Minecraft Forge 1.14.4 mods.
 
 ## How to install
 
-Please check https://mcreator.net/wiki/developing-mcreator-plugins#wiki-index-6 for installation guide.
+Please check https://mcreator.net/wiki/understand-plugins for installation guide.
 
 ## Info
 
