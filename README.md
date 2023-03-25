@@ -9,8 +9,6 @@ Please check https://mcreator.net/wiki/understand-plugins for installation guide
 
 ## Info
 
-This plugin is intended for generator plugin developers to offer name mappings to work from and offer
-examples on how to use Freemarker mechanics and to see what data is available in the templates.
 This Generator is built over the old official generator, but this one is NOT official, and is not being maintained by the MCreator Team.
 
 MCreator's official website: https://mcreator.net/
@@ -28,4 +26,4 @@ You are welcome to support this project by opening pull requests.
 ## Notice
 
 NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.
-NOT AN OFFICIAL MCREATOR PRODUCT.NOT APPROVED BY OR ASSOCIATED WITH MCREATOR.
+NOT AN OFFICIAL MCREATOR PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MCREATOR.
