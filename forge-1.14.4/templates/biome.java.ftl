@@ -83,9 +83,6 @@ package ${package}.world.biome;
 				</#if>
 				.surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(
 				${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
-                                <#if data.spawnParticles>
-				.setParticle(ParticleTypes.${data.particleToSpawn}.get(), ParticleEffect.Type.AMBIENT, ${data.particlesProbability / 100}f)
-                                </#if>
 			);
 
 			setRegistryName("${registryname}");
