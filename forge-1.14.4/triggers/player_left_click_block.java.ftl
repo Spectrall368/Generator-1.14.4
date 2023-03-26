@@ -8,6 +8,7 @@
 	int j=event.getPos().getY();
 	int k=event.getPos().getZ();
 	World world=event.getWorld();
+	BlockState state = world.getBlockState(event.getPos());
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x" ,i);
 	dependencies.put("y" ,j);
