@@ -51,7 +51,7 @@ public static class TeleporterDimensionMod extends Teleporter {
 	}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
-				   .replace("Blocks.OBSIDIAN", mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock()")
+				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
 				   .replace("BLOCK_NETHER_PORTAL", "portal")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
