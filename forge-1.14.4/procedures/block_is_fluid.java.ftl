@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedBlockToBlock(input$block)} instanceof FlowingFluidBlock)
+(${mappedBlockToBlockStateCode(input$block)}.getBlock() instanceof FlowingFluidBlock)

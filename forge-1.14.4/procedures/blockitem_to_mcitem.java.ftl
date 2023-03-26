@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-/*@ItemStack*/(new ItemStack(${mappedBlockToBlock(input$source)}))
+/*@ItemStack*/(new ItemStack(${mappedBlockToBlockStateCode(input$source)}.getBlock()))

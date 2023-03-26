@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedMCItemToItem(input$a)} == ${mappedMCItemToItem(input$b)})
+(${mappedMCItemToItemStackCode(input$a,1)}.getItem() == ${mappedMCItemToItemStackCode(input$b,1)}.getItem())
