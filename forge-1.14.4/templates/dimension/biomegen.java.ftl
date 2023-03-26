@@ -66,7 +66,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 
 					{
 						carvableBlocks = ImmutableSet.of(
-							${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock(),
+							${mappedBlockToBlock(data.mainFillerBlock)},
 							biome.getSurfaceBuilder().getConfig().getTop().getBlock(),
 							biome.getSurfaceBuilder().getConfig().getUnder().getBlock()
 						);
