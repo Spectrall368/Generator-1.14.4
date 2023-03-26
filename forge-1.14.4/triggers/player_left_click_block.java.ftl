@@ -1,6 +1,5 @@
 @SubscribeEvent public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event){
 	PlayerEntity entity=event.getPlayer();
-
 	if (event.getHand() != entity.getActiveHand())
 		return;
 
