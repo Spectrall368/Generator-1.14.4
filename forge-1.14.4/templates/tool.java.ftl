@@ -96,7 +96,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					return ${data.efficiency}f;
 				}
 		<#else>
-        	new ItemToolCustom(){
+        	new ItemToolCustom() {
 		</#if>
 
 		<#if data.stayInGridWhenCrafting>
