@@ -364,8 +364,9 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-			GL11.glColor4f(1, 1, 1, 1);
+		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
+			GlStateManager.color4f(1, 1, 1, 1);
+			GlStateManager.enableBlend();
 
 			<#if data.renderBgLayer>
 			Minecraft.getInstance().getTextureManager().bindTexture(texture);
@@ -384,6 +385,8 @@ import ${package}.${JavaModName};
 					<#if hasCondition(component.displayCondition)>}</#if>
 				</#if>
 			</#list>
+
+			GlStateManager.disableBlend();
 		}
 
 		@Override public void tick() {
@@ -477,9 +480,9 @@ import ${package}.${JavaModName};
 					)
 					<#if hasCondition(component.displayCondition)>
 					{
-						@Override public void render(int x, int y, float ticks) {
+						@Override public void render(int gx, int gy, float ticks) {
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
-								super.render(x, y, ticks);
+								super.render(gx, gy, ticks);
 						}
 					}
 					</#if>);
