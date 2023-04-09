@@ -28,10 +28,10 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "particles.java.ftl">
-<#include "boundingboxes.java.ftl">
 
 package ${package}.block;
 
@@ -75,8 +75,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 			<#elseif data.tintType == "Foliage">
 				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-			<#else>
+			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos) : -1;
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 			</#if>
 		}, block);
 	}
@@ -88,14 +90,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					return GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					return FoliageColors.getDefault();
-				<#else>
+				<#elseif data.tintType == "Water">
 					return 3694022;
+				<#else>
+					return 329011;
 				</#if>
 			}, block);
 		}
 		</#if>
 	</#if>
-
 
 	public static class CustomBlock extends
 			<#if data.hasGravity>
@@ -136,6 +139,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				</#if>
 				<#if data.slipperiness != 0.6>
 					.slipperiness(${data.slipperiness}f)
+				</#if>
+				<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+				</#if>
+				<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
 				</#if>
 				<#if data.tickRandomly>
 					.tickRandomly()
@@ -240,11 +249,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		    <#if data.isWaterloggable>
-      		    builder.add(FACING, WATERLOGGED);
-      		<#else>
-      		    builder.add(FACING);
-      		</#if>
+      		<#if data.isWaterloggable>
+                builder.add(FACING, WATERLOGGED);
+            <#elseif data.rotationMode != 0>
+                builder.add(FACING);
+            </#if>
    		}
 
 			<#if data.rotationMode != 5>
@@ -271,9 +280,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
 		    <#if data.rotationMode == 4>
-		    Direction facing = context.getFace();
-		    </#if>
-		    <#if data.rotationMode == 5>
+            Direction facing = context.getFace();
+            </#if>
+            <#if data.rotationMode == 5>
             Direction facing = context.getFace();
             if (facing == Direction.WEST || facing == Direction.EAST)
                 facing = Direction.UP;
@@ -286,30 +295,30 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
             </#if>;
 			<#if data.rotationMode != 3>
-			return this.getDefaultState()
-			        <#if data.rotationMode == 1>
-			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
-			        <#elseif data.rotationMode == 2>
-			        .with(FACING, context.getNearestLookingDirection().getOpposite())
-                    <#elseif data.rotationMode == 4 || data.rotationMode == 5>
-			        .with(FACING, facing)
-			        </#if>
-			        <#if data.isWaterloggable>
-			        .with(WATERLOGGED, flag)
-			        </#if>
-			<#elseif data.rotationMode == 3>
-            if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-                return this.getDefaultState()
-                        .with(FACING, Direction.NORTH)
-                        <#if data.isWaterloggable>
-                        .with(WATERLOGGED, flag)
-                        </#if>;
             return this.getDefaultState()
-                    .with(FACING, context.getFace())
-                    <#if data.isWaterloggable>
-                    .with(WATERLOGGED, flag)
-                    </#if>
-			</#if>;
+                <#if data.rotationMode == 1>
+            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+            	<#elseif data.rotationMode == 2>
+            	.with(FACING, context.getNearestLookingDirection().getOpposite())
+                <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+            	.with(FACING, facing)
+            	</#if>
+            	<#if data.isWaterloggable>
+            	.with(WATERLOGGED, false)
+            	</#if>
+            	<#elseif data.rotationMode == 3>
+                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
+                    return this.getDefaultState()
+                               .with(FACING, Direction.NORTH)
+                               <#if data.isWaterloggable>
+                               .with(WATERLOGGED, flag)
+                               </#if>;
+                return this.getDefaultState()
+                            .with(FACING, context.getFace())
+                            <#if data.isWaterloggable>
+                            .with(WATERLOGGED, flag)
+                            </#if>
+            	</#if>;
 		}
         </#if>
 
@@ -346,9 +355,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
-			return true;
+			return context.getItem().getItem() != this.asItem();
 		}
         </#if>
+		<#if data.displayFluidOverlay>
+		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
+			return true;
+		}
+	</#if>
 
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
@@ -598,7 +612,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
-			
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
