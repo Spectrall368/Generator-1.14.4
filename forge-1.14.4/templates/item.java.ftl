@@ -82,7 +82,7 @@ package ${package}.item;
 				return true;
 			}
 
-            <#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
+			<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
 				@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				    return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
             	}
