@@ -50,8 +50,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	public static class FoodItemCustom extends Item {
 
 		public FoodItemCustom() {
-			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize}).rarity(Rarity.${data.rarity})
-				.food((new Food.Builder()).hunger(${data.nutritionalValue}).saturation(${data.saturation}f)
+			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize})
+			.rarity(Rarity.${data.rarity}).food((new Food.Builder()).hunger(${data.nutritionalValue})
+			.saturation(${data.saturation}f)
 				<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 				<#if data.forDogs>.meat()</#if>
 				.build()
@@ -81,10 +82,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
         </#if>
 
-		@Override public UseAction getUseAction(ItemStack itemstack) {
-			return UseAction.${data.animation?upper_case};
-		}
-
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
@@ -93,6 +90,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			</#list>
 		}
 		</#if>
+
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
+		}
 
 		<#if hasProcedure(data.onRightClicked)>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
@@ -106,6 +107,30 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
         </#if>
 
+		<#if hasProcedure(data.onEntityHitWith)>
+		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+			boolean retval = super.hitEntity(itemstack, entity, sourceentity);
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntityHitWith/>
+			return retval;
+		}
+        </#if>
+
+		<#if hasProcedure(data.onEntitySwing)>
+		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
+			boolean retval = super.onEntitySwing(itemstack, entity);
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntitySwing/>
+			return retval;
+		}
+		</#if>
+
 		<#if hasProcedure(data.onRightClickedOnBlock)>
 		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
 			ActionResultType retval = super.onItemUseFirst(stack, context);
@@ -113,9 +138,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
       		BlockPos pos = context.getPos();
       		PlayerEntity entity = context.getPlayer();
       		Direction direction = context.getFace();
-			int x = pos.posX;
-			int y = pos.posY;
-			int z = pos.posZ;
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
@@ -151,30 +176,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			<#else>
 				return retval;
 			</#if>
-		}
-        </#if>
-
-		<#if hasProcedure(data.onEntityHitWith)>
-		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-			boolean retval = super.hitEntity(itemstack, entity, sourceentity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			World world = entity.world;
-			<@procedureOBJToCode data.onEntityHitWith/>
-			return retval;
-		}
-        </#if>
-
-		<#if hasProcedure(data.onEntitySwing)>
-		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-			boolean retval = super.onEntitySwing(itemstack, entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			World world = entity.world;
-			<@procedureOBJToCode data.onEntitySwing/>
-			return retval;
 		}
 		</#if>
 
