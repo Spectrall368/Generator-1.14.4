@@ -946,10 +946,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
 							blockCriteria = true;
 					</#list>
-						return blockCriteria;
-					}), block.getDefaultState(), ${data.frequencyOnChunk}))
-				Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, ${data.maxGenerateHeight})
-			);
+					return blockCriteria;
+				}), block.getDefaultState(), ${data.frequencyOnChunk}),
+					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, ${data.maxGenerateHeight})));
 		}
 	}
 </#if>
