@@ -88,7 +88,10 @@ package ${package}.world.biome;
 			setRegistryName("${registryname}");
 
 			<#list data.defaultFeatures as defaultFeature>
-			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+				<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
+				<#if mfeat != "null">
+					DefaultBiomeFeatures.add${mfeat}(this);
+				</#if>
 			</#list>
 
 			<#if data.spawnStronghold>
@@ -315,7 +318,7 @@ package ${package}.world.biome;
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()){
 
-								<#if !data.treeVines.isEmpty()>
+								<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
 								if (genh > 0) {
 									if (rand.nextInt(3) > 0 && world.isAirBlock(position.add(-1, genh, 0)))
 										setTreeBlockState(changedBlocks, world, position.add(-1, genh, 0), ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
@@ -333,7 +336,7 @@ package ${package}.world.biome;
 							}
 						}
 
-						<#if !data.treeVines.isEmpty()>
+						<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
 							for (int genh = position.getY() - 3 + height; genh <= position.getY() + height; genh++) {
 								int k4 = (int) (1 - (genh - (position.getY() + height)) * 0.5);
 								for (int genx = position.getX() - k4; genx <= position.getX() + k4; genx++) {
@@ -365,7 +368,7 @@ package ${package}.world.biome;
 							}
                         </#if>
 
-						<#if !data.treeFruits.isEmpty()>
+						<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 						if (rand.nextInt(4) == 0 && height > 5) {
 							for (int hlevel = 0; hlevel < 2; hlevel++) {
 								for (Direction Direction : Direction.Plane.HORIZONTAL) {
