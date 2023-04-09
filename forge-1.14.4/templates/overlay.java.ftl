@@ -83,8 +83,8 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 				</#if>
 
 				<#list data.components as component>
-					<#assign x = component.x - 213>
-					<#assign y = component.y - 120>
+	                <#assign x = component.x - 213>
+	                <#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
 						<#if hasCondition(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
