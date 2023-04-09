@@ -600,7 +600,7 @@ import net.minecraft.block.material.Material;
 				super.processInteract(sourceentity, hand);
 			</#if>
 
-			<#if data.ridable >
+			<#if data.ridable>
             sourceentity.startRiding(this);
             </#if>
 
