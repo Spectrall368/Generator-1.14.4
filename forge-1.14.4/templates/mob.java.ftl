@@ -197,10 +197,9 @@ import net.minecraft.block.material.Material;
 		<#elseif !data.isBuiltInModel()>
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
 				return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
-						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-						@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
-
-					};
+					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
+					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+				};
 			});
 		<#else>
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
