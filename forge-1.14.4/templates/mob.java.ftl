@@ -226,7 +226,7 @@ import net.minecraft.block.material.Material;
 	</#if>
 
 	<#if data.breedable>
-		<#assign extendsClass = "Animal">
+	    <#assign extendsClass = "Animal">
 	</#if>
 
 	<#if data.tameable>
