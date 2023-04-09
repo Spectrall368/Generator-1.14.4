@@ -280,9 +280,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
 		    <#if data.rotationMode == 4>
-            Direction facing = context.getFace();
-            </#if>
-            <#if data.rotationMode == 5>
+		    Direction facing = context.getFace();
+		    </#if>
+		    <#if data.rotationMode == 5>
             Direction facing = context.getFace();
             if (facing == Direction.WEST || facing == Direction.EAST)
                 facing = Direction.UP;
@@ -295,30 +295,30 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
             </#if>;
 			<#if data.rotationMode != 3>
-            return this.getDefaultState()
-                <#if data.rotationMode == 1>
-            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
-            	<#elseif data.rotationMode == 2>
-            	.with(FACING, context.getNearestLookingDirection().getOpposite())
-                <#elseif data.rotationMode == 4 || data.rotationMode == 5>
-            	.with(FACING, facing)
-            	</#if>
-            	<#if data.isWaterloggable>
-            	.with(WATERLOGGED, false)
-            	</#if>
-            	<#elseif data.rotationMode == 3>
-                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-                    return this.getDefaultState()
-                               .with(FACING, Direction.NORTH)
-                               <#if data.isWaterloggable>
-                               .with(WATERLOGGED, flag)
-                               </#if>;
+			return this.getDefaultState()
+			        <#if data.rotationMode == 1>
+			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+			        <#elseif data.rotationMode == 2>
+			        .with(FACING, context.getNearestLookingDirection().getOpposite())
+                    <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+			        .with(FACING, facing)
+			        </#if>
+			        <#if data.isWaterloggable>
+			        .with(WATERLOGGED, flag)
+			        </#if>
+			<#elseif data.rotationMode == 3>
+            if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
                 return this.getDefaultState()
-                            .with(FACING, context.getFace())
-                            <#if data.isWaterloggable>
-                            .with(WATERLOGGED, flag)
-                            </#if>
-            	</#if>;
+                        .with(FACING, Direction.NORTH)
+                        <#if data.isWaterloggable>
+                        .with(WATERLOGGED, flag)
+                        </#if>;
+            return this.getDefaultState()
+                    .with(FACING, context.getFace())
+                    <#if data.isWaterloggable>
+                    .with(WATERLOGGED, flag)
+                    </#if>
+			</#if>;
 		}
         </#if>
 
