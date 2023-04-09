@@ -719,21 +719,21 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    		}
 
    		@Override public CompoundNBT write(CompoundNBT compound) {
-			super.write(compound);
+   		   super.write(compound);
 
-			if (!this.checkLootAndWrite(compound)) {
-			    ItemStackHelper.saveAllItems(compound, this.stacks);
-			}
+		   if (!this.checkLootAndWrite(compound)) {
+   		       ItemStackHelper.saveAllItems(compound, this.stacks);
+   		   }
 
-			<#if data.hasEnergyStorage>
-			compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
-			</#if>
+           <#if data.hasEnergyStorage>
+		   compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
+		   </#if>
 
-			<#if data.isFluidTank>
-			compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
-			</#if>
+           <#if data.isFluidTank>
+		   compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+		   </#if>
 
-			return compound;
+   		   return compound;
    		}
 
 		@Override public SUpdateTileEntityPacket getUpdatePacket() {
