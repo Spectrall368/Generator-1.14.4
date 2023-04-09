@@ -2,9 +2,8 @@
   "id": "generator-1.14.4",
   "minversion": 20210118117,
   "info": {
-    "name": "MCreator 1.14.4 - 2021.1 Plugin",
+    "name": "Minecraft Forge 1.14.4 Generator",
     "version": "1.2",
     "authors": "_Spectrall with Kleiders's help",
-    "description": "Minecraft Forge 1.14.4 Generator"
   }
 }
