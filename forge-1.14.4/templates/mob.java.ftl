@@ -722,7 +722,7 @@ import net.minecraft.block.material.Material;
     	}
 
     	@Override public boolean isNotColliding(IWorldReader worldreader) {
-        	return worldreader.checkNoEntityCollision(this);
+        	return worldreader.checkNoEntityCollision(this, VoxelShapes.create(this.getBoundingBox()));
     	}
 
     	@Override public boolean isPushedByWater() {
