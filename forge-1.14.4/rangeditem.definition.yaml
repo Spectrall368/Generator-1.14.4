@@ -1,5 +1,4 @@
 templates:
-
   - template: rangeditem.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
   - template: json/rangeditem.json.ftl
