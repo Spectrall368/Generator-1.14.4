@@ -110,7 +110,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 			</#if>
 
 		}
-
 	}
 
 }
