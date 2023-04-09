@@ -339,7 +339,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         }
 
 
-        @Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 	        if (state.get(WATERLOGGED)) {
 		        world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 	        }
