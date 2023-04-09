@@ -96,7 +96,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					return ${data.efficiency}f;
 				}
 		<#else>
-        	new ItemToolCustom() {
+        	new ItemToolCustom(){
 		</#if>
 
 		<#if data.stayInGridWhenCrafting>
@@ -141,8 +141,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if hasProcedure(data.onRightClickedInAir)>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand){
-			ActionResult<ItemStack> retval = super.onItemRightClick(world,entity,hand);
-			ItemStack itemstack = retval.getResult();
+			ActionResult<ItemStack> retval=super.onItemRightClick(world,entity,hand);
+			ItemStack itemstack=retval.getResult();
 			double x = entity.posX;
 			double y = entity.posY;
 			double z = entity.posZ;
