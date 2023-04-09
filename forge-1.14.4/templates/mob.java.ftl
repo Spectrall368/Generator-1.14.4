@@ -646,7 +646,7 @@ import net.minecraft.block.material.Material;
 		}
         </#if>
 
-		@Override protected void registerAttributes() {
+        @Override protected void registerAttributes() {
 			super.registerAttributes();
 
 			if (this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
@@ -683,16 +683,16 @@ import net.minecraft.block.material.Material;
 
         <#if data.ranged>
 		    public void attackEntityWithRangedAttack(LivingEntity target, float flval) {
-		    	<#if data.rangedItemType == "Default item">
+				<#if data.rangedItemType == "Default item">
 					ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, this, this.world);
 					double d0 = target.posY + (double) target.getEyeHeight() - 1.1;
 					double d1 = target.posX - this.posX;
 					double d3 = target.posZ - this.posZ;
 					entityarrow.shoot(d1, d0 - entityarrow.posY + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
 					world.addEntity(entityarrow);
-		    	<#else>
+				<#else>
 					${data.rangedItemType}Item.shoot(this, target);
-		    	</#if>
+				</#if>
 			}
         </#if>
 
