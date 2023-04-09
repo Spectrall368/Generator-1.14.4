@@ -510,17 +510,17 @@ import net.minecraft.block.material.Material;
 		}
 
 		@Override public void writeAdditional(CompoundNBT compound) {
-			super.writeAdditional(compound);
+      		super.writeAdditional(compound);
 			compound.put("InventoryCustom", inventory.serializeNBT());
 		}
 
 		@Override public void readAdditional(CompoundNBT compound) {
-			super.readAdditional(compound);
+      		super.readAdditional(compound);
 			INBT inventoryCustom = compound.get("InventoryCustom");
 			if(inventoryCustom instanceof CompoundNBT)
 				inventory.deserializeNBT((CompoundNBT) inventoryCustom);
-		}
-		</#if>
+      	}
+        </#if>
 
 		<#if hasProcedure(data.onRightClickedOn) || data.ridable || data.tameable || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public boolean processInteract(PlayerEntity sourceentity, Hand hand) {
