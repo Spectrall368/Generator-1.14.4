@@ -482,7 +482,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				return Collections.singletonList(new ItemStack(this, 1));
 			}
         	</#if>
-        </#if>
+		</#if>
 
         <#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
 		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
