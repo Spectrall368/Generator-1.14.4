@@ -466,7 +466,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 				if(!dropsOriginal.isEmpty())
-						return dropsOriginal;
+					return dropsOriginal;
 				return Collections.singletonList(new ItemStack(this, state.get(TYPE) == SlabType.DOUBLE ? 2 : 1));
 			}
 			<#else>
