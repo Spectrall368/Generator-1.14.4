@@ -76,7 +76,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-
 					Minecraft.getInstance().getTextureManager()
 								.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
 					Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight(),
