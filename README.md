@@ -1,5 +1,5 @@
 # MCreator generator for Minecraft Forge 1.14.4 mods
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/MCreator/Generator-Forge-1.14.4/blob/master/LICENSE)
+![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 MCreator generator plugin for Minecraft Forge 1.14.4 mods.
 
