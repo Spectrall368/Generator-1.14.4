@@ -57,7 +57,7 @@ import net.minecraft.block.material.Material;
 
 	@Override public void initElements() {
 		elements.entities.add(() -> entity);
-		
+
 		<#if data.ranged && data.rangedItemType == "Default item">
 		elements.entities.add(() -> arrow);
 		</#if>
@@ -271,7 +271,8 @@ import net.minecraft.block.material.Material;
             this.setItemStackToSlot(EquipmentSlotType.CHEST, ${mappedMCItemToItemStackCode(data.equipmentBody, 1)});
             </#if>
             <#if !data.equipmentLeggings.isEmpty()>
-            this.setItemStackToSlot(EquipmentSlotType.LEGS, ${mappedMCItemToItemStackCode(data.equipmentLeggings, 1)});
+            this.setItemStackToSlot(
+					EquipmentSlotType.LEGS, ${mappedMCItemToItemStackCode(data.equipmentLeggings, 1)});
             </#if>
             <#if !data.equipmentBoots.isEmpty()>
             this.setItemStackToSlot(EquipmentSlotType.FEET, ${mappedMCItemToItemStackCode(data.equipmentBoots, 1)});
@@ -409,6 +410,34 @@ import net.minecraft.block.material.Material;
 				Entity entity = this;
 				Entity sourceentity = source.getTrueSource();
 				<@procedureOBJToCode data.whenMobIsHurt/>
+			</#if>
+			<#if data.immuneToArrows>
+				if (source.getImmediateSource() instanceof ArrowEntity)
+					return false;
+			</#if>
+			<#if data.immuneToPlayer>
+				if (source.getImmediateSource() instanceof PlayerEntity)
+					return false;
+			</#if>
+			<#if data.immuneToPotions>
+				if (source.getImmediateSource() instanceof PotionEntity)
+					return false;
+			</#if>
+			<#if data.immuneToFallDamage>
+				if (source == DamageSource.FALL)
+					return false;
+			</#if>
+			<#if data.immuneToCactus>
+				if (source == DamageSource.CACTUS)
+					return false;
+			</#if>
+			<#if data.immuneToDrowning>
+				if (source == DamageSource.DROWN)
+					return false;
+			</#if>
+			<#if data.immuneToLightning>
+				if (source == DamageSource.LIGHTNING_BOLT)
+					return false;
 			</#if>
 			<#if data.immuneToExplosion>
 				if (source.isExplosion())
