@@ -142,8 +142,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					double z = entity.posZ;
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
+						entity.stopActiveHand();
 					}
-					entity.stopActiveHand();
 				}
 			}
         <#else>
