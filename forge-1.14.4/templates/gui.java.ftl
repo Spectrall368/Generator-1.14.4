@@ -162,7 +162,7 @@ import ${package}.${JavaModName};
 						@Override public boolean canTakeStack(PlayerEntity player) {
 							return false;
 						}
-						</#if>
+            	    	</#if>
 
 						<#if hasProcedure(component.onSlotChanged)>
             	        @Override public void onSlotChanged() {
