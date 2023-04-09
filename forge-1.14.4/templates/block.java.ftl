@@ -357,11 +357,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return context.getItem().getItem() != this.asItem();
 		}
         </#if>
-		<#if data.displayFluidOverlay>
-		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
-			return true;
-		}
-	</#if>
 
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
