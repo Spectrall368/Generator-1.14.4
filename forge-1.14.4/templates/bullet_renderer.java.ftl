@@ -33,7 +33,7 @@ package ${package}.entity.renderer;
 			GlStateManager.popMatrix();
 		}
 
-		@Override protected ResourceLocation getEntityTexture(ArrowCustomEntity entity) {
+		@Override protected ResourceLocation getEntityTexture(${name}Item.ArrowCustomEntity entity) {
 			return texture;
 		}
 	}
