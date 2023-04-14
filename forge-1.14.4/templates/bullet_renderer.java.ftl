@@ -2,13 +2,17 @@ package ${package}.entity.renderer;
 
 @OnlyIn(Dist.CLIENT) public class ${name}Renderer {
 
+	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
+			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
+			.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
+
 	public static class ModelRegisterHandler {
 
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public void registerModels(ModelRegistryEvent event) {
 			<#if data.bulletModel != "Default">
-			RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new CustomRender(renderManager));
+			RenderingRegistry.registerEntityRenderingHandler(${name}Item.arrow, renderManager -> new CustomRender(renderManager));
 			<#else>
-			RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+			RenderingRegistry.registerEntityRenderingHandler(${name}Item.arrow, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
 		}
 
