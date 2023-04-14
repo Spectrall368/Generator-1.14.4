@@ -37,6 +37,10 @@ package ${package}.entity.renderer;
 	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
 			.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
+			
+	@Override public void initElements() {
+		elements.entities.add(() -> arrow);
+	}
 
 	public static class ModelRegisterHandler {
 
