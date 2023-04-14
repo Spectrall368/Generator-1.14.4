@@ -1,6 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [variables, model_json, model_java, model_obj]
-status: lts
+partial_support: [gamerules]
+status: deprecated
 buildfileversion: 28.2.26
 subversion: 1.0.1
 
