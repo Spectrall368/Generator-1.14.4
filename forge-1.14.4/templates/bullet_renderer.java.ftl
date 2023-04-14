@@ -8,7 +8,7 @@ package ${package}.entity.renderer;
 			<#if data.bulletModel != "Default">
 			RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new CustomRender(renderManager));
 			<#else>
-			RenderingRegistry.registerEntityRenderingHandler(Item.arrow, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+			RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
 		}
 
