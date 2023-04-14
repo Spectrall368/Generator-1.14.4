@@ -6,7 +6,7 @@ package ${package}.entity.renderer;
 
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public void registerModels(ModelRegistryEvent event) {
 			<#if data.bulletModel != "Default">
-			RenderingRegistry.registerEntityRenderingHandler(Item.arrow, renderManager -> new CustomRender(renderManager));
+			RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new CustomRender(renderManager));
 			<#else>
 			RenderingRegistry.registerEntityRenderingHandler(Item.arrow, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
