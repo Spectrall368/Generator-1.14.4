@@ -22,7 +22,7 @@ package ${package}.entity.renderer;
 			super(renderManager);
 		}
 
-			@Override public void doRender(ArrowCustomEntity bullet, double d, double d1, double d2, float f, float f1) {
+		@Override public void doRender(ArrowCustomEntity bullet, double d, double d1, double d2, float f, float f1) {
 			this.bindEntityTexture(bullet);
 			GlStateManager.pushMatrix();
 			GlStateManager.translatef((float) d, (float) d1, (float) d2);
