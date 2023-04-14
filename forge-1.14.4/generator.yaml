@@ -3,7 +3,7 @@ basefeatures: [variables, model_json, model_java, model_obj]
 partial_support: [gamerule]
 status: deprecated
 buildfileversion: 28.2.16
-subversion: 1.0.1
+subversion: 1.0.3
 
 # gradle task definitions
 gradle:
