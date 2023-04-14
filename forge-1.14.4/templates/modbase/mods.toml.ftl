@@ -50,6 +50,7 @@ description='''${settings.getDescription()}'''
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     mandatory=false
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 </#list>
@@ -58,6 +59,7 @@ description='''${settings.getDescription()}'''
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     mandatory=false
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 </#list>
