@@ -261,9 +261,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			super(new Item.Properties()
 				.group(${data.creativeTab})
 				.maxDamage(${data.usageCount})
-				<#if data.immuneToFire>
-				.isImmuneToFire()
-				</#if>
 			);
 		}
 
