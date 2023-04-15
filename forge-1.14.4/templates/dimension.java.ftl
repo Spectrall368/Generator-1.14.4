@@ -85,6 +85,7 @@ import org.apache.logging.log4j.util.Supplier;
 			elements.blocks.add(() -> new CustomPortalBlock());
 			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
 		}
+
 		@Override @OnlyIn(Dist.CLIENT) public BlockRenderLayer getRenderLayer() {
 			return BlockRenderLayer.TRANSLUCENT;
 		}
