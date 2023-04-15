@@ -74,9 +74,9 @@ public static class TeleporterDimensionMod implements ITeleporter {
 					.replace("Blocks.NETHER_PORTAL", "portal")}
 
 	@Override public Entity placeEntity(Entity entity, ServerWorld serverworld, ServerWorld serverworld1, float yaw, Function<Boolean, Entity> repositionEntity) {
-		double d0 = entity.getPosX();
-		double d1 = entity.getPosY();
-		double d2 = entity.getPosZ();
+		double d0 = entity.posX;
+		double d1 = entity.posY;
+		double d2 = entity.posZ;
 
 		if(entity instanceof ServerPlayerEntity) {
 			entity.setLocationAndAngles(d0, d1, d2, yaw, entity.rotationPitch);
