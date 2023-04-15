@@ -17,7 +17,7 @@ archivesBaseName = 'modid'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190829-1.14.4'
+    mappings channel: 'snapshot', version: '20190719-1.14.4'
 
     runs {
         client {
