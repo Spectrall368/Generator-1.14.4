@@ -58,7 +58,7 @@ public static class TeleporterDimensionMod implements ITeleporter {
 		this.teleportDirection = teleportDirection;
 	}
 
-	${mcc.getMethod("net.minecraft.world.Teleporter", "placeInExistingPortal", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
 				   .replace("NetherPortalBlock.createPatternHelper", name + "Dimension.CustomPortalBlock.createPatternHelper")
 				   .replace("PointOfInterestType.NETHER_PORTAL", "poi")
 				   .replace("TicketType.PORTAL", "CUSTOM_PORTAL")
