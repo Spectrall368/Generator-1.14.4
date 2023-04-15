@@ -2,7 +2,7 @@ name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [variables, model_json, model_java, model_obj]
 partial_support: [gamerule]
 status: deprecated
-buildfileversion: 28.2.26
+buildfileversion: 28.2.23
 subversion: 1.0.1
 
 # gradle task definitions
