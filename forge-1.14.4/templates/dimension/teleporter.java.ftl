@@ -64,11 +64,11 @@ public static class TeleporterDimensionMod implements ITeleporter {
 				   .replace("TicketType.PORTAL", "CUSTOM_PORTAL")
 				   .replace("Blocks.NETHER_PORTAL", "portal")}
 
-	${mcc.getMethod("net.minecraft.world.Teleporter", "placeInPortal", "Entity", "float")
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "placeInPortal", "Entity", "float")
 				   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
 				   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
 
-	${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
 					.replace("Blocks.OBSIDIAN", mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock()")
 					.replace(",blockstate,18);", ",blockstate,18);\nthis.world.getPointOfInterestManager().add(blockpos$mutable, poi);")
 					.replace("Blocks.NETHER_PORTAL", "portal")}
