@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [variables, model_json, model_java, model_obj]
-partial_support: [gamerule]
+partial_support: [gamerule, biome]
 status: deprecated
 buildfileversion: 28.2.16
 subversion: 1.0.1
