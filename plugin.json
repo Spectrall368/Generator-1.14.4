@@ -1,7 +1,7 @@
 {
   "id": "generator-1.14.4",
   "minversion": 202100100000,
-  "maxversion": 202100199999,
+  "maxversion": 202100200000,
   "info": {
     "name": "Minecraft Forge 1.14.4 Generator",
     "version": "1.3",
