@@ -2,6 +2,8 @@ templates:
   - template: gamerule.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEGameRule.java"
 
+field_exclusions: [category]
+
 localizationkeys:
   - key: gamerule.@registryname
     mapto: displayName
