@@ -38,21 +38,32 @@ public static class BiomeLayerCustom implements IC0Transformer {
 
 public static class BiomeProviderCustom extends BiomeProvider {
 
-	private Layer genBiomes;
+	private final Layer genBiomes;
+	private final Layer biomeFactoryLayer;
+	private final Biome[] biomes;
+	<#if data.worldGenType == "End like gen">
+	private final SimplexNoiseGenerator generator;
+	</#if>
 
 	<#if data.worldGenType == "Normal world gen">
 	private static boolean biomesPatched = false;
 	</#if>
 
 	public BiomeProviderCustom(World world) {
-		super(new HashSet<Biome>(Arrays.asList(dimensionBiomes)));
+		Layer[] aLayer = makeTheWorld(world.getSeed());
+		this.genBiomes = aLayer[0];
+		this.biomeFactoryLayer = aLayer[1];
+		this.biomes = dimensionBiomes;
 
-		this.genBiomes = getBiomeLayer(world.getSeed());
+		<#if data.worldGenType == "End like gen">
+		this.generator = new SimplexNoiseGenerator(new SharedSeedRandom(world.getSeed()));
+		</#if>
 
 		<#if data.worldGenType == "Normal world gen">
 		if(!biomesPatched) {
 			for (Biome biome : this.biomes) {
 				biome.addCarver(GenerationStage.Carving.AIR, Biome.createCarver(new CaveWorldCarver(ProbabilityConfig::deserialize, 256) {
+
 					{
 						carvableBlocks = ImmutableSet.of(
 							${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock(),
@@ -60,6 +71,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 							biome.getSurfaceBuilder().getConfig().getUnder().getBlock()
 						);
 					}
+
 				}, new ProbabilityConfig(0.14285715f)));
 			}
 			biomesPatched = true;
@@ -67,11 +79,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 		</#if>
 	}
 
-	public Biome getNoiseBiome(int x, int y, int z) {
-		return this.genBiomes.func_215738_a(x, z);
-	}
-
-	private Layer getBiomeLayer(long seed) {
+	private Layer[] makeTheWorld(long seed) {
 		LongFunction<IExtendedNoiseRandom<LazyArea>> contextFactory = l -> new LazyAreaLayerContext(25, seed, l);
 
 		IAreaFactory<LazyArea> parentLayer = IslandLayer.INSTANCE.apply(contextFactory.apply(1));
@@ -84,8 +92,22 @@ public static class BiomeProviderCustom extends BiomeProvider {
 		biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1004), biomeLayer);
 		biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1005), biomeLayer);
 
-		return new Layer(biomeLayer);
+		IAreaFactory<LazyArea> voronoizoom = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(10), biomeLayer);
+
+		return new Layer[] { new Layer(biomeLayer), new Layer(voronoizoom) };
 	}
+
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "getBiome", "int", "int")}
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "func_222366_b", "int", "int")}
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "getBiomes", "int", "int", "int", "int", "boolean")}
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "getBiomesInSquare", "int", "int", "int")}
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "findBiomePosition", "int", "int", "int", "List", "Random")}
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "hasStructure", "Structure")}
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.OverworldBiomeProvider", "getSurfaceBlocks")}
+
+	<#if data.worldGenType == "End like gen">
+	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.EndBiomeProvider", "func_222365_c", "int", "int")}
+    </#if>
 
 }
 <#-- @formatter:on -->
