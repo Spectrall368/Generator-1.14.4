@@ -27,93 +27,41 @@
  # exception.
 -->
 
-private static PointOfInterestType poi = null;
+public static class TeleporterDimensionMod extends Teleporter {
 
-public static final TicketType<BlockPos> CUSTOM_PORTAL = TicketType.create("${registryname}_portal", Vec3i::compareTo, 300);
-
-@SubscribeEvent public void registerPointOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-	try {
-		Method method = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_226359_a_", String.class, Set.class, int.class, int.class);
-		method.setAccessible(true);
-		poi = (PointOfInterestType) method.invoke(null, "${registryname}_portal", Sets.newHashSet(ImmutableSet.copyOf(portal.getStateContainer().getValidStates())), 0, 1);
-		event.getRegistry().register(poi);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-}
-
-public static class TeleporterDimensionMod implements ITeleporter {
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private Vec3d lastPortalVec;
 	private Direction teleportDirection;
 
 	protected final ServerWorld world;
 	protected final Random random;
+	protected final Map<ColumnPos, TeleporterDimensionMod.PortalPosition> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
+	private final Object2LongMap<ColumnPos> field_222275_f = new Object2LongOpenHashMap();
 
 	public TeleporterDimensionMod(ServerWorld worldServer, Vec3d lastPortalVec, Direction teleportDirection) {
+		super(worldServer);
+
 		this.world = worldServer;
 		this.random = new Random(worldServer.getSeed());
-
 		this.lastPortalVec = lastPortalVec;
 		this.teleportDirection = teleportDirection;
+
+		worldServer.customTeleporters.add(this);
 	}
 
-	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
-				   .replace("NetherPortalBlock.createPatternHelper", name + "Dimension.CustomPortalBlock.createPatternHelper")
-				   .replace("PointOfInterestType.NETHER_PORTAL", "poi")
-				   .replace("TicketType.PORTAL", "CUSTOM_PORTAL")
-				   .replace("Blocks.NETHER_PORTAL", "portal")}
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
+				   .replace("Blocks.OBSIDIAN", mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock()")
+				   .replace("BLOCK_NETHER_PORTAL", "portal")}
 
-	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "placeInPortal", "Entity", "float")
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
+				   .replace("BLOCK_NETHER_PORTAL", "portal")
+				   .replace("Teleporter.PortalPosition", "TeleporterDimensionMod.PortalPosition")}
+
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
 				   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
 				   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
 
-	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
-					.replace("Blocks.OBSIDIAN", mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock()")
-					.replace(",blockstate,18);", ",blockstate,18);\nthis.world.getPointOfInterestManager().add(blockpos$mutable, poi);")
-					.replace("Blocks.NETHER_PORTAL", "portal")}
-
-	@Override public Entity placeEntity(Entity entity, ServerWorld serverworld, ServerWorld serverworld1, float yaw, Function<Boolean, Entity> repositionEntity) {
-		double d0 = entity.posX;
-		double d1 = entity.posY;
-		double d2 = entity.posZ;
-
-		if(entity instanceof ServerPlayerEntity) {
-			entity.setLocationAndAngles(d0, d1, d2, yaw, entity.rotationPitch);
-
-			if (!this.placeInPortal(entity, yaw)) {
-				this.makePortal(entity);
-				this.placeInPortal(entity, yaw);
-			}
-
-			entity.setWorld(serverworld1);
-			serverworld1.addDuringPortalTeleport((ServerPlayerEntity) entity);
-			((ServerPlayerEntity) entity).connection.setPlayerLocation(entity.getPosX(), entity.getPosY(), entity.getPosZ(), yaw, entity.rotationPitch);
-
-			return entity;
-		} else {
-			Vec3d vec3d = entity.getMotion();
-			BlockPos blockpos = new BlockPos(d0, d1, d2);
-
-			BlockPattern.PortalInfo blockpattern$portalinfo = this.placeInExistingPortal(blockpos, vec3d, teleportDirection,
-					lastPortalVec.x, lastPortalVec.y, entity instanceof PlayerEntity);
-			if (blockpattern$portalinfo == null)
-				return null;
-
-			blockpos = new BlockPos(blockpattern$portalinfo.pos);
-			vec3d = blockpattern$portalinfo.motion;
-			float f = (float) blockpattern$portalinfo.rotation;
-
-			Entity entityNew = entity.getType().create(serverworld1);
-			if (entityNew != null) {
-				entityNew.copyDataFromOld(entity);
-				entityNew.moveToBlockPosAndAngles(blockpos, entityNew.rotationYaw + f, entityNew.rotationPitch);
-				entityNew.setMotion(vec3d);
-				serverworld1.addFromAnotherDimension(entityNew);
-			}
-
-			return entityNew;
-		}
-	}
+	public static class PortalPosition ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
 
 }
