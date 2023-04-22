@@ -62,6 +62,7 @@ husbandry/root: minecraft:husbandry/root
 husbandry/breed_an_animal: minecraft:husbandry/breed_an_animal
 husbandry/tame_an_animal: minecraft:husbandry/tame_an_animal
 husbandry/fishy_business: minecraft:husbandry/fishy_business
+husbandry/silk_touch_nest: minecraft:husbandry/silk_touch_nest
 husbandry/plant_seed: minecraft:husbandry/plant_seed
 husbandry/breed_all_animals: minecraft:husbandry/breed_all_animals
 husbandry/complete_catalogue: minecraft:husbandry/complete_catalogue
