@@ -4,6 +4,7 @@
 	double j=entity.posY;
 	double k=entity.posZ;
 	World world=entity.world;
+
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",i);
 	dependencies.put("y",j);
