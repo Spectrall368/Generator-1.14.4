@@ -13,14 +13,12 @@ Icebergs: Icebergs
 InfestedStone: InfestedStone
 JungleGrass: JungleGrass
 JunglePlants: JunglePlants
-JungleTreeForest: JungleTreeForest
 Lakes: Lakes
 MonsterRooms: MonsterRooms
 OakAndSpruceTrees: OakAndSpruceTrees
 OakTreesFlowersGrass: OakTreesFlowersGrass
 OceanCaves: OceanCarvers
 Ores: Ores
-PlainsTallGrass: PlainsTallGrass
 ReedsAndPumpkins: ReedsAndPumpkins
 ReedsPumpkinsCactus: ReedsPumpkinsCactus
 SavannaTrees: SavannaTrees
@@ -32,8 +30,5 @@ SparseGrass: SparseGrass
 StoneVariants: StoneVariants
 SwampClayDisks: SwampClayDisks
 SwampVegetation: SwampVegetation
-TaigaGrassAndMushrooms: TaigaGrassAndMushrooms
-TaigaGrassDeadBushesMushrooms: TaigaGrassDeadBushesMushrooms
 TaigaLargeFerns: TaigaLargeFerns
 TaigaRocks: TaigaRocks
-TallSeagrassLush: TallSeagrassLush
