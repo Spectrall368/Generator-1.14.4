@@ -2172,6 +2172,18 @@ Blocks.JIGSAW:
 Blocks.COMPOSTER:
   - Blocks.COMPOSTER
   - "composter"
+Blocks.BEEHIVE:
+  - Blocks.BEEHIVE
+  - "beehive"
+Blocks.BEE_NEST:
+  - Blocks.BEE_NEST
+  - "bee_nest"
+Blocks.HONEY_BLOCK:
+  - Blocks.HONEY_BLOCK
+  - "honey_block"
+Blocks.HONEYCOMB_BLOCK:
+  - Blocks.HONEYCOMB_BLOCK
+  - "honeycomb_block"
 Items.DYE:
   - Items.INK_SAC
   - "#forge:dyes"
