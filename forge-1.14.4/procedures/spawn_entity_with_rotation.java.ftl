@@ -10,7 +10,7 @@
 		entityToSpawn.setRenderYawOffset((float) ${input$yaw});
 
 		if (entityToSpawn instanceof MobEntity)
-			((MobEntity)entityToSpawn).onInitialSpawn(world,world.getDifficultyForLocation(new BlockPos(entityToSpawn)), SpawnReason.MOB_SUMMONED, (ILivingEntityData) null, (CompoundNBT) null);
+			((MobEntity)entityToSpawn).onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(entityToSpawn)), SpawnReason.MOB_SUMMONED, (ILivingEntityData) null, (CompoundNBT) null);
 
 		world.addEntity(entityToSpawn);
 	}
