@@ -367,7 +367,7 @@ package ${package}.world.biome;
 								}
 							}
                         </#if>
-
+					
 						<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 						if (rand.nextInt(4) == 0 && height > 5) {
 							for (int hlevel = 0; hlevel < 2; hlevel++) {
