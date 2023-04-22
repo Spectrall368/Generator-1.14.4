@@ -68,5 +68,14 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 			return null;
 		}
 	</#if>
+	@SubscribeEvent
+	public static void onServerStarting(ServerStartingEvent event) {
+   	ServerWorld world = event.getServer().getWorld(World.OVERWORLD);
+	<#if data.type == "Number">
+   	int defaultValue = 10;
+	<#else>
+   	world.getGameRules().getBoolean(${registryname}).set(defaultValue);
+	</#if>
+}
 }
 <#-- @formatter:on -->
