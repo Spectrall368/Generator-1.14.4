@@ -72,10 +72,10 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	public static void onServerStarting(ServerStartingEvent event) {
    	ServerWorld world = event.getServer().getWorld(World.OVERWORLD);
 	<#if data.type == "Number">
-   	int defaultValue = 10;
+   	world.getGameRules().getInt(${registryname}).set(${data.defaultValueNumber});
 	<#else>
-   	world.getGameRules().getBoolean(${registryname}).set(defaultValue);
+   	world.getGameRules().getBoolean(${registryname}).set(${data.defaultValueLogic});
 	</#if>
-}
+	}
 }
 <#-- @formatter:on -->
