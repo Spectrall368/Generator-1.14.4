@@ -1,3 +1,3 @@
 if(${input$entity} instanceof LivingEntity){
-	((LivingEntity)${input$entity}).swingArm(Hand.MAIN_HAND);
+	((LivingEntity)${input$entity}).swing(Hand.MAIN_HAND, true);
 }
