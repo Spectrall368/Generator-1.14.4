@@ -68,14 +68,17 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 			return null;
 		}
 	</#if>
-	@SubscribeEvent
-	public static void onServerStarting(ServerStartingEvent event) {
+	@Mod.EventBusSubscriber(modid = "${modid}", bus = Mod.EventBusSubscriber.Bus.FORGE)
+	public class YourModEvents {
+   	@SubscribeEvent
+    	public static void onServerStarting(FMLServerStartingEvent event) {
    	ServerWorld world = event.getServer().getWorld(World.OVERWORLD);
 	<#if data.type == "Number">
-   	world.getGameRules().getInt(${registryname}).set(${data.defaultValueNumber});
+   	world.getGameRules().getInt("${registryname}").set(${data.defaultValueNumber});
 	<#else>
-   	world.getGameRules().getBoolean(${registryname}).set(${data.defaultValueLogic});
+   	world.getGameRules().getBoolean("${registryname}").set(${data.defaultValueLogic});
 	</#if>
+    	}
 	}
 }
 <#-- @formatter:on -->
