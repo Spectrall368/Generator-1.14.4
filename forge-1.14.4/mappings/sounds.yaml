@@ -297,10 +297,8 @@ entity.illusion_illager.mirror_move: entity.illusioner.mirror_move
 entity.illusion_illager.prepare_blindness: entity.illusioner.prepare_blindness
 entity.illusion_illager.prepare_mirror: entity.illusioner.prepare_mirror
 entity.irongolem.attack: entity.iron_golem.attack
-entity.iron_golem.damage: entity.iron_golem.damage
 entity.irongolem.death: entity.iron_golem.death
 entity.irongolem.hurt: entity.iron_golem.hurt
-entity.iron_golem.repair: entity.iron_golem.repair
 entity.irongolem.step: entity.iron_golem.step
 entity.item.break: entity.item.break
 entity.item.pickup: entity.item.pickup
