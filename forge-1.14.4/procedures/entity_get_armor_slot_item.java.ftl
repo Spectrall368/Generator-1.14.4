@@ -1,1 +1,1 @@
-/*@ItemStack*/((${input$entity} instanceof LivingEntity)?((LivingEntity)${input$entity}).getItemStackFromSlot(EquipmentSlotType.ByTypeAndIndex(EquipmentSlotType.Group.ARMOR, (int) ${input$slotid})):ItemStack.EMPTY)
+/@ItemStack/((${input$entity} instanceof LivingEntity)?((LivingEntity)${input$entity}).getItemStackFromSlot(EquipmentSlotType.byTypeAndSlotType(EquipmentSlotType.Group.ARMOR, EquipmentSlotType.values()[(int)${input$slotid}])):ItemStack.EMPTY)
