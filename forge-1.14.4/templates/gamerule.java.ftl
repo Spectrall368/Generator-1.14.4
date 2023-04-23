@@ -45,9 +45,9 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	public static final Capability<GameRules> GAME_RULES_CAPABILITY = null;
 
 	<#if data.type == "Number">
-	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueNumber}));
+	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", Type.createSuitableFor(Number.class), Integer.toString(${data.defaultValueNumber}));
 	<#else>
-	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueLogic}));
+	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", Type.createSuitableFor(Boolean.class), Boolean.toString(${data.defaultValueLogic}));
 	</#if>
 
 	public ${name}GameRule (${JavaModName}Elements instance) {
@@ -57,9 +57,7 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	<#if data.type == "Number">
 		public static GameRules.RuleType<GameRules.IntegerValue> create(int defaultValue) {
 			try {
-				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "func_223559_b", int.class);
-				createGameruleMethod.setAccessible(true);
-				return (GameRules.RuleType<GameRules.IntegerValue>) createGameruleMethod.invoke(null, defaultValue);
+				return Type.createSuitableFor(Number.class).createRule(FunctionalLaziness.intSupplier(defaultValue));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -68,9 +66,7 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	<#else>
 		public static GameRules.RuleType<GameRules.BooleanValue> create(boolean defaultValue) {
 			try {
-				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223568_b", boolean.class);
-				createGameruleMethod.setAccessible(true);
-				return (GameRules.RuleType<GameRules.BooleanValue>) createGameruleMethod.invoke(null, defaultValue);
+				return Type.createSuitableFor(Boolean.class).createRule(FunctionalLaziness.booleanSupplier(defaultValue));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
