@@ -259,10 +259,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
     private static class ItemToolCustom extends Item {
 
 		protected ItemToolCustom() {
-			super(new Item.Properties()
-				.group(${data.creativeTab})
-				.maxDamage(${data.usageCount})
-			);
+			super(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount}));
 		}
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
