@@ -66,6 +66,7 @@ public class ${JavaModName} {
 		elements = new ${JavaModName}Elements();
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 
@@ -76,12 +77,14 @@ public class ${JavaModName} {
 		elements.getElements().forEach(element -> element.init(event));
 	}
 
+	private void clientSetup(FMLClientSetupEvent event) {
+        OBJLoader.INSTANCE.addDomain("${modid}");
+	
+        elements.getElements().forEach(element -> element.clientLoad(event));
+    }
+
     @SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {
 		elements.getElements().forEach(element -> element.serverLoad(event));
-	}
-
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-		elements.getElements().forEach(element -> element.clientLoad(event));
 	}
 
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
