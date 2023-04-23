@@ -176,7 +176,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				return retval;
 			</#if>
 		}
-		</#if>
+        </#if>
 
 		<#if hasProcedure(data.onCrafted)>
 		@Override public void onCreated(ItemStack itemstack, World world, PlayerEntity entity) {
