@@ -157,7 +157,7 @@ package ${package}.world.structure;
 
 			biome.addFeature(GenerationStage.Decoration.
 				<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES<#elseif data.spawnLocation=="Air">RAW_GENERATION<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>,
-				Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+				feature.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
 		}
 	}
 
