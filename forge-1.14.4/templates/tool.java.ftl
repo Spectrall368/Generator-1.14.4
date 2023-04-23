@@ -78,15 +78,16 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					return Ingredient.EMPTY;
 					</#if>
 				}
-			}, <#if data.toolType=="Sword">3<#elseif data.toolType=="Hoe">0<#else>1</#if>
-			 ,${data.attackSpeed - 4}f, new Item.Properties()
-			 	.group(${data.creativeTab})
-			 ) {
+			}, <#if data.toolType=="Hoe">
+					${data.attackSpeed - 4}f
+				<#else>
+					<#if data.toolType=="Sword">3
+					<#else>1
+					</#if>
+					,${data.attackSpeed - 4}f
+				</#if>, new Item.Properties().group(${data.creativeTab})) {
 		<#elseif data.toolType=="Shears">
-			new ShearsItem(new Item.Properties()
-				.group(${data.creativeTab})
-				.maxDamage(${data.usageCount})
-			) {
+			new ShearsItem(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount})) {
 				@Override public int getItemEnchantability() {
 					return ${data.enchantability};
 				}
