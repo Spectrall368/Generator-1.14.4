@@ -32,17 +32,8 @@ package ${package}.world;
 
 import ${package}.${JavaModName};
 
-import net.minecraft.network.play.server.SUpdateGameRulePacket;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.GameRules;
-
-import java.util.HashMap;
-import java.util.Map;
-
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
-
-private static final Map<RegistryKey<?>, Map<String, Object>> playerGameRules = new HashMap<>();
 
 	<#if data.type == "Number">
 	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueNumber}));
@@ -77,22 +68,5 @@ private static final Map<RegistryKey<?>, Map<String, Object>> playerGameRules = 
 			return null;
 		}
 	</#if>
-
-	public static void setGameRuleValue(RegistryKey<?> dimension, String ruleName, Object value) {
-    		if (!playerGameRules.containsKey(dimension)) {
-        		playerGameRules.put(dimension, new HashMap<>());
-   		}
-    		playerGameRules.get(dimension).put(ruleName, value);
-
-    		SUpdateGameRulePacket packet = new SUpdateGameRulePacket(ruleName, value.toString());
-    		MinecraftServer.getServer().getWorld(dimension).getPlayers().forEach(player -> player.connection.sendPacket(packet));
-		}
-
-	public static Object getGameRuleValue(RegistryKey<?> dimension, String ruleName) {
-    		if (!playerGameRules.containsKey(dimension) || !playerGameRules.get(dimension).containsKey(ruleName)) {
-        		return gamerule.getDefaultValue().get();
-    		}
-    	return playerGameRules.get(dimension).get(ruleName);
-	}
 }
 <#-- @formatter:on -->
