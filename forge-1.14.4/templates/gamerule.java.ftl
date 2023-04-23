@@ -32,8 +32,17 @@ package ${package}.world;
 
 import ${package}.${JavaModName};
 
+import net.minecraft.world.GameRules;
+import net.minecraft.world.GameRules.Type;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
+
+	@CapabilityInject(GameRules.class)
+	public static final Capability<GameRules> GAME_RULES_CAPABILITY = null;
 
 	<#if data.type == "Number">
 	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueNumber}));
