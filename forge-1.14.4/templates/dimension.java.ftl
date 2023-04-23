@@ -86,7 +86,7 @@ import org.apache.logging.log4j.util.Supplier;
 			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
 		}
 
-		@Override @OnlyIn(Dist.CLIENT) public BlockRenderLayer getRenderLayer() {
+		@OnlyIn(Dist.CLIENT) public BlockRenderLayer getRenderLayer() {
 			return BlockRenderLayer.TRANSLUCENT;
 		}
 
