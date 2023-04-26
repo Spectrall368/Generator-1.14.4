@@ -1,4 +1,4 @@
- @SubscribeEvent public void onAdvancement(AdvancementEvent event) {
+@SubscribeEvent public void onAdvancement(AdvancementEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=entity.posX;
 	double j=entity.posY;
@@ -14,4 +14,4 @@
 	dependencies.put("advancement",advancement);
 	dependencies.put("event",event);
 	this.executeProcedure(dependencies);
- }
+}

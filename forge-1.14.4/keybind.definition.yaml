@@ -3,5 +3,5 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/keybind/@NAMEKeyBinding.java"
 
 localizationkeys:
-  - key: key.@modid.@registryname
+  - key: key.mcreator.@registryname
     mapto: keyBindingName
