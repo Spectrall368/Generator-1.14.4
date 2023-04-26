@@ -1,12 +1,6 @@
 _default: ""
 _mcreator_prefix: "CUSTOM:"
 ambient.cave: ambient.cave
-ambient.underwater.enter: ambient.underwater.enter
-ambient.underwater.exit: ambient.underwater.exit
-ambient.underwater.loop: ambient.underwater.loop
-ambient.underwater.loop.additions: ambient.underwater.loop.additions
-ambient.underwater.loop.additions.rare: ambient.underwater.loop.additions.rare
-ambient.underwater.loop.additions.ultra_rare: ambient.underwater.loop.additions.ultra_rare
 block.anvil.break: block.anvil.break
 block.anvil.destroy: block.anvil.destroy
 block.anvil.fall: block.anvil.fall
@@ -15,14 +9,6 @@ block.anvil.land: block.anvil.land
 block.anvil.place: block.anvil.place
 block.anvil.step: block.anvil.step
 block.anvil.use: block.anvil.use
-item.armor.equip_chain: item.armor.equip_chain
-item.armor.equip_diamond: item.armor.equip_diamond
-item.armor.equip_elytra: item.armor.equip_elytra
-item.armor.equip_generic: item.armor.equip_generic
-item.armor.equip_gold: item.armor.equip_gold
-item.armor.equip_iron: item.armor.equip_iron
-item.armor.equip_leather: item.armor.equip_leather
-item.armor.equip_turtle: item.armor.equip_turtle
 block.brewing_stand.brew: block.brewing_stand.brew
 block.chest.close: block.chest.close
 block.chest.locked: block.chest.locked
@@ -343,14 +329,14 @@ entity.parrot.imitate.blaze: entity.parrot.imitate.blaze
 entity.parrot.imitate.creeper: entity.parrot.imitate.creeper
 entity.parrot.imitate.elder_guardian: entity.parrot.imitate.elder_guardian
 entity.parrot.imitate.enderdragon: entity.parrot.imitate.ender_dragon
-entity.parrot.imitate.enderman: entity.parrot.imitate.endermite #LEGACY
+entity.parrot.imitate.enderman: entity.parrot.imitate.enderman
 entity.parrot.imitate.endermite: entity.parrot.imitate.endermite
 entity.parrot.imitate.evocation_illager: entity.parrot.imitate.evoker
 entity.parrot.imitate.ghast: entity.parrot.imitate.ghast
 entity.parrot.imitate.husk: entity.parrot.imitate.husk
 entity.parrot.imitate.illusion_illager: entity.parrot.imitate.illusioner
 entity.parrot.imitate.magmacube: entity.parrot.imitate.magma_cube
-entity.parrot.imitate.polar_bear: entity.parrot.imitate.husk #LEGACY
+entity.parrot.imitate.polar_bear: entity.parrot.imitate.polar_bear
 entity.parrot.imitate.shulker: entity.parrot.imitate.shulker
 entity.parrot.imitate.silverfish: entity.parrot.imitate.silverfish
 entity.parrot.imitate.skeleton: entity.parrot.imitate.skeleton
@@ -362,9 +348,9 @@ entity.parrot.imitate.vindication_illager: entity.parrot.imitate.vindicator
 entity.parrot.imitate.witch: entity.parrot.imitate.witch
 entity.parrot.imitate.wither: entity.parrot.imitate.wither
 entity.parrot.imitate.wither_skeleton: entity.parrot.imitate.wither_skeleton
-entity.parrot.imitate.wolf: entity.parrot.imitate.wither #LEGACY
+entity.parrot.imitate.wolf: entity.parrot.imitate.wolf
 entity.parrot.imitate.zombie: entity.parrot.imitate.zombie
-entity.parrot.imitate.zombie_pigman: entity.parrot.imitate.zombie #LEGACY
+entity.parrot.imitate.zombie_pigman: entity.parrot.imitate.zombie_pigman
 entity.parrot.imitate.zombie_villager: entity.parrot.imitate.zombie_villager
 entity.parrot.step: entity.parrot.step
 entity.pig.ambient: entity.pig.ambient
@@ -516,6 +502,13 @@ entity.zombie_villager.cure: entity.zombie_villager.cure
 entity.zombie_villager.death: entity.zombie_villager.death
 entity.zombie_villager.hurt: entity.zombie_villager.hurt
 entity.zombie_villager.step: entity.zombie_villager.step
+item.armor.equip_chain: item.armor.equip_chain
+item.armor.equip_diamond: item.armor.equip_diamond
+item.armor.equip_elytra: item.armor.equip_elytra
+item.armor.equip_generic: item.armor.equip_generic
+item.armor.equip_gold: item.armor.equip_gold
+item.armor.equip_iron: item.armor.equip_iron
+item.armor.equip_leather: item.armor.equip_leather
 item.bottle.empty: item.bottle.empty
 item.bottle.fill: item.bottle.fill
 item.bottle.fill_dragonbreath: item.bottle.fill_dragonbreath
@@ -557,6 +550,13 @@ ui.toast.out: ui.toast.out
 ui.toast.challenge_complete: ui.toast.challenge_complete
 weather.rain: weather.rain
 weather.rain.above: weather.rain.above
+ambient.underwater.enter: ambient.underwater.enter
+ambient.underwater.exit: ambient.underwater.exit
+ambient.underwater.loop: ambient.underwater.loop
+ambient.underwater.loop.additions: ambient.underwater.loop.additions
+ambient.underwater.loop.additions.rare: ambient.underwater.loop.additions.rare
+ambient.underwater.loop.additions.ultra_rare: ambient.underwater.loop.additions.ultra_rare
+item.armor.equip_turtle: item.armor.equip_turtle
 item.axe.strip: item.axe.strip
 block.bamboo.break: block.bamboo.break
 block.bamboo.fall: block.bamboo.fall
@@ -792,7 +792,7 @@ entity.evoker.celebrate: entity.evoker.celebrate
 entity.vindicator.celebrate: entity.vindicator.celebrate
 entity.parrot.imitate.drowned: entity.parrot.imitate.drowned
 entity.parrot.imitate.guardian: entity.parrot.imitate.guardian
-entity.parrot.imitate.panda: entity.parrot.imitate.drowned #LEGACY
+entity.parrot.imitate.panda: entity.parrot.imitate.panda
 entity.parrot.imitate.phantom: entity.parrot.imitate.phantom
 entity.parrot.imitate.pillager: entity.parrot.imitate.pillager
 entity.parrot.imitate.ravager: entity.parrot.imitate.ravager
