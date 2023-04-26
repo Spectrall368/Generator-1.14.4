@@ -13,7 +13,7 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 	public boolean shouldExecute() {
 		if (CustomEntity.this.getAttackTarget() != null && !CustomEntity.this.getMoveHelper().isUpdating()) {
 			<#if hasCondition(conditions[0])>
-                        double x = CustomEntity.this.posX;
+            double x = CustomEntity.this.posX;
 			double y = CustomEntity.this.posY;
 			double z = CustomEntity.this.posZ;
 			Entity entity = CustomEntity.this;
