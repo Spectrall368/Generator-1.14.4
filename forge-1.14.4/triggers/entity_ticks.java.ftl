@@ -1,10 +1,10 @@
 @SubscribeEvent public void onEntityTick(LivingEvent.LivingUpdateEvent event){
-	Entity entity = event.getEntityLiving();
-	World world = entity.world;
+	Entity entity = event.getEntity();
+	World world = event.getWorld();
 	double i = entity.posX;
 	double j = entity.posY;
 	double k = entity.posZ;
-	Map<String, Object> dependencies = new HashMap<>();
+	java.util.HashMap<String, Object> dependencies = new java.util.HashMap<>();
 	dependencies.put("x", i);
 	dependencies.put("y", j);
 	dependencies.put("z", k);
