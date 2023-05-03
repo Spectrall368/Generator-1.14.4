@@ -1,9 +1,9 @@
 @SubscribeEvent public void onLivingDropXp(LivingExperienceDropEvent event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		int i = (int) entity.posX;
-		int j = (int) entity.posY;
-		int k = (int) entity.posZ;
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		PlayerEntity attacked = event.getAttackingPlayer();
 		int droppedxp = (int) event.getDroppedExperience();
 		int originalxp = (int) event.getOriginalExperience();
