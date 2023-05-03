@@ -1,9 +1,9 @@
 @SubscribeEvent public void onEntityFall(LivingFallEvent event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		int i = (int) entity.posX;
-		int j = (int) entity.posY;
-		int k = (int) entity.posZ;
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		double damagemultiplier = event.getDamageMultiplier();
     	double distance = event.getDistance();
 		World world = entity.world;
