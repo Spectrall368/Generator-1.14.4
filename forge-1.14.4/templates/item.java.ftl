@@ -165,6 +165,7 @@ package ${package}.item;
             </#list>
 		}
         </#if>
+
 		<#if registryname?ends_with("orb")>
 		public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 			Vec3d lookVec = playerIn.getLookVec();
