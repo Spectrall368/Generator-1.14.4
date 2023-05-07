@@ -2,42 +2,41 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "block",
-      "check": "MCItemBlock"
-    },
-    {
-      "type": "input_value",
-      "name": "x",
+      "name": "xs",
       "check": "Number"
     },
     {
       "type": "input_value",
-      "name": "y",
+      "name": "ys",
       "check": "Number"
     },
     {
       "type": "input_value",
-      "name": "z",
+      "name": "zs",
       "check": "Number"
     }
+  ],
+  "extensions": [
+    "particle_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 45,
+  "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
-    "toolbox_id": "democategory",
+    "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
-      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+      "<value name=\"xs\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"ys\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"zs\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "fields": [
+      "particle"
     ],
     "inputs": [
-      "x",
-      "y",
-      "z",
-      "block"
+      "xs",
+      "ys",
+      "zs"
     ],
     "dependencies": [
       {
