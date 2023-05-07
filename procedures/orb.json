@@ -26,9 +26,9 @@
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"xs\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"xs\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"ys\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"zs\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+      "<value name=\"zs\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "fields": [
       "particle"
