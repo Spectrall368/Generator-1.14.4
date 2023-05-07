@@ -173,8 +173,8 @@ package ${package}.item;
 			double y = lookVec.y;
 			double z = lookVec.z;
 			playerIn.addVelocity(x * 2.5D, y, z * 2.5D);
-			worldIn.addParticle((IParticleData)ParticleTypes.EXPLOSION, playerIn.posX, playerIn.posY + 1.0D, playerIn.posZ, 1D, 1D, 1D);
-			worldIn.addParticle((IParticleData)ParticleTypes.EXPLOSION, playerIn.posX, playerIn.posY + 1.5D, playerIn.posZ, 1D, 1D, 1D);
+			worldIn.addParticle((IParticleData)ParticleTypes.EXPLOSION, playerIn.posX, playerIn.posY + 1.0D, playerIn.posZ, 1.0D, 1.0D, 1.0D);
+			worldIn.addParticle((IParticleData)ParticleTypes.EXPLOSION, playerIn.posX, playerIn.posY + 1.5D, playerIn.posZ, 1.0D, 1.0D, 1.0D);
 			return new ActionResult(ActionResultType.PASS, playerIn.getHeldItem(handIn));
 		}
 		<#else>
