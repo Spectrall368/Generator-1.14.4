@@ -1,3 +1,4 @@
+
   public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
     Vec3d lookVec = playerIn.getLookVec();
     double x = lookVec.x;
