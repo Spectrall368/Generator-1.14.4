@@ -207,12 +207,12 @@ package ${package}.item;
 				});
 			}
 			</#if>
-		</#if>
 
 			<@procedureOBJToCode data.onRightClickedInAir/>
 			return ar;
 		}
         </#if>
+		</#if>
 
 		<#if hasProcedure(data.onRightClickedOnBlock)>
 		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
