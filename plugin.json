@@ -5,6 +5,8 @@
   "info": {
     "name": "Minecraft Forge 1.14.4 Generator",
     "version": "1.4",
-    "authors": "_Spectrall with Kleiders's help"
+    "authors": "_Spectrall with Kleiders's help",
+    "pluginPageID": 95877,
+	"updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.14.4/2021.1/update.json"
   }
 }
