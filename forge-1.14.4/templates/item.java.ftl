@@ -166,18 +166,6 @@ package ${package}.item;
 		}
         </#if>
 
-		<#if registryname?ends_with("orb")>
-		public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-			Vec3d lookVec = playerIn.getLookVec();
-			double x = lookVec.x;
-			double y = lookVec.y;
-			double z = lookVec.z;
-			playerIn.addVelocity(x * 2.5D, y, z * 2.5D);
-			worldIn.addParticle((IParticleData)ParticleTypes.EXPLOSION, playerIn.posX, playerIn.posY + 1.0D, playerIn.posZ, 1.0D, 1.0D, 1.0D);
-			worldIn.addParticle((IParticleData)ParticleTypes.EXPLOSION, playerIn.posX, playerIn.posY + 1.5D, playerIn.posZ, 1.0D, 1.0D, 1.0D);
-			return new ActionResult(ActionResultType.PASS, playerIn.getHeldItem(handIn));
-		}
-		<#else>
 		<#if hasProcedure(data.onRightClickedInAir) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			ActionResult<ItemStack> ar = super.onItemRightClick(world, entity, hand);
@@ -212,7 +200,6 @@ package ${package}.item;
 			return ar;
 		}
         </#if>
-		</#if>
 
 		<#if hasProcedure(data.onRightClickedOnBlock)>
 		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
