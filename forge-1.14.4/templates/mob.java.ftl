@@ -276,9 +276,9 @@ import net.minecraft.block.material.Material;
 						this.moveController = new MovementController(this) {
 							@Override public void tick() {
 								if (this.action == MovementController.Action.MOVE_TO && !CustomEntity.this.getNavigator().noPath()) {
-									double dx = this.posX - CustomEntity.this.getPosX();
-									double dy = this.posY - CustomEntity.this.getPosY();
-									double dz = this.posZ - CustomEntity.this.getPosZ();
+									double dx = this.posX - CustomEntity.this.posX;
+									double dy = this.posY - CustomEntity.this.posY;
+									double dz = this.posZ - CustomEntity.this.posZ;
 									float f = (float)(MathHelper.atan2(dz, dx) * (double)(180 / Math.PI)) - 90;
 									CustomEntity.this.rotationYaw = this.limitAngle(CustomEntity.this.rotationYaw, f, 10);
 									CustomEntity.this.renderYawOffset = CustomEntity.this.rotationYaw;
