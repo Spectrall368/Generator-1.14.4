@@ -61,10 +61,6 @@ public class ${name} {
 	private static class ForgeBusEvents {
 
 		// Example Forge bus event registration
-		@SubscribeEvent public static void addFeatureToBiomes(BiomeLoadingEvent event) {
-
-		}
-
 		@SubscribeEvent
 		public static void serverLoad(FMLServerStartingEvent event) {
 
