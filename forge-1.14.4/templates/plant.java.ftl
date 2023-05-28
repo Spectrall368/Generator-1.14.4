@@ -421,8 +421,8 @@ package ${package}.block;
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 				<#if hasCondition(data.placingCondition)>
 				boolean additionalCondition = true;
-				if (worldIn instanceof IWorldReader) {
-					World world = ((IWorldReader)worldIn).getDimension().getWorld();
+				if (worldIn instanceof IWorld) {
+					IWorld world = (IWorld) worldIn;
 					int x = pos.getX();
 					int y = pos.getY() + 1;
 					int z = pos.getZ();
@@ -452,11 +452,14 @@ package ${package}.block;
 					return this.isValidGround(blockstate, worldIn, blockpos)
 				<#elseif data.plantType == "growapable">
 					<#if hasCondition(data.placingCondition)>
-					World world = worldIn.getDimension().getWorld();
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					boolean additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					boolean additionalCondition = true;
+					if (worldIn instanceof IWorld) {
+						IWorld world = (IWorld) worldIn;
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					}
 					</#if>
 
 					Block block = blockstate.getBlock();
