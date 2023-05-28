@@ -1,6 +1,6 @@
 {
   "generator-1.14.4": {
-    "latest": "1.4",
+    "latest": "1.5",
 	"changes": [
 		"Fix Gui",
 		"I tried to fix the triggers"
