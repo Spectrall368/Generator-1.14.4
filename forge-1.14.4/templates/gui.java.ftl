@@ -366,7 +366,7 @@ import ${package}.${JavaModName};
 
 		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
 			GlStateManager.color4f(1, 1, 1, 1);
-			GlStateManager.enableBlend();
+			GlStateManager.disableBlend();
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
 
 			<#if data.renderBgLayer>
@@ -387,7 +387,7 @@ import ${package}.${JavaModName};
 				</#if>
 			</#list>
 
-			GlStateManager.disableBlend();
+			GlStateManager.enableBlend();
 		}
 
 		@Override public void tick() {
