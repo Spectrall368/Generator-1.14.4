@@ -367,7 +367,6 @@ import ${package}.${JavaModName};
 		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
 			GlStateManager.color4f(1, 1, 1, 1);
 			GlStateManager.disableBlend();
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
 
 			<#if data.renderBgLayer>
 			Minecraft.getInstance().getTextureManager().bindTexture(texture);
@@ -388,6 +387,7 @@ import ${package}.${JavaModName};
 			</#list>
 
 			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
 		}
 
 		@Override public void tick() {
