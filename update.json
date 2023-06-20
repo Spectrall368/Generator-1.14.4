@@ -2,7 +2,7 @@
   "generator-1.14.4": {
     "latest": "1.4.1",
 	"changes": [
-		"Fix Gui",
+		"Fix Gui"
 	]
   }
 }
