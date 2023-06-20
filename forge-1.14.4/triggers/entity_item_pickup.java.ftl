@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPickup(EntityItemPickupEvent event){
+@SubscribeEvent public void onPickup(EntityItemPickupEvent event) {
 	PlayerEntity entity=event.getEntityPlayer();
 	ItemStack itemstack=event.getItem().getItem();
 	double i=entity.posX;
