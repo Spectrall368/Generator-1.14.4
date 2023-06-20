@@ -1,11 +1,8 @@
 {
   "generator-1.14.4": {
-    "latest": "1.4",
+    "latest": "1.4.1",
 	"changes": [
-		"Bring some Fixes from 2021.2 into 2021.1",
-		"Bring some Procedures from 2021.2 into 2021.1",
 		"Fix Gui",
-		"I tried to fix the triggers"
 	]
   }
 }
