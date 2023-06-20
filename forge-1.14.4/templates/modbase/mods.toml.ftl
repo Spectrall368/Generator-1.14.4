@@ -1,6 +1,5 @@
 modLoader="javafml"
 loaderVersion="[28,)"
-license="${settings.getLicense()}"
 
 [[mods]]
 modId="${settings.getModID()}"
@@ -24,7 +23,7 @@ description='''${settings.getDescription()}'''
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[1.15.2]"
     ordering="NONE"
     side="BOTH"
 
@@ -50,7 +49,6 @@ description='''${settings.getDescription()}'''
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     mandatory=false
-    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 </#list>
@@ -59,7 +57,6 @@ description='''${settings.getDescription()}'''
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     mandatory=false
-    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 </#list>
