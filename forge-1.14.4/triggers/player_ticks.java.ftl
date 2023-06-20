@@ -1,6 +1,6 @@
 @SubscribeEvent public void onPlayerTick(TickEvent.PlayerTickEvent event){
 	if(event.phase == TickEvent.Phase.END){
-		Entity entity=event.getPlayer();
+		Entity entity=event.player;
 		World world = entity.world;
 		double i=entity.posX;
 		double j=entity.posY;
