@@ -88,7 +88,10 @@ package ${package}.world.biome;
 			setRegistryName("${registryname}");
 
 			<#list data.defaultFeatures as defaultFeature>
-			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+			<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
+				<#if mfeat != "null">
+					DefaultBiomeFeatures.add${mfeat}(this);
+				</#if>
 			</#list>
 
 			<#if data.spawnStronghold>
