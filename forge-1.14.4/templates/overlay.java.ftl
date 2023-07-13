@@ -76,7 +76,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-
 					Minecraft.getInstance().getTextureManager()
 								.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
 					Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight(),
@@ -94,7 +93,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
@@ -103,6 +101,7 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 	                </#if>
 	            </#list>
 			}
+
 			<#if hasTextures>
 				GlStateManager.depthMask(true);
       			GlStateManager.enableDepthTest();
@@ -111,7 +110,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 			</#if>
 
 		}
-
 	}
 
 }
