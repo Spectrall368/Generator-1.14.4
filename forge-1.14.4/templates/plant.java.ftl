@@ -254,7 +254,7 @@ package ${package}.block;
 
 		public BlockCustomFlower() {
 			super(<#if data.plantType == "normal">Effects.SATURATION, 0,</#if>
-					<#if data.colorOnMap != "DEFAULT">
+					<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 					Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 					<#else>
 					Block.Properties.create(Material.PLANTS)
