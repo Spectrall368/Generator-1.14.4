@@ -66,23 +66,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	}
 	</#if>
 
+	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 	<#if data.transparencyType != "SOLID">
-	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
-		<#if data.transparencyType == "CUTOUT">
-		return BlockRenderLayer.CUTOUT;
-		<#elseif data.transparencyType == "CUTOUT_MIPPED">
-		return BlockRenderLayer.CUTOUT_MIPPED;
-		<#elseif data.transparencyType == "TRANSLUCENT">
-		return BlockRenderLayer.TRANSLUCENT;
-		<#else>
-		return BlockRenderLayer.SOLID;
-		</#if>
-	}
+		return BlockRenderLayer.${data.transparencyType};
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
-	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
+	<#else>
+		return BlockRenderLayer.SOLID;
 	</#if>
+	}
 
 	<#if data.tintType != "No tint">
 	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
