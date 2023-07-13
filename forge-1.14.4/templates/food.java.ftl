@@ -107,17 +107,21 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
         </#if>
 
-		<#if hasProcedure(data.onEntitySwing)>
-		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-			boolean retval = super.onEntitySwing(itemstack, entity);
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			World world = entity.world;
-			<@procedureOBJToCode data.onEntitySwing/>
+		<#if hasProcedure(data.onRightClickedOnBlock)>
+		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
+			ActionResultType retval = super.onItemUseFirst(stack, context);
+			World world = context.getWorld();
+      		BlockPos pos = context.getPos();
+      		PlayerEntity entity = context.getPlayer();
+      		Direction direction = context.getFace();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			ItemStack itemstack = context.getItem();
+			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
 		}
-		</#if>
+        </#if>
 
 		<#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
 		@Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
@@ -151,6 +155,30 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
+		<#if hasProcedure(data.onEntityHitWith)>
+		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+			boolean retval = super.hitEntity(itemstack, entity, sourceentity);
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntityHitWith/>
+			return retval;
+		}
+        </#if>
+
+		<#if hasProcedure(data.onEntitySwing)>
+		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
+			boolean retval = super.onEntitySwing(itemstack, entity);
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			World world = entity.world;
+			<@procedureOBJToCode data.onEntitySwing/>
+			return retval;
+		}
+		</#if>
+
 		<#if hasProcedure(data.onCrafted)>
 		@Override public void onCreated(ItemStack itemstack, World world, PlayerEntity entity) {
 			super.onCreated(itemstack, world, entity);
@@ -159,6 +187,31 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			double z = entity.posZ;
 			<@procedureOBJToCode data.onCrafted/>
 		}
+        </#if>
+
+		<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
+		@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
+			super.inventoryTick(itemstack, world, entity, slot, selected);
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+    		<#if hasProcedure(data.onItemInUseTick)>
+			if (selected)
+    	    <@procedureOBJToCode data.onItemInUseTick/>
+    		</#if>
+    		<@procedureOBJToCode data.onItemInInventoryTick/>
+		}
+		</#if>
+
+		<#if hasProcedure(data.onDroppedByPlayer)>
+        @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+            double x = entity.posX;
+            double y = entity.posY;
+            double z = entity.posZ;
+            World world = entity.world;
+            <@procedureOBJToCode data.onDroppedByPlayer/>
+            return true;
+        }
         </#if>
 	}
 
