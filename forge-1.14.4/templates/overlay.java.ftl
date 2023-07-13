@@ -48,7 +48,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	public void eventHandler(RenderGameOverlayEvent event) {
-
 		if (!event.isCancelable() && event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
 
 			int posX = (event.getWindow().getScaledWidth()) / 2;
