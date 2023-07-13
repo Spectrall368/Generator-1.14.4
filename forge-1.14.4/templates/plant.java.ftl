@@ -269,7 +269,7 @@ package ${package}.block;
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					.lightValue(${(data.luminance * 15)?round})
+					.lightValue(${data.luminance})
 			);
 			setRegistryName("${registryname}");
 		}
