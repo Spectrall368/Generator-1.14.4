@@ -364,7 +364,7 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int x, int y) {
+		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
 			GlStateManager.glColor4f(1, 1, 1, 1);
 
 			<#if data.renderBgLayer>
@@ -476,9 +476,9 @@ import ${package}.${JavaModName};
 					})
 					<#if hasCondition(component.displayCondition)>
 					{
-						@Override public void render(int x, int y, float ticks) {
+						@Override public void render(int gx, int gy, float ticks) {
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
-								super.render(x, y, ticks);
+								super.render(gx, gy, ticks);
 						}
 					}
 					</#if>);
