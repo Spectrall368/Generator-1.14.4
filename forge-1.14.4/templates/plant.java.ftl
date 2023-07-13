@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
 
@@ -306,6 +307,17 @@ package ${package}.block;
 			);
 			setRegistryName("${registryname}");
 		}
+
+		<#if data.customBoundingBox && data.boundingBoxes??>
+		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset> Vec3d offset = state.getOffset(world, pos); </#if>
+				<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			</#if>
+		}
+		</#if>
 
 		<#if data.specialInfo?has_content>
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
