@@ -1,10 +1,10 @@
 {
   "id": "generator-1.14.4",
-  "minversion": 202100100000,
-  "maxversion": 202100200000,
+  "minversion": 202100200000,
+  "maxversion": 202100300000,
   "info": {
     "name": "Minecraft Forge 1.14.4 Generator",
-    "version": "1.6",
+    "version": "1.7",
     "authors": "_Spectrall",
     "pluginPageID": 95877,
 	"updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.14.4/2021.1/update.json"
