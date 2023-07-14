@@ -62,17 +62,27 @@ package ${package}.block;
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})
+					.temperature(${data.temperature})
 					<#if data.isGas>.gaseous()</#if>
 					.rarity(Rarity.${data.rarity})
 					<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 					.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
 					</#if>)
 					.explosionResistance(${data.resistance}f)
+					<#if data.canMultiply>.canMultiply()</#if>
+					.tickRate(${data.flowRate})
+					.levelDecreasePerBlock(${data.levelDecrease})
+					.slopeFindDistance(${data.slopeFindDistance})
 					<#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
+		<#if data.spawnParticles>
+		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
+		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		<#else>
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		</#if>
 
 		elements.blocks.add(() -> new FlowingFluidBlock(still,
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
