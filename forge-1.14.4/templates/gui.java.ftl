@@ -365,7 +365,7 @@ import ${package}.${JavaModName};
 		}
 
 		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
-			GlStateManager.glColor4f(1, 1, 1, 1);
+			GlStateManager.color4f(1, 1, 1, 1);
 
 			<#if data.renderBgLayer>
 			Minecraft.getInstance().getTextureManager().bindTexture(texture);
