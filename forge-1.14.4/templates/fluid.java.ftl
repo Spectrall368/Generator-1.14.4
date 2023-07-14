@@ -111,6 +111,18 @@ package ${package}.block;
 			}
 			</#if>
 
+			<#if data.lightOpacity == 0>
+			@Override
+			public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+				return true;
+			}
+			<#elseif data.lightOpacity != 1>
+			@Override
+			public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				return ${data.lightOpacity};
+			}
+			</#if>
+
 			<#if hasProcedure(data.onBlockAdded)>
 			@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
 				super.onBlockAdded(state, world, pos, oldState, moving);
@@ -189,6 +201,53 @@ package ${package}.block;
 			.setRegistryName("${registryname}_bucket"));
 		</#if>
 	}
+
+	<#if data.spawnParticles>
+	public static abstract class CustomFlowingFluid extends ForgeFlowingFluid {
+		public CustomFlowingFluid(Properties properties) {
+			super(properties);
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		@Override
+		public IParticleData getDripParticleData() {
+			return ${data.dripParticle};
+		}
+
+		public static class Source extends CustomFlowingFluid {
+			public Source(Properties properties) {
+				super(properties);
+			}
+
+			public int getLevel(IFluidState state) {
+				return 8;
+			}
+
+			public boolean isSource(IFluidState state) {
+				return true;
+			}
+		}
+
+		public static class Flowing extends CustomFlowingFluid {
+			public Flowing(Properties properties) {
+				super(properties);
+			}
+
+			protected void fillStateContainer(StateContainer.Builder<Fluid, IFluidState> builder) {
+				super.fillStateContainer(builder);
+				builder.add(LEVEL_1_8);
+			}
+
+			public int getLevel(IFluidState state) {
+				return state.get(LEVEL_1_8);
+			}
+
+			public boolean isSource(IFluidState state) {
+				return false;
+			}
+		}
+	}
+	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
 	@Override public void init(FMLCommonSetupEvent event) {
