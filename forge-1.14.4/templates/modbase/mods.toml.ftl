@@ -1,9 +1,10 @@
 modLoader="javafml"
 loaderVersion="[28,)"
+license="${settings.getLicense()}"
 
 [[mods]]
 modId="${settings.getModID()}"
-version="${settings.getVersion()}"
+version="${settings.getCleanVersion()}"
 displayName="${settings.getModName()}"
 credits="${settings.getCredits()}"
 displayURL="${settings.getWebsiteURL()}"
@@ -17,9 +18,7 @@ logoFile="logo.png"
 authors="${settings.getAuthor()}"
 </#if>
 <#if settings.getDescription()?has_content>
-description='''
-${settings.getDescription()}
-'''
+description='''${settings.getDescription()}'''
 </#if>
 
 [[dependencies.${settings.getModID()}]]
@@ -51,6 +50,7 @@ ${settings.getDescription()}
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     mandatory=false
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 </#list>
@@ -59,6 +59,7 @@ ${settings.getDescription()}
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     mandatory=false
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 </#list>
