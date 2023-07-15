@@ -4,6 +4,7 @@
 	int j=event.getContext().getPos().getY();
 	int k=event.getContext().getPos().getZ();
 	World world=entity.world;
+	BlockState state = world.getBlockState(event.getContext().getPos());
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",i);
 	dependencies.put("y",j);
