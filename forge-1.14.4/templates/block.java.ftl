@@ -692,10 +692,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			<#if hasProcedure(data.onRightClicked)>
 				Direction direction = hit.getFace();
+				<#if hasReturnValue(data.onRightClicked)>
+				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
+				<#else>
 				<@procedureOBJToCode data.onRightClicked/>
+				</#if>
 			</#if>
 
-			return true;
+        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
+			return ActionResultType.SUCCESS;
+			<#else>
+			return result;
+			</#if>
 		}
         </#if>
 
