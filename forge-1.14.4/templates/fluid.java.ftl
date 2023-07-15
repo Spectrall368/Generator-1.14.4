@@ -123,12 +123,15 @@ package ${package}.block;
 			}
 			</#if>
 
-			<#if hasProcedure(data.onBlockAdded)>
+			<#if hasProcedure(data.onBlockAdded) || hasProcedure(data.onTickUpdate)>
 			@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
 				super.onBlockAdded(blockstate, world, pos, oldState, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
+				<#if hasProcedure(data.onTickUpdate)>
+				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+				</#if>
 				<@procedureOBJToCode data.onBlockAdded/>
 			}
             </#if>
@@ -150,7 +153,7 @@ package ${package}.block;
 				int y = pos.getY();
 				int z = pos.getZ();
 				<@procedureOBJToCode data.onTickUpdate/>
-				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
 			}
 			</#if>
 
