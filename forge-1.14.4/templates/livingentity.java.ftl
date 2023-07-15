@@ -616,15 +616,23 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if data.ridable >
-            sourceentity.startRiding(this);
-            </#if>
+			sourceentity.startRiding(this);
+			</#if>
 
-			double x = this.posX;
-			double y = this.posY;
-			double z = this.posZ;
-			Entity entity = this;
-			<@procedureOBJToCode data.onRightClickedOn/>
-			return retval;
+			<#if hasProcedure(data.onRightClickedOn)>
+				double x = this.posX;
+				double y = this.posY;
+				double z = this.posZ;
+				Entity entity = this;
+				<#if hasReturnValue(data.onRightClickedOn)>
+					return (<@procedureOBJToActionResultTypeCode data.onRightClickedOn/>).isSuccessOrConsume();
+				<#else>
+					<@procedureOBJToCode data.onRightClickedOn/>
+					return retval;
+				</#if>
+			<#else>
+				return retval;
+			</#if>
 		}
         </#if>
 
