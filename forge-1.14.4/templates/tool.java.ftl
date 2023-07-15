@@ -341,6 +341,29 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override public int getItemEnchantability() {
 			return ${data.enchantability};
 		}
+	}
+<#elseif data.toolType == "Fishing rod">
+    private static class ItemToolCustom extends FishingRodItem {
+
+		protected ItemToolCustom() {
+			super(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount}));
+		}
+
+		@Override public int getItemEnchantability() {
+			return ${data.enchantability};
+		}
+
+		<#if data.repairItems?has_content>
+		    @Override
+            public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+                Item repairItem = repair.getItem();
+                return
+                <#list data.repairItems as repairItem>
+                	repairItem == ${mappedMCItemToItem(repairItem)}
+                	<#if repairItem?has_next>||</#if>
+                </#list>;
+            }
+        </#if>
 
 	}
 </#if>
