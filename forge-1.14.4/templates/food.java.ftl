@@ -50,9 +50,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	public static class FoodItemCustom extends Item {
 
 		public FoodItemCustom() {
-			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize})
-			.rarity(Rarity.${data.rarity}).food((new Food.Builder()).hunger(${data.nutritionalValue})
-			.saturation(${data.saturation}f)
+			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize}).rarity(Rarity.${data.rarity})
+				.food((new Food.Builder()).hunger(${data.nutritionalValue}).saturation(${data.saturation}f)
 				<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 				<#if data.forDogs>.meat()</#if>
 				.build()
@@ -64,7 +63,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override public int getUseDuration(ItemStack stack) {
 			return ${data.eatingSpeed};
 		}
-        </#if>
+        	</#if>
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
@@ -82,6 +81,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
         </#if>
 
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
+		}
+
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
@@ -90,10 +93,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			</#list>
 		}
 		</#if>
-
-		@Override public UseAction getUseAction(ItemStack itemstack) {
-			return UseAction.${data.animation?upper_case};
-		}
 
 		<#if hasProcedure(data.onRightClicked)>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
@@ -105,7 +104,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			<@procedureOBJToCode data.onRightClicked/>
 			return ar;
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onRightClickedOnBlock)>
 		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
@@ -126,7 +125,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return retval;
 			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
 		@Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
@@ -158,7 +157,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				return retval;
 			</#if>
 		}
-		</#if>
+        </#if>
 
 		<#if hasProcedure(data.onEntityHitWith)>
 		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
@@ -170,7 +169,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			<@procedureOBJToCode data.onEntityHitWith/>
 			return retval;
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
@@ -192,7 +191,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			double z = entity.posZ;
 			<@procedureOBJToCode data.onCrafted/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
 		@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
@@ -217,7 +216,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
             <@procedureOBJToCode data.onDroppedByPlayer/>
             return true;
         }
-        </#if>
+		</#if>
 	}
 
 }
