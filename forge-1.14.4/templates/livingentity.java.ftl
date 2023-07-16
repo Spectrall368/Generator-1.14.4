@@ -193,7 +193,6 @@ import net.minecraft.block.material.Material;
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {
 				<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 				@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
-
 			});
 		<#elseif !data.isBuiltInModel()>
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
@@ -215,8 +214,7 @@ import net.minecraft.block.material.Material;
 
 
 		<#if data.ranged && data.rangedItemType == "Default item">
-		RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class,
-				renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+		RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 		</#if>
 	}
 
@@ -228,7 +226,7 @@ import net.minecraft.block.material.Material;
 	</#if>
 
 	<#if data.breedable>
-		<#assign extendsClass = "Animal">
+	    <#assign extendsClass = "Animal">
 	</#if>
 
 	<#if data.tameable>
@@ -249,13 +247,13 @@ import net.minecraft.block.material.Material;
 			<#if data.mobLabel?has_content >
             	setCustomName(new StringTextComponent("${data.mobLabel}"));
             	setCustomNameVisible(true);
-            </#if>
+            		</#if>
 
 			<#if !data.doesDespawnWhenIdle>
 				enablePersistence();
-            </#if>
+            		</#if>
 
-			<#if !data.equipmentMainHand.isEmpty()>
+            <#if !data.equipmentMainHand.isEmpty()>
             this.setItemStackToSlot(EquipmentSlotType.MAINHAND, ${mappedMCItemToItemStackCode(data.equipmentMainHand, 1)});
             </#if>
             <#if !data.equipmentOffHand.isEmpty()>
@@ -322,7 +320,7 @@ import net.minecraft.block.material.Material;
 
 			<#if aicode??>
                 ${aicode}
-            </#if>
+            		</#if>
 
             <#if data.ranged>
                 this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, 20, 10) {
@@ -342,7 +340,7 @@ import net.minecraft.block.material.Material;
 		@Override public boolean canDespawn(double distanceToClosestPlayer) {
 			return false;
 		}
-        </#if>
+        	</#if>
 
 		<#if data.mountedYOffset != 0>
 		@Override public double getMountedYOffset() {
@@ -386,7 +384,7 @@ import net.minecraft.block.material.Material;
 			Entity entity = this;
 			<@procedureOBJToCode data.onStruckByLightning/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.whenMobFalls) || data.flyingMob>
 		@Override public void fall(float l, float d) {
@@ -401,7 +399,7 @@ import net.minecraft.block.material.Material;
 				<@procedureOBJToCode data.whenMobFalls/>
 			</#if>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.whenMobIsHurt) || data.immuneToArrows || data.immuneToFallDamage
 			|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
@@ -473,14 +471,14 @@ import net.minecraft.block.material.Material;
 		<#if hasProcedure(data.whenMobDies)>
 		@Override public void onDeath(DamageSource source) {
 			super.onDeath(source);
-			Entity sourceentity = source.getTrueSource();
 			double x = this.posX;
 			double y = this.posY;
 			double z = this.posZ;
+			Entity sourceentity = source.getTrueSource();
 			Entity entity = this;
 			<@procedureOBJToCode data.whenMobDies/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onInitialSpawn)>
 		@Override public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData livingdata, CompoundNBT tag) {
@@ -492,7 +490,7 @@ import net.minecraft.block.material.Material;
 			<@procedureOBJToCode data.onInitialSpawn/>
 			return retval;
 		}
-        </#if>
+        	</#if>
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		private final ItemStackHandler inventory = new ItemStackHandler(${data.inventorySize}) {
@@ -641,7 +639,7 @@ import net.minecraft.block.material.Material;
 			Entity sourceentity = this;
 			<@procedureOBJToCode data.whenThisMobKillsAnother/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onMobTickUpdate)>
 		@Override public void baseTick() {
@@ -652,7 +650,7 @@ import net.minecraft.block.material.Material;
 			Entity entity = this;
 			<@procedureOBJToCode data.onMobTickUpdate/>
 		}
-        </#if>
+	        </#if>
 
 		<#if hasProcedure(data.onPlayerCollidesWith)>
 		@Override public void onCollideWithPlayer(PlayerEntity sourceentity) {
@@ -663,7 +661,7 @@ import net.minecraft.block.material.Material;
 			double z = this.posZ;
 			<@procedureOBJToCode data.onPlayerCollidesWith/>
 		}
-        </#if>
+        	</#if>
 
 		@Override protected void registerAttributes() {
 			super.registerAttributes();
@@ -702,16 +700,16 @@ import net.minecraft.block.material.Material;
 
         <#if data.ranged>
 		    public void attackEntityWithRangedAttack(LivingEntity target, float flval) {
-		    	<#if data.rangedItemType == "Default item">
+				<#if data.rangedItemType == "Default item">
 					ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, this, this.world);
 					double d0 = target.posY + (double) target.getEyeHeight() - 1.1;
 					double d1 = target.posX - this.posX;
 					double d3 = target.posZ - this.posZ;
 					entityarrow.shoot(d1, d0 - entityarrow.posY + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
 					world.addEntity(entityarrow);
-		    	<#else>
+		    		<#else>
 					${data.rangedItemType}Item.shoot(this, target);
-		    	</#if>
+		    		</#if>
 			}
         </#if>
 
@@ -733,7 +731,7 @@ import net.minecraft.block.material.Material;
 
 				return false;
 			}
-        </#if>
+        	</#if>
 
 		<#if data.waterMob>
 		@Override public boolean canBreatheUnderwater() {
@@ -841,7 +839,7 @@ import net.minecraft.block.material.Material;
    		@Override public void setNoGravity(boolean ignored) {
 			super.setNoGravity(true);
 		}
-        </#if>
+        	</#if>
 
         <#if data.spawnParticles || data.flyingMob>
         public void livingTick() {
