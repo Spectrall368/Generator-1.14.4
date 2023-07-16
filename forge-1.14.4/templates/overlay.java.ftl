@@ -78,9 +78,9 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 			PlayerEntity entity = Minecraft.getInstance().player;
 			if (entity != null) {
 				_world = entity.world;
-				_x = entity.getPosX();
-				_y = entity.getPosY();
-				_z = entity.getPosZ();
+				_x = entity.posX;
+				_y = entity.posY;
+				_z = entity.posZ;
 			}
 
 			World world = _world;
