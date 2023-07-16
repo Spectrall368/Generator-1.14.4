@@ -345,8 +345,7 @@ package ${package}.block;
 					continue;
 			</#if>
 
-			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS,
-				Biome.createDecoratedFeature(new LakesFeature(LakesConfig::deserialize) {
+			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Biome.createDecoratedFeature(new LakesFeature(LakesConfig::deserialize) {
 					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, LakesConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
