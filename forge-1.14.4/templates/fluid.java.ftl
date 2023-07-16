@@ -76,8 +76,6 @@ package ${package}.block;
 						-12012264
 						<#elseif data.tintType == "Water">
 						-13083194
-						<#elseif data.tintType == "Sky">
-						-8214273
 						<#else>
 						-16448205
 						</#if>)
@@ -148,7 +146,7 @@ package ${package}.block;
 				</#if>
 				<@procedureOBJToCode data.onBlockAdded/>
 			}
-            </#if>
+            		</#if>
 
 			<#if hasProcedure(data.onNeighbourChanges)>
 			public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
@@ -234,7 +232,7 @@ package ${package}.block;
 		</#if>
 
 		<#if data.flowStrength != 1>
-		@Override public Vec3d getFlow(IBlockReader world, BlockPos pos, IFluidState fluidstate) {
+		@Override public Vector3d getFlow(IBlockReader world, BlockPos pos, IFluidState fluidstate) {
 			return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
 		}
 		</#if>
@@ -324,8 +322,6 @@ package ${package}.block;
 				BiomeColors.getFoliageColor(world, pos)
 			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos)
-			<#elseif data.tintType == "Sky">
-				Minecraft.getInstance().world.getBiome(pos).getSkyColor()
 			<#else>
 				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor()
 			</#if>| 0xFF000000;
