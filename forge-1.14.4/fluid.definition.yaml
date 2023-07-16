@@ -12,3 +12,5 @@ localizationkeys:
     mapto: name
   - key: item.@modid.@registryname_bucket
     mapto: bucketName
+
+field_exclusions: [flowStrength]
