@@ -69,16 +69,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	}
 	</#if>
 
-	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
-	<#if data.transparencyType != "SOLID">
-		return BlockRenderLayer.${data.transparencyType};
-	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
-		return BlockRenderLayer.CUTOUT;
-	<#else>
-		return BlockRenderLayer.SOLID;
-	</#if>
-	}
-
 	<#if data.tintType != "No tint">
 	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((bs, world, pos, index) -> {
@@ -189,7 +179,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
-			this.setDefaultState(this.stateContainer.getBaseState()
+            this.setDefaultState(this.stateContainer.getBaseState()
                                      <#if data.rotationMode == 1 || data.rotationMode == 3>
                                      .with(FACING, Direction.NORTH)
                                      <#elseif data.rotationMode == 2 || data.rotationMode == 4>
@@ -229,6 +219,28 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             </#list>
 		}
         </#if>
+
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+		<#if data.transparencyType != "SOLID">
+			return BlockRenderLayer.${data.transparencyType};
+		<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
+			return BlockRenderLayer.CUTOUT;
+		<#else>
+			return BlockRenderLayer.SOLID;
+		</#if>
+		}
+
+		<#if data.emissiveRendering>
+        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+			return 15728880;
+		}
+		</#if>
+
+		<#if data.beaconColorModifier?has_content>
+		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
+			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
+		}
+		</#if>
 
 		<#if data.hasTransparency>
         @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
@@ -310,41 +322,41 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
 		    <#if data.rotationMode == 4>
-            Direction facing = context.getFace();
-            </#if>
-            <#if data.rotationMode == 5>
-            Direction.Axis axis = context.getFace().getAxis();
-            </#if>
+		    Direction facing = context.getFace();
+		    </#if>
+		    <#if data.rotationMode == 5>
+		    Direction.Axis axis = context.getFace().getAxis();
+		    </#if>
             <#if data.isWaterloggable>
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
             </#if>;
 			<#if data.rotationMode != 3>
-            return this.getDefaultState()
-                <#if data.rotationMode == 1>
-            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
-            	<#elseif data.rotationMode == 2>
-            	.with(FACING, context.getNearestLookingDirection().getOpposite())
-            	<#elseif data.rotationMode == 4>
-            	.with(FACING, facing)
-            	<#elseif data.rotationMode == 5>
-            	.with(AXIS, axis)
-            	</#if>
-            	<#if data.isWaterloggable>
-            	.with(WATERLOGGED, false)
-            	</#if>
-            	<#elseif data.rotationMode == 3>
-                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-                    return this.getDefaultState()
-                               .with(FACING, Direction.NORTH)
-                               <#if data.isWaterloggable>
-                               .with(WATERLOGGED, flag)
-                               </#if>;
+			return this.getDefaultState()
+			        <#if data.rotationMode == 1>
+			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+			        <#elseif data.rotationMode == 2>
+			        .with(FACING, context.getNearestLookingDirection().getOpposite())
+			<#elseif data.rotationMode == 4>
+			.with(FACING, facing)
+			<#elseif data.rotationMode == 5>
+			.with(AXIS, axis)
+			        </#if>
+			        <#if data.isWaterloggable>
+			        .with(WATERLOGGED, false)
+			        </#if>
+			<#elseif data.rotationMode == 3>
+            if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
                 return this.getDefaultState()
-                            .with(FACING, context.getFace())
-                            <#if data.isWaterloggable>
-                            .with(WATERLOGGED, flag)
-                            </#if>
-            	</#if>;
+                        .with(FACING, Direction.NORTH)
+                        <#if data.isWaterloggable>
+                        .with(WATERLOGGED, flag)
+                        </#if>;
+            return this.getDefaultState()
+                        .with(FACING, context.getFace())
+                        <#if data.isWaterloggable>
+                        .with(WATERLOGGED, flag)
+                        </#if>
+			</#if>;
 		}
         </#if>
 
@@ -373,10 +385,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         @Override public IFluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
-		</#if>
+        </#if>
 
 		<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
-        @Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 			<#if data.isWaterloggable>
 			if (state.get(WATERLOGGED)) {
 				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
@@ -392,23 +404,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
 			return ${data.enchantPowerBonus}f;
 		}
-        </#if>
+		</#if>
 
 		<#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
 			return context.getItem().getItem() != this.asItem();
-		}
-        </#if>
-
-		<#if data.beaconColorModifier?has_content>
-		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
-			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
-		}
-		</#if>
-
-		<#if data.emissiveRendering>
-        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
-			return 15728880;
 		}
 		</#if>
 
@@ -445,13 +445,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 		@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
         	return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
-    	}
-        </#if>
+    		}
+	        </#if>
 
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		@Override public MaterialColor getMaterialColor(BlockState state, IBlockReader blockAccess, BlockPos pos) {
         	return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
-    	}
+	    	}
 		</#if>
 
 		<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
@@ -466,12 +466,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-        <#if data.plantsGrowOn>
-        @Override
-		public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {
-			return true;
-		}
-        </#if>
+        	<#if data.plantsGrowOn>
+        @Override public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {
+		return true;
+	}
+        	</#if>
 
 		<#if data.isLadder>
 		@Override public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity) {
@@ -486,10 +485,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
         <#if data.canRedstoneConnect>
-        @Override
-		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-			return true;
-		}
+        @Override public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return true;
+	}
         </#if>
 
 		<#if !data.useLootTableForDrops>
@@ -667,6 +665,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override
 		public boolean onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			boolean retval = super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
+
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -1017,7 +1016,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					<#list data.blocksToReplace as replacementBlock>
 						if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
 							blockCriteria = true;
-    		        </#list>
+					</#list>
 					return blockCriteria;
 				}), block.getDefaultState(), ${data.frequencyOnChunk}),
 					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, ${data.maxGenerateHeight})));
