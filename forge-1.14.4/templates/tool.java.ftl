@@ -86,7 +86,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					</#if>
 					,${data.attackSpeed - 4}f
 				</#if>, new Item.Properties().group(${data.creativeTab})) {
-		<#elseif data.toolType=="Shears">
+			   <#elseif data.toolType=="Shears">
 			new ShearsItem(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount})) {
 				@Override public int getItemEnchantability() {
 					return ${data.enchantability};
@@ -95,9 +95,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				@Override public float getDestroySpeed(ItemStack stack, BlockState block) {
 					return ${data.efficiency}f;
 				}
-		<#else>
-        	new ItemToolCustom(){
-		</#if>
+			   <#else>
+        	new ItemToolCustom() {
+			   </#if>
 
 		<#if data.stayInGridWhenCrafting>
 			@Override public boolean hasContainerItem() {
@@ -141,8 +141,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if hasProcedure(data.onRightClickedInAir)>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand){
-			ActionResult<ItemStack> retval=super.onItemRightClick(world,entity,hand);
-			ItemStack itemstack=retval.getResult();
+			ActionResult<ItemStack> retval = super.onItemRightClick(world,entity,hand);
+			ItemStack itemstack = retval.getResult();
 			double x = entity.posX;
 			double y = entity.posY;
 			double z = entity.posZ;
@@ -255,7 +255,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
         	</#if>
 			return true;
 		}
-        </#if>
+        	</#if>
 
 		}.setRegistryName("${registryname}"));
 	}
@@ -271,7 +271,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			 <#list data.blocksAffected as restrictionBlock>
                  if (blockstate.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
                  	return ${data.efficiency}f;
-             </#list>
+             		</#list>
 			return 1;
 		}
 
