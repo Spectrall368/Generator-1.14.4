@@ -86,6 +86,10 @@ import org.apache.logging.log4j.util.Supplier;
 			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
 		}
 
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.TRANSLUCENT;
+		}
+
 		<#include "dimension/blockportal.java.ftl">
 		<#include "dimension/teleporter.java.ftl">
 	</#if>
@@ -112,7 +116,7 @@ import org.apache.logging.log4j.util.Supplier;
 		@Override public void calculateInitialWeather() {
 		}
 
-    	@Override public void updateWeather(Runnable defaultWeather) {
+    		@Override public void updateWeather(Runnable defaultWeather) {
 		}
 
 		@Override public boolean canDoLightning(Chunk chunk) {
@@ -122,7 +126,7 @@ import org.apache.logging.log4j.util.Supplier;
 		@Override public boolean canDoRainSnowIce(Chunk chunk) {
 			return false;
 		}
-        </#if>
+		</#if>
 
 		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
 			<#if data.airColor?has_content>
@@ -178,7 +182,7 @@ import org.apache.logging.log4j.util.Supplier;
 				this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
 			}
 		}
-        </#if>
+		</#if>
 
 		@Override public boolean doesWaterVaporize() {
       		return ${data.doesWaterVaporize};
@@ -212,11 +216,11 @@ import org.apache.logging.log4j.util.Supplier;
 
 	<#if data.worldGenType == "Normal world gen">
         <#include "dimension/cp_normal.java.ftl">
-    <#elseif data.worldGenType == "Nether like gen">
+    	<#elseif data.worldGenType == "Nether like gen">
         <#include "dimension/cp_nether.java.ftl">
-    <#elseif data.worldGenType == "End like gen">
+    	<#elseif data.worldGenType == "End like gen">
         <#include "dimension/cp_end.java.ftl">
-    </#if>
+    	</#if>
 
 	<#include "dimension/biomegen.java.ftl">
 
