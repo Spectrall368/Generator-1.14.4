@@ -51,13 +51,13 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
             .executes(this::execute)
             </#if>
         	)
-			<#if hasProcedure(data.onCommandExecuted)>
+            <#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
             </#if>
 			;
     }
 
-	private int execute(CommandContext<CommandSource> ctx) {
+    private int execute(CommandContext<CommandSource> ctx) {
 		ServerWorld world = ctx.getSource().getWorld();
 
 		double x = ctx.getSource().getPos().getX();
