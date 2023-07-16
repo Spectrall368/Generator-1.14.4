@@ -71,17 +71,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
-		<#if data.specialInfo?has_content>
-		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
-
-		@Override public UseAction getUseAction(ItemStack itemstack) {
-			return UseAction.${data.animation?upper_case};
+		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
+			entity.setActiveHand(hand);
+			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
 		}
 
 		<#if hasProcedure(data.onEntitySwing)>
@@ -96,9 +88,17 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
-			entity.setActiveHand(hand);
-			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
+		<#if data.specialInfo?has_content>
+		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, world, list, flag);
+			<#list data.specialInfo as entry>
+			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		}
+		</#if>
+
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
 		}
 
 		@Override public int getUseDuration(ItemStack itemstack) {
@@ -119,7 +119,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
         	</#if>
 			return true;
 		}
-        </#if>
+        	</#if>
 
 		<#if data.enableMeleeDamage>
 			@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot) {
@@ -142,11 +142,11 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					double z = entity.posZ;
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
+						entity.stopActiveHand();
 					}
-					entity.stopActiveHand();
 				}
 			}
-        <#else>
+        	<#else>
 			@Override
 			public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entityLiving, int timeLeft) {
 				if (!world.isRemote && entityLiving instanceof ServerPlayerEntity) {
@@ -159,7 +159,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					}
 				}
 			}
-        </#if>
+        	</#if>
 
 	}
 
@@ -213,7 +213,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			Entity imediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletHitsPlayer/>
 		}
-        </#if>
+        	</#if>
 
 		@Override protected void arrowHit(LivingEntity entity) {
 			super.arrowHit(entity);
