@@ -115,8 +115,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				Block
 			</#if>
 			<#if data.isWaterloggable>
-            implements IWaterLoggable
-            </#if> {
+            		implements IWaterLoggable
+            		</#if> {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
