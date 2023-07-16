@@ -297,7 +297,7 @@ import net.minecraft.util.SoundEvent;
 	public static class BlockCustomFlower extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
 
 		public BlockCustomFlower() {
-			super(<#if data.plantType == "normal">Effects.SATURATION, 0,</#if>
+			super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 					<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 					Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 					<#else>
