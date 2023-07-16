@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [model_json, model_java, model_obj]
-partial_support: [armor, biome, enchantment, gamerule]
+partial_support: [armor, biome, block, enchantment, gamerule, plant, recipe]
 status: deprecated
 buildfileversion: 28.2.26
 subversion: 1.0.2
