@@ -114,7 +114,7 @@ package ${package}.item;
 				return true;
 			}
 
-            <#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
+			<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
 				@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				    return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
             	}
@@ -178,25 +178,25 @@ package ${package}.item;
         	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
         	    return false;
         	}
-        	</#if>
+		    </#if>
 			return true;
 		}
-        </#if>
+		</#if>
 
 		<#if data.destroyAnyBlock>
 		@Override public boolean canHarvestBlock(BlockState state) {
 			return true;
 		}
-        </#if>
+       		</#if>
 
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
 			<#list data.specialInfo as entry>
 			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+            		</#list>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onRightClickedInAir) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
@@ -231,7 +231,7 @@ package ${package}.item;
 			<@procedureOBJToCode data.onRightClickedInAir/>
 			return ar;
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onRightClickedOnBlock)>
 		@Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
@@ -252,7 +252,7 @@ package ${package}.item;
 			return retval;
 			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onEntityHitWith)>
 		@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
@@ -264,7 +264,7 @@ package ${package}.item;
 			<@procedureOBJToCode data.onEntityHitWith/>
 			return retval;
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
@@ -286,7 +286,7 @@ package ${package}.item;
 			double z = entity.posZ;
 			<@procedureOBJToCode data.onCrafted/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onStoppedUsing)>
 		@Override
@@ -296,7 +296,7 @@ package ${package}.item;
 			double z = entity.posZ;
 			<@procedureOBJToCode data.onStoppedUsing/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
 		@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
@@ -321,7 +321,7 @@ package ${package}.item;
             <@procedureOBJToCode data.onDroppedByPlayer/>
             return true;
         }
-        </#if>
+        	</#if>
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT compound) {
