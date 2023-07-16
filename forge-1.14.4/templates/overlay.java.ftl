@@ -99,14 +99,13 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-
 					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
 					Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, w, h, w, h);
 				</#if>
 
 				<#list data.components as component>
-					<#assign x = component.x - 213>
-					<#assign y = component.y - 120>
+	                <#assign x = component.x - 213>
+	                <#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
@@ -121,7 +120,7 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 						<#if hasProcedure(component.displayCondition)>}</#if>
 	                </#if>
-	            </#list>
+	            		</#list>
 			}
 
 			<#if hasTextures>
