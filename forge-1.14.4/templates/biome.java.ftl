@@ -389,10 +389,10 @@ package ${package}.world.biome;
 		}
 
 		private void addVines(IWorld world, BlockPos pos, Set<BlockPos> changedBlocks, MutableBoundingBox bbox) {
-			setTreeBlockState(changedBlocks, world, pos, ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
+			setTreeBlockState(changedBlocks, world, pos, <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlock(data.treeVines)}<#else> Blocks.AIR</#if>, bbox);
 			int i = 5;
 			for (BlockPos blockpos = pos.down(); world.isAirBlock(blockpos) && i > 0; --i) {
-				setTreeBlockState(changedBlocks, world, blockpos, ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
+				setTreeBlockState(changedBlocks, world, blockpos, <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlock(data.treeVines)}<#else> Blocks.AIR</#if>, bbox);
 				blockpos = blockpos.down();
 			}
 		}
