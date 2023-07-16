@@ -231,12 +231,6 @@ package ${package}.block;
 		}
 		</#if>
 
-		<#if data.flowStrength != 1>
-		@Override public Vector3d getFlow(IBlockReader world, BlockPos pos, IFluidState fluidstate) {
-			return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
-		}
-		</#if>
-
 		<#if hasProcedure(data.flowCondition)>
 		@Override protected boolean canFlow(IBlockReader worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, IFluidState toFluidState, Fluid fluidIn) {
 			boolean condition = true;
