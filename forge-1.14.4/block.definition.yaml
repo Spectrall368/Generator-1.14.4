@@ -361,4 +361,4 @@ localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
 
-field_exclusions: [speedFactor, jumpFactor]
+field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor]
