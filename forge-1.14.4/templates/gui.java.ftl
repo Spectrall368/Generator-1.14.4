@@ -158,7 +158,7 @@ import ${package}.${JavaModName};
 						${(component.x - mx / 2)?int + 1},
 						${(component.y - my / 2)?int + 1}) {
 
-            	    	<#if component.disableStackInteraction>
+					<#if component.disableStackInteraction>
 						@Override public boolean canTakeStack(PlayerEntity player) {
 							return false;
 						}
@@ -190,7 +190,7 @@ import ${package}.${JavaModName};
 							@Override public boolean isItemValid(ItemStack stack) {
 								return false;
 							}
-            	        <#elseif component.getClass().getSimpleName() == "InputSlot">
+            	        			<#elseif component.getClass().getSimpleName() == "InputSlot">
 							<#if component.inputLimit.toString()?has_content>
             	             @Override public boolean isItemValid(ItemStack stack) {
 								 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
@@ -328,9 +328,9 @@ import ${package}.${JavaModName};
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
             TextFieldWidget ${component.name};
-		    <#elseif component.getClass().getSimpleName() == "Checkbox">
+		    	<#elseif component.getClass().getSimpleName() == "Checkbox">
 	        CheckboxButton ${component.name};
-		    </#if>
+		    	</#if>
 		</#list>
 
 		public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
@@ -389,6 +389,22 @@ import ${package}.${JavaModName};
 
 		}
 
+		@Override public boolean keyPressed(int key, int b, int c) {
+			if (key == 256) {
+				this.minecraft.player.closeScreen();
+				return true;
+			}
+
+			<#list data.components as component>
+				<#if component.getClass().getSimpleName() == "TextField">
+        	    if(${component.name}.isFocused())
+        	    	return ${component.name}.keyPressed(key, b, c);
+				</#if>
+			</#list>
+
+			return super.keyPressed(key, b, c);
+		}
+
 		@Override public void tick() {
 			super.tick();
 			<#list data.components as component>
@@ -407,23 +423,7 @@ import ${package}.${JavaModName};
                 	this.font.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 						${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 				</#if>
-			</#list>
-		}
-
-		@Override public boolean keyPressed(int key, int b, int c) {
-			if (key == 256) {
-				this.minecraft.player.closeScreen();
-				return true;
-			}
-
-			<#list data.components as component>
-				<#if component.getClass().getSimpleName() == "TextField">
-        	    if(${component.name}.isFocused())
-        	    	return ${component.name}.keyPressed(key, b, c);
-				</#if>
-			</#list>
-
-			return super.keyPressed(key, b, c);
+            </#list>
 		}
 
 		@Override public void removed() {
@@ -439,8 +439,7 @@ import ${package}.${JavaModName};
 			<#assign btid = 0>
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName() == "TextField">
-					${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-															${component.width}, ${component.height}, "${component.placeholder}")
+					${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, ${component.width}, ${component.height}, "${component.placeholder}")
 					<#if component.placeholder?has_content>
 					{
 						{
