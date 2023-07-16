@@ -26,3 +26,5 @@ templates:
   - template: brewingrecipe.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
+
+field_exclusions: [smithingInputStack, smithingInputAdditionStack, smithingReturnStack]
