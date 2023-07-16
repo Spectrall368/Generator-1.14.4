@@ -36,7 +36,7 @@ package ${package}.entity;
 
 import net.minecraft.block.material.Material;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Entity extends ${JavaModName}Elements.ModElement{
+@${JavaModName}Elements.ModElement.Tag public class ${name}Entity extends ${JavaModName}Elements.ModElement {
 
 	public static EntityType entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new)
@@ -90,16 +90,16 @@ import net.minecraft.block.material.Material;
 
 		<#if data.mobSpawningType == "creature">
 		EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-			<#if hasProcedure(data.spawningCondition)>
+				<#if hasProcedure(data.spawningCondition)>
 				(entityType, world, reason, pos, random) -> {
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
 					return <@procedureOBJToConditionCode data.spawningCondition/>;
 				}
-			<#else>
+				<#else>
 				(entityType, world, reason, pos, random) -> (world.getBlockState(pos.down()).getMaterial() == Material.ORGANIC && world.getLightSubtracted(pos, 0) > 8)
-			</#if>
+				</#if>
 		);
 		<#elseif data.mobSpawningType == "ambient">
 		EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
@@ -188,7 +188,6 @@ import net.minecraft.block.material.Material;
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> new MobRenderer(renderManager, new VillagerModel(0), ${data.modelShadowSize}f) {
 				<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 				@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
-
 			});
 		<#elseif data.mobModelName == "Silverfish">
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {
@@ -201,14 +200,12 @@ import net.minecraft.block.material.Material;
 				return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
-
-					};
+				};
 			});
 		<#else>
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
 				BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(), ${data.modelShadowSize}f) {
 					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
-
 				};
 				customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
 				<#if data.mobModelGlowTexture?has_content>customRender.addLayer(new GlowingLayer<>(customRender));</#if>
