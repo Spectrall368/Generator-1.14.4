@@ -63,7 +63,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
 			return true;
 		}
-        </#if>
+        	</#if>
 
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
@@ -142,8 +142,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 
 		<#if hasProcedure(data.onStoppedUsing)>
-		@Override
-		public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entity, int time) {
+		@Override public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entity, int time) {
 			double x = entity.posX;
 			double y = entity.posY;
 			double z = entity.posZ;
@@ -160,7 +159,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
     		<#if hasProcedure(data.onItemInUseTick)>
 			if (selected)
 				<@procedureOBJToCode data.onItemInUseTick/>
-			</#if>
+		</#if>
     		<@procedureOBJToCode data.onItemInInventoryTick/>
 		}
 		</#if>
