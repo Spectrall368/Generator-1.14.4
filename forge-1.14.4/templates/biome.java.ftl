@@ -158,17 +158,17 @@ package ${package}.world.biome;
 			<#if (data.treesPerChunk > 0)>
 				<#if data.treeType == data.TREES_CUSTOM>
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new CustomTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
-            	<#elseif data.vanillaTreeType == "Big trees">
+            		<#elseif data.vanillaTreeType == "Big trees">
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{Feature.FANCY_TREE}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{0.1F}, Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
-            	<#elseif data.vanillaTreeType == "Savanna trees">
+            		<#elseif data.vanillaTreeType == "Savanna trees">
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{Feature.SAVANNA_TREE}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{0.8F}, Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
-            	<#elseif data.vanillaTreeType == "Mega pine trees">
+            		<#elseif data.vanillaTreeType == "Mega pine trees">
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{Feature.MEGA_PINE_TREE}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{1f/3, 1f/3}, Feature.SPRUCE_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
-            	<#elseif data.vanillaTreeType == "Mega spruce trees">
+            		<#elseif data.vanillaTreeType == "Mega spruce trees">
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{Feature.MEGA_SPRUCE_TREE}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{1f/3, 1f/3}, Feature.SPRUCE_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
-            	<#elseif data.vanillaTreeType == "Birch trees">
+            		<#elseif data.vanillaTreeType == "Birch trees">
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BIRCH_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
-            	<#else>
+            		<#else>
 				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{Feature.BIRCH_TREE, Feature.FANCY_TREE}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{0.2F, 0.1F}, Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)));
 				</#if>
 			</#if>
@@ -209,19 +209,19 @@ package ${package}.world.biome;
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(BlockPos pos) {
 			return ${data.grassColor.getRGB()};
 		}
-        </#if>
+        	</#if>
 
 		<#if data.foliageColor?has_content>
-        @OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
+        	@OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
         	return ${data.foliageColor.getRGB()};
-        }
-        </#if>
+       	 	}
+        	</#if>
 
 		<#if data.airColor?has_content>
 		@OnlyIn(Dist.CLIENT) @Override public int getSkyColorByTemp(float currentTemperature) {
 			return ${data.airColor.getRGB()};
 		}
-        </#if>
+        	</#if>
 
 	}
 
