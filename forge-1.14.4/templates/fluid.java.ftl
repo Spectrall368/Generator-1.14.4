@@ -316,7 +316,7 @@ package ${package}.block;
 
 		<#if data.isFluidTinted()>
 		@Override
-		public int getColor(ILightReader world, BlockPos pos) {
+		public int getColor(IEnviromentBlockReader world, BlockPos pos) {
 			return
 			<#if data.tintType == "Grass">
 				BiomeColors.getGrassColor(world, pos)
