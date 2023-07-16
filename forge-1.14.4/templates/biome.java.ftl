@@ -294,17 +294,14 @@ package ${package}.world.biome;
 										if (state.getBlock().isAir(state, world, blockpos)
 												|| state.getMaterial().blocksMovement()
 												|| state.isIn(BlockTags.LEAVES)
-												|| state.getBlock() == ${mappedBlockToBlock(data.treeVines)}
+												|| state.getBlock() == <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlock(data.treeVines)}<#else> Blocks.AIR</#if>
 												|| state.getBlock() == ${mappedBlockToBlock(data.treeBranch)}) {
-											setTreeBlockState(changedBlocks, world,
-													blockpos, ${mappedBlockToBlockStateCode(data.treeBranch)}, bbox);
+											setTreeBlockState(changedBlocks, world, blockpos, ${mappedBlockToBlockStateCode(data.treeBranch)}, bbox);
 										}
 									}
 								}
 							}
 						}
-
-
 
 						for (int genh = 0; genh < height; genh++) {
 							BlockPos genhPos = position.up(genh);
@@ -315,7 +312,7 @@ package ${package}.world.biome;
 							if (state.getBlock().isAir(state, world, genhPos)
 										|| state.getMaterial().blocksMovement()
 										|| state.isIn(BlockTags.LEAVES)
-										|| state.getBlock() == ${mappedBlockToBlock(data.treeVines)}
+										|| state.getBlock() == <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlock(data.treeVines)}<#else> Blocks.AIR</#if>
 										|| state.getBlock() == ${mappedBlockToBlock(data.treeBranch)}){
 
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
@@ -374,8 +371,7 @@ package ${package}.world.biome;
 								for (Direction Direction : Direction.Plane.HORIZONTAL) {
 									if (rand.nextInt(4 - hlevel) == 0) {
 										Direction dir = Direction.getOpposite();
-										setTreeBlockState(changedBlocks, world, position.add(dir.getXOffset(), height - 5 + hlevel,
-														dir.getZOffset()), ${mappedBlockToBlockStateCode(data.treeFruits)}, bbox);
+										setTreeBlockState(changedBlocks, world, position.add(dir.getXOffset(), height - 5 + hlevel, dir.getZOffset()), ${mappedBlockToBlockStateCode(data.treeFruits)}, bbox);
 									}
 								}
 							}
