@@ -94,8 +94,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Water">
 					return 3694022;
-				<#elseif data.tintType == "Sky">
-					return 8562943;
 				<#else>
 					return 329011;
 				</#if>
