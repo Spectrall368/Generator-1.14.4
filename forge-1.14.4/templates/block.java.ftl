@@ -696,9 +696,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 
         	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
-			return ActionResultType.SUCCESS;
+			return true;
 			<#else>
-			return result;
+			return false;
 			</#if>
 		}
         </#if>
