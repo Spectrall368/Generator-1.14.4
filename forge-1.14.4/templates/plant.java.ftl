@@ -65,7 +65,7 @@ import net.minecraft.util.SoundEvent;
 	}
 	</#if>
 
-	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+	@OnlyIn(Dist.CLIENT) public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
@@ -79,8 +79,6 @@ import net.minecraft.util.SoundEvent;
 				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos) : -1;
-			<#elseif data.tintType == "Sky">
-				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
 			<#else>
 				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 			</#if>
@@ -96,8 +94,6 @@ import net.minecraft.util.SoundEvent;
 					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Water">
 					return 3694022;
-				<#elseif data.tintType == "Sky">
-					return 8562943;
 				<#else>
 					return 329011;
 				</#if>
@@ -214,24 +210,24 @@ import net.minecraft.util.SoundEvent;
 		    <#else> Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) </#if> {
 		        @Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos,
 		        <#if data.doublePlantGenerationType == "Flower">DoublePlant<#else>NoFeature</#if>Config config) {
-                					DimensionType dimensionType = world.getDimension().getType();
+                		DimensionType dimensionType = world.getDimension().getType();
                 		boolean dimensionCriteria = false;
 
                     	<#list data.spawnWorldTypes as worldType>
-                			<#if worldType=="Surface">
-                				if(dimensionType == DimensionType.OVERWORLD)
-                					dimensionCriteria = true;
-                			<#elseif worldType=="Nether">
-                				if(dimensionType == DimensionType.THE_NETHER)
-                					dimensionCriteria = true;
-                			<#elseif worldType=="End">
-                				if(dimensionType == DimensionType.THE_END)
-                					dimensionCriteria = true;
-                			<#else>
-                		    	if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
-                		    		dimensionCriteria = true;
-                			</#if>
-                		</#list>
+            	    	<#if worldType=="Surface">
+            		        if(dimensionType == DimensionType.OVERWORLD)
+            				dimensionCriteria = true;
+            	    	<#elseif worldType=="Nether">
+            		        if(dimensionType == DimensionType.THE_NETHER)
+            				dimensionCriteria = true;
+            	    	<#elseif worldType=="End">
+            		        if(dimensionType == DimensionType.THE_END)
+            				dimensionCriteria = true;
+            	    	<#else>
+            		        if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+            				dimensionCriteria = true;
+            	    	</#if>
+            		</#list>
 
                 		if(!dimensionCriteria)
                 			return false;
@@ -323,12 +319,6 @@ import net.minecraft.util.SoundEvent;
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					<#if data.speedFactor != 1.0>
-					.speedFactor(${data.speedFactor}f)
-					</#if>
-					<#if data.jumpFactor != 1.0>
-					.jumpFactor(${data.jumpFactor}f)
-					</#if>
 					.lightValue(${data.luminance})
 			);
 			setRegistryName("${registryname}");
@@ -345,20 +335,11 @@ import net.minecraft.util.SoundEvent;
 		}
 		</#if>
 
-		<#if data.specialInfo?has_content>
-		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
-
-        <#if data.isReplaceable>
+        	<#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
 			return useContext.getItem().getItem() != this.asItem();
 		}
-        </#if>
+        	</#if>
 
 		<#if data.flammability != 0>
 		@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
@@ -378,6 +359,21 @@ import net.minecraft.util.SoundEvent;
 		}
 		</#if>
 
+		<#if data.emissiveRendering>
+        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+			return 15728880;
+		}
+		</#if>
+
+		<#if data.specialInfo?has_content>
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, world, list, flag);
+			<#list data.specialInfo as entry>
+			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		}
+		</#if>
+
 		<#if data.fireSpreadSpeed != 0>
 		@Override public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 			return ${data.fireSpreadSpeed};
@@ -387,14 +383,8 @@ import net.minecraft.util.SoundEvent;
 		<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 		@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
         	return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
-    	}
-        </#if>
-
-		<#if data.emissiveRendering>
-        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
-			return 15728880;
-		}
-		</#if>
+    		}
+        	</#if>
 
         <#if !data.useLootTableForDrops>
 		    <#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
@@ -404,19 +394,19 @@ import net.minecraft.util.SoundEvent;
                     return Collections.emptyList();
                 </#if>
 
-				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+                List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
 		    }
 		    <#elseif data.customDrop?? && !data.customDrop.isEmpty()>
 		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-                <#if data.plantType == "double">
+			    <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
 
-				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+                List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
@@ -428,7 +418,7 @@ import net.minecraft.util.SoundEvent;
                     return Collections.emptyList();
                 </#if>
 
-				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+                List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(new ItemStack(this, 1));
@@ -517,7 +507,7 @@ import net.minecraft.util.SoundEvent;
         <#if hasProcedure(data.onTickUpdate) || data.plantType == "growapable">
 		@Override public void tick(BlockState blockstate, World world, BlockPos pos, Random random) {
 			<#if hasProcedure(data.onTickUpdate)>
-                int x = pos.getX();
+			    int x = pos.getX();
 			    int y = pos.getY();
 			    int z = pos.getZ();
                 <@procedureOBJToCode data.onTickUpdate/>
@@ -633,7 +623,7 @@ import net.minecraft.util.SoundEvent;
 			return <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClicked/>
-			return ActionResultType.SUCCESS;
+			return true;
 			</#if>
 		}
         </#if>
