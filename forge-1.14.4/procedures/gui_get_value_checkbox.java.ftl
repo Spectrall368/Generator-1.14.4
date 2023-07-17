@@ -2,7 +2,7 @@
 	public boolean getValue(){
 		CheckboxButton checkbox=(CheckboxButton)guistate.get("checkbox:${field$checkbox}");
 		if(checkbox!=null){
-			return checkbox.isChecked();
+			return checkbox.isHovered();
 		}
 		return false;
 	}
