@@ -294,7 +294,7 @@ package ${package}.world.biome;
 										if (state.getBlock().isAir(state, world, blockpos)
 												|| state.getMaterial().blocksMovement()
 												|| state.isIn(BlockTags.LEAVES)
-												|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
+												|| state.getBlock() == <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlockStateCode(data.treeVines)}<#else> Blocks.AIR</#if>.getBlock()
 												|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()) {
 											setTreeBlockState(changedBlocks, world,
 													blockpos, ${mappedBlockToBlockStateCode(data.treeBranch)}, bbox);
@@ -315,7 +315,7 @@ package ${package}.world.biome;
 							if (state.getBlock().isAir(state, world, genhPos)
 										|| state.getMaterial().blocksMovement()
 										|| state.isIn(BlockTags.LEAVES)
-										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
+										|| state.getBlock() == <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlockStateCode(data.treeVines)}<#else> Blocks.AIR</#if>.getBlock()
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()){
 
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
@@ -393,10 +393,10 @@ package ${package}.world.biome;
 		}
 
 		private void addVines(IWorld world, BlockPos pos, Set<BlockPos> changedBlocks, MutableBoundingBox bbox) {
-			setTreeBlockState(changedBlocks, world, pos, ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
+			setTreeBlockState(changedBlocks, world, pos, <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlockStateCode(data.treeVines)}<#else> Blocks.AIR.getDefaultState()</#if>, bbox);
 			int i = 5;
 			for (BlockPos blockpos = pos.down(); world.isAirBlock(blockpos) && i > 0; --i) {
-				setTreeBlockState(changedBlocks, world, blockpos, ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
+				setTreeBlockState(changedBlocks, world, blockpos, <#if (data.treeVines?has_content && !data.treeVines.isEmpty())> ${mappedBlockToBlockStateCode(data.treeVines)}<#else> Blocks.AIR.getDefaultState()</#if>, bbox);
 				blockpos = blockpos.down();
 			}
 		}
