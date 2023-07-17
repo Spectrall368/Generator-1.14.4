@@ -1,8 +1,8 @@
-(new Object() {
-	public boolean getValue() {
-		Object checkbox = guistate.get("checkbox:${field$checkbox}");
-		if (checkbox instanceof Boolean) {
-			return (boolean) checkbox;
+(new Object(){
+	public boolean getValue(){
+		CheckboxButton checkbox=(CheckboxButton)guistate.get("checkbox:${field$checkbox}");
+		if(checkbox!=null){
+			return checkbox.isHovered();
 		}
 		return false;
 	}
