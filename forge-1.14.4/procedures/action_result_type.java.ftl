@@ -1,1 +1,5 @@
-ActionResultType.${field$type}
+<#if field$type != "CONSUME">
+    ActionResultType.${field$type}
+<#else>
+    ActionResultType.FAIL
+</#if>
