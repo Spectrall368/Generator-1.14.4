@@ -1,8 +1,0 @@
-{
-  "generator-1.14.4": {
-    "latest": "1.5",
-	"changes": [
-		"Fix Trigger"
-	]
-  }
-}
