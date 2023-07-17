@@ -3,10 +3,10 @@
   "minversion": 202100100000,
   "maxversion": 202100200000,
   "info": {
-    "name": "Minecraft Forge 1.14.4 Generator",
-    "version": "1.5",
+    "name": "Minecraft Forge 1.14.4 Java Edition/Datapack Generator",
+    "version": "1.6",
     "authors": "_Spectrall with Kleiders's help",
     "pluginPageID": 95877,
-	"updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.14.4/2021.1/update.json"
+	"updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.14.4/2021.2/update.json"
   }
 }
