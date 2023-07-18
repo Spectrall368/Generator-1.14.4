@@ -229,7 +229,7 @@ import net.minecraft.block.material.Material;
 	    <#assign extendsClass = "Animal">
 	</#if>
 
-	<#if data.tameable>
+	<#if (data.tameable && data.breedable)>
 		<#assign extendsClass = "Tameable">
 	</#if>
 
@@ -539,7 +539,7 @@ import net.minecraft.block.material.Material;
 		}
 		</#if>
 
-		<#if hasProcedure(data.onRightClickedOn) || data.ridable || data.tameable || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+		<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public boolean processInteract(PlayerEntity sourceentity, Hand hand) {
 			ItemStack itemstack = sourceentity.getHeldItem(hand);
 			boolean retval = true;
@@ -575,7 +575,7 @@ import net.minecraft.block.material.Material;
 				</#if>
 			</#if>
 
-			<#if data.tameable>
+			<#if (data.tameable && data.breedable)>
 				Item item = itemstack.getItem();
 				if (itemstack.getItem() instanceof SpawnEggItem) {
 					retval = super.processInteract(sourceentity, hand);
