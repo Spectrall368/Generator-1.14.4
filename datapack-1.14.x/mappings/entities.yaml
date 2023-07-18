@@ -43,7 +43,6 @@ EntityFireball: fireball
 EntityLeashKnot: leash_knot
 EntityLlama: llama
 EntityLlamaSpit: llama_spit
-EntityLiving: LivingEntity
 EntityMagmaCube: magma_cube
 EntityMinecart: minecart
 EntityMinecartChest: chest_minecart
