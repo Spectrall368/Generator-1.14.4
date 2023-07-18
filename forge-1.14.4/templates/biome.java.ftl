@@ -102,6 +102,10 @@ package ${package}.world.biome;
 			this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
 			</#if>
 
+			<#if data.spawnMineshaftMesa>
+			this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.MESA));
+			</#if>
+
 			<#if data.spawnPillagerOutpost>
 			this.addStructure(Feature.PILLAGER_OUTPOST, new PillagerOutpostConfig(0.004D));
 			</#if>
@@ -122,6 +126,10 @@ package ${package}.world.biome;
 			this.addStructure(Feature.DESERT_PYRAMID, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
 
+			<#if data.spawnSwampHut>
+			this.addStructure(Feature.SWAMP_HUT, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
 			<#if data.spawnIgloo>
 			this.addStructure(Feature.IGLOO, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
@@ -134,8 +142,24 @@ package ${package}.world.biome;
 			this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
 			</#if>
 
+			<#if data.spawnShipwreckBeached>
+			this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(true));
+			</#if>
+
+			<#if data.spawnBuriedTreasure>
+			this.addStructure(Feature.BURIED_TREASURE, new BuriedTreasureConfig(0.01F));
+			</#if>
+
 			<#if data.oceanRuinType != "NONE">
 			this.addStructure(Feature.OCEAN_RUIN, new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F));
+			</#if>
+
+			<#if data.spawnNetherBridge>
+			this.addStructure(Feature.NETHER_BRIDGE, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnEndCity>
+			this.addStructure(Feature.END_CITY, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
 
 			<#if (data.flowersPerChunk > 0)>
