@@ -1,9 +1,13 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-basefeatures: [model_json, model_java, model_obj]
+basefeatures: [model_java]
 partial_support: [armor, biome, block, enchantment, fluid, gamerule, plant, recipe]
 status: deprecated
 buildfileversion: 28.2.26
 subversion: 1.0.2
+
+java_models:
+  key: legacy
+  requested_key_words: [ModelRenderer, ~ModelPart]
 
 # gradle task definitions
 gradle:
