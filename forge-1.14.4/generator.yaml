@@ -36,6 +36,7 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
     condition: hasVariables()
   - template: modbase/sounds.json.ftl
+    condition: hasSounds()
     writer: json
     name: "@MODASSETSROOT/sounds.json"
   - template: modbase/pack.mcmeta.ftl
