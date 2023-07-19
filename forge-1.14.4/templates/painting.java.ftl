@@ -29,7 +29,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
 package ${package}.painting;
 
 @${JavaModName}Elements.ModElement.Tag
