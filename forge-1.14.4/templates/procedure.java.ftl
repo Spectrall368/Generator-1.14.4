@@ -30,6 +30,8 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
+import net.minecraftforge.eventbus.api.Event;
+
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
 
