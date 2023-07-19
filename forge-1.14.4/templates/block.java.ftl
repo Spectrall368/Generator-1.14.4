@@ -573,8 +573,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			<@procedureOBJToCode data.onTickUpdate/>
 
-			<#if !data.tickRandomly>
-			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+			<#if data.shouldScheduleTick()>
+			world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 			</#if>
 		}
         </#if>
