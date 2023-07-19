@@ -1,19 +1,5 @@
 <#function mappedMCItemToIngameItemName mappedBlock>
-    <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
-        <#if customelement?has_content>
-            <#return "\"item\": \"" + "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
-            + "\"">
-        <#else>
-            <#return "\"item\": \"minecraft:air\"">
-        </#if>
-    <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\"">
     <#else>
         <#assign mapped = mappedBlock.toString() />
@@ -28,20 +14,7 @@
 </#function>
 
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
-    <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
-        <#if customelement?has_content>
-            <#return "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
-        <#else>
-            <#return "minecraft:air">
-        </#if>
-    <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "minecraft:air">
     <#else>
         <#assign mapped = mappedBlock.toString() />
@@ -53,4 +26,29 @@
             <#return "minecraft:" + mapped>
         </#if>
     </#if>
+</#function>
+
+<#function mappedMCItemToBlockStateJSON mappedBlock>
+    <#if !mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems") />
+        <#if !mapped.startsWith("#")>
+            <#if !mapped.contains(":")>
+                <#assign mapped = "minecraft:" + mapped />
+            </#if>
+            <#assign propertymap = fp.file("utils/defaultstates.json")?eval/>
+            <#if propertymap[mapped]?has_content>
+                <#assign retval='{ "Name": "' + mapped + '", "Properties" : {'/>
+                <#list propertymap[mapped] as property>
+                    <#assign retval = retval + '"' + property.name + '": "' + property.value + '"'/>
+                    <#if property?has_next>
+                        <#assign  retval = retval + ","/>
+                    </#if>
+                </#list>
+                <#return retval + "} }">
+            <#else>
+                <#return '{ "Name": "' + mapped + '" }'>
+            </#if>
+        </#if>
+    </#if>
+    <#return '{ "Name": "minecraft:air" }'>
 </#function>
