@@ -29,7 +29,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-
 package ${package}.world.biome;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Biome extends ${JavaModName}Elements.ModElement{
@@ -175,8 +174,8 @@ package ${package}.world.biome;
 			</#if>
 
 			<#if (data.mushroomsPerChunk > 0)>
-      		addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BUSH, new BushConfig(Blocks.BROWN_MUSHROOM.getDefaultState()), Placement.CHANCE_HEIGHTMAP_DOUBLE, new ChanceConfig(${data.mushroomsPerChunk})));
-      		addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BUSH, new BushConfig(Blocks.RED_MUSHROOM.getDefaultState()), Placement.CHANCE_HEIGHTMAP_DOUBLE, new ChanceConfig(${data.mushroomsPerChunk})));
+				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BUSH, new BushConfig(Blocks.BROWN_MUSHROOM.getDefaultState()), Placement.CHANCE_HEIGHTMAP_DOUBLE, new ChanceConfig(${data.mushroomsPerChunk})));
+				addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BUSH, new BushConfig(Blocks.RED_MUSHROOM.getDefaultState()), Placement.CHANCE_HEIGHTMAP_DOUBLE, new ChanceConfig(${data.mushroomsPerChunk})));
 			</#if>
 
 			<#if (data.treesPerChunk > 0)>
