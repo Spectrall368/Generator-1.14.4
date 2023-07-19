@@ -76,7 +76,7 @@ package ${package}.item;
 
 					<#if hasProcedure(data.dispenseResultItemstack)>
 						boolean success = this.successful;
-						<#if hasReturnValue(data.dispenseResultItemstack)>
+						<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
 							return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 						<#else>
 							<@procedureOBJToCode data.dispenseResultItemstack/>
@@ -245,7 +245,7 @@ package ${package}.item;
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
-			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			<#if hasReturnValueOf(data.onRightClickedOnBlock, "actionresulttype")>
 			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
