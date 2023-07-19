@@ -32,6 +32,8 @@
 
 package ${package}.block;
 
+import net.minecraftforge.common.property.Properties;
+
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
