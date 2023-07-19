@@ -3,7 +3,7 @@ basefeatures: [model_java]
 partial_support: [armor, biome, block, enchantment, fluid, gamerule, plant, recipe]
 status: deprecated
 buildfileversion: 28.2.26
-subversion: 1.0.2
+subversion: 1.0.3
 
 java_models:
   key: legacy
