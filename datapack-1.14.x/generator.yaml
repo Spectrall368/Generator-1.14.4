@@ -1,4 +1,5 @@
 name: Data Pack for Java Edition @minecraft
+partial_support: [recipe]
 status: deprecated
 buildfileversion: 1.0
 
