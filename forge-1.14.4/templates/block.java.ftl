@@ -535,14 +535,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         	</#if>
         </#if>
 
-        <#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
+        <#if (hasProcedure(data.onTickUpdate) && data.shouldScheduleTick()) || hasProcedure(data.onBlockAdded) >
 		@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
 			super.onBlockAdded(blockstate, world, pos, oldState, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
-			<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
-			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+			<#if hasProcedure(data.onTickUpdate) && data.shouldScheduleTick()>
+			world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
             </#if>
 			<@procedureOBJToCode data.onBlockAdded/>
 		}
