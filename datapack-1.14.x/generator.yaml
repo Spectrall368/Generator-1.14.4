@@ -1,5 +1,6 @@
 name: Data Pack for Java Edition @minecraft
-status: dev
+partial_support: [recipe]
+status: deprecated
 buildfileversion: 1.0
 
 # gradle task definitions
