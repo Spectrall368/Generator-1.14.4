@@ -372,6 +372,9 @@ package ${package}.item;
 					return stack.getItem() != block;
 				}
 
+				@Override public void setSize(int size) {
+				}
+
 			};
 		}
 
