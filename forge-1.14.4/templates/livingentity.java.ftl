@@ -619,7 +619,8 @@ import net.minecraft.block.material.Material;
 				double z = this.posZ;
 				Entity entity = this;
 				<#if hasReturnValue(data.onRightClickedOn)>
-					return (<@procedureOBJToActionResultTypeCode data.onRightClickedOn/>).isSuccessOrConsume();
+					ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
+					return retval;
 				<#else>
 					<@procedureOBJToCode data.onRightClickedOn/>
 					return retval;
