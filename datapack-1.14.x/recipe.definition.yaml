@@ -23,3 +23,5 @@ templates:
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Stone cutting"
+
+field_exclusions: [smithingInputStack, smithingInputAdditionStack, smithingReturnStack, brewingInputStack, brewingIngredientStack, brewingReturnStack]
