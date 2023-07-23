@@ -30,6 +30,7 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+
 <#assign mx = data.W - data.width>
 <#assign my = data.H - data.height>
 <#assign slotnum = 0>
@@ -57,6 +58,13 @@ import ${package}.${JavaModName};
 		<#if hasProcedure(data.onTick)>
 		MinecraftForge.EVENT_BUS.register(this);
 		</#if>
+	}
+
+	private static class ContainerRegisterHandler {
+		@SubscribeEvent public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
+			event.getRegistry().register(containerType.setRegistryName("${registryname}"));
+		}
+
 	}
 
 	@OnlyIn(Dist.CLIENT) public void initElements() {
