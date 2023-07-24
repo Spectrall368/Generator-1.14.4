@@ -147,8 +147,8 @@ import ${package}.${JavaModName};
 		</#list>
 	}
 
-	@Override public void onClose() {
-		super.onClose();
+	@Override public void removed() {
+		super.removed();
 		Minecraft.getInstance().keyboardListener.enableRepeatEvents(false);
 	}
 
