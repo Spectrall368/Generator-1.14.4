@@ -6,7 +6,7 @@ subversion: 1.0.3
 
 java_models:
   key: mcp-1.14.x
-  requested_key_words: [ModelRenderer, ~ModelPart]
+  requested_key_words: [ModelRenderer, ~ModelPart, ~MatrixStack]
 
 # gradle task definitions
 gradle:
