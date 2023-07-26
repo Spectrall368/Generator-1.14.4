@@ -1017,7 +1017,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					</#list>
 					return blockCriteria;
 				}), block.getDefaultState(), ${data.frequencyOnChunk}),
-					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, ${data.maxGenerateHeight})));
+					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if>)));
 		}
 	}
 </#if>
