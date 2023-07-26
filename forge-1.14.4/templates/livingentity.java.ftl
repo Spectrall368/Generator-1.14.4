@@ -155,7 +155,7 @@ import net.minecraft.block.material.Material;
 					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
-            <#elseif data.mobModelName == "Cod">
+            	<#elseif data.mobModelName == "Cod">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new CodModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
@@ -179,7 +179,7 @@ import net.minecraft.block.material.Material;
 					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
-            <#elseif data.mobModelName == "Ocelot">
+            	<#elseif data.mobModelName == "Ocelot">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new OcelotModel(0), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
@@ -191,13 +191,13 @@ import net.minecraft.block.material.Material;
 					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
-            <#elseif data.mobModelName == "Piglin">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new PiglinModel(0, 64, 64), ${data.modelShadowSize}f) {
+            	<#elseif data.mobModelName == "Piglin">
+				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new ZombieModel(0, 64, 64), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
-            <#elseif data.mobModelName == "Salmon">
+            	<#elseif data.mobModelName == "Salmon">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new SalmonModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
@@ -221,7 +221,7 @@ import net.minecraft.block.material.Material;
 					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
-            <#elseif data.mobModelName == "Witch">
+            	<#elseif data.mobModelName == "Witch">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new WitchModel(0), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
