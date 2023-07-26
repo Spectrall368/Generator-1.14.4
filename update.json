@@ -1,8 +1,8 @@
 {
   "generator-1.14.4": {
-    "latest": "1.8",
+    "latest": "1.8.1",
 	"changes": [
-		"Plugin ported to 2021.3, including 1.14.x datapack"
+		"Fixed a huge bug with java models"
 	]
   }
 }
