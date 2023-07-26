@@ -1,6 +1,5 @@
 _default: null
 Bamboo: Bamboo
-BerryBushes: BerryBushes
 Caves: Carvers
 DeadBushes: DeadBushes
 DesertFeatures: DesertFeatures
@@ -17,8 +16,6 @@ OceanCaves: OceanCarvers
 Ores: Ores
 ReedsAndPumpkins: ReedsAndPumpkins
 SavannaTrees: SavannaTrees
-SedimentDisks: SedimentDisks
-SwampClayDisks: SwampClayDisks
 SwampVegetation: SwampVegetation
 TaigaLargeFerns: TaigaLargeFerns
 TaigaRocks: TaigaRocks
