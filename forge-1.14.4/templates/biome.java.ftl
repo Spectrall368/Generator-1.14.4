@@ -66,7 +66,7 @@ package ${package}.world.biome;
 				.scale(${data.heightVariation}f)
 				.temperature(${data.temperature}f)
 				.precipitation(Biome.RainType.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-				.category(Biome.Category.${data.biomeCategory})
+				.category(Biome.Category.${data.biomeCategory?replace("UNDERGROUND", "NONE")?replace("MOUNTAIN", "NONE")})
 				<#if data.waterColor?has_content>
 				.waterColor(${data.waterColor.getRGB()})
 				<#else>
