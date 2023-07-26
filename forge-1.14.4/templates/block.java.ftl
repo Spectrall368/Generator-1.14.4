@@ -128,37 +128,39 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
 		<#macro blockProperties>
+			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+			Block.Properties.create(Material.${data.material}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+			<#else>
 			Block.Properties.create(Material.${data.material})
-				<#if data.isCustomSoundType>
-					.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null){
-						@Override public SoundEvent getBreakSound() { return new SoundEvent(new ResourceLocation("${data.breakSound}")); }
-						@Override public SoundEvent getStepSound() { return new SoundEvent(new ResourceLocation("${data.stepSound}")); }
-						@Override public SoundEvent getPlaceSound() { return new SoundEvent(new ResourceLocation("${data.placeSound}")); }
-						@Override public SoundEvent getHitSound() { return new SoundEvent(new ResourceLocation("${data.hitSound}")); }
-						@Override public SoundEvent getFallSound() { return new SoundEvent(new ResourceLocation("${data.fallSound}")); }
-					})
-				<#else>
-					.sound(SoundType.${data.soundOnStep})
-				</#if>
-				<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-				<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-				</#if>
-					.lightValue(${data.luminance})
-				<#if data.destroyTool != "Not specified" && data.destroyTool != "hoe">
-					.harvestLevel(${data.breakHarvestLevel})
-					.harvestTool(ToolType.${data.destroyTool?upper_case})
-				</#if>
-				<#if data.isNotColidable>
-					.doesNotBlockMovement()
-				</#if>
-				<#if data.slipperiness != 0.6>
-					.slipperiness(${data.slipperiness}f)
-				</#if>
-				<#if data.tickRandomly>
-					.tickRandomly()
-				</#if>
+			</#if>
+			<#if data.isCustomSoundType>
+				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+			<#else>
+				.sound(SoundType.${data.soundOnStep})
+			</#if>
+			<#if data.unbreakable>
+				.hardnessAndResistance(-1, 3600000)
+			<#else>
+				.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+			</#if>
+				.setLightLevel(s -> ${data.luminance})
+			<#if data.destroyTool != "Not specified">
+				.harvestLevel(${data.breakHarvestLevel})
+				.harvestTool(ToolType.${data.destroyTool?upper_case})
+			</#if>
+			<#if data.isNotColidable>
+				.doesNotBlockMovement()
+			</#if>
+			<#if data.slipperiness != 0.6>
+				.slipperiness(${data.slipperiness}f)
+			</#if>
+			<#if data.tickRandomly>
+				.tickRandomly()
+			</#if>
 		</#macro>
 
 		public CustomBlock() {
