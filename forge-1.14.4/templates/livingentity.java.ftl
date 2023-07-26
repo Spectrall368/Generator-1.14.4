@@ -43,7 +43,7 @@ import net.minecraft.block.material.Material;
 					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f))
 			.build("${registryname}").setRegistryName("${registryname}");
 
-	<#if data.ranged && data.rangedItemType == "Default item">
+	<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
 	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1)
 			.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("projectile_${registryname}").setRegistryName("projectile_${registryname}");
@@ -58,7 +58,7 @@ import net.minecraft.block.material.Material;
 	@Override public void initElements() {
 		elements.entities.add(() -> entity);
 
-		<#if data.ranged && data.rangedItemType == "Default item">
+		<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
 		elements.entities.add(() -> arrow);
 		</#if>
 
@@ -213,7 +213,7 @@ import net.minecraft.block.material.Material;
 		</#if>
 
 
-		<#if data.ranged && data.rangedItemType == "Default item">
+		<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
 		RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 		</#if>
 	}
@@ -709,7 +709,11 @@ import net.minecraft.block.material.Material;
         <#if data.ranged>
 		    public void attackEntityWithRangedAttack(LivingEntity target, float flval) {
 				<#if data.rangedItemType == "Default item">
+					<#if !data.rangedAttackItem.isEmpty()>
 					ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, this, this.world);
+					<#else>
+					ArrowEntity entityarrow = new ArrowEntity(this.world, this);
+					</#if>
 					double d0 = target.posY + (double) target.getEyeHeight() - 1.1;
 					double d1 = target.posX - this.posX;
 					double d3 = target.posZ - this.posZ;
@@ -913,7 +917,7 @@ import net.minecraft.block.material.Material;
 	}
 	</#if>
 
-	<#if data.ranged && data.rangedItemType == "Default item">
+	<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
    	@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class) private static class ArrowCustomEntity extends AbstractArrowEntity implements IRendersAsItem {
 
 		public ArrowCustomEntity(FMLPlayMessages.SpawnEntity packet, World world) {
