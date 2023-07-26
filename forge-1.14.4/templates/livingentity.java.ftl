@@ -192,10 +192,14 @@ import net.minecraft.block.material.Material;
 					<@renderConditions/>
 				});
             	<#elseif data.mobModelName == "Piglin">
-				RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> new MobRenderer(renderManager, new ZombieModel(0, 64, 64), ${data.modelShadowSize}f) {
-						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
+				RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
+					ZombieModel customRender = new BipedRenderer(renderManager, new ZombieModel(), ${data.modelShadowSize}f) {
 					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
 					<@renderConditions/>
+				};
+					customRender.addLayer(new ArmorLayer(customRender, new ZombieModel(0.5f), new ZombieModel(1)));
+					<#if data.mobModelGlowTexture?has_content>customRender.addLayer(new GlowingLayer<>(customRender));</#if>
+					return customRender;
 				});
             	<#elseif data.mobModelName == "Salmon">
 				RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> new MobRenderer(renderManager, new SalmonModel(), ${data.modelShadowSize}f) {
