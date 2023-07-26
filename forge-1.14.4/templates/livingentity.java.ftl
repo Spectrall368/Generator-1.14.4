@@ -1025,7 +1025,6 @@ import net.minecraft.block.material.Material;
 	</#if>
 
     <#if hasProcedure(data.isShakingCondition)>
-        @Override
 	    protected boolean isShaking(LivingEntity _ent) {
 	        Entity entity = _ent;
 	        World world = entity.world;
