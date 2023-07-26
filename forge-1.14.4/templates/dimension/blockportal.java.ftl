@@ -35,7 +35,7 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 		setRegistryName("${registryname}_portal");
 	}
 
-	@Override public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	@Override public void tick(BlockState blockstate, World world, BlockPos pos, Random random) {
 		<#if hasProcedure(data.onPortalTickUpdate)>
 			int x = pos.getX();
 			int y = pos.getY();
