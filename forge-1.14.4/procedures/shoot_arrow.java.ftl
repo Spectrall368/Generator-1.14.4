@@ -1,7 +1,7 @@
 <#assign projectile = generator.map(field$rangeditem, "projectiles", 0)>
 if (${input$entity} instanceof LivingEntity) {
 	LivingEntity _ent = (LivingEntity) ${input$entity};
-	if(!_ent.world.isRemote()) {
+	if(!_ent.world.isRemote) {
 		<#if field$rangeditem?has_content && field$rangeditem?starts_with("CUSTOM:")>
 			${field$rangeditem?remove_beginning("CUSTOM:")}Item.shoot(_ent.world, _ent, new Random(), ${opt.toFloat(input$speed)}, ${opt.toFloat(input$damage)}, ${opt.toInt(input$knockback)});
 		<#else>
