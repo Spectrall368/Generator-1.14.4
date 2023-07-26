@@ -224,7 +224,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override public void onEntityHit(EntityRayTraceResult entityRayTraceResult) {
 			super.onEntityHit(entityRayTraceResult);
 			Entity entity = entityRayTraceResult.getEntity();
-			Entity sourceentity = this.func_234616_v_();
+			Entity sourceentity = this.getShooter();
 			Entity imediatesourceentity = this;
 			double x = this.posX;
 			double y = this.posY;
@@ -235,13 +235,13 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 
 		<#if hasProcedure(data.onBulletHitsBlock)>
-		@Override public void func_230299_a_(BlockRayTraceResult blockRayTraceResult) {
-			super.func_230299_a_(blockRayTraceResult);
+		@Override public void findHitEntity(BlockRayTraceResult blockRayTraceResult) {
+			super.findHitEntity(blockRayTraceResult);
 			double x = blockRayTraceResult.getPos().getX();
 			double y = blockRayTraceResult.getPos().getY();
 			double z = blockRayTraceResult.getPos().getZ();
 			World world = this.world;
-			Entity entity = this.func_234616_v_();
+			Entity entity = this.getShooter();
 			Entity imediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletHitsBlock/>
 		}
