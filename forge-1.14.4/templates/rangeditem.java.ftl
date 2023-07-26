@@ -225,7 +225,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			super.onEntityHit(entityRayTraceResult);
 			Entity entity = entityRayTraceResult.getEntity();
 			Entity sourceentity = this.getShooter();
-			Entity imediatesourceentity = this;
+			Entity immediatesourceentity = this;
 			double x = this.posX;
 			double y = this.posY;
 			double z = this.posZ;
@@ -242,7 +242,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			double z = blockRayTraceResult.getPos().getZ();
 			World world = this.world;
 			Entity entity = this.getShooter();
-			Entity imediatesourceentity = this;
+			Entity immediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletHitsBlock/>
 		}
 		</#if>
@@ -254,7 +254,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			double z = this.posZ;
 			World world = this.world;
 			Entity entity = this.getShooter();
-			Entity imediatesourceentity = this;
+			Entity immediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletFlyingTick/>
 			if (this.inGround) {
 			    <@procedureOBJToCode data.onBulletHitsBlock/>
