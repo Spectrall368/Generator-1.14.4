@@ -65,7 +65,7 @@ package ${package}.world.biome;
 				<#elseif (data.temperature > 1.0)>
 					DESERT
 				</#if>,
-				new BiomeManager.BiomeEntry(biome, ${data.biomeWeight}));
+				new BiomeManager.BiomeEntry(biome, ${data.biomeWeight})
 			);
         </#if>
 	}
