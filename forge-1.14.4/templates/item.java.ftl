@@ -105,9 +105,22 @@ package ${package}.item;
 					.maxStackSize(${data.stackSize})
 					</#if>
 					.rarity(Rarity.${data.rarity})
+					<#if data.isFood>
+					.food((new Food.Builder())
+					 	.hunger(${data.nutritionalValue})
+					 	.saturation(${data.saturation}f)
+                     	<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
+                     	<#if data.isMeat>.meat()</#if>.build())
+                    </#if>
 			);
 			setRegistryName("${registryname}");
 		}
+
+        <#if data.hasNonDefaultAnimation()>
+        @Override public UseAction getUseAction(ItemStack itemstack) {
+            return UseAction.${data.animation?upper_case};
+        }
+        </#if>
 
 		<#if data.stayInGridWhenCrafting>
 			@Override public boolean hasContainerItem() {
@@ -322,6 +335,38 @@ package ${package}.item;
             return true;
         }
         	</#if>
+
+        <#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
+            @Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
+        	    ItemStack retval =
+        		    <#if data.hasEatResultItem()>
+        			    ${mappedMCItemToItemStackCode(data.eatResultItem, 1)};
+        			</#if>
+        		super.onItemUseFinish(itemstack, world, entity);
+
+        		<#if hasProcedure(data.onFinishUsingItem)>
+				double x = entity.posX;
+				double y = entity.posY;
+				double z = entity.posZ;
+        			<@procedureOBJToCode data.onFinishUsingItem/>
+        		</#if>
+
+        		<#if data.hasEatResultItem()>
+        			if (itemstack.isEmpty()) {
+        				return retval;
+        			} else {
+        				if (entity instanceof PlayerEntity) {
+        					PlayerEntity player = (PlayerEntity) entity;
+        					if (!player.isCreative() && !player.inventory.addItemStackToInventory(retval))
+        						player.dropItem(retval, false);
+        				}
+        				return itemstack;
+        			}
+        		<#else>
+        			return retval;
+        		</#if>
+        	}
+        </#if>
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT compound) {
