@@ -1017,16 +1017,5 @@ import net.minecraft.block.material.Material;
 		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
 	</#if>
-
-    <#if hasProcedure(data.isShakingCondition)>
-	    protected boolean isShaking(LivingEntity _ent) {
-	        Entity entity = _ent;
-	        World world = entity.world;
-	        double x = entity.posX;
-	        double y = entity.posY;
-	        double z = entity.posZ;
-		    return <@procedureOBJToConditionCode data.isShakingCondition/>;
-	    }
-	</#if>
 </#macro>
 <#-- @formatter:on -->
