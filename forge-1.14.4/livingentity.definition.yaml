@@ -13,3 +13,5 @@ localizationkeys:
     suffix: " Spawn Egg"
   - key: entity.@modid.@registryname
     mapto: mobName
+
+field_exclusions: [isShakingCondition]
