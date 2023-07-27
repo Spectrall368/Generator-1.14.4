@@ -10,8 +10,8 @@
 
     <#if field$state?lower_case == "true">
     for(Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
-        Property _property = _bs.getBlock().getStateContainer().getProperty(entry.getKey().getName());
-        if (_property != null && _bs.get(_property) != null)
+        IProperty _property = _bs.getBlock().getStateContainer().getProperty(entry.getKey().getName());
+		if (_property != null && _bs.has(_property))
             try {
             	_bs = _bs.with(_property, (Comparable) entry.getValue());
             } catch (Exception e) {}
@@ -34,7 +34,7 @@
         _te = world.getTileEntity(_bp);
         if(_te != null) {
             try {
-                _te.read(_bso, _bnbt);
+                _te.read(_bnbt);
             } catch(Exception ignored) {}
         }
     }
