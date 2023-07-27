@@ -221,8 +221,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
         	</#if>
 
 		<#if hasProcedure(data.onBulletHitsEntity)>
-		@Override public void onHitEntity(EntityRayTraceResult entityRayTraceResult) {
-			super.onHitEntity(entityRayTraceResult);
+		public void onHitEntity(EntityRayTraceResult entityRayTraceResult) {
+			super.onHit(entityRayTraceResult);
 			Entity entity = entityRayTraceResult.getEntity();
 			Entity sourceentity = this.getShooter();
 			Entity immediatesourceentity = this;
@@ -235,8 +235,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 
 		<#if hasProcedure(data.onBulletHitsBlock)>
-		@Override public void onHitBlock(BlockRayTraceResult blockRayTraceResult) {
-			super.onHitBlock(blockRayTraceResult);
+		public void onHitBlock(BlockRayTraceResult blockRayTraceResult) {
+			super.onHit(blockRayTraceResult);
 			double x = blockRayTraceResult.getPos().getX();
 			double y = blockRayTraceResult.getPos().getY();
 			double z = blockRayTraceResult.getPos().getZ();
