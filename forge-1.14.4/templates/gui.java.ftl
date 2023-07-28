@@ -34,7 +34,6 @@
 <#assign mx = data.W - data.width>
 <#assign my = data.H - data.height>
 <#assign slotnum = 0>
-
 package ${package}.gui;
 
 import ${package}.${JavaModName};
@@ -318,6 +317,13 @@ import ${package}.${JavaModName};
 			}
 		}
 
+		<#else>
+			<#if hasProcedure(data.onClosed)>
+			@Override public void onContainerClosed(PlayerEntity playerIn) {
+				super.onContainerClosed(playerIn);
+				<@procedureOBJToCode data.onClosed/>
+			}
+			</#if>
 		</#if>
 	}
 
