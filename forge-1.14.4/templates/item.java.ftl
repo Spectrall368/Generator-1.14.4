@@ -129,9 +129,11 @@ package ${package}.item;
 			return ${data.enchantability};
 		}
 
+		<#if (!data.isFood && data.useDuration != 0) || (data.isFood && data.useDuration != 32)>
 		@Override public int getUseDuration(ItemStack itemstack) {
 			return ${data.useDuration};
 		}
+		</#if>
 
 		@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
 			return ${data.toolType}F;
