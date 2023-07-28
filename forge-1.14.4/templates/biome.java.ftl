@@ -231,11 +231,7 @@ package ${package}.world.biome;
 			<#list data.spawnEntries as spawnEntry>
 				<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
 				<#if entity != "null">
-					<#if !entity.toString().contains(".CustomEntity")>
 						this.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new Biome.SpawnListEntry(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-					<#else>
-						this.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new Biome.SpawnListEntry(${entity.toString().replace(".CustomEntity", "")}.entity, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-					</#if>
 				</#if>
 			</#list>
 		}
