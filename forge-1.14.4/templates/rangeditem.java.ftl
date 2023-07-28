@@ -266,7 +266,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 <#if data.bulletModel != "Default">
 		public static class CustomRender extends EntityRenderer<ArrowCustomEntity> {
-			private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${data.customBulletModelTexture}");
+			private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
 
 			public CustomRender(EntityRendererManager renderManager) {
 				super(renderManager);
