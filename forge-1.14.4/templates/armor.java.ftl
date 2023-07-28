@@ -32,7 +32,7 @@
 <#include "procedures.java.ftl">
 package ${package}.item;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Item extends ${JavaModName}Elements.ModElement{
+@${JavaModName}Elements.ModElement.Tag public class ${name}Item extends ${JavaModName}Elements.ModElement {
 
 	@ObjectHolder("${modid}:${registryname}_helmet")
 	public static final Item helmet = null;
@@ -118,7 +118,7 @@ package ${package}.item;
 
 				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 					<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
-					return "${modid}:textures/${data.helmetModelTexture}";
+					return "${modid}:textures/entities/${data.helmetModelTexture}";
 					<#else>
 					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
 					</#if>
@@ -169,7 +169,7 @@ package ${package}.item;
 
 				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 					<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-					return "${modid}:textures/${data.bodyModelTexture}";
+					return "${modid}:textures/entities/${data.bodyModelTexture}";
 					<#else>
 					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
 					</#if>
@@ -212,7 +212,7 @@ package ${package}.item;
 
 				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 					<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
-					return "${modid}:textures/${data.leggingsModelTexture}";
+					return "${modid}:textures/entities/${data.leggingsModelTexture}";
 					<#else>
 					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
 					</#if>
@@ -255,7 +255,7 @@ package ${package}.item;
 
 				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 					<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
-					return "${modid}:textures/${data.bootsModelTexture}";
+					return "${modid}:textures/entities/${data.bootsModelTexture}";
 					<#else>
 					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
 					</#if>
