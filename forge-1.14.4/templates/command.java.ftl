@@ -32,13 +32,21 @@
 
 package ${package}.command;
 
-@Mod.EventBusSubscriber public class ${name}Command {
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Command extends ${JavaModName}Elements.ModElement {
 
-	@SubscribeEvent public static void registerCommands(RegisterCommandsEvent event) {
-		event.getDispatcher().register(LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
+	public ${name}Command (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+	}
+
+	@Override public void serverLoad(FMLServerStartingEvent event) {
+		event.getCommandDispatcher().register(customCommand());
+	}
+
+	private LiteralArgumentBuilder<CommandSource> customCommand() {
+        return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			${argscode}
-		);
     }
 
 }
