@@ -209,7 +209,7 @@ import ${package}.${JavaModName};
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-            	    150, 20, "${component.text}", <#if hasProcedure(component.isCheckedProcedure)>
+            	    20, 20, "${component.text}", <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name});
                 this.addButton(${component.name});
