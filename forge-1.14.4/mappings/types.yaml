@@ -9,6 +9,6 @@ world: IWorld
 entity: Entity
 map: HashMap
 advancement: Advancement
-dimensiontype: RegistryKey<World>
+dimensiontype: int
 actionresulttype: ActionResultType
 cmdcontext: CommandContext<CommandSource>
