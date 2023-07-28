@@ -722,6 +722,9 @@ import net.minecraft.block.material.Material;
 				this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 			this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(${data.attackStrength});
 
+			if (this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE) != null)
+				this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(${data.followRange});
+
 			<#if (data.knockbackResistance > 0)>
 			if (this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE) == null)
 				this.getAttributes().registerAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
