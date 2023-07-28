@@ -53,10 +53,10 @@ package ${package}.item.extension;
                         int y = blockSource.getBlockPos().getY();
                         int z = blockSource.getBlockPos().getZ();
 
-                        this.setSuccessful(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
+                        this.successful = <@procedureOBJToConditionCode data.dispenseSuccessCondition/>;
 
                         <#if hasProcedure(data.dispenseResultItemstack)>
-                            boolean success = this.isSuccessful();
+                            boolean success = this.successful;
                             <#if hasReturnValueOf(data.dispenseResultItemstack, "itemstack")>
                                 return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
                             <#else>
@@ -65,7 +65,7 @@ package ${package}.item.extension;
                                 return itemstack;
                             </#if>
                         <#else>
-                            if(this.isSuccessful()) itemstack.shrink(1);
+                            if(this.successful) itemstack.shrink(1);
                             return itemstack;
                         </#if>
                     }
