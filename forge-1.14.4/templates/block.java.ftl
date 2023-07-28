@@ -157,6 +157,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				.harvestLevel(${data.breakHarvestLevel})
 				.harvestTool(ToolType.${data.destroyTool?upper_case})
 			</#if>
+			<#if data.requiresCorrectTool>
+				.setRequiresTool()
+			</#if>
 			<#if data.isNotColidable>
 				.doesNotBlockMovement()
 			</#if>
