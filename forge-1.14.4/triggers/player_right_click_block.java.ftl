@@ -7,7 +7,7 @@
 		double i=event.getPos().getX();
 		double j=event.getPos().getY();
 		double k=event.getPos().getZ();
-		IWorld world=event.getWorld();
+		World world = event.getWorld().getWorld();
 		BlockState state = world.getBlockState(event.getPos());
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
