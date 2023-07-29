@@ -21,7 +21,7 @@
 	}
     <@procedureToCode name=procedure dependencies=dependencies/>
     return 0;
-}));
+}))
 .executes(arguments -> {
 	ServerWorld world = arguments.getSource().getWorld();
 
@@ -44,4 +44,4 @@
 	}
     <@procedureToCode name=procedure dependencies=dependencies/>
 	return 0;
-});
+})
