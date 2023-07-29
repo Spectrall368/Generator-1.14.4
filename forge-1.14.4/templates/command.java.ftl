@@ -45,7 +45,7 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement {
 
 	private LiteralArgumentBuilder<CommandSource> customCommand() {
         return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
-			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>;
+			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}));</#if>
 			${argscode}
     }
 
