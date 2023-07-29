@@ -1,9 +1,9 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onItemExpire(ItemExpireEvent event) {
 		Entity entity=event.getEntity();
-		double i=entity.getPosX();
-		double j=entity.getPosY();
-		double k=entity.getPosZ();
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		ItemStack itemstack=event.getEntityItem().getItem();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
