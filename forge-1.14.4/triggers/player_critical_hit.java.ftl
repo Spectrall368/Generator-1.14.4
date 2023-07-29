@@ -2,9 +2,9 @@
 	@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
 		Entity entity=event.getTarget();
 		PlayerEntity sourceentity=event.getPlayer();
-		double i=sourceentity.getPosX();
-		double j=sourceentity.getPosY();
-		double k=sourceentity.getPosZ();
+		double i=sourceentity.PosX;
+		double j=sourceentity.posY;
+		double k=sourceentity.posZ;
 		World world=sourceentity.world;
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
