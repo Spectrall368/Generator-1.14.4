@@ -4,7 +4,7 @@
 		dependencies.put("x",event.getPos().getX());
 		dependencies.put("y",event.getPos().getY());
 		dependencies.put("z",event.getPos().getZ());
-		dependencies.put("world",event.getWorld());
+		dependencies.put("world",event.getWorld().getWorld());
 		dependencies.put("blockstate",event.getWorld().getBlockState(event.getPos()));
 		dependencies.put("event",event);
 		executeProcedure(dependencies);
