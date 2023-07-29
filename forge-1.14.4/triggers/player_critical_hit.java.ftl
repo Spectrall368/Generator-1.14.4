@@ -2,7 +2,7 @@
 	@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
 		Entity entity=event.getTarget();
 		PlayerEntity sourceentity=event.getPlayer();
-		double i=sourceentity.PosX;
+		double i=sourceentity.posX;
 		double j=sourceentity.posY;
 		double k=sourceentity.posZ;
 		World world=sourceentity.world;
