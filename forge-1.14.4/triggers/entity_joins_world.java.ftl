@@ -1,9 +1,10 @@
-@SubscribeEvent public void onEntityJoin(EntityJoinWorldEvent event){
+@Mod.EventBusSubscriber private static class GlobalTrigger {
+	@SubscribeEvent public static void onEntityJoin(EntityJoinWorldEvent event) {
 		World world=event.getWorld();
 		Entity entity=event.getEntity();
-		double i=entity.posX;
-		double j=entity.posY;
-		double k=entity.posZ;
+		double i=entity.getPosX();
+		double j=entity.getPosY();
+		double k=entity.getPosZ();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
 		dependencies.put("y",j);
@@ -11,5 +12,6 @@
 		dependencies.put("world",world);
 		dependencies.put("entity",entity);
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
-		}
+		executeProcedure(dependencies);
+	}
+}

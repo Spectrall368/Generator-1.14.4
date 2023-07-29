@@ -1,8 +1,9 @@
-@SubscribeEvent public void onChat(ServerChatEvent event){
+@Mod.EventBusSubscriber private static class GlobalTrigger {
+	@SubscribeEvent public static void onChat(ServerChatEvent event){
 		ServerPlayerEntity entity=event.getPlayer();
-		double i=entity.posX;
-		double j=entity.posY;
-		double k=entity.posZ;
+		double i=entity.getPosX();
+		double j=entity.getPosY();
+		double k=entity.getPosZ();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
 		dependencies.put("y",j);
@@ -11,5 +12,6 @@
 		dependencies.put("entity",entity);
 		dependencies.put("text",event.getMessage());
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
+	}
 }
