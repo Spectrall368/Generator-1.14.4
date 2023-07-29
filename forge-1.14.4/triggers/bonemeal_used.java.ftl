@@ -1,6 +1,6 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onBonemeal(BonemealEvent event){
-		PlayerEntity entity=event.getPlayer();
+		PlayerEntity entity=event.getEntityPlayer();
 		double i=event.getPos().getX();
 		double j=event.getPos().getY();
 		double k=event.getPos().getZ();
