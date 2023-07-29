@@ -1,7 +1,7 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onFarmlandTrampled(BlockEvent.FarmlandTrampleEvent event) {
 		Entity entity = event.getEntity();
-		IWorld world = event.getWorld();
+		World world = event.getWorld().getWorld();
 		float falldistance = event.getFallDistance();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",event.getPos().getX());
