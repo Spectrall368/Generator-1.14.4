@@ -86,10 +86,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						BiomeColors.getWaterColor(world, pos) : -1;
-					<#elseif data.tintType == "Sky">
-						Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
-					<#elseif data.tintType == "Fog">
-						Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
 					<#else>
 						Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 					</#if>
@@ -108,11 +104,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						return FoliageColors.getBirch();
 					<#elseif data.tintType == "Spruce foliage">
 						return FoliageColors.getSpruce();
-				<#elseif data.tintType == "Water">
+					<#elseif data.tintType == "Water">
 					return 3694022;
-				<#else>
+					<#else>
 					return 329011;
-				</#if>
+					</#if>
 			}, block);
 		}
 		</#if>
@@ -172,9 +168,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.destroyTool != "Not specified">
 				.harvestLevel(${data.breakHarvestLevel})
 				.harvestTool(ToolType.${data.destroyTool?upper_case})
-			</#if>
-			<#if data.requiresCorrectTool>
-				.setRequiresTool()
 			</#if>
 			<#if data.isNotColidable>
 				.doesNotBlockMovement()
@@ -1067,7 +1060,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					</#list>
 					return blockCriteria;
 				}), block.getDefaultState(), ${data.frequencyOnChunk}),
-					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if>)));
+					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if>)));
 		}
 	}
 </#if>
