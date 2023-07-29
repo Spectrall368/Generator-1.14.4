@@ -1,7 +1,6 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
 		Entity entity = event.getPlayer();
-		IWorld world = event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("xpAmount",event.getExpToDrop());
 		dependencies.put("x",event.getPos().getX());
@@ -10,7 +9,7 @@
 		dependencies.put("px",entity.posX);
 		dependencies.put("py",entity.posY);
 		dependencies.put("pz",entity.pozZ);
-		dependencies.put("world",world);
+		dependencies.put("world",event.getWorld().getWorld());
 		dependencies.put("entity",entity);
 		dependencies.put("blockstate",event.getState());
 		dependencies.put("event",event);
