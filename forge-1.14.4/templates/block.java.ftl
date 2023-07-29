@@ -328,16 +328,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.rotationMode != 3>
 			return this.getDefaultState()
 			        <#if data.rotationMode == 1>
-			            <#if data.enablePitch>
-			            .with(FACE, faceForDirection(context.getNearestLookingDirection()))
-			            </#if>
+			        <#if data.enablePitch>
+			        .with(FACE, faceForDirection(context.getNearestLookingDirection()))
+			        </#if>
 			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
 			        <#elseif data.rotationMode == 2>
 			        .with(FACING, context.getNearestLookingDirection().getOpposite())
-			<#elseif data.rotationMode == 4>
+				<#elseif data.rotationMode == 4>
 			        .with(FACING, context.getFace())
-			<#elseif data.rotationMode == 5>
-                    .with(AXIS, context.getFace().getAxis())
+				<#elseif data.rotationMode == 5>
+                    		.with(AXIS, context.getFace().getAxis())
 			        </#if>
 			        <#if data.isWaterloggable>
 			        .with(WATERLOGGED, false)
@@ -346,18 +346,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             if (context.getFace().getAxis() == Direction.Axis.Y)
                 return this.getDefaultState()
                         <#if data.enablePitch>
-                            .with(FACE, context.getFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
-                            .with(FACING, context.getPlacementHorizontalFacing())
+                        .with(FACE, context.getFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+                        .with(FACING, context.getPlacementHorizontalFacing())
                         <#else>
-                            .with(FACING, Direction.NORTH)
+                        .with(FACING, Direction.NORTH)
                         </#if>
                         <#if data.isWaterloggable>
                         .with(WATERLOGGED, flag)
                         </#if>;
             return this.getDefaultState()
-                    <#if data.enablePitch>
+                    	<#if data.enablePitch>
                         .with(FACE, AttachFace.WALL)
-                    </#if>
+                    	</#if>
                         .with(FACING, context.getFace())
                         <#if data.isWaterloggable>
                         .with(WATERLOGGED, flag)
