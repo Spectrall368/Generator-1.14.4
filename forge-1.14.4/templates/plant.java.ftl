@@ -86,10 +86,6 @@ import net.minecraft.util.SoundEvent;
 						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						BiomeColors.getWaterColor(world, pos) : -1;
-					<#elseif data.tintType == "Sky">
-						Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
-					<#elseif data.tintType == "Fog">
-						Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
 					<#else>
 						Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 					</#if>
