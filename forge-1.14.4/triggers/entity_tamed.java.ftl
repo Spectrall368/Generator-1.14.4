@@ -2,9 +2,9 @@
 	@SubscribeEvent public static void onEntityTamed(AnimalTameEvent event) {
 		Entity entity = event.getAnimal();
 		Entity sourceentity = event.getTamer();
-		double i = entity.getPosX();
-		double j = entity.getPosY();
-		double k = entity.getPosZ();
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		World world = entity.world;
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
