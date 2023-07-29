@@ -1,6 +1,6 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onEntityJoin(EntityJoinWorldEvent event) {
-		World world = event.getWorld().getWorld();
+		World world=event.getWorld();
 		Entity entity=event.getEntity();
 		double i = entity.posX;
 		double j = entity.posY;
