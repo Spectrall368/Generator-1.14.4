@@ -7,7 +7,7 @@
 		double i=event.getPos().getX();
 		double j=event.getPos().getY();
 		double k=event.getPos().getZ();
-		World world = event.getWorld().getWorld();
+		World world=event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
 		dependencies.put("y", j);
