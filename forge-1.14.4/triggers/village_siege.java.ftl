@@ -4,7 +4,7 @@
 		double i=event.getAttemptedSpawnPos().x;
 		double j=event.getAttemptedSpawnPos().y;
 		double k=event.getAttemptedSpawnPos().z;
-		IWorld world=event.getWorld();
+		World world=event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
 		dependencies.put("y", j);
