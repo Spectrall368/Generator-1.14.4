@@ -34,8 +34,8 @@ package ${package}.command;
 
 @Mod.EventBusSubscriber public class ${name}Command {
 
-	@Override public static void serverLoad(FMLServerStartingEvent event) {
-		event.getDispatcher().register(LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
+	@SubscribeEvent public static void serverLoad(FMLServerStartingEvent event) {
+		event.getCommandDispatcher().register(LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			${argscode}
 		);
