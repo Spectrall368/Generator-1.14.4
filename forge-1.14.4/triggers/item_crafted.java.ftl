@@ -2,9 +2,9 @@
 	@SubscribeEvent public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
 		Entity entity = event.getPlayer();
 		World world = entity.world;
-		double i=entity.getPosX();
-		double j=entity.getPosY();
-		double k=entity.getPosZ();
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		ItemStack itemStack = event.getCrafting();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
