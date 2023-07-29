@@ -41,22 +41,12 @@
 
 package ${package}.gui.overlay;
 
-@${JavaModName}Elements.ModElement.Tag
-public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
-
-	public ${name}Overlay (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-	}
-
-	@Override
-	public void initElements() {
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+@Mod.EventBusSubscriber public class ${name}Overlay {
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
-	public void eventHandler(RenderGameOverlayEvent.Post event) {
+	public static void eventHandler(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
 			int w = event.getWindow().getScaledWidth();
 			int h = event.getWindow().getScaledHeight();
