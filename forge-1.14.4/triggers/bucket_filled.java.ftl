@@ -1,9 +1,9 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onBucketFill(FillBucketEvent event) {
 		PlayerEntity entity=event.getEntityPlayer();
-		double i=entity.getPosX();
-		double j=entity.getPosY();
-		double k=entity.getPosZ();
+		double i=entity.posX;
+		double j=entity.posY;
+		double k=entity.posZ;
 		World world=event.getWorld();
 		ItemStack itemstack=event.getFilledBucket();
 		ItemStack originalitemstack=event.getEmptyBucket();
