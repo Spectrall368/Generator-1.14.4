@@ -1,8 +1,8 @@
 {
   "generator-1.14.4": {
-    "latest": "1.9",
+    "latest": "2.0",
 	"changes": [
-		"Plugin ported to 2022.1, including 1.14.x datapack"
+		"Plugin ported to 2022.2, including 1.14.x datapack, Fixes and Improvements"
 	]
   }
 }
