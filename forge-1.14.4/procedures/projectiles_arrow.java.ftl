@@ -2,7 +2,7 @@
 <#assign hasShooter = (input$shooter != "null")>
 <#assign isPiercing = (input$piercing != "/*@int*/0")>
 new Object() {
-	public ProjectileEntity getArrow(World world<#if hasShooter>, Entity shooter</#if>, float damage, int knockback<#if isPiercing>, byte piercing</#if>) {
+	public ProjectileItemEntity getArrow(World world<#if hasShooter>, Entity shooter</#if>, float damage, int knockback<#if isPiercing>, byte piercing</#if>) {
 		AbstractArrowEntity entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${projectile}, world);
 		<#if hasShooter>entityToSpawn.setShooter(shooter);</#if>
 		entityToSpawn.setDamage(damage);
