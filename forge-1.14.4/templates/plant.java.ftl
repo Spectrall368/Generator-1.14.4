@@ -319,9 +319,7 @@ import net.minecraft.util.SoundEvent;
 					<#if data.plantType == "growapable" || data.forceTicking>
 					.tickRandomly()
 					</#if>
-					<#if data.isSolid>
-					.notSolid().setOpaque((bs, br, bp) -> false)
-					<#else>
+					<#if !data.isSolid>
 					.doesNotBlockMovement()
 					</#if>
 					<#if data.isCustomSoundType>
@@ -398,6 +396,12 @@ import net.minecraft.util.SoundEvent;
         @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
 			return 15728880;
 		}
+		</#if>
+
+		<#if data.isSolid>
+   		@Override public boolean isSolid(BlockState state) {
+     	 		return this.blocksMovement && this.getRenderLayer() == BlockRenderLayer.SOLID;
+   		}
 		</#if>
 
 		<#if data.specialInfo?has_content>
