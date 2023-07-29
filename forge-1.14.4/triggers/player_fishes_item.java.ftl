@@ -1,9 +1,9 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onPlayerFishItem(ItemFishedEvent event) {
 		PlayerEntity entity=event.getPlayer();
-		double i=entity.getPosX();
-		double j=entity.getPosY();
-		double k=entity.getPosZ();
+		double i = entity.posX;
+		double j = entity.posY;
+		double k = entity.posZ;
 		World world=entity.world;
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
