@@ -1,6 +1,6 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
-		PlayerEntity entity=event.getPlayer();
+		PlayerEntity entity=event.getEntityPlayer();
 		ItemStack itemstack=event.getItem().getItem();
 		double i = entity.posX;
 		double j = entity.posY;
