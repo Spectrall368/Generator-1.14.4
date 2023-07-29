@@ -1,6 +1,6 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onExplode(ExplosionEvent.Detonate event) {
-		World world = event.getWorld().getWorld();
+		World world = event.getWorld();
 		Explosion explosion = event.getExplosion();
 		double i=explosion.getPosition().x;
 		double j=explosion.getPosition().y;
