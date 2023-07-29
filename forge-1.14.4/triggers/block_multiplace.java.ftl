@@ -1,7 +1,7 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onBlockMultiPlace(BlockEvent.EntityMultiPlaceEvent event) {
 		Entity entity = event.getEntity();
-		IWorld world = event.getWorld();
+		World world = event.getWorld().getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",event.getPos().getX());
 		dependencies.put("y",event.getPos().getY());
