@@ -1,6 +1,6 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onWorldUnload(WorldEvent.Unload event) {
-		IWorld world=event.getWorld();
+		World world = event.getWorld().getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("world",world);
 		dependencies.put("event",event);
