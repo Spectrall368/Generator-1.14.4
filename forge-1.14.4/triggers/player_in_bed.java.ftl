@@ -1,9 +1,9 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onPlayerInBed(PlayerSleepInBedEvent event) {
 		PlayerEntity entity=event.getPlayer();
-		double i=event.getPos().getX();
-		double j=event.getPos().getY();
-		double k=event.getPos().getZ();
+		int i = event.getPos().getX();
+		int j = event.getPos().getY();
+		int k = event.getPos().getZ();
 		World world=entity.world;
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
