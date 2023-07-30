@@ -1,7 +1,7 @@
 <#include "mcelements.ftl">
 ResourceLocation recipeLocation = ${toResourceLocation(input$recipe)};
-if (entity.world instanceof ServerWorld) {
-  ServerWorld serverWorld = (ServerWorld) entity.world;
+if (${input$entity}.world instanceof ServerWorld) {
+  ServerWorld serverWorld = (ServerWorld) ${input$entity}.world;
 	RecipeManager recipeManager = serverWorld.getRecipeManager();
 	IRecipe<?> recipe = recipeManager.getRecipe(recipeLocation).orElse(null);
   if (recipe != null && new Object() {
