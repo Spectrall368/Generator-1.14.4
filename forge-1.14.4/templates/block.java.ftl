@@ -678,7 +678,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
 		<#if hasProcedure(data.onHitByProjectile)>
-		public void onProjectileCollision(World world, BlockState blockstate, BlockRayTraceResult hit, ProjectileItemEntity entity) {
+		@Override public void onProjectileCollision(World world, BlockState blockstate, BlockRayTraceResult hit, Entity entity) {
 			BlockPos pos = hit.getPos();
 			int x = pos.getX();
 			int y = pos.getY();
