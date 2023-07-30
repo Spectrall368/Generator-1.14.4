@@ -469,6 +469,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
+		<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+		@Override public boolean isSolid(BlockState state) {
+      			return false;
+   		}
+		</#if>
+
 		<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 		@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
         	return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
