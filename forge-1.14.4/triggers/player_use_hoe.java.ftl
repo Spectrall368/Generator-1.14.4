@@ -1,9 +1,9 @@
 @Mod.EventBusSubscriber private static class GlobalTrigger {
 	@SubscribeEvent public static void onUseHoe(UseHoeEvent event) {
 		PlayerEntity entity=event.getPlayer();
-		double i=event.getContext().getPos().getX();
-		double j=event.getContext().getPos().getY();
-		double k=event.getContext().getPos().getZ();
+		int i=event.getContext().getPos().getX();
+		int j=event.getContext().getPos().getY();
+		int k=event.getContext().getPos().getZ();
 		World world=entity.world;
 		BlockState state = world.getBlockState(event.getContext().getPos());
 		Map<String, Object> dependencies = new HashMap<>();
