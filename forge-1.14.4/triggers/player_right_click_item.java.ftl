@@ -4,9 +4,9 @@
 		if (event.getHand() != entity.getActiveHand()) {
 			return;
 		}
-		double i=event.getPos().getX();
-		double j=event.getPos().getY();
-		double k=event.getPos().getZ();
+		int i = event.getPos().getX();
+		int j = event.getPos().getY();
+		int k = event.getPos().getZ();
 		World world=event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
