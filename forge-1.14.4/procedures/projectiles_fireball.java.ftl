@@ -5,15 +5,15 @@ new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$p
 <#else>
 new Object() {
 	public Entity getFireball(World world<#if hasShooter>, Entity shooter</#if><#if hasAcceleration>, double ax, double ay, double az</#if>) {
-		DamagingProjectileEntity entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world);
-		<#if hasShooter>entityToSpawn.shootingEntity = (shooter instanceof LivingEntity ? (LivingEntity) shooter : null);</#if>
+		DamagingProjectileEntity _entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world);
+		<#if hasShooter>_entityToSpawn.shootingEntity = (shooter instanceof LivingEntity ? (LivingEntity) shooter : null);</#if>
 		<#if hasAcceleration>
-		entityToSpawn.accelerationX = ax;
-		entityToSpawn.accelerationY = ay;
-		entityToSpawn.accelerationZ = az;
-        	if (entityToSpawn instanceof FireballEntity)
-            		((FireballEntity) entityToSpawn).explosionPower = power;
+		_entityToSpawn.accelerationX = ax;
+		_entityToSpawn.accelerationY = ay;
+		_entityToSpawn.accelerationZ = az;
+        	if (_entityToSpawn instanceof FireballEntity)
+            		((FireballEntity) _entityToSpawn).explosionPower = power;
 		</#if>
-		return entityToSpawn;
+		return _entityToSpawn;
 }}.getFireball(projectileLevel<#if hasShooter>, ${input$shooter}</#if><#if hasAcceleration>, ${input$ax}, ${input$ay}, ${input$az}</#if>)
 </#if>
