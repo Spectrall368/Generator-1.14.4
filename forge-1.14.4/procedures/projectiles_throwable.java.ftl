@@ -3,12 +3,12 @@ new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$p
 <#else>
 new Object() {
 	public Entity getProjectile(World world, Entity shooter) {
-        ThrowableEntity entityToSpawn;
+        ThrowableEntity _entityToSpawn;
         if (shooter instanceof LivingEntity)
-        	entityToSpawn = new ${generator.map(field$throwableprojectile, "projectiles", 0)}(world, (LivingEntity) shooter);
+        	_entityToSpawn = new ${generator.map(field$throwableprojectile, "projectiles", 0)}(world, (LivingEntity) shooter);
         else
-		entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world);
-	entityToSpawn.shootingEntity = (shooter instanceof LivingEntity ? (LivingEntity) shooter : null);
-	return entityToSpawn;
+		_entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world);
+	_entityToSpawn.shootingEntity = (shooter instanceof LivingEntity ? (LivingEntity) shooter : null);
+	return _entityToSpawn;
 }}.getProjectile(projectileLevel, ${input$shooter})
 </#if>
