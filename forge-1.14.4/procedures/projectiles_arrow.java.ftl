@@ -8,7 +8,7 @@ new Object() {
 		_entityToSpawn.setDamage(${input$damage});
 		_entityToSpawn.setKnockbackStrength(${input$knockback});
 		<#if field$projectile?starts_with("CUSTOM:")>_entityToSpawn.setSilent(true);</#if>
-		<#if isPiercing>_entityToSpawn.setPierceLevel(${input$piercing});</#if>
+		<#if isPiercing>_entityToSpawn.setPierceLevel( (byte) ${input$piercing});</#if>
 		<#if field$fire?lower_case == "true">_entityToSpawn.setFire(100);</#if>
 		<#if field$particles?lower_case == "true">_entityToSpawn.setIsCritical(true);</#if>
 		<#if field$pickup != "DISALLOWED">_entityToSpawn.pickupStatus = AbstractArrowEntity.PickupStatus.${field$pickup};</#if>
