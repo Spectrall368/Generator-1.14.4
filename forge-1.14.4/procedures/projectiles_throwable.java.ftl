@@ -8,7 +8,7 @@ new Object() {
         	entityToSpawn = new ${generator.map(field$throwableprojectile, "projectiles", 0)}(world, (LivingEntity) shooter);
         else
 		entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world);
-	entityToSpawn.setShooter(shooter);
+	entityToSpawn.shootingEntity = (shooter instanceof LivingEntity ? (LivingEntity) shooter : null);
 	return entityToSpawn;
 }}.getProjectile(projectileLevel, ${input$shooter})
 </#if>
