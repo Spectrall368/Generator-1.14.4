@@ -45,6 +45,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 	public ${name}Item(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
+
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
 	}
 
 	@Override public void initElements() {
