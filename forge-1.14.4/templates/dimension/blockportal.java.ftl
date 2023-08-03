@@ -130,6 +130,10 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 		player.connection.sendPacket(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
 	}
 
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.TRANSLUCENT;
+		}
+
 	private TeleporterDimensionMod getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
 		BlockPattern.PatternHelper bph = portal.createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
