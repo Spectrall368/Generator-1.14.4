@@ -386,11 +386,11 @@ import net.minecraft.block.material.Material;
         	</#if>
 
 		<#if data.mobModelName == "Biped">
-		@Override public double getRidingHeight() {
+		public double getRidingHeight() {
 			return -0.35D;
 		}
 		<#elseif data.mobModelName == "Silverfish">
-		@Override public double getRidingHeight() {
+		public double getRidingHeight() {
 			return 0.1D;
 		}
 		</#if>
