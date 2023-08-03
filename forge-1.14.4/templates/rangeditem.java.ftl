@@ -52,14 +52,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		elements.entities.add(() -> arrow);
 	}
 
-	@Override @OnlyIn(Dist.CLIENT) public void init(FMLCommonSetupEvent event) {
-		<#if data.bulletModel != "Default">
-		RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new CustomRender(renderManager));
-		<#else>
-		RenderingRegistry.registerEntityRenderingHandler(ArrowCustomEntity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
-		</#if>
-	}
-
 	public static class ItemRanged extends Item {
 
 		public ItemRanged() {
@@ -263,46 +255,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 
 	}
-
-<#if data.bulletModel != "Default">
-		public static class CustomRender extends EntityRenderer<ArrowCustomEntity> {
-			private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
-
-			public CustomRender(EntityRendererManager renderManager) {
-				super(renderManager);
-			}
-
-			@Override public void doRender(ArrowCustomEntity bullet, double d, double d1, double d2, float f, float f1) {
-				this.bindEntityTexture(bullet);
-				GlStateManager.pushMatrix();
-				GlStateManager.translatef((float) d, (float) d1, (float) d2);
-				GlStateManager.rotatef(f, 0, 1, 0);
-				GlStateManager.rotatef(90f - bullet.prevRotationPitch - (bullet.rotationPitch - bullet.prevRotationPitch) * f1, 1, 0, 0);
-				EntityModel model = new ${data.bulletModel}();
-				model.render(bullet, 0, 0, 0, 0, 0, 0.0625f);
-				GlStateManager.popMatrix();
-			}
-
-			@Override protected ResourceLocation getEntityTexture(ArrowCustomEntity entity) {
-				return texture;
-			}
-		}
-
-	<#if data.getModelCode()?? >
-	${data.getModelCode().toString()
-		.replace("ModelRenderer", "RendererModel").replace("extends ModelBase", "extends EntityModel<Entity>")
-		.replace("GlStateManager.translate", "GlStateManager.translated")
-		.replace("GlStateManager.scale", "GlStateManager.scaled")
-		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
-					"setRotationAngles(Entity e, float f, float f1, float f2, float f3, float f4, float f5)")
-		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+entity\\)",
-					"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")
-	}
-	</#if>
-
-</#if>
 
 	public static ArrowCustomEntity shoot(World world, LivingEntity entity, Random random, float power, double damage, int knockback) {
 		ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, entity, world);
