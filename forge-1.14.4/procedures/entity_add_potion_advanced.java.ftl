@@ -1,2 +1,2 @@
-if(${input$entity} instanceof LivingEntity)
-	((LivingEntity)${input$entity}).addPotionEffect(new EffectInstance(${generator.map(field$potion, "effects")},(int) ${input$duration},(int) ${input$level}, ${input$ambient}, ${input$particles}));
+if(${input$entity} instanceof LivingEntity _entity && !_entity.world.isRemote)
+	_entity.addPotionEffect(new EffectInstance(${generator.map(field$potion, "effects")},${opt.toInt(input$duration)},${opt.toInt(input$level)}, ${input$ambient}, ${input$particles}));
