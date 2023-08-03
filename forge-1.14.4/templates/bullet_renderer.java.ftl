@@ -15,14 +15,14 @@ package ${package}.entity.renderer;
 	}
 
 <#if data.bulletModel != "Default">
-		public static class CustomRender extends EntityRenderer<ArrowCustomEntity> {
+		public static class CustomRender extends EntityRenderer<${name}Item.ArrowCustomEntity> {
 			private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
 
 			public CustomRender(EntityRendererManager renderManager) {
 				super(renderManager);
 			}
 
-			@Override public void doRender(ArrowCustomEntity bullet, double d, double d1, double d2, float f, float f1) {
+			@Override public void doRender(${name}Item.ArrowCustomEntity bullet, double d, double d1, double d2, float f, float f1) {
 				this.bindEntityTexture(bullet);
 				GlStateManager.pushMatrix();
 				GlStateManager.translatef((float) d, (float) d1, (float) d2);
@@ -33,7 +33,7 @@ package ${package}.entity.renderer;
 				GlStateManager.popMatrix();
 			}
 
-			@Override protected ResourceLocation getEntityTexture(ArrowCustomEntity entity) {
+			@Override protected ResourceLocation getEntityTexture(${name}Item.ArrowCustomEntity entity) {
 				return texture;
 			}
 		}
