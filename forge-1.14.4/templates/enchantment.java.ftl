@@ -84,6 +84,7 @@ public class ${name}Enchantment extends ${JavaModName}Elements.ModElement{
 			</#list>
 			Item item = stack.getItem();
 			return <#if data.excludeItems>!</#if>compatibleItems.contains(item);
+        }
         </#if>
 
 		@Override public boolean isTreasureEnchantment() {
