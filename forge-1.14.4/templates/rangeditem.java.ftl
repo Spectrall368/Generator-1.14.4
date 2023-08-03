@@ -121,6 +121,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				if (slot == EquipmentSlotType.MAINHAND) {
 					multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "ranged_item_damage", (double) ${data.damageVsEntity - 2}, AttributeModifier.Operation.ADDITION));
 					multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "ranged_item_attack_speed", -2.4, AttributeModifier.Operation.ADDITION));
+					return builder.build();
 				}
 				return multimap;
 			}
