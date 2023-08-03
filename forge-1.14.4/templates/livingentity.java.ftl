@@ -955,6 +955,14 @@ import net.minecraft.block.material.Material;
 	}
 	</#if>
 
+	<#if data.mobModelName == "Villager">
+	@OnlyIn(Dist.CLIENT) public void render(CustomEntity entity, float entityYaw, float partialTicks, GlStateManager glStateManager, BufferBuilder bufferIn, int packedLightIn) {
+    	glStateManager.pushMatrix();
+       	glStateManager.scalef(0.9375f, 0.9375f, 0.9375f);
+       	glStateManager.popMatrix();
+    	}
+	</#if>
+
 	<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
    	@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class) private static class ArrowCustomEntity extends AbstractArrowEntity implements IRendersAsItem {
 
