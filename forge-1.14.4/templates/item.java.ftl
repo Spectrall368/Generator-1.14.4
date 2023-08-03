@@ -145,7 +145,6 @@ package ${package}.item;
 				if (slot == EquipmentSlotType.MAINHAND) {
 					multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "item_damage", (double) ${data.damageVsEntity - 2}, AttributeModifier.Operation.ADDITION));
 					multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "item_attack_speed", -2.4, AttributeModifier.Operation.ADDITION));
-					return builder.build();
 				}
 				return multimap;
 			}
