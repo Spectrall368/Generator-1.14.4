@@ -1,15 +1,12 @@
 <#include "mcelements.ftl">
 (new Object() {
-	if (entity.world instanceof ServerWorld) {
-		ServerWorld serverWorld = (ServerWorld) entity.world;
-		RecipeManager recipeManager = serverWorld.getRecipeManager();
-		IRecipe<?> recipe = recipeManager.getRecipe(${toResourceLocation(input$recipe)}).orElse(null);
-    		public boolean hasRecipe(Entity _ent, IRecipe<?> recipe) {
-          		if (_ent instanceof ServerPlayerEntity)
-              			return ((ServerPlayerEntity)_ent).getRecipeBook().isUnlocked(recipe);
-          		else if (_ent.world.isRemote() && _ent instanceof ClientPlayerEntity)
-              			return ((ClientPlayerEntity)_ent).getRecipeBook().isUnlocked(recipe);
-        	  	return false;
-      		}	
-    	}
-}.hasRecipe(entity, recipe))
+	public boolean hasRecipe(Entity _ent, IRecipe<?> recipe) {
+		ServerPlayerEntity serverplayer = (ServerPlayerEntity) entity;
+		ClientPlayerEntity clientplayer = (ClientPlayerEntity) entity;
+        	if (_ent instanceof ServerPlayerEntity)
+        		return ((ServerPlayerEntity)_ent).getRecipeBook().isUnlocked(serverplayer.server.getRecipeManager().getRecipe(recipe).orElse(null));
+        	else if (_ent.world.isRemote() && _ent instanceof ClientPlayerEntity)
+        		return ((ClientPlayerEntity)_ent).getRecipeBook().isUnlocked(clientplayer.server.getRecipeManager().getRecipe(recipe).orElse(null));
+        	return false;
+      	}	
+}.hasRecipe(${input$entity}, ${toResourceLocation(input$recipe)}))
