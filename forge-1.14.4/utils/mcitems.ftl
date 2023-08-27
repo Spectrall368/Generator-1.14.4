@@ -77,7 +77,7 @@
     </#if>
 </#function>
 
-<#function mappedMCItemsToIngredient mappedBlocks>
+<#function mappedMCItemsToIngredient mappedBlocks=[]>
     <#if !mappedBlocks??>
         <#return "Ingredient.EMPTY">
     <#elseif mappedBlocks?size == 1>
