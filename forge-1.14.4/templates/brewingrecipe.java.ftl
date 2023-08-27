@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
+
 package ${package};
 
 @${JavaModName}Elements.ModElement.Tag
@@ -38,26 +39,36 @@ public class ${name}BrewingRecipe extends ${JavaModName}Elements.ModElement {
 		super(instance, ${data.getModElement().getSortID()});
 	}
 
-	@Override public void init(FMLCommonSetupEvent event) {
+	@Override
+	public void init(FMLCommonSetupEvent event) {
 		BrewingRecipeRegistry.addRecipe(new CustomBrewingRecipe());
 	}
 
 	public static class CustomBrewingRecipe implements IBrewingRecipe {
-		@Override public boolean isInput(ItemStack input) {
+		@Override
+		public boolean isInput(ItemStack input) {
 			<#if data.brewingInputStack?starts_with("POTION:")>
 			Item inputItem = input.getItem();
 			return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
 				&& PotionUtils.getPotionFromItem(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
+			<#elseif data.brewingInputStack?starts_with("TAG:")>
+			return ItemTags.getCollection().getOrCreate(new ResourceLocation("${data.brewingInputStack?replace("TAG:","")}")).contains(input.getItem());
 			<#else>
-		return ${mappedMCItemToIngredient(data.brewingInputStack)}.contains(input.getItem());
+			return input.getItem() == ${mappedMCItemToItem(data.brewingInputStack)};
 			</#if>
 		}
 
-	@Override public boolean isIngredient(ItemStack ingredient) {
-		return ${mappedMCItemToIngredient(data.brewingIngredientStack)}.contains(ingredient.getItem());
-	}
+		@Override
+		public boolean isIngredient(ItemStack ingredient) {
+			<#if data.brewingIngredientStack?starts_with("TAG:")>
+			return ItemTags.getCollection().getOrCreate(new ResourceLocation("${data.brewingIngredientStack?replace("TAG:","")}")).contains(ingredient.getItem());
+			<#else>
+			return ingredient.getItem() == ${mappedMCItemToItem(data.brewingIngredientStack)};
+			</#if>
+		}
 
-		@Override public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
+		@Override
+		public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
 			if (isInput(input) && isIngredient(ingredient)) {
 				<#if data.brewingReturnStack?starts_with("POTION:")>
 				return PotionUtils.addPotionToItemStack(
