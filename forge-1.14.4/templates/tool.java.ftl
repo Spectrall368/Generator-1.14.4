@@ -68,15 +68,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				}
 
    				public Ingredient getRepairMaterial() {
-					<#if data.repairItems?has_content>
-					return Ingredient.fromStacks(
-							<#list data.repairItems as repairItem>
-							${mappedMCItemToItemStackCode(repairItem,1)}<#if repairItem?has_next>,</#if>
-                			</#list>
-							);
-					<#else>
-					return Ingredient.EMPTY;
-					</#if>
+					return ${mappedMCItemsToIngredient(data.repairItems)};
 				}
 			}, <#if data.toolType=="Hoe">
 					${data.attackSpeed - 4}f
