@@ -67,55 +67,6 @@
     </#if>
 </#function>
 
-<#function mappedMCItemToIngredient mappedBlock>
-    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "Ingredient.fromStacks(ItemTags.getCollection().getOrCreate(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\")))">
-    <#elseif generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-        <#return "Ingredient.fromStacks(ItemTags.getCollection().getOrCreate(new ResourceLocation(\"" + generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "") + "\")))">
-    <#else>
-        <#return "Ingredient.fromStacks(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
-    </#if>
-</#function>
-
-<#function mappedMCItemsToIngredient mappedBlocks=[]>
-    <#if !mappedBlocks??>
-        <#return "Ingredient.EMPTY">
-    <#elseif mappedBlocks?size == 1>
-        <#return mappedMCItemToIngredient(mappedBlocks[0])>
-    <#else>
-        <#assign itemsOnly = true>
-
-        <#list mappedBlocks as mappedBlock>
-            <#if mappedBlock.getUnmappedValue().startsWith("TAG:") || generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-                <#assign itemsOnly = false>
-                <#break>
-            </#if>
-        </#list>
-
-        <#if itemsOnly>
-            <#assign retval = "Ingredient.fromStacks(">
-            <#list mappedBlocks as mappedBlock>
-                <#assign retval += mappedMCItemToItemStackCode(mappedBlock, 1)>
-
-                <#if mappedBlock?has_next>
-                    <#assign retval += ",">
-                </#if>
-            </#list>
-            <#return retval + ")">
-        <#else>
-            <#assign retval = "CompoundIngredient.fromStacks(">
-            <#list mappedBlocks as mappedBlock>
-                <#assign retval += mappedMCItemToIngredient(mappedBlock)>
-
-                <#if mappedBlock?has_next>
-                    <#assign retval += ",">
-                </#if>
-            </#list>
-            <#return retval + ")">
-        </#if>
-    </#if>
-</#function>
-
 <#function mappedElementToClassName mappedElement>
     <#return generator.getElementPlainName(mappedElement) + generator.isRecipeTypeBlockOrBucket(mappedElement)?then("Block", "Item")>
 </#function>
