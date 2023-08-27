@@ -1,1 +1,2 @@
-/*@ItemStack*/((${input$entity} instanceof PlayerEntity)?((PlayerEntity)${input$entity}).inventory.armorInventory.get((int) ${input$slotid}):ItemStack.EMPTY)
+<#include "mcelements.ftl">
+/*@ItemStack*/((${input$entity} instanceof LivingEntity)?((LivingEntity)${input$entity}).getItemStackFromSlot(${toArmorSlot(input$slotid)}):ItemStack.EMPTY)
