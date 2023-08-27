@@ -287,7 +287,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
 	<#if data.hasTransparency && !data.blockBase?has_content>
-	@Override public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	@Override public VoxelShape getRaytraceShape(BlockState state, IBlockReader world, BlockPos pos) {
 		return VoxelShapes.empty();
 	}
 	</#if>
