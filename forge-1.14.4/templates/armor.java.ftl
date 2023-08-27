@@ -73,15 +73,7 @@ package ${package}.item;
 			}
 
 			@Override public Ingredient getRepairMaterial() {
-				<#if data.repairItems?has_content>
-				return Ingredient.fromStacks(
-							<#list data.repairItems as repairItem>
-							${mappedMCItemToItemStackCode(repairItem,1)}<#if repairItem?has_next>,</#if>
-                					</#list>
-						);
-				<#else>
-				return Ingredient.EMPTY;
-				</#if>
+				return ${mappedMCItemsToIngredient(data.repairItems)};
 			}
 
 			@OnlyIn(Dist.CLIENT) @Override public String getName() {
