@@ -6,6 +6,20 @@
     </#if>
 </#function>
 
+<#function toArmorSlot slot>
+    <#if slot == "/*@int*/0">
+        <#return "EquipmentSlotType.FEET">
+    <#elseif slot == "/*@int*/1">
+        <#return "EquipmentSlotType.LEGS">
+    <#elseif slot == "/*@int*/2">
+        <#return "EquipmentSlotType.CHEST">
+    <#elseif slot == "/*@int*/3">
+        <#return "EquipmentSlotType.HEAD">
+    <#else>
+        <#return "EquipmentSlotType.func_220318_a(EquipmentSlotType.Group.ARMOR, ${opt.toInt(slot)})">
+    </#if>
+</#function>
+
 <#function toAxis direction>
     <#if (direction == "Direction.EAST") || (direction == "Direction.WEST")>
         <#return "Direction.Axis.X">
