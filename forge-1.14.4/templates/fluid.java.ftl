@@ -239,6 +239,12 @@ import net.minecraftforge.common.property.Properties;
 		}
 		</#if>
 
+		<#if data.flowStrength != 1>
+		@Override public Vec3d func_215663_a(IBlockReader world, BlockPos pos, IFluidState fluidstate) {
+			return super.func_215663_a(world, pos, fluidstate).scale(${data.flowStrength});
+		}
+		</#if>
+
 		<#if hasProcedure(data.flowCondition)>
 		@Override protected boolean canFlow(IBlockReader worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, IFluidState toFluidState, Fluid fluidIn) {
 			boolean condition = true;
