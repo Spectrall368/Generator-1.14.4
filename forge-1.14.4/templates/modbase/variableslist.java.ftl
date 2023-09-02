@@ -88,7 +88,7 @@ public class ${JavaModName}Variables {
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (world instanceof World && !world.isRemote)
+			if (world.getWorld() instanceof World && !world.isRemote)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world).dimension::getType), new WorldSavedDataSyncMessage(1, this));
 		}
 
