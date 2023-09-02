@@ -1,11 +1,55 @@
+<#--
+ # MCreator (https://mcreator.net/)
+ # Copyright (C) 2020 Pylo and contributors
+ # 
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ # 
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ # 
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ # 
+ # Additional permission for code generator templates (*.ftl files)
+ # 
+ # As a special exception, you may create a larger work that contains part or 
+ # all of the MCreator code generator templates (*.ftl files) and distribute 
+ # that work under terms of your choice, so long as that work isn't itself a 
+ # template for code generation. Alternatively, if you modify or redistribute 
+ # the template itself, you may (at your option) remove this special exception, 
+ # which will cause the template and the resulting code generator output files 
+ # to be licensed under the GNU General Public License without this special 
+ # exception.
+-->
+
 <#-- @formatter:off -->
-package ${package}.network;
+package ${package};
 
 import ${package}.${JavaModName};
 
-import net.minecraft.nbt.Tag;
+public class ${JavaModName}Variables {
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
+	public ${JavaModName}Variables(${JavaModName}Elements elements) {
+		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
+		elements.addNetworkMessage(WorldSavedDataSyncMessage.class, WorldSavedDataSyncMessage::buffer, WorldSavedDataSyncMessage::new, WorldSavedDataSyncMessage::handler);
+		</#if>
+
+		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
+		elements.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
+		</#if>
+	}
+
+	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
+	private void init(FMLCommonSetupEvent event) {
+		CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
+	}
+	</#if>
 
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
 		<#list variables as var>
@@ -15,86 +59,27 @@ import net.minecraft.nbt.Tag;
 		</#list>
 	</#if>
 
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::buffer, SavedDataSyncMessage::new, SavedDataSyncMessage::handler);
-		</#if>
-
-		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
-		</#if>
-	}
-
-	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-	@SubscribeEvent public static void init(RegisterCapabilitiesEvent event) {
-		event.register(PlayerVariables.class);
-	}
-	</#if>
-
-	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT") || w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-	@Mod.EventBusSubscriber public static class EventBusVariableHandlers {
-
-		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-		@SubscribeEvent public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().level.isClientSide())
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
-		}
-
-		@SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
-			if (!event.getPlayer().level.isClientSide())
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
-		}
-
-		@SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
-			if (!event.getPlayer().level.isClientSide())
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
-		}
-
-		@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
-			event.getOriginal().revive();
-
-			PlayerVariables original = ((PlayerVariables) event.getOriginal().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
-			PlayerVariables clone = ((PlayerVariables) event.getEntity().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
-			<#list variables as var>
-				<#if var.getScope().name() == "PLAYER_PERSISTENT">
-				clone.${var.getName()} = original.${var.getName()};
-				</#if>
-			</#list>
-			if(!event.isWasDeath()) {
-				<#list variables as var>
-					<#if var.getScope().name() == "PLAYER_LIFETIME">
-					clone.${var.getName()} = original.${var.getName()};
-					</#if>
-				</#list>
-			}
-		}
-		</#if>
-
-		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-		@SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().level.isClientSide()) {
-				SavedData mapdata = MapVariables.get(event.getPlayer().level);
-				SavedData worlddata = WorldVariables.get(event.getPlayer().level);
-				if(mapdata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()), new SavedDataSyncMessage(0, mapdata));
-				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()), new SavedDataSyncMessage(1, worlddata));
-			}
-		}
-
-		@SubscribeEvent public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-			if (!event.getPlayer().level.isClientSide()) {
-				SavedData worlddata = WorldVariables.get(event.getPlayer().level);
-				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()), new SavedDataSyncMessage(1, worlddata));
-			}
-		}
-		</#if>
-	}
-	</#if>
-
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-	public static class WorldVariables extends SavedData {
+	@SubscribeEvent public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+		if (!event.getPlayer().world.isRemote) {
+			WorldSavedData mapdata = MapVariables.get(event.getPlayer().world);
+			WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
+			if(mapdata != null)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new WorldSavedDataSyncMessage(0, mapdata));
+			if(worlddata != null)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new WorldSavedDataSyncMessage(1, worlddata));
+		}
+	}
+
+	@SubscribeEvent public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+		if (!event.getPlayer().world.isRemote) {
+			WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
+			if(worlddata != null)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new WorldSavedDataSyncMessage(1, worlddata));
+		}
+	}
+
+	public static class WorldVariables extends WorldSavedData {
 
 		public static final String DATA_NAME = "${modid}_worldvars";
 
@@ -104,13 +89,15 @@ import net.minecraft.nbt.Tag;
 			</#if>
 		</#list>
 
-		public static WorldVariables load(CompoundTag tag) {
-			WorldVariables data = new WorldVariables();
-			data.read(tag);
-			return data;
+		public WorldVariables() {
+			super(DATA_NAME);
 		}
 
-		public void read(CompoundTag nbt) {
+		public WorldVariables(String s) {
+			super(s);
+		}
+
+		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['read']?interpret/>
@@ -118,7 +105,7 @@ import net.minecraft.nbt.Tag;
 			</#list>
 		}
 
-		@Override public CompoundTag save(CompoundTag nbt) {
+		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
@@ -127,26 +114,26 @@ import net.minecraft.nbt.Tag;
 			return nbt;
 		}
 
-		public void syncData(LevelAccessor world) {
-			this.setDirty();
+		public void syncData(IWorld world) {
+			this.markDirty();
 
-			if (world instanceof Level level && !level.isClientSide())
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(level::dimension), new SavedDataSyncMessage(1, this));
+			if (!world.getWorld().isRemote)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld().dimension::getType), new WorldSavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
 
-		public static WorldVariables get(LevelAccessor world) {
-			if (world instanceof ServerLevel level) {
-				return level.getDataStorage().computeIfAbsent(e -> WorldVariables.load(e), WorldVariables::new, DATA_NAME);
-			} else {
+		public static WorldVariables get(IWorld world) {
+			if (world.getWorld() instanceof ServerWorld) {
+        		return ((ServerWorld) world.getWorld()).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
+        	} else {
 				return clientSide;
-			}
+        	}
 		}
 
 	}
 
-	public static class MapVariables extends SavedData {
+	public static class MapVariables extends WorldSavedData {
 
 		public static final String DATA_NAME = "${modid}_mapvars";
 
@@ -156,13 +143,15 @@ import net.minecraft.nbt.Tag;
 			</#if>
 		</#list>
 
-		public static MapVariables load(CompoundTag tag) {
-			MapVariables data = new MapVariables();
-			data.read(tag);
-			return data;
+		public MapVariables() {
+			super(DATA_NAME);
 		}
 
-		public void read(CompoundTag nbt) {
+		public MapVariables(String s) {
+			super(s);
+		}
+
+		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['read']?interpret/>
@@ -170,7 +159,7 @@ import net.minecraft.nbt.Tag;
 			</#list>
 		}
 
-		@Override public CompoundTag save(CompoundTag nbt) {
+		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['write']?interpret/>
@@ -179,52 +168,47 @@ import net.minecraft.nbt.Tag;
 			return nbt;
 		}
 
-		public void syncData(LevelAccessor world) {
-			this.setDirty();
+		public void syncData(IWorld world) {
+			this.markDirty();
 
-			if (world instanceof Level && !world.isClientSide())
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
+			if (!world.getWorld().isRemote)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new WorldSavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
 
-		public static MapVariables get(LevelAccessor world) {
-			if (world instanceof ServerLevelAccessor serverLevelAcc) {
-				return serverLevelAcc.getLevel().getServer().getLevel(Level.OVERWORLD).getDataStorage()
-						.computeIfAbsent(e -> MapVariables.load(e), MapVariables::new, DATA_NAME);
-			} else {
+		public static MapVariables get(IWorld world) {
+			if (world.getWorld() instanceof ServerWorld) {
+        		return world.getWorld().getServer().getWorld(DimensionType.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
+        	} else {
 				return clientSide;
-			}
+        	}
 		}
 
 	}
 
-	public static class SavedDataSyncMessage {
+	public static class WorldSavedDataSyncMessage {
 
 		public int type;
-		public SavedData data;
+		public WorldSavedData data;
 
-		public SavedDataSyncMessage(FriendlyByteBuf buffer) {
+		public WorldSavedDataSyncMessage(PacketBuffer buffer) {
 			this.type = buffer.readInt();
 			this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
-
-			if(this.data instanceof MapVariables _mapvars)
-				_mapvars.read(buffer.readNbt());
-			else if(this.data instanceof WorldVariables _worldvars)
-				_worldvars.read(buffer.readNbt());
+			this.data.read(buffer.readCompoundTag());
 		}
 
-		public SavedDataSyncMessage(int type, SavedData data) {
+		public WorldSavedDataSyncMessage(int type, WorldSavedData data) {
 			this.type = type;
 			this.data = data;
 		}
 
-		public static void buffer(SavedDataSyncMessage message, FriendlyByteBuf buffer) {
+		public static void buffer(WorldSavedDataSyncMessage message, PacketBuffer buffer) {
 			buffer.writeInt(message.type);
-			buffer.writeNbt(message.data.save(new CompoundTag()));
+			buffer.writeCompoundTag(message.data.write(new CompoundNBT()));
 		}
 
-		public static void handler(SavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
+		public static void handler(WorldSavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
 				if (!context.getDirection().getReceptionSide().isServer()) {
@@ -233,37 +217,62 @@ import net.minecraft.nbt.Tag;
 					else
 						WorldVariables.clientSide = (WorldVariables) message.data;
 				}
-			});
-			context.setPacketHandled(true);
+    		});
+    		context.setPacketHandled(true);
 		}
 
 	}
 	</#if>
 
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-	public static final Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = CapabilityManager.get(new CapabilityToken<PlayerVariables>() {});
+	@CapabilityInject(PlayerVariables.class) public static Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = null;
 
-	@Mod.EventBusSubscriber private static class PlayerVariablesProvider implements ICapabilitySerializable<Tag> {
+	@SubscribeEvent public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+    	if (event.getObject() instanceof PlayerEntity && !(event.getObject() instanceof FakePlayer))
+			event.addCapability(new ResourceLocation("${modid}", "player_variables"), new PlayerVariablesProvider());
+	}
 
-		@SubscribeEvent public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-			if (event.getObject() instanceof Player && !(event.getObject() instanceof FakePlayer))
-				event.addCapability(new ResourceLocation("${modid}", "player_variables"), new PlayerVariablesProvider());
-		}
+	private static class PlayerVariablesProvider implements ICapabilitySerializable<INBT> {
 
-		private final PlayerVariables playerVariables = new PlayerVariables();
-
-		private final LazyOptional<PlayerVariables> instance = LazyOptional.of(() -> playerVariables);
+		private final LazyOptional<PlayerVariables> instance = LazyOptional.of(PLAYER_VARIABLES_CAPABILITY::getDefaultInstance);
 
 		@Override public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 			return cap == PLAYER_VARIABLES_CAPABILITY ? instance.cast() : LazyOptional.empty();
 		}
 
-		@Override public Tag serializeNBT() {
-			return playerVariables.writeNBT();
+		@Override public INBT serializeNBT() {
+			return PLAYER_VARIABLES_CAPABILITY.getStorage().writeNBT(PLAYER_VARIABLES_CAPABILITY, this.instance.orElseThrow(RuntimeException::new), null);
 		}
 
-		@Override public void deserializeNBT(Tag nbt) {
-			playerVariables.readNBT(nbt);
+		@Override public void deserializeNBT(INBT nbt) {
+			PLAYER_VARIABLES_CAPABILITY.getStorage().readNBT(PLAYER_VARIABLES_CAPABILITY, this.instance.orElseThrow(RuntimeException::new), null, nbt);
+		}
+
+	}
+
+	private static class PlayerVariablesStorage implements Capability.IStorage<PlayerVariables> {
+
+		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
+			CompoundNBT nbt = new CompoundNBT();
+			<#list variables as var>
+				<#if var.getScope().name() == "PLAYER_LIFETIME">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['write']?interpret/>
+				<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['write']?interpret/>
+				</#if>
+			</#list>
+			return nbt;
+		}
+
+		@Override public void readNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side, INBT inbt) {
+			CompoundNBT nbt = (CompoundNBT) inbt;
+			<#list variables as var>
+				<#if var.getScope().name() == "PLAYER_LIFETIME">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
+				<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['read']?interpret/>
+				</#if>
+			</#list>
 		}
 
 	}
@@ -279,50 +288,59 @@ import net.minecraft.nbt.Tag;
 		</#list>
 
 		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayer serverPlayer)
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerVariablesSyncMessage(this));
+			if (entity instanceof ServerPlayerEntity)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
 		}
 
-		public Tag writeNBT() {
-			CompoundTag nbt = new CompoundTag();
+	}
+
+	@SubscribeEvent public void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
+		if (!event.getPlayer().world.isRemote)
+			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
+	}
+
+	@SubscribeEvent public void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
+		if (!event.getPlayer().world.isRemote)
+			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
+	}
+
+	@SubscribeEvent public void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
+		if (!event.getPlayer().world.isRemote)
+			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
+	}
+
+	@SubscribeEvent public void clonePlayer(PlayerEvent.Clone event) {
+		PlayerVariables original = ((PlayerVariables) event.getOriginal().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
+		PlayerVariables clone = ((PlayerVariables) event.getEntity().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
+		<#list variables as var>
+			<#if var.getScope().name() == "PLAYER_PERSISTENT">
+			clone.${var.getName()} = original.${var.getName()};
+			</#if>
+		</#list>
+		if(!event.isWasDeath()) {
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
-					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['write']?interpret/>
-				<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
-					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['write']?interpret/>
-				</#if>
-			</#list>
-			return nbt;
-		}
-
-		public void readNBT(Tag Tag) {
-			CompoundTag nbt = (CompoundTag) Tag;
-			<#list variables as var>
-				<#if var.getScope().name() == "PLAYER_LIFETIME">
-					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
-				<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
-					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['read']?interpret/>
+				clone.${var.getName()} = original.${var.getName()};
 				</#if>
 			</#list>
 		}
-
 	}
 
 	public static class PlayerVariablesSyncMessage {
 
 		public PlayerVariables data;
 
-		public PlayerVariablesSyncMessage(FriendlyByteBuf buffer) {
+		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
-			this.data.readNBT(buffer.readNbt());
+			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
 			this.data = data;
 		}
 
-		public static void buffer(PlayerVariablesSyncMessage message, FriendlyByteBuf buffer) {
-			buffer.writeNbt((CompoundTag) message.data.writeNBT());
+		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
+			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
 		}
 
 		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
