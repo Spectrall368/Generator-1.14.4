@@ -19,8 +19,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 minecraft {
     mappings channel: 'snapshot', version: '20190719-1.14.3'
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
     runs {
         client {
             workingDirectory project.file('run')
@@ -52,10 +50,6 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-${generator.getGeneratorBuildFileVersion()}'
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
 apply from: 'mcreator.gradle'
