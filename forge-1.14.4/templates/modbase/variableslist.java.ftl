@@ -1,32 +1,3 @@
-<#--
- # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
- # 
- # This program is free software: you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- # 
- # This program is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- # GNU General Public License for more details.
- # 
- # You should have received a copy of the GNU General Public License
- # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
- # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
- # exception.
--->
-
 <#-- @formatter:off -->
 package ${package};
 
@@ -61,7 +32,7 @@ public class ${JavaModName}Variables {
 
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 	@SubscribeEvent public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().world.isRemote) {
+		if (!event.getPlayer().world.isRemote()) {
 			WorldSavedData mapdata = MapVariables.get(event.getPlayer().world);
 			WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 			if(mapdata != null)
@@ -72,7 +43,7 @@ public class ${JavaModName}Variables {
 	}
 
 	@SubscribeEvent public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().world.isRemote) {
+		if (!event.getPlayer().world.isRemote()) {
 			WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 			if(worlddata != null)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new WorldSavedDataSyncMessage(1, worlddata));
@@ -84,10 +55,10 @@ public class ${JavaModName}Variables {
 		public static final String DATA_NAME = "${modid}_worldvars";
 
 		<#list variables as var>
-			<#if var.getScope().name() == "GLOBAL_WORLD">
+            <#if var.getScope().name() == "GLOBAL_WORLD">
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['init']?interpret/>
-			</#if>
-		</#list>
+            </#if>
+        </#list>
 
 		public WorldVariables() {
 			super(DATA_NAME);
@@ -99,33 +70,33 @@ public class ${JavaModName}Variables {
 
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
-				<#if var.getScope().name() == "GLOBAL_WORLD">
+                <#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['read']?interpret/>
-				</#if>
-			</#list>
+                </#if>
+            </#list>
 		}
 
 		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
-				<#if var.getScope().name() == "GLOBAL_WORLD">
+                <#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
-				</#if>
-			</#list>
+                </#if>
+            </#list>
 			return nbt;
 		}
 
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (!world.getWorld().isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld().dimension::getType), new WorldSavedDataSyncMessage(1, this));
+			if (world instanceof World && !world.isRemote())
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world)::getDimensionKey), new WorldSavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
 
 		public static WorldVariables get(IWorld world) {
-			if (world.getWorld() instanceof ServerWorld) {
-        		return ((ServerWorld) world.getWorld()).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
+			if (world instanceof ServerWorld) {
+        		return ((ServerWorld) world).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
         	} else {
 				return clientSide;
         	}
@@ -138,10 +109,10 @@ public class ${JavaModName}Variables {
 		public static final String DATA_NAME = "${modid}_mapvars";
 
 		<#list variables as var>
-			<#if var.getScope().name() == "GLOBAL_MAP">
+            <#if var.getScope().name() == "GLOBAL_MAP">
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['init']?interpret/>
-			</#if>
-		</#list>
+            </#if>
+        </#list>
 
 		public MapVariables() {
 			super(DATA_NAME);
@@ -153,33 +124,33 @@ public class ${JavaModName}Variables {
 
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
-				<#if var.getScope().name() == "GLOBAL_MAP">
+                <#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['read']?interpret/>
-				</#if>
-			</#list>
+                </#if>
+            </#list>
 		}
 
 		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
-				<#if var.getScope().name() == "GLOBAL_MAP">
+                <#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['write']?interpret/>
-				</#if>
-			</#list>
+                </#if>
+            </#list>
 			return nbt;
 		}
 
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (!world.getWorld().isRemote)
+			if (world instanceof World && !world.isRemote())
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new WorldSavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
 
 		public static MapVariables get(IWorld world) {
-			if (world.getWorld() instanceof ServerWorld) {
-        		return world.getWorld().getServer().getWorld(DimensionType.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
+			if (world instanceof IServerWorld) {
+        		return ((IServerWorld) world).getWorld().getServer().getWorld(World.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
         	} else {
 				return clientSide;
         	}
@@ -295,17 +266,17 @@ public class ${JavaModName}Variables {
 	}
 
 	@SubscribeEvent public void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().world.isRemote)
+		if (!event.getPlayer().world.isRemote())
 			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 	}
 
 	@SubscribeEvent public void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
-		if (!event.getPlayer().world.isRemote)
+		if (!event.getPlayer().world.isRemote())
 			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 	}
 
 	@SubscribeEvent public void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().world.isRemote)
+		if (!event.getPlayer().world.isRemote())
 			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 	}
 
