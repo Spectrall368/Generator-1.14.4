@@ -11,7 +11,7 @@ new Object() {
 		entityToSpawn.accelerationX = ax;
 		entityToSpawn.accelerationY = ay;
 		entityToSpawn.accelerationZ = az;
-        	if (_entityToSpawn instanceof FireballEntity)
+        	if (entityToSpawn instanceof FireballEntity)
             		((FireballEntity) entityToSpawn).explosionPower = 4;
 		</#if>
 		return entityToSpawn;
