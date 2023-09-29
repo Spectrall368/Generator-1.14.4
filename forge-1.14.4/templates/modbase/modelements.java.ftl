@@ -140,7 +140,7 @@ public class ${JavaModName}Elements {
 	public static class ModElement implements Comparable<ModElement> {
 
 		@Retention(RetentionPolicy.RUNTIME)
-		public interface Tag { }
+		public @interface Tag { }
 
 		protected final ${JavaModName}Elements elements;
 		protected final int sortid;
