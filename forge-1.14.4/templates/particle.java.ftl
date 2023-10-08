@@ -64,8 +64,8 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			super(world, x, y, z);
 			this.spriteSet = spriteSet;
 
-			this.setSize((float) ${data.width}, (float) ${data.height});
-			this.particleScale *= (float) ${data.scale};
+			this.setSize(${data.width}f, ${data.height}f);
+			this.particleScale *= ${data.scale}f;
 
 			<#if (data.maxAgeDiff > 0)>
 			this.maxAge = (int) Math.max(1, ${data.maxAge} + (this.rand.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
@@ -73,7 +73,7 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			this.maxAge = ${data.maxAge};
 			</#if>
 
-			this.particleGravity = (float) ${data.gravity};
+			this.particleGravity = ${data.gravity}f;
 			this.canCollide = ${data.canCollide};
 
 			this.motionX = vx * ${data.speedFactor};
@@ -81,8 +81,8 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			this.motionZ = vz * ${data.speedFactor};
 
 			<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
-			this.angularVelocity = (float) ${data.angularVelocity};
-			this.angularAcceleration = (float) ${data.angularAcceleration};
+			this.angularVelocity = ${data.angularVelocity}f;
+			this.angularAcceleration = ${data.angularAcceleration}f;
 			</#if>
 
 			<#if data.animate>
