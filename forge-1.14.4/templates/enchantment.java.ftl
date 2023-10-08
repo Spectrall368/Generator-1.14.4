@@ -52,13 +52,17 @@ public class ${name}Enchantment extends ${JavaModName}Elements.ModElement{
 			super(Enchantment.Rarity.${data.rarity}, EnchantmentType.${generator.map(data.type, "enchantmenttypes")}, slots);
         }
 
+	<#if data.minLevel != 1>
 		@Override public int getMinLevel() {
 			return ${data.minLevel};
 		}
+	</#if>
 
+	<#if data.maxLevel != 1>
 		@Override public int getMaxLevel() {
 			return ${data.maxLevel};
 		}
+	</#if>
 
 		<#if data.damageModifier != 0>
 		@Override public int calcModifierDamage(int level, DamageSource source) {
@@ -87,19 +91,23 @@ public class ${name}Enchantment extends ${JavaModName}Elements.ModElement{
         }
         </#if>
 
+	<#if data.isTreasureEnchantment>
 		@Override public boolean isTreasureEnchantment() {
-			return ${data.isTreasureEnchantment};
+			return true;
 		}
+	</#if>
 
+	<#if data.isCurse>
 		@Override public boolean isCurse() {
-			return ${data.isCurse};
+			return true;
 		}
+	</#if>
 
+	<#if !data.isAllowedOnBooks>
 		@Override public boolean isAllowedOnBooks() {
-			return ${data.isAllowedOnBooks};
+			return false;
 		}
-
+	</#if>
 	}
-
 }
 <#-- @formatter:on -->
