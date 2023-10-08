@@ -41,7 +41,7 @@ package ${package}.init;
 	@SubscribeEvent public static void registerPaintingType(RegistryEvent.Register<PaintingType> event) {
 		<#list paintings as painting>
 		event.getRegistry().register(new PaintingType(${painting.width}, ${painting.height}).setRegistryName("${painting.getModElement().getRegistryName()}"));
-        </#list>
+        	</#list>
 	}
 
 }
