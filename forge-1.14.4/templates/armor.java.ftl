@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -52,19 +53,19 @@ package ${package}.item;
 
 	@Override public void initElements() {
 		IArmorMaterial armormaterial = new IArmorMaterial() {
-			@Override public int getDurability(EquipmentSlotType slot) {
+			@Override public int getDurabilityForSlot(EquipmentSlotType slot) {
 				return new int[]{13, 15, 16, 11}[slot.getIndex()] * ${data.maxDamage};
 			}
 
-  		 	@Override public int getDamageReductionAmount(EquipmentSlotType slot) {
+  		 	@Override public int getDefenseForSlot(EquipmentSlotType slot) {
 				return new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} }[slot.getIndex()];
 			}
 
-			@Override public int getEnchantability() {
+			@Override public int getEnchantmentValue() {
 				return ${data.enchantability};
 			}
 
-			@Override public net.minecraft.util.SoundEvent getSoundEvent() {
+			@Override public net.minecraft.util.SoundEvent getEquipSound() {
 				<#if data.equipSound??>
 				return (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
@@ -72,9 +73,9 @@ package ${package}.item;
 				</#if>
 			}
 
-			@Override public Ingredient getRepairMaterial() {
+			@Override public Ingredient getRepairIngredient() {
 				<#if data.repairItems?has_content>
-				return Ingredient.fromStacks(
+				return Ingredient.of(
 							<#list data.repairItems as repairItem>
 							${mappedMCItemToItemStackCode(repairItem,1)}<#if repairItem?has_next>,</#if>
                 					</#list>
