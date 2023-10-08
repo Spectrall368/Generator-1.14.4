@@ -48,6 +48,8 @@ package ${package}.init;
 				GameRules.register("${gamerule.getModElement().getRegistryName()}",
 				GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	</#list>
 
 }
