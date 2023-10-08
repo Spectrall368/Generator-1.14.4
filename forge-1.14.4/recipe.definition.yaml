@@ -27,4 +27,4 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
 
-field_exclusions: [smithingInputStack, smithingInputAdditionStack, smithingReturnStack]
+field_exclusions: [SmithingRecipeMaker]
