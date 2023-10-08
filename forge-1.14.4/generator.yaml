@@ -52,7 +52,12 @@ base_templates:
   - template: modbase/mods.toml.ftl
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
-
+  - template: modbase/accesstransformer.cfg.ftl
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
+      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
+    
 language_file:
   format: json
   root_folder: "@MODASSETSROOT/lang/"
