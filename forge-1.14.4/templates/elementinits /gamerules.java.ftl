@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -48,8 +48,6 @@ package ${package}.init;
 				GameRules.register("${gamerule.getModElement().getRegistryName()}",
 				GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	</#list>
 
 }
