@@ -85,6 +85,8 @@ import org.apache.logging.log4j.Logger;
 		elements.getElements().forEach(element -> element.serverLoad(event));
 	}
 
+	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
 	<#if w.hasElementsOfBaseType("block")>
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
@@ -109,11 +111,15 @@ import org.apache.logging.log4j.Logger;
 	}
 	</#if>
 
+	<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.register(bus);</#if>
+
 	<#if w.hasElementsOfType("enchantment")>
 	@SubscribeEvent public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
 		event.getRegistry().registerAll(elements.getEnchantments().stream().map(Supplier::get).toArray(Enchantment[]::new));
 	}
 	</#if>
+
+	<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 
 	@SubscribeEvent public void registerSounds(RegistryEvent.Register<net.minecraft.util.SoundEvent> event) {
 		elements.registerSounds(event);
