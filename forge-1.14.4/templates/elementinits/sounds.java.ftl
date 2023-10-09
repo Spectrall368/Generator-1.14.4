@@ -44,7 +44,7 @@ public class ${JavaModName}Sounds {
 
 	<#list sounds as sound>
 	public static final RegistryObject<SoundEvent> ${sound.getName()?upper_case?replace(".", "_")?replace("/", "_")?replace(":", "_")?replace("-", "_")} = REGISTRY.register("${sound.getName()}", () ->
-			new SoundEvent(new ResourceLocation(MODID, "${sound}")));
+			new SoundEvent(new ResourceLocation("${modid}", "${sound}")));
 	</#list>
 
 }
