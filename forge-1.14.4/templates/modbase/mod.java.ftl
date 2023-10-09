@@ -86,13 +86,7 @@ import org.apache.logging.log4j.Logger;
 	<#if w.hasElementsOfType("potioneffect")>${JavaModName}Effects.REGISTRY.register(bus);</#if>
 	<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 	<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
-
-	<#if w.hasElementsOfType("enchantment")>
-	@SubscribeEvent public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
-		event.getRegistry().registerAll(elements.getEnchantments().stream().map(Supplier::get).toArray(Enchantment[]::new));
-	}
-	</#if>
-
+	<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
 	<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 
 	}
