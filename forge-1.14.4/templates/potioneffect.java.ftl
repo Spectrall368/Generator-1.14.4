@@ -35,7 +35,7 @@
 package ${package}.potion;
 
 <#compress>
-public static class ${name}Effect extends Effect {
+public class ${name}Effect extends Effect {
 
 	public ${name}Effect() {
 		super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
