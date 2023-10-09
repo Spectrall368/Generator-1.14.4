@@ -83,7 +83,7 @@ import org.apache.logging.log4j.Logger;
 		event.getRegistry().registerAll(elements.getEntities().stream().map(Supplier::get).toArray(EntityType[]::new));
 	}
 	</#if>
-
+	<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 	<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 
 	<#if w.hasElementsOfType("enchantment")>
