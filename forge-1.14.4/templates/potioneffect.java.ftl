@@ -1,29 +1,30 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
- # 
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- # 
+ #
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- # 
+ #
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
+ #
  # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
  # exception.
 -->
 
@@ -33,54 +34,31 @@
 
 package ${package}.potion;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}PotionEffect extends ${JavaModName}Elements.ModElement{
+<#compress>
+public static class ${name}Effect extends Effect {
 
-	@ObjectHolder("${modid}:${registryname}")
-	public static final Effect potion = null;
-
-	public ${name}PotionEffect (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-	}
-
-	@SubscribeEvent public void registerEffect(RegistryEvent.Register<Effect> event) {
-		event.getRegistry().register(new EffectCustom());
-	}
-
-	public static class EffectCustom extends Effect {
-
-		public EffectCustom() {
-			super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
-			setRegistryName("${registryname}");
+	public ${name}Effect() {
+		super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 		}
 
-		@Override public String getName() {
-      		return "effect.${registryname}";
-   		}
+	@Override public String getName() {
+		return "effect.${modid}.${registryname}";
+	}
 
+	<#if data.isBenefitical>
 		@Override public boolean isBeneficial() {
-        	return ${data.isBenefitical};
-    	}
-
-		@Override public boolean isInstant() {
-        	return ${data.isInstant};
-    	}
-
-   	 	@Override public boolean shouldRenderInvText(EffectInstance effect) {
-    	    return ${data.renderStatusInInventory};
-    	}
-
-		@Override public boolean shouldRender(EffectInstance effect) {
-			return ${data.renderStatusInInventory};
+			return true;
 		}
+	</#if>
 
-    	@Override public boolean shouldRenderHUD(EffectInstance effect) {
-    	    return ${data.renderStatusInHUD};
-    	}
+	<#if data.isInstant>
+		@Override public boolean isInstant() {
+			return true;
+		}
+	</#if>
 
-		<#if hasProcedure(data.onStarted)>
-			<#if data.isInstant>
+	<#if hasProcedure(data.onStarted)>
+		<#if data.isInstant>
 			@Override public void affectEntity(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
 				World world = entity.world;
 				double x = entity.posX;
@@ -88,7 +66,7 @@ package ${package}.potion;
 				double z = entity.posZ;
 				<@procedureOBJToCode data.onStarted/>
 			}
-			<#else>
+		<#else>
 			@Override public void applyAttributesModifiersToEntity(LivingEntity entity, AbstractAttributeMap attributeMapIn, int amplifier) {
 				World world = entity.world;
 				double x = entity.posX;
@@ -96,10 +74,10 @@ package ${package}.potion;
 				double z = entity.posZ;
 				<@procedureOBJToCode data.onStarted/>
 			}
-			</#if>
 		</#if>
+	</#if>
 
-		<#if hasProcedure(data.onActiveTick)>
+	<#if hasProcedure(data.onActiveTick)>
 		@Override public void performEffect(LivingEntity entity, int amplifier) {
 			World world = entity.world;
 			double x = entity.posX;
@@ -107,28 +85,44 @@ package ${package}.potion;
 			double z = entity.posZ;
 			<@procedureOBJToCode data.onActiveTick/>
 		}
-		</#if>
+	</#if>
 
-    	<#if hasProcedure(data.onExpired)>
+	<#if hasProcedure(data.onExpired)>
 		@Override public void removeAttributesModifiersFromEntity(LivingEntity entity, AbstractAttributeMap attributeMapIn, int amplifier) {
-    		super.removeAttributesModifiersFromEntity(entity, attributeMapIn, amplifier);
-    		World world = entity.world;
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			<@procedureOBJToCode data.onExpired/>
+			super.removeAttributesModifiersFromEntity(entity, attributeMapIn, amplifier);
+    				World world = entity.world;
+				double x = entity.posX;
+				double y = entity.posY;
+				double z = entity.posZ;
+				<@procedureOBJToCode data.onExpired/>
 		}
-		</#if>
+	</#if>
 
-		@Override public boolean isReady(int duration, int amplifier) {
-			<#if hasProcedure(data.activeTickCondition)>
+	@Override public boolean isReady(int duration, int amplifier) {
+		<#if hasProcedure(data.activeTickCondition)>
 			return <@procedureOBJToConditionCode data.activeTickCondition/>;
-			<#else>
+		<#else>
 			return true;
-			</#if>
-		}
-
+		</#if>
 	}
 
+	<#if data.hasCustomRenderer()>
+				<#if !data.renderStatusInInventory>
+					@Override public boolean shouldRender(EffectInstance effect) {
+						return false;
+					}
+
+					@Override public boolean shouldRenderInvText(EffectInstance effect) {
+						return false;
+					}
+				</#if>
+
+				<#if !data.renderStatusInHUD>
+					@Override public boolean shouldRenderHUD(EffectInstance effect) {
+						return false;
+					}
+				</#if>
+	</#if>
 }
+</#compress>
 <#-- @formatter:on -->
