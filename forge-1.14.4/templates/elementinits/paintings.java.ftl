@@ -36,14 +36,14 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Paintings {
+public class ${JavaModName}Paintings {
 
-	@SubscribeEvent public static void registerPaintingType(RegistryEvent.Register<PaintingType> event) {
-		<#list paintings as painting>
-		event.getRegistry().register(new PaintingType(${painting.width}, ${painting.height}).setRegistryName("${painting.getModElement().getRegistryName()}"));
-        	</#list>
-	}
+	public static final DeferredRegister<PaintingType> REGISTRY = new DeferredRegister<>(ForgeRegistries.PAINTING_TYPES, ${JavaModName}.MODID);
 
+	<#list paintings as painting>
+	public static final RegistryObject<PaintingType> ${painting.getModElement().getRegistryNameUpper()} =
+			REGISTRY.register("${painting.getModElement().getRegistryName()}", () -> new PaintingType(${painting.width}, ${painting.height}));
+	</#list>
 }
 
 <#-- @formatter:on -->
