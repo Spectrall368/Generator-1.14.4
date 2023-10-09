@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.SoundEvent;
 
 public class ${JavaModName}Sounds {
 
