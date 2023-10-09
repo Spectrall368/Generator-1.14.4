@@ -4,8 +4,3 @@ public net.minecraft.world.GameRules$IntegerValue func_223559_b(I)Lnet/minecraft
 <#if w.hasGameRulesOfType("Logic")>
 public net.minecraft.world.GameRules$BooleanValue func_223568_b(Z)Lnet/minecraft/world/GameRules$RuleType; #create
 </#if>
-<#if w.hasElementsOfBaseType("entity")>
-<#if data.aiBase == "Villager">
-public net.minecraft.entity.Entity$removeClickEvents func_207712_c(Ljava/lang/String)Lnet/minecraft/util/text/ITextComponent$ITextComponent; #removeClickEvents
-</#if>
-</#if>
