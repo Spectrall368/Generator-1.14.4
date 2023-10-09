@@ -111,7 +111,7 @@ import org.apache.logging.log4j.Logger;
 	}
 	</#if>
 
-	<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.register(bus);</#if>
+	<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 
 	<#if w.hasElementsOfType("enchantment")>
 	@SubscribeEvent public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
