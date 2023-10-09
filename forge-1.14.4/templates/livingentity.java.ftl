@@ -356,7 +356,20 @@ import net.minecraft.block.material.Material;
 		@Override public IPacket<?> createSpawnPacket() {
 			return NetworkHooks.getEntitySpawningPacket(this);
 		}
-		
+
+	<#if data.aiBase == "Villager">
+   		@Override public ITextComponent getName() {
+      ITextComponent itextcomponent = this.getCustomName();
+      if (itextcomponent != null) {
+         ITextComponent itextcomponent1 = itextcomponent.deepCopy();
+         removeClickEvents(itextcomponent1);
+         return itextcomponent1;
+      } else {
+         return this.getType().getName();
+      }
+   }
+	</#if>
+
 		<#if data.hasAI>
 		@Override protected void registerGoals() {
 			super.registerGoals();
