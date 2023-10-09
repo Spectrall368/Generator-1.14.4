@@ -36,13 +36,13 @@
 
 package ${package}.init;
 
-public class ${JavaModName}Effects {
+public class ${JavaModName}PotionEffects {
 
 	public static final DeferredRegister<Effect> REGISTRY = new DeferredRegister<>(ForgeRegistries.POTIONS, ${JavaModName}.MODID);
 
 	<#list potioneffects as effect>
 	public static final RegistryObject<Effect> ${effect.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}Effect());
+			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}PotionEffect());
 	</#list>
 }
 
