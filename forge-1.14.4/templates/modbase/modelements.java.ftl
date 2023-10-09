@@ -28,9 +28,6 @@ public class ${JavaModName}Elements {
 	<#if w.hasElementsOfBaseType("entity")>
 	public final List<Supplier<EntityType<?>>> entities = new ArrayList<>();
 	</#if>
-	<#if w.hasElementsOfType("enchantment")>
-	public final List<Supplier<Enchantment>> enchantments = new ArrayList<>();
-	</#if>
 
 	public ${JavaModName}Elements () {
 
@@ -89,12 +86,6 @@ public class ${JavaModName}Elements {
 	<#if w.hasElementsOfBaseType("entity")>
 	public List<Supplier<EntityType<?>>> getEntities() {
 		return entities;
-	}
-	</#if>
-
-	<#if w.hasElementsOfType("enchantment")>
-	public List<Supplier<Enchantment>> getEnchantments() {
-		return enchantments;
 	}
 	</#if>
 
