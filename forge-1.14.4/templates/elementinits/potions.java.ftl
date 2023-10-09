@@ -42,7 +42,7 @@ public class ${JavaModName}Potions {
 
 	<#list potions as potion>
 	<#if potion.effects??><#-- #2988, seems this can become null -->
-		public static final RegistryObject<Potion> ${potion.getModElement().getRegistryNameUpper()} = REGISTRY.register("${potion.getModElement().getRegistryName()}", () -> new PotionCustom(
+		public static final RegistryObject<Potion> ${potion.getModElement().getRegistryNameUpper()} = REGISTRY.register("${potion.getModElement().getRegistryName()}", () -> new Potion(
 			<#list potion.effects as effect>
 			new EffectInstance(${effect.effect}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#sep>,
 			</#list>));
