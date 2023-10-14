@@ -24,4 +24,4 @@ templates:
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Stone cutting"
 
-field_exclusions: [SmithingRecipeMaker, BrewingRecipeMaker]
+field_exclusions: [smcm, brm]
