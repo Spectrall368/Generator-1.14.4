@@ -27,4 +27,4 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
 
-field_exclusions: [SmithingRecipeMaker]
+field_exclusions: [smcm]
