@@ -40,14 +40,14 @@ package ${package}.client.particle;
 		return new ${name}IParticleFactory(spriteSet);
 	}
 
-	public static class ${name}IParticleFactory implements IParticleFactory<BasicParticleType> {
+	@OnlyIn(Dist.CLIENT) public static class ${name}IParticleFactory implements IParticleFactory<BasicParticleType> {
 		private final IAnimatedSprite spriteSet;
 
 		public ${name}IParticleFactory(IAnimatedSprite spriteSet) {
 			this.spriteSet = spriteSet;
 		}
 
-		public Particle createParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			return new ${name}Particle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
 		}
 	}
