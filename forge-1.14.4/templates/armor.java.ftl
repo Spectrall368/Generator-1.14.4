@@ -34,7 +34,7 @@
 <#include "triggers.java.ftl">
 package ${package}.item;
 
-net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvent;
 import java.util.function.Consumer;
 
 public abstract class ${name}Item extends ArmorItem {
