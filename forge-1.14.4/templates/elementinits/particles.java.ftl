@@ -40,7 +40,7 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerParticles(ParticleFactoryRegisterEvent event) {
 		<#list particles as particle>
-		event.registerSpriteSet(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::factory);
+		Minecraft.getInstance().particles.registerFactory((BasicParticleType) ${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::factory);
 		</#list>
 	}
 
