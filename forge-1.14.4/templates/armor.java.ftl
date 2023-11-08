@@ -91,7 +91,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-				@Override public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
+				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel();
 					armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
 					armorModel.isSneak = living.isSneaking();
