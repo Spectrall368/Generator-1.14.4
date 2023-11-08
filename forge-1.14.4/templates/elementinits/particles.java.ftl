@@ -38,7 +38,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Particles {
 
-	@SubscribeEvent public static void registerParticles(RegisterParticleProvidersEvent event) {
+	@SubscribeEvent public static void registerParticles(ParticleFactoryRegisterEvent event) {
 		<#list particles as particle>
 		event.registerSpriteSet(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::factory);
 		</#list>
