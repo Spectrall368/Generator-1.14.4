@@ -36,7 +36,7 @@ package ${package}.client.particle;
 <#compress>
 @OnlyIn(Dist.CLIENT) public class ${name}Particle extends SpriteTexturedParticle {
 
-	public static ${name}IParticleFactory factory(SpriteSet spriteSet) {
+	public static ${name}IParticleFactory factory(IAnimatedSprite spriteSet) {
 		return new ${name}IParticleFactory(spriteSet);
 	}
 
