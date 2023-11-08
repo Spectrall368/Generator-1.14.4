@@ -34,7 +34,7 @@
 <#include "triggers.java.ftl">
 package ${package}.item;
 
-import net.minecraft.sounds.SoundEvent;
+net.minecraft.util.SoundEvent;
 import java.util.function.Consumer;
 
 public abstract class ${name}Item extends ArmorItem {
@@ -42,11 +42,11 @@ public abstract class ${name}Item extends ArmorItem {
 	public ${name}Item(EquipmentSlotType type, Item.Properties properties) {
 		super(new ArmorMaterial() {
 			@Override public int getDurability(EquipmentSlotType type) {
-				return new int[]{13, 15, 16, 11}[slot.getIndex()] * ${data.maxDamage};
+				return new int[]{13, 15, 16, 11}[type.getIndex()] * ${data.maxDamage};
 			}
 
   		 	@Override public int getDamageReductionAmount(EquipmentSlotType type) {
-				return new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} }[slot.getIndex()];
+				return new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} }[type.getIndex()];
 			}
 
 			@Override public int getEnchantability() {
