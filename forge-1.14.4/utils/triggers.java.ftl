@@ -2,10 +2,12 @@
 
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
-	<#if procedure?has_content || hasProcedure(procedure)>
+	<#if procedure?has_content>
 		@Override public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
 		super.addInformation(itemstack, world, list, flag);
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+		<#list procedure as entry>
+		list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+		</#list>
 		}
 	</#if>
 </#macro>
