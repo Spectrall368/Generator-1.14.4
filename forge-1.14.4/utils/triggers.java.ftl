@@ -20,7 +20,7 @@
 	double x = entity.posX;
 	double y = entity.posY;
 	double z = entity.posZ;
-	<@procedureOBJToCode data.onHelmetTick/>
+	<@procedureOBJToCode procedure/>
 }
 </#if>
 </#macro>
