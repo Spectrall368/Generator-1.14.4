@@ -6,7 +6,6 @@
 		@Override public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
 		super.addInformation(itemstack, world, list, flag);
 			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-		</#if>
 		}
 	</#if>
 </#macro>
