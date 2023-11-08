@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,33 +31,21 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 package ${package}.item;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Item extends ${JavaModName}Elements.ModElement {
+import net.minecraft.sounds.SoundEvent;
+import java.util.function.Consumer;
 
-	@ObjectHolder("${modid}:${registryname}_helmet")
-	public static final Item helmet = null;
+public abstract class ${name}Item extends ArmorItem {
 
-	@ObjectHolder("${modid}:${registryname}_chestplate")
-	public static final Item body = null;
-
-	@ObjectHolder("${modid}:${registryname}_leggings")
-	public static final Item legs = null;
-
-	@ObjectHolder("${modid}:${registryname}_boots")
-	public static final Item boots = null;
-
-	public ${name}Item (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-	}
-
-	@Override public void initElements() {
-		IArmorMaterial armormaterial = new IArmorMaterial() {
-			@Override public int getDurability(EquipmentSlotType slot) {
+	public ${name}Item(EquipmentSlotType type, Item.Properties properties) {
+		super(new ArmorMaterial() {
+			@Override public int getDurability(EquipmentSlotType type) {
 				return new int[]{13, 15, 16, 11}[slot.getIndex()] * ${data.maxDamage};
 			}
 
-  		 	@Override public int getDamageReductionAmount(EquipmentSlotType slot) {
+  		 	@Override public int getDamageReductionAmount(EquipmentSlotType type) {
 				return new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} }[slot.getIndex()];
 			}
 
@@ -64,11 +53,11 @@ package ${package}.item;
 				return ${data.enchantability};
 			}
 
-			@Override public net.minecraft.util.SoundEvent getSoundEvent() {
-				<#if data.equipSound??>
-				return (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
+			@Override public SoundEvent getSoundEvent() {
+				<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
+				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
-				return null;
+				return SoundEvents.EMPTY;
 				</#if>
 			}
 
@@ -84,20 +73,25 @@ package ${package}.item;
 				</#if>
 			}
 
-			@OnlyIn(Dist.CLIENT) @Override public String getName() {
-				return 	"${registryname}";
+			@Override @OnlyIn(Dist.CLIENT) public String getName() {
+				return "${registryname}";
 			}
 
 			@Override public float getToughness() {
 				return 	${data.toughness}f;
 			}
-		};
+		}, type, properties);
+	}
 
-		<#if data.enableHelmet>
-        elements.items.add(() ->
-			new ArmorItem(armormaterial, EquipmentSlotType.HEAD, new Item.Properties()<#if data.enableHelmet>.group(${data.creativeTab})</#if>) {
-				<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
+	<#if data.enableHelmet>
+	public static class Helmet extends ${name}Item {
+
+		public Helmet() {
+			super(EquipmentSlotType.HEAD, new Item.Properties()<#if data.enableHelmet>.group(${data.creativeTab})</#if>);
+		}
+
+		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
+				@Override public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel();
 					armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
 					armorModel.isSneak = living.isSneaking();
@@ -105,45 +99,33 @@ package ${package}.item;
 					armorModel.isChild = living.isChild();
 					return armorModel;
 				}
-				</#if>
+		</#if>
 
-				<#if data.helmetSpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-					super.addInformation(itemstack, world, list, flag);
-					<#list data.helmetSpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-					</#list>
-				}
-				</#if>
+		<@addSpecialInformation data.helmetSpecialInformation/>
 
-				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-					<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
-					return "${modid}:textures/entities/${data.helmetModelTexture}";
-					<#else>
-					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
-					</#if>
-				}
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+			<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
+			return "${modid}:textures/entities/${data.helmetModelTexture}";
+			<#else>
+			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
+			</#if>
+		}
 
-				<#if hasProcedure(data.onHelmetTick)>
-				@Override public void onArmorTick(ItemStack itemstack, World world, PlayerEntity entity) {
-					super.onArmorTick(itemstack, world, entity);
-					double x = entity.posX;
-					double y = entity.posY;
-					double z = entity.posZ;
-					<@procedureOBJToCode data.onHelmetTick/>
-				}
-				</#if>
-		}.setRegistryName("${registryname}_helmet"));
-        </#if>
+		<@onArmorTick data.onHelmetTick/>
+	}
+	</#if>
 
-        <#if data.enableBody>
-        elements.items.add(() ->
-			new ArmorItem(armormaterial, EquipmentSlotType.CHEST, new Item.Properties()<#if data.enableBody>.group(${data.creativeTab})</#if>) {
-				<#if data.bodyModelName != "Default" && data.getBodyModel()??>
+	<#if data.enableBody>
+	public static class Chestplate extends ${name}Item {
+
+		public Chestplate() {
+			super(EquipmentSlotType.CHEST, new Item.Properties()<#if data.enableBody>.group(${data.creativeTab})</#if>);
+		}
+
+		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel();
 					armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
-
 					<#if data.armsModelPartL?has_content>
 					armorModel.bipedLeftArm = new ${data.bodyModelName}().${data.armsModelPartL};
 					</#if>
@@ -156,40 +138,30 @@ package ${package}.item;
 					armorModel.isChild = living.isChild();
 					return armorModel;
 				}
-				</#if>
+		</#if>
 
-				<#if data.bodySpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-					super.addInformation(itemstack, world, list, flag);
-					<#list data.bodySpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-					</#list>
-				}
-				</#if>
+		<@addSpecialInformation data.bodySpecialInformation/>
 
-				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-					<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-					return "${modid}:textures/entities/${data.bodyModelTexture}";
-					<#else>
-					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
-					</#if>
-				}
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+			return "${modid}:textures/entities/${data.bodyModelTexture}";
+			<#else>
+			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
+			</#if>
+		}
 
-				<#if hasProcedure(data.onBodyTick)>
-				@Override public void onArmorTick(ItemStack itemstack, World world, PlayerEntity entity) {
-					double x = entity.posX;
-					double y = entity.posY;
-					double z = entity.posZ;
-					<@procedureOBJToCode data.onBodyTick/>
-				}
-				</#if>
-		}.setRegistryName("${registryname}_chestplate"));
-        </#if>
+		<@onArmorTick data.onBodyTick/>
+	}
+	</#if>
 
-        <#if data.enableLeggings>
-        elements.items.add(() ->
-			new ArmorItem(armormaterial, EquipmentSlotType.LEGS, new Item.Properties()<#if data.enableLeggings>.group(${data.creativeTab})</#if>) {
-				<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
+	<#if data.enableLeggings>
+	public static class Leggings extends ${name}Item {
+
+		public Leggings() {
+			super(EquipmentSlotType.LEGS, new Item.Properties()<#if data.enableLeggings>.group(${data.creativeTab})</#if>);
+		}
+
+		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel();
 					armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
@@ -199,40 +171,30 @@ package ${package}.item;
 					armorModel.isChild = living.isChild();
 					return armorModel;
 				}
-				</#if>
+		</#if>
 
-				<#if data.leggingsSpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-					super.addInformation(itemstack, world, list, flag);
-					<#list data.leggingsSpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-					</#list>
-				}
-				</#if>
+		<@addSpecialInformation data.leggingsSpecialInformation/>
 
-				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-					<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
-					return "${modid}:textures/entities/${data.leggingsModelTexture}";
-					<#else>
-					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
-					</#if>
-				}
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+			<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
+			return "${modid}:textures/entities/${data.leggingsModelTexture}";
+			<#else>
+			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png";
+			</#if>
+		}
 
-				<#if hasProcedure(data.onLeggingsTick)>
-				@Override public void onArmorTick(ItemStack itemstack, World world, PlayerEntity entity) {
-					double x = entity.posX;
-					double y = entity.posY;
-					double z = entity.posZ;
-					<@procedureOBJToCode data.onLeggingsTick/>
-				}
-				</#if>
-		}.setRegistryName("${registryname}_leggings"));
-        </#if>
+		<@onArmorTick data.onLeggingsTick/>
+	}
+	</#if>
 
-        <#if data.enableBoots>
-        elements.items.add(() ->
-			new ArmorItem(armormaterial, EquipmentSlotType.FEET, new Item.Properties()<#if data.enableBoots>.group(${data.creativeTab})</#if>) {
-				<#if data.bootsModelName != "Default" && data.getBootsModel()??>
+	<#if data.enableBoots>
+	public static class Boots extends ${name}Item {
+
+		public Boots() {
+			super(EquipmentSlotType.FEET, new Item.Properties()<#if data.enableBoots>.group(${data.creativeTab})</#if>);
+		}
+
+		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel();
 					armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
@@ -242,37 +204,22 @@ package ${package}.item;
 					armorModel.isChild = living.isChild();
 					return armorModel;
 				}
-				</#if>
+		</#if>
 
-				<#if data.bootsSpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-					super.addInformation(itemstack, world, list, flag);
-					<#list data.bootsSpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-					</#list>
-				}
-				</#if>
+		<@addSpecialInformation data.bootsSpecialInformation/>
 
-				@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-					<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
-					return "${modid}:textures/entities/${data.bootsModelTexture}";
-					<#else>
-					return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_" + (slot == EquipmentSlotType.LEGS ? "2" : "1") + ".png";
-					</#if>
-				}
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+			<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
+			return "${modid}:textures/entities/${data.bootsModelTexture}";
+			<#else>
+			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
+			</#if>
+		}
 
-				<#if hasProcedure(data.onBootsTick)>
-				@Override public void onArmorTick(ItemStack itemstack, World world, PlayerEntity entity) {
-					double x = entity.posX;
-					double y = entity.posY;
-					double z = entity.posZ;
-					<@procedureOBJToCode data.onBootsTick/>
-				}
-				</#if>
-		}.setRegistryName("${registryname}_boots"));
-        </#if>
+		<@onArmorTick data.onBootsTick/>
 	}
-	<#if data.getArmorModelsCode()?? >
+	</#if>
+	<#if data.getArmorModelsCode()??>
 	${data.getArmorModelsCode().toString()
 		.replace("ModelRenderer", "RendererModel").replace("extends ModelBase", "extends EntityModel<Entity>")
 		.replace("GlStateManager.translate", "GlStateManager.translated")
@@ -282,8 +229,7 @@ package ${package}.item;
 		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+entity\\)",
 					"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
 		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")
-	}
+		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")}
 	</#if>
 }
 <#-- @formatter:on -->
