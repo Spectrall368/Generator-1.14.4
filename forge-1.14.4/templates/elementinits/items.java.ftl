@@ -57,5 +57,7 @@ public class ${JavaModName}Items {
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
 			</#if>
+		</#if>
+	</#list>
 }
 <#-- @formatter:on -->
