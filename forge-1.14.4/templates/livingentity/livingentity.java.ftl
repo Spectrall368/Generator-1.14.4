@@ -57,9 +57,7 @@ import net.minecraft.util.SoundEvent;
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements IRangedAttackMob</#if> {
 
 	<#if data.spawnThisMob>
-		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
 
-		<#if spawnBiomes?has_content>
 		@Override public void init(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 				<#if data.restrictionBiomes?has_content>
@@ -73,7 +71,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements I
 					if (!biomeCriteria)
 						continue;
 				</#if>
-		</#if>
 	
 				biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
 								${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
