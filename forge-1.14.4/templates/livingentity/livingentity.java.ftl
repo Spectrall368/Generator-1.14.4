@@ -73,6 +73,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements I
 					if (!biomeCriteria)
 						continue;
 				</#if>
+		</#if>
 	
 				biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
 								${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
