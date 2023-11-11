@@ -77,7 +77,7 @@ package ${package}.client.renderer;
 <#assign exmodel = data.mobModelName + "<" + name + "Entity>">
 <#assign asmodel = data.mobModelName + "Model" + "(" + num + ")">
 @OnlyIn(Dist.CLIENT)
-public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${exmodel}> {
+public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${exmodel}> {
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
 		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else>renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize}f);
