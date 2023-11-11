@@ -76,18 +76,15 @@ package ${package}.client.renderer;
 
 <#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
 <#assign asmodel = data.mobModelName + "Model" + "(" + num + ")">
-
+@OnlyIn(Dist.CLIENT)
 public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltInModel()>Sprite</#if>Renderer<${name}Entity, ${exmodel}> {
 
 	public static class ModelRegisterHandler {
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
 		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize});
-		<#if !data.isBuiltInModel()>SpriteRenderer rend = new MobRenderer(renderManagerIn, new ${model}, ${data.modelShadowSize}f)<#else>${data.mobModelName}Renderer rend = new ${data.mobModelName}Renderer</#if>;
-		<#if humanoid>rend.addLayer(new BipedArmorLayer(rend, new BipedModel(0.5f), new BipedModel(1)));</#if>
-		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>rend.addLayer(new GlowingLayer<>(rend))<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>rend.addLayer(new GlowingLayer<>(${data.mobModelName}))</#if>;
-		return rend;
-		
+		<#if humanoid>this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5f), new BipedModel(1)));</#if>
+		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(this))<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(${data.mobModelName}()))</#if>;
 	}
 
 	<#if data.mobModelGlowTexture?has_content>
