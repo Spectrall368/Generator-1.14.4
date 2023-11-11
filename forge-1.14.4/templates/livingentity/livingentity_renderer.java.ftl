@@ -82,7 +82,7 @@ public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}En
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
 		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else>renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize}f);
 		<#if humanoid>this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5f), new BipedModel(1)));</#if>
-		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(this))<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(${data.mobModelName}()))</#if>;
+		<#if data.mobModelGlowTexture?has_content>this.addLayer(new GlowingLayer<${name}Entity, ${model}>(this)</#if>;
 	}
 
 	<#if data.mobModelGlowTexture?has_content>
