@@ -71,7 +71,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		setNoAI(${(!data.hasAI)});
 
 		<#if data.mobLabel?has_content >
-        	setCustomName(new TextComponent("${data.mobLabel}"));
+        	setCustomName(new StringTextComponent("${data.mobLabel}"));
         	setCustomNameVisible(true);
         	</#if>
 
@@ -701,6 +701,8 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
     </#if>
 
 	public static void init() {
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
+
 		<#if data.spawnThisMob>
 			@Override public void init(FMLCommonSetupEvent event) {
 				for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
