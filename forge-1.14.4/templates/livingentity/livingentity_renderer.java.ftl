@@ -77,7 +77,7 @@ package ${package}.client.renderer;
 <#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
 <#assign asmodel = data.mobModelName + "Model" + "(" + num + ")">
 
-public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${exmodel}> {
+public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltInModel()>Sprite</#if>Renderer<${name}Entity, ${exmodel}> {
 
 	public static class ModelRegisterHandler {
 
