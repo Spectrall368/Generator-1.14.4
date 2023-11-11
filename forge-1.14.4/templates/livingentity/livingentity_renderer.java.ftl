@@ -69,9 +69,9 @@ package ${package}.client.renderer;
 </#if>
 
 <#if data.mobModelName == "Ocelot" || data.mobModelName == "Villager" || data.mobModelName == "Witch">
-<#assign num = "0.0F">
+	<#assign num = "0.0F">
 <#elseif data.mobModelName == "Slime">
-<#assign num = "16">
+	<#assign num = "16">
 </#if>
 
 <#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
@@ -83,7 +83,7 @@ public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}En
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
 		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize});
-		<#if data.mobModelGlowTexture?has_content>this.addLayer(new GlowingLayer<>(this));</#if>
+		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(this));<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(${data.mobModelName}));</#if>
 		
 	}
 
