@@ -28,7 +28,6 @@
  # exception.
 -->
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
@@ -40,14 +39,14 @@ package ${package}.init;
 		<#list entities as entity>
 			<#if entity.getModElement().getTypeString() == "rangeditem">
 				<#if entity.isCustomModel()>
-				event.ModelRegistryEvent(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
+				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#else>
-				event.ModelRegistryEvent(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
+				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
 				</#if>
 			<#else>
-				event.ModelRegistryEvent(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
+				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#if entity.hasCustomProjectile()>
-				event.ModelRegistryEvent(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
+				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
 				</#if>
 			</#if>
 		</#list>
