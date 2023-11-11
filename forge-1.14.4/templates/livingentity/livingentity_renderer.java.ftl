@@ -74,15 +74,13 @@ package ${package}.client.renderer;
 	<#assign num = "16">
 </#if>
 
-<#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
+<#assign exmodel = data.mobModelName + "<" + name + "Entity>">
 <#assign asmodel = data.mobModelName + "Model" + "(" + num + ")">
 @OnlyIn(Dist.CLIENT)
-public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltInModel()>Sprite</#if>Renderer<${name}Entity, ${exmodel}> {
-
-	public static class ModelRegisterHandler {
+public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${exmodel}> {
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
-		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize}f);
+		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else>renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize}f);
 		<#if humanoid>this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5f), new BipedModel(1)));</#if>
 		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(this))<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(${data.mobModelName}()))</#if>;
 	}
@@ -132,5 +130,4 @@ public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltIn
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
-    }
 }
