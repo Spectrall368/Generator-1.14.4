@@ -67,8 +67,16 @@ package ${package}.client.renderer;
 	<#assign humanoid = true>
 </#if>
 
+<#if data.mobModelName == "Ocelot" || data.mobModelName == "Villager" || data.mobModelName == "Witch">
+<#assign num = "0.0F">
+<#elseif data.mobModelName == "Slime">
+<#assign num = "16">
+</#else>
+<#assign num = "">
+</#if>
+
 <#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
-<#assign asmodel = data.mobModelName + "Model" + "(" + <#if data.mobModelName == "Ocelot" || data.mobModelName == "Villager" || data.mobModelName == "Witch">0.0F<#elseif data.mobModelName == "Slime">16</#if> + ")">
+<#assign asmodel = data.mobModelName + "Model" + "(" + num + ")">
 
 public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${exmodel}> {
 
