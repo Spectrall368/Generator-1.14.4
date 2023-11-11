@@ -54,7 +54,7 @@ import net.minecraft.util.SoundEvent;
 </#if>
 
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
-public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements IRangedAttackMob</#if> {
+public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implements IRangedAttackMob</#if> {
 
 	<#if data.spawnThisMob>
 
@@ -796,8 +796,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements I
 					}
 					<#else>
 						(entityType, world, reason, pos, random) ->
-								(world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random)
-										&& Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
+								(world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.isDarkEnoughToSpawn(world, pos, random)
+										&& MobEntity.checkMobSpawnRules(entityType, world, reason, pos, random))
 					</#if>
 			);
 			</#if>
