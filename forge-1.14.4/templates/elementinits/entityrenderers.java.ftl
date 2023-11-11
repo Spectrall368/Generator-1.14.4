@@ -41,12 +41,12 @@ package ${package}.init;
 				<#if entity.isCustomModel()>
 				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#else>
-				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
+				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), SpriteRenderer::new);
 				</#if>
 			<#else>
 				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#if entity.hasCustomProjectile()>
-				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
+				event.registerModels(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), SpriteRenderer::new);
 				</#if>
 			</#if>
 		</#list>
