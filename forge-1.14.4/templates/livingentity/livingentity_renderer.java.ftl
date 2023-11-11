@@ -34,6 +34,7 @@ package ${package}.client.renderer;
 
 <#assign humanoid = false>
 <#assign model = "BipedModel(0)">
+<#assign num = "">
 
 <#if data.mobModelName == "Chicken">
 	<#assign model = "ChickenModel()">
@@ -71,8 +72,6 @@ package ${package}.client.renderer;
 <#assign num = "0.0F">
 <#elseif data.mobModelName == "Slime">
 <#assign num = "16">
-</#else>
-<#assign num = "">
 </#if>
 
 <#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
