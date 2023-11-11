@@ -32,7 +32,7 @@
 package ${package}.client.model;
 
 ${model.toString()
-		.replace("ModelRenderer", "RendererModel").replace("extends ModelBase", "extends EntityModel<Entity>")
+		.replace("ModelRenderer", "RendererModel").replace("extends ModelBase", "extends EntityModel<Entity>").replace("public static class", "public class")
 		.replace("GlStateManager.translate", "GlStateManager.translated")
 		.replace("GlStateManager.scale", "GlStateManager.scaled")
 		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
