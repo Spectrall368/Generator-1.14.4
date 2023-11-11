@@ -76,8 +76,44 @@ public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}En
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
 		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}<#else> renderManagerIn, new ${asmodel}<#if>, ${data.modelShadowSize});
+		<#if data.mobModelGlowTexture?has_content>this.addLayer(new GlowingLayer<>(this));</#if>
 		
 	}
+
+	<#if data.mobModelGlowTexture?has_content>
+	@OnlyIn(Dist.CLIENT) private static class GlowingLayer<T extends Entity, M extends EntityModel<T>> extends LayerRenderer<T, M> {
+		private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
+
+		public GlowingLayer(IEntityRenderer<T, M> er) {
+			super(er);
+		}
+
+		public void render(T entityIn, float l1, float l2, float l3, float l4, float l5, float l6, float l7) {
+			this.bindTexture(GLOW_TEXTURE);
+			GlStateManager.enableBlend();
+			GlStateManager.disableAlphaTest();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+			GlStateManager.depthMask(!entityIn.isInvisible());
+			int i = 61680;
+			int j = i % 65536;
+			int k = i / 65536;
+			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float)j, (float)k);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+			gamerenderer.setupFogColor(true);
+			((EntityModel<T>)this.getEntityModel()).render(entityIn, l1, l2, l4, l5, l6, l7);
+			gamerenderer.setupFogColor(false);
+			this.func_215334_a(entityIn);
+			GlStateManager.depthMask(true);
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlphaTest();
+		}
+
+		public boolean shouldCombineTextures() {
+			return false;
+		}
+	}
+	</#if>
 
 	<#if data.mobModelName == "Villager">
 	@Override protected void preRenderCallback(${name}Entity entitylivingbaseIn, float partialTickTime) {
