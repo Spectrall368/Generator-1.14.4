@@ -68,7 +68,7 @@ package ${package}.client.renderer;
 </#if>
 
 <#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
-<#assign asmodel = data.mobModelName + "Model" + "(<#if data.mobModelName == "Ocelot" || data.mobModelName == "Villager" || data.mobModelName == "Witch">0.0F<#elseif data.mobModelName == "Slime">16</#if>)">
+<#assign asmodel = data.mobModelName + "Model" + "(" + <#if data.mobModelName == "Ocelot" || data.mobModelName == "Villager" || data.mobModelName == "Witch">0.0F<#elseif data.mobModelName == "Slime">16</#if> + ")">
 
 public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${exmodel}> {
 
