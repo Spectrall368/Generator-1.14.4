@@ -82,7 +82,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltIn
 	public static class ModelRegisterHandler {
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
-		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize});
+		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize}f);
 		<#if humanoid>this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5f), new BipedModel(1)));</#if>
 		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(this))<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>this.addLayer(new GlowingLayer<>(${data.mobModelName}()))</#if>;
 	}
@@ -125,12 +125,6 @@ public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltIn
 	<#if data.mobModelName == "Villager">
 	@Override protected void preRenderCallback(${name}Entity entitylivingbaseIn, float partialTickTime) {
 		float f = 0.9375F;
-		if (entitylivingbaseIn.isChild()) {
-	        	f = (float)((double)f * 0.5D);
-			this.shadowSize = 0.25F;
-		} else {
-			this.shadowSize = 0.5F;
-	      	}
 		GlStateManager.scalef(f, f, f);
 	}
 	</#if>
