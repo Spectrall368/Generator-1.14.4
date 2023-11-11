@@ -95,11 +95,10 @@ public class ${name}Renderer extends <#if humanoid>Biped</#if>MobRenderer<${name
 		<#else>
 			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
 				BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(), ${data.modelShadowSize}f);
-			});
 				customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
 				<#if data.mobModelGlowTexture?has_content>customRender.addLayer(new GlowingLayer<>(customRender));</#if>
 				return customRender;
-			);
+			});
 		</#if>
 
 		<#if data.mobModelGlowTexture?has_content>
