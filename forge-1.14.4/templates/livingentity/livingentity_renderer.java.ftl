@@ -88,10 +88,10 @@ package ${package}.client.renderer;
 
 public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${model}> {
 
-	public ${name}Renderer(EntityRendererProvider.Context context) {
+	public ${name}Renderer(EntityRendererManager context) {
 		<#if !humanoid>
 		RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> ${super}
-    <#if data.mobModelGlowTexture?has_content>this.addLayer(new GlowingLayer<>(this));</#if>
+    		<#if data.mobModelGlowTexture?has_content>this.addLayer(new GlowingLayer<>(this));</#if>
 		<#else>
 			RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> {
 				BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(), ${data.modelShadowSize}f);
