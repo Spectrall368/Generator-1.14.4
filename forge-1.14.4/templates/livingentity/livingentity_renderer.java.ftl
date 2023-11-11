@@ -138,4 +138,5 @@ public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltIn
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
+    }
 }
