@@ -86,14 +86,14 @@ package ${package}.client.renderer;
 
 <#assign model = model + "<" + name + "Entity>">
 
-public class ${name}Renderer extends <#if humanoid>Biped</#if>MobRenderer<${name}Entity, ${model}> {
+public class ${name}Renderer extends <#if humanoid>Biped</#if>Renderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		<#if !humanoid>
 		RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> ${super}
     <#if data.mobModelGlowTexture?has_content>this.addLayer(new GlowingLayer<>(this));</#if>
 		<#else>
-			RenderingRegistry.registerEntityRenderingHandler(CustomEntity.class, renderManager -> {
+			RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> {
 				BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(), ${data.modelShadowSize}f);
 				customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
 				<#if data.mobModelGlowTexture?has_content>customRender.addLayer(new GlowingLayer<>(customRender));</#if>
