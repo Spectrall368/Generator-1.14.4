@@ -796,8 +796,8 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					}
 					<#else>
 						(entityType, world, reason, pos, random) ->
-								(world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.isDarkEnoughToSpawn(world, pos, random)
-										&& MobEntity.checkMobSpawnRules(entityType, world, reason, pos, random))
+								(world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.func_223323_a(world, pos, random)
+										&& MobEntity.func_223315_a(entityType, world, reason, pos, random))
 					</#if>
 			);
 			</#if>
