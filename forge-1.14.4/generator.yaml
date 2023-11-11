@@ -45,9 +45,6 @@ base_templates:
   - template: modbase/pack.mcmeta.ftl
     writer: json
     name: "@RESROOT/pack.mcmeta"
-  - template: elementinits/javamodels.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-    condition: hasJavaModels()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
