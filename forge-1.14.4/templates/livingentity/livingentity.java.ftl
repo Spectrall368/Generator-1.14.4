@@ -701,7 +701,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
     </#if>
 
 	public static void init() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer(Minecraft.getInstance().getRenderManager());
 
 		<#if data.spawnThisMob>
 			@Override public void init(FMLCommonSetupEvent event) {
