@@ -82,7 +82,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#elseif !data.isBuiltIn
 	public static class ModelRegisterHandler {
 
 	public ${name}Renderer(EntityRendererManager renderManagerIn) {
-		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize});
+		super(<#if !data.isBuiltInModel()>renderManagerIn, new ${data.mobModelName}()<#else> renderManagerIn, new ${asmodel}</#if>, ${data.modelShadowSize});
 		<#if !data.isBuiltInModel()>SpriteRenderer rend = new MobRenderer(renderManagerIn, new ${model}, ${data.modelShadowSize}f)<#else>${data.mobModelName}Renderer rend = new ${data.mobModelName}Renderer</#if>;
 		<#if humanoid>rend.addLayer(new BipedArmorLayer(rend, new BipedModel(0.5f), new BipedModel(1)));</#if>
 		<#if data.mobModelGlowTexture?has_content && data.isBuiltInModel()>rend.addLayer(new GlowingLayer<>(rend))<#elseif data.mobModelGlowTexture?has_content && !data.isBuiltInModel()>rend.addLayer(new GlowingLayer<>(${data.mobModelName}))</#if>;
