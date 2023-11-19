@@ -426,7 +426,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					});
 				}
 			<#if data.ridable>
-					return retval;
+					return true;
 				}
 			</#if>
 		</#if>
