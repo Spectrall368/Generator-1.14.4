@@ -116,7 +116,7 @@
 <#if boxes?size == 1>
     <@makeCuboid boxes.get(0) facing pitchType/>
 <#else>
-    Shapes.or(<#list boxes as box>
+    VoxelShapes.or(<#list boxes as box>
         <@makeCuboid box facing pitchType/><#sep>,</#list>)
 </#if>
 </#macro>
