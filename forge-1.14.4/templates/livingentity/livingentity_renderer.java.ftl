@@ -127,7 +127,19 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	}
 	</#if>
 
-	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
+	@Override public ResourceLocation getEntityTexture(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
+
+    <#if hasProcedure(data.transparentModelCondition)>
+        @Override
+	    protected boolean isBodyVisible(${name}Entity _ent) {
+	        Entity entity = _ent;
+	        World world = entity.world;
+	        double x = entity.posX;
+	        double y = entity.posY;
+	        double z = entity.posZ;
+		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
+	    }
+	</#if>
 }
