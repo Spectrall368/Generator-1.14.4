@@ -64,8 +64,10 @@ package ${package}.init;
 		</#if>
     </#list>
 
-	private static <T extends Entity> RegistryObject<EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
-		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
+	private static <T extends Entity> EntityType<T> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
+		EntityType<T> entityType = (EntityType<T>) entityTypeBuilder.build(registryname).setRegistryName(registryname);
+		REGISTRY.register(entityType);
+		return entityType;
 	}
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
