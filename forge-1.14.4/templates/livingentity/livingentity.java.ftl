@@ -704,7 +704,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer(Minecraft.getInstance().getRenderManager()));
 
 		<#if data.spawnThisMob>
-			@Override public void init(FMLCommonSetupEvent event) {
 				for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 					<#if data.restrictionBiomes?has_content>
 						boolean biomeCriteria = false;
@@ -721,7 +720,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
 									${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
 				}
-			}
 
 			<#if data.mobSpawningType == "creature">
 			EntitySpawnPlacementRegistry.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
