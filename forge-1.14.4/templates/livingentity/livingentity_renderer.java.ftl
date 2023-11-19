@@ -74,7 +74,7 @@ package ${package}.client.renderer;
 	<#assign num = "16">
 </#if>
 
-<#assign exmodel = data.mobModelName + "<" + name + "Entity>">
+<#assign exmodel = data.mobModelName + "Model" + "<" + name + "Entity>">
 <#assign asmodel = data.mobModelName + "Model" + "(" + num + ")">
 @OnlyIn(Dist.CLIENT)
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${exmodel}> {
