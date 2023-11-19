@@ -107,7 +107,7 @@ package ${package}.entity.renderer;
 
 
 		<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
-		RenderingRegistry.registerEntityRenderingHandler(Arrow${name}Entity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+		RenderingRegistry.registerEntityRenderingHandler(${name}EntityProjectile.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 		</#if>
 	}
 	}
