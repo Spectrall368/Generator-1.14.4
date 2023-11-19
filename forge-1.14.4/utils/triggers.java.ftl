@@ -14,13 +14,16 @@
 
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
-<#if hasProcedure(procedure)>
+	<#if hasProcedure(procedure)>
 @Override public void onArmorTick(ItemStack itemstack, World world, PlayerEntity entity) {
-	super.onArmorTick(itemstack, world, entity);
-	double x = entity.posX;
-	double y = entity.posY;
-	double z = entity.posZ;
-	<@procedureOBJToCode procedure/>
-}
-</#if>
+	<@procedureCode procedure, {
+	"x": "entity.posX",
+	"y": "entity.posY",
+	"z": "entity.posZ",
+	"world": "world",
+	"entity": "entity",
+	"itemstack": "itemstack"
+	}/>
+			}
+	</#if>
 </#macro>
