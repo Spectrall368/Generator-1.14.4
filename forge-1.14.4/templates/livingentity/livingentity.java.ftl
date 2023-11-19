@@ -55,26 +55,6 @@ import net.minecraft.util.SoundEvent;
 
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implements IRangedAttackMob</#if> {
-
-	<#if data.spawnThisMob>
-		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-			<#if data.restrictionBiomes?has_content>
-				boolean biomeCriteria = false;
-				<#list data.restrictionBiomes as restrictionBiome>
-					<#if restrictionBiome.canProperlyMap()>
-					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-						biomeCriteria = true;
-					</#if>
-				</#list>
-				if (!biomeCriteria)
-					continue;
-			</#if>
-
-			biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
-							${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
-		}
-	</#if>
-
 	<#if data.isBoss>
 	private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(),
 		BossInfo.Color.${data.bossBarColor}, BossInfo.Overlay.${data.bossBarType});
@@ -721,6 +701,23 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer(Minecraft.getInstance().getRenderManager()));
 
 		<#if data.spawnThisMob>
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			<#if data.restrictionBiomes?has_content>
+				boolean biomeCriteria = false;
+				<#list data.restrictionBiomes as restrictionBiome>
+					<#if restrictionBiome.canProperlyMap()>
+					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+						biomeCriteria = true;
+					</#if>
+				</#list>
+				if (!biomeCriteria)
+					continue;
+			</#if>
+
+			biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
+							${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
+		}
+
 			<#if data.mobSpawningType == "creature">
 			EntitySpawnPlacementRegistry.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
 					EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
