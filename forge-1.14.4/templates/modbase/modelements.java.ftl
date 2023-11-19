@@ -25,9 +25,6 @@ public class ${JavaModName}Elements {
 	<#if w.hasElementsOfType("biome")>
 	public final List<Supplier<Biome>> biomes = new ArrayList<>();
 	</#if>
-	<#if w.hasElementsOfBaseType("entity")>
-	public final List<Supplier<EntityType<?>>> entities = new ArrayList<>();
-	</#if>
 
 	public ${JavaModName}Elements () {
 
@@ -80,12 +77,6 @@ public class ${JavaModName}Elements {
 	<#if w.hasElementsOfType("biome")>
 	public List<Supplier<Biome>> getBiomes() {
 		return biomes;
-	}
-	</#if>
-
-	<#if w.hasElementsOfBaseType("entity")>
-	public List<Supplier<EntityType<?>>> getEntities() {
-		return entities;
 	}
 	</#if>
 
