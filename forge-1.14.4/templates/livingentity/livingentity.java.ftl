@@ -57,7 +57,6 @@ import net.minecraft.util.SoundEvent;
 public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implements IRangedAttackMob</#if> {
 
 	<#if data.spawnThisMob>
-	@Override public void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
