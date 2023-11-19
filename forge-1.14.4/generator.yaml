@@ -61,12 +61,6 @@ base_templates:
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
 
-sources_setup_tasks:
-  - task: copy_models
-    type: JAVA_viatemplate
-    template: javamodel.java.ftl
-    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
-    
 language_file:
   format: json
   root_folder: "@MODASSETSROOT/lang/"
