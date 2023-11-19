@@ -179,9 +179,9 @@
 	super.onItemUseFirst(stack, context);
 	<@procedureCodeWithOptResult procedure, "actionresulttype", "ActionResultType.SUCCESS", {
 		"world": "context.getWorld()",
-		"x": "context.getClickedPos().getX()",
-		"y": "context.getClickedPos().getY()",
-		"z": "context.getClickedPos().getZ()",
+		"x": "context.getPos().getX()",
+		"y": "context.getPos().getY()",
+		"z": "context.getPos().getZ()",
 		"blockstate": "world.getBlockState(context.getPos())",
 		"pos": "context.getPos()",
 		"entity": "context.getPlayer()",
