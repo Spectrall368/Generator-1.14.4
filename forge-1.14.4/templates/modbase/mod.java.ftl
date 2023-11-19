@@ -43,7 +43,6 @@ import org.apache.logging.log4j.Logger;
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}PotionEffects.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
@@ -81,12 +80,6 @@ import org.apache.logging.log4j.Logger;
 	<#if w.hasElementsOfType("biome")>
 	@SubscribeEvent public void registerBiomes(RegistryEvent.Register<Biome> event) {
 		event.getRegistry().registerAll(elements.getBiomes().stream().map(Supplier::get).toArray(Biome[]::new));
-	}
-	</#if>
-
-	<#if w.hasElementsOfBaseType("entity")>
-	@SubscribeEvent public void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
-		event.getRegistry().registerAll(elements.getEntities().stream().map(Supplier::get).toArray(EntityType[]::new));
 	}
 	</#if>
 }
