@@ -1,5 +1,4 @@
-<#include "procedures.java.ftl">
-
+<#include "../procedures.java.ftl">
 package ${package}.entity.renderer;
 
 @OnlyIn(Dist.CLIENT) public class ${name}Renderer {
