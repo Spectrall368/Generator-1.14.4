@@ -56,6 +56,26 @@ import net.minecraft.util.SoundEvent;
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implements IRangedAttackMob</#if> {
 
+	<#if data.spawnThisMob>
+	@Override public void init(FMLCommonSetupEvent event) {
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			<#if data.restrictionBiomes?has_content>
+				boolean biomeCriteria = false;
+				<#list data.restrictionBiomes as restrictionBiome>
+					<#if restrictionBiome.canProperlyMap()>
+					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+						biomeCriteria = true;
+					</#if>
+				</#list>
+				if (!biomeCriteria)
+					continue;
+			</#if>
+
+			biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
+							${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
+		}
+	</#if>
+
 	<#if data.isBoss>
 	private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(),
 		BossInfo.Color.${data.bossBarColor}, BossInfo.Overlay.${data.bossBarType});
@@ -115,7 +135,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					float f = (float) (MathHelper.atan2(dz, dx) * (double) (180 / Math.PI)) - 90;
 					float f1 = (float) (this.speed * ${name}Entity.this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
 
-					${name}Entity.this.rotationYaw = this.limitAngle(CustomEntity.this.rotationYaw, f, 10);
+					${name}Entity.this.rotationYaw = this.limitAngle(${name}Entity.this.rotationYaw, f, 10);
 					${name}Entity.this.renderYawOffset = ${name}Entity.this.rotationYaw;
 					${name}Entity.this.rotationYawHead = ${name}Entity.this.rotationYaw;
 
@@ -147,11 +167,11 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
 
 	<#if data.flyingMob>
-	@Override protected PathNavigator createNavigator(Level world) {
+	@Override protected PathNavigator createNavigator(World world) {
 		return new FlyingPathNavigator(this, world);
 	}
 	<#elseif data.waterMob>
-	@Override protected PathNavigator createNavigator(Level world) {
+	@Override protected PathNavigator createNavigator(World world) {
 		return new SwimmerPathNavigator(this, world);
 	}
 	</#if>
@@ -267,9 +287,9 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	@Override public boolean attackEntityFrom(DamageSource source, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
 			<@procedureCode data.whenMobIsHurt, {
-				"x": "this.getX()",
-				"y": "this.getY()",
-				"z": "this.getZ()",
+				"x": "this.posX",
+				"y": "this.posY",
+				"z": "this.posZ",
 				"entity": "this",
 				"world": "this.world",
 				"sourceentity": "source.getTrueSource()"
@@ -399,7 +419,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public processInteract(PlayerEntity sourceentity, Hand hand) {
 		ItemStack itemstack = sourceentity.getHeldItem(hand);
-		ActionResultType retval = ActionResultType.sidedSuccess(this.world.isRemote);
+		ActionResultType retval = ActionResultType.func_233537_a_(this.world.isRemote);
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 			<#if data.ridable>
@@ -427,7 +447,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					});
 				}
 			<#if data.ridable>
-					return ActionResultType.sidedSuccess(this.world.isRemote);
+					return ActionResultType.func_233537_a_(this.world.isRemote);
 				}
 			</#if>
 		</#if>
@@ -438,18 +458,18 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				retval = super.processInteract(sourceentity, hand);
 			} else if (this.world.isRemote) {
 				retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
-						? ActionResultType.sidedSuccess(this.world.isRemote) : ActionResultType.PASS;
+						? ActionResultType.func_233537_a_(this.world.isRemote) : ActionResultType.PASS;
 			} else {
 				if (this.isTamed()) {
 					if (this.isOwner(sourceentity)) {
 						if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal((float)item.getFood().getHealing());
-							retval = ActionResultType.sidedSuccess(this.world.isRemote);
+							retval = ActionResultType.func_233537_a_(this.world.isRemote);
 						} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal(4);
-							retval = ActionResultType.sidedSuccess(this.world.isRemote);
+							retval = ActionResultType.func_233537_a_(this.world.isRemote);
 						} else {
 							retval = super.processInteract(sourceentity, hand);
 						}
@@ -464,7 +484,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					}
 
 					this.enablePersistence();
-					retval = ActionResultType.sidedSuccess(this.world.isRemote);
+					retval = ActionResultType.func_233537_a_(this.world.isRemote);
 				} else {
 					retval = super.processInteract(sourceentity, hand);
 					if (retval == ActionResultType.SUCCESS)
@@ -501,9 +521,9 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	@Override public void onKillEntity(LivingEntity entity) {
 		super.onKillEntity(entity);
 		<@procedureCode data.whenThisMobKillsAnother, {
-			"x": "this.getX()",
-			"y": "this.getY()",
-			"z": "this.getZ()",
+			"x": "this.posX",
+			"y": "this.posY",
+			"z": "this.posZ",
 			"entity": "entity",
 			"sourceentity": "this",
 			"world": "this.world"
@@ -592,11 +612,9 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		return false;
 	}
 
-   	@Override protected void collideWithEntity(Entity entityIn) {
-   	}
+   	@Override protected void collideWithEntity(Entity entityIn) {}
 
-   	@Override protected void collideWithNearbyEntities() {
-   	}
+   	@Override protected void collideWithNearbyEntities() {}
 	</#if>
 
 	<#if data.isBoss>
@@ -704,23 +722,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer(Minecraft.getInstance().getRenderManager()));
 
 		<#if data.spawnThisMob>
-				for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-					<#if data.restrictionBiomes?has_content>
-						boolean biomeCriteria = false;
-						<#list data.restrictionBiomes as restrictionBiome>
-							<#if restrictionBiome.canProperlyMap()>
-							if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-								biomeCriteria = true;
-							</#if>
-						</#list>
-						if (!biomeCriteria)
-							continue;
-					</#if>
-		
-					biome.getSpawns(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new Biome.SpawnListEntry(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), ${data.spawningProbability},
-									${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
-				}
-
 			<#if data.mobSpawningType == "creature">
 			EntitySpawnPlacementRegistry.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
 					EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
