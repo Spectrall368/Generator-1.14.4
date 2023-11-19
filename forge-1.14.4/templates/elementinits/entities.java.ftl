@@ -29,16 +29,14 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
 
-	public static final List<EntityType<?>> REGISTRY = new ArrayList<>();
+	private static final List<EntityType<?>> REGISTRY = new ArrayList<>();
 
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "rangeditem">
