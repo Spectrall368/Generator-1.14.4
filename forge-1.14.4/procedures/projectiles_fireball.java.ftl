@@ -11,8 +11,6 @@ new Object() {
 		entityToSpawn.accelerationX = ax;
 		entityToSpawn.accelerationY = ay;
 		entityToSpawn.accelerationZ = az;
-        	if (entityToSpawn instanceof FireballEntity)
-            		((FireballEntity) entityToSpawn).explosionPower = 4;
 		</#if>
 		return entityToSpawn;
 }}.getFireball(projectileLevel<#if hasShooter>, ${input$shooter}</#if><#if hasAcceleration>, ${input$ax}, ${input$ay}, ${input$az}</#if>)
