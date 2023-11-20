@@ -4,7 +4,7 @@
 new Object() {
 	public Entity getArrow(World world<#if hasShooter>, Entity shooter</#if>, float damage, int knockback<#if isPiercing>, byte piercing</#if>) {
 		AbstractArrowEntity entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${projectile}, world);
-		<#if hasShooter>entityToSpawn.shootingEntity = (shooter instanceof LivingEntity ? (LivingEntity) shooter : null);</#if>
+		<#if hasShooter>entityToSpawn.setShooter(shooter);</#if>
 		entityToSpawn.setDamage(damage);
 		entityToSpawn.setKnockbackStrength(knockback);
 		<#if field$projectile?starts_with("CUSTOM:")>entityToSpawn.setSilent(true);</#if>
