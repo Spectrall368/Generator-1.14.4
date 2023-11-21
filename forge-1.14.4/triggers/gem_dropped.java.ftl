@@ -1,19 +1,16 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onGemDropped(ItemTossEvent event) {
-		PlayerEntity entity=event.getPlayer();
-		double i = entity.posX;
-		double j = entity.posY;
-		double k = entity.posZ;
-		World world=entity.world;
-		ItemStack itemstack=event.getEntityItem().getItem();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",i);
-		dependencies.put("y",j);
-		dependencies.put("z",k);
-		dependencies.put("world",world);
-		dependencies.put("entity",entity);
-		dependencies.put("itemstack",itemstack);
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getPlayer().getX()",
+			"y": "event.getPlayer().getY()",
+			"z": "event.getPlayer().getZ()",
+			"world": "event.getPlayer().level",
+			"entity": "event.getPlayer()",
+			"itemstack": "event.getEntity().getItem()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
-}

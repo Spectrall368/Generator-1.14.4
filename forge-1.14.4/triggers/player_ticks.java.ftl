@@ -1,19 +1,17 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if(event.phase == TickEvent.Phase.END){
-			Entity entity = event.player;
-			World world = entity.world;
-			double i = entity.posX;
-			double j = entity.posY;
-			double k = entity.posZ;
-			Map<String, Object> dependencies = new HashMap<>();
-			dependencies.put("x",i);
-			dependencies.put("y",j);
-			dependencies.put("z",k);
-			dependencies.put("world",world);
-			dependencies.put("entity",entity);
-			dependencies.put("event",event);
-			executeProcedure(dependencies);
+		if (event.phase == TickEvent.Phase.END) {
+			<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+				"x": "event.player.getX()",
+				"y": "event.player.getY()",
+				"z": "event.player.getZ()",
+				"world": "event.player.level",
+				"entity": "event.player",
+				"event": "event"
+				}/>
+			</#compress></#assign>
+			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
-}

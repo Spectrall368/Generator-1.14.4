@@ -1,19 +1,20 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-		Entity entity = event.getEntity();
-		World world = event.getWorld().getWorld();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",event.getPos().getX());
-		dependencies.put("y",event.getPos().getY());
-		dependencies.put("z",event.getPos().getZ());
-		dependencies.put("px",entity.posX);
-		dependencies.put("py",entity.posY);
-		dependencies.put("pz",entity.pozZ);
-		dependencies.put("world",world);
-		dependencies.put("entity",entity);
-		dependencies.put("blockstate",event.getState());
-		dependencies.put("placedagainst",event.getPlacedAgainst());
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getPos().getX()",
+			"y": "event.getPos().getY()",
+			"z": "event.getPos().getZ()",
+			"px": "event.getEntity().getX()",
+			"py": "event.getEntity().getY()",
+			"pz": "event.getEntity().getZ()",
+			"world": "event.getLevel()",
+			"entity": "event.getEntity()",
+			"blockstate": "event.getState()",
+			"placedagainst": "event.getPlacedAgainst()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
-}

@@ -1,9 +1,11 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
-	@SubscribeEvent public static void onWorldLoad(WorldEvent.Load event) {
-		World world=event.getWorld().getWorld();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("world",world);
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
+	@SubscribeEvent public static void onWorldLoad(net.minecraftforge.event.level.LevelEvent.Load event) {
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"world": "event.getLevel()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
-}

@@ -1,21 +1,17 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBucketFill(FillBucketEvent event) {
-		PlayerEntity entity=event.getEntityPlayer();
-		double i=entity.posX;
-		double j=entity.posY;
-		double k=entity.posZ;
-		World world=event.getWorld();
-		ItemStack itemstack=event.getFilledBucket();
-		ItemStack originalitemstack=event.getEmptyBucket();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",i);
-		dependencies.put("y",j);
-		dependencies.put("z",k);
-		dependencies.put("world",world);
-		dependencies.put("itemstack",itemstack);
-		dependencies.put("originalitemstack",originalitemstack);
-		dependencies.put("entity",entity);
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getEntity().getX()",
+			"y": "event.getEntity().getY()",
+			"z": "event.getEntity().getZ()",
+			"world": "event.getLevel()",
+			"itemstack": "event.getFilledBucket()",
+			"originalitemstack": "event.getEmptyBucket()",
+			"entity": "event.getEntity()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
-}

@@ -1,20 +1,17 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-		PlayerEntity entity=event.getPlayer();
-		if (event.getHand() != entity.getActiveHand()) {
+		if (event.getHand() != event.getEntity().getUsedItemHand())
 			return;
-		}
-		int i = event.getPos().getX();
-		int j = event.getPos().getY();
-		int k = event.getPos().getZ();
-		World world=event.getWorld();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x", i);
-		dependencies.put("y", j);
-		dependencies.put("z", k);
-		dependencies.put("world" ,world);
-		dependencies.put("entity" ,entity);
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getPos().getX()",
+			"y": "event.getPos().getY()",
+			"z": "event.getPos().getZ()",
+			"world": "event.getLevel()",
+			"entity": "event.getEntity()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
-}

@@ -1,19 +1,18 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
-	@SubscribeEvent public static void onUseHoe(UseHoeEvent event) {
-		PlayerEntity entity=event.getPlayer();
-		int i=event.getContext().getPos().getX();
-		int j=event.getContext().getPos().getY();
-		int k=event.getContext().getPos().getZ();
-		World world=entity.world;
-		BlockState state = world.getBlockState(event.getContext().getPos());
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",i);
-		dependencies.put("y",j);
-		dependencies.put("z",k);
-		dependencies.put("world",world);
-		dependencies.put("entity",entity);
-		dependencies.put("blockstate",state);
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
+	@SubscribeEvent public static void onUseHoe(BlockEvent.BlockToolModificationEvent event) {
+		if (!event.isSimulated() && event.getToolAction() == ToolActions.HOE_TILL) {
+			<#assign dependenciesCode><#compress>
+				<@procedureDependenciesCode dependencies, {
+				"x": "event.getContext().getClickedPos().getX()",
+				"y": "event.getContext().getClickedPos().getY()",
+				"z": "event.getContext().getClickedPos().getZ()",
+				"world": "event.getPlayer().level",
+				"entity": "event.getPlayer()",
+				"blockstate": "event.getPlayer().level.getBlockState(event.getContext().getClickedPos())",
+				"event": "event"
+				}/>
+			</#compress></#assign>
+			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
+		}
 	}
-}

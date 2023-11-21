@@ -1,19 +1,19 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
-		Entity entity = event.getPlayer();
-		World world = event.getWorld().getWorld();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("xpAmount",event.getExpToDrop());
-		dependencies.put("x",event.getPos().getX());
-		dependencies.put("y",event.getPos().getY());
-		dependencies.put("z",event.getPos().getZ());
-		dependencies.put("px",entity.posX);
-		dependencies.put("py",entity.posY);
-		dependencies.put("pz",entity.pozZ);
-		dependencies.put("world",world);
-		dependencies.put("entity",entity);
-		dependencies.put("blockstate",event.getState());
-		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"xpAmount": "event.getExpToDrop()",
+			"x": "event.getPos().getX()",
+			"y": "event.getPos().getY()",
+			"z": "event.getPos().getZ()",
+			"px": "event.getPlayer().getX()",
+			"py": "event.getPlayer().getY()",
+			"pz": "event.getPlayer().getZ()",
+			"world": "event.getLevel()",
+			"entity": "event.getPlayer()",
+			"blockstate": "event.getState()"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
-}
