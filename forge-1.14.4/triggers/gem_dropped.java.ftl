@@ -3,12 +3,12 @@
 	@SubscribeEvent public static void onGemDropped(ItemTossEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getPlayer().getX()",
-			"y": "event.getPlayer().getY()",
-			"z": "event.getPlayer().getZ()",
-			"world": "event.getPlayer().level",
+			"x": "event.getPlayer().posX",
+			"y": "event.getPlayer().posY",
+			"z": "event.getPlayer().posZ",
+			"world": "event.getPlayer().world",
 			"entity": "event.getPlayer()",
-			"itemstack": "event.getEntity().getItem()",
+			"itemstack": "event.getEntityItem().getItem()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
