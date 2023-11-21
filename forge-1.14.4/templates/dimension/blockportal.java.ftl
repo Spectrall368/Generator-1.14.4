@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -27,22 +28,28 @@
  # exception.
 -->
 
-public static class CustomPortalBlock extends NetherPortalBlock {
+<#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+package ${package}.block;
 
-	public CustomPortalBlock() {
+public class ${name}PortalBlock extends NetherPortalBlock {
+
+	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
 				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(${data.portalLuminance}).noDrops());
-		setRegistryName("${registryname}_portal");
 	}
 
+	<#if hasProcedure(data.onPortalTickUpdate)>
 	@Override public void tick(BlockState blockstate, World world, BlockPos pos, Random random) {
-		<#if hasProcedure(data.onPortalTickUpdate)>
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onPortalTickUpdate/>
-		</#if>
+		<@procedureCode data.onPortalTickUpdate, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+		}/>
 	}
+	</#if>
 
 	public void portalSpawn(World world, BlockPos pos) {
 		CustomPortalBlock.Size portalsize = this.isValid(world, pos);
@@ -82,11 +89,11 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 
 		<#if data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
-			world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-					(net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
+			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+					ForgeRegistries.SOUND_EVENTS
 							.getValue(new ResourceLocation(("${data.portalSound}"))), SoundCategory.BLOCKS, 0.5f,
-					random.nextFloat() * 0.4F + 0.8F, false);
-        </#if>
+					random.nextFloat() * 0.4f + 0.8f, false);
+        	</#if>
 	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
@@ -152,3 +159,4 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 
 }
+<#-- @formatter:on -->
