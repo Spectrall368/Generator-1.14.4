@@ -6,7 +6,7 @@
 			"x": "event.getExplosion().getPosition().x",
 			"y": "event.getExplosion().getPosition().y",
 			"z": "event.getExplosion().getPosition().z",
-			"world": "event.getLevel()",
+			"world": "event.getWorld()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
