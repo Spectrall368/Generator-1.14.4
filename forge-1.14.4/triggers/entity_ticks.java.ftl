@@ -1,12 +1,12 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityTick(LivingEvent.LivingTickEvent event) {
+	@SubscribeEvent public static void onEntityTick(LivingEvent.LivingUpdateEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntity().getX()",
-			"y": "event.getEntity().getY()",
-			"z": "event.getEntity().getZ()",
-			"world": "event.getEntity().level",
+			"x": "event.getEntity().posX",
+			"y": "event.getEntity().posY",
+			"z": "event.getEntity().posZ",
+			"world": "event.getEntity().world",
 			"entity": "event.getEntity()",
 			"event": "event"
 			}/>
