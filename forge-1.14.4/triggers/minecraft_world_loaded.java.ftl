@@ -1,9 +1,9 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onWorldLoad(net.minecraftforge.event.level.LevelEvent.Load event) {
+	@SubscribeEvent public static void onWorldLoad(WorldEvent.Load event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"world": "event.getLevel()",
+			"world": "event.getWorld()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
