@@ -6,7 +6,7 @@
 			"x": "event.getPos().getX()",
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",
-			"world": "event.getLevel()",
+			"world": "event.getWorld()",
 			"itemstack": "event.getStack()",
 			"entity": "event.getEntity()",
 			"blockstate": "event.getBlock()",
