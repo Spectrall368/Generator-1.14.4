@@ -3,11 +3,11 @@
 	@SubscribeEvent public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntity().getX()",
-			"y": "event.getEntity().getY()",
-			"z": "event.getEntity().getZ()",
-			"world": "event.getEntity().level",
-			"dimension": "event.getDimension()",
+			"x": "event.getEntity().posX",
+			"y": "event.getEntity().posY",
+			"z": "event.getEntity().posZ",
+			"world": "event.getEntity().world",
+			"dimension": "event.getDimension().getId()",
 			"entity": "event.getEntity()",
 			"event": "event"
 			}/>
