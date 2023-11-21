@@ -28,9 +28,8 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
-
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 package ${package}.world.dimension;
 
 import org.apache.logging.log4j.LogManager;
@@ -44,7 +43,7 @@ import org.apache.logging.log4j.util.Supplier;
 
 	<#if data.enablePortal>
 	@ObjectHolder("${modid}:${registryname}_portal")
-	public static final CustomPortalBlock portal = null;
+	public static final {name}PortalBlock portal = null;
 	</#if>
 
 	public static DimensionType type = null;
@@ -194,7 +193,7 @@ import org.apache.logging.log4j.util.Supplier;
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
-		Entity entity = event.getPlayer();
+		Entity entity = event.getEntity();
 		World world = entity.world;
 		double x = entity.posX;
 		double y = entity.posY;
@@ -204,13 +203,13 @@ import org.apache.logging.log4j.util.Supplier;
 		if (event.getFrom() == type) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
 		if (event.getTo() == type) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
-        </#if>
+        	</#if>
 	}
 	</#if>
 
@@ -223,7 +222,5 @@ import org.apache.logging.log4j.util.Supplier;
     	</#if>
 
 	<#include "dimension/biomegen.java.ftl">
-
 }
-
 <#-- @formatter:on -->
