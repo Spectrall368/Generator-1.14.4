@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -34,9 +35,6 @@ package ${package}.item;
 
 public class ${name}Item extends Item {
 
-	@ObjectHolder("${modid}:${registryname}")
-	public static final Item block = null;
-
 	public ${name}Item() {
 		super(new Item.Properties().group(${data.igniterTab}).maxDamage(64));
 	}
@@ -55,14 +53,14 @@ public class ${name}Item extends Item {
 			boolean success = false;
 
 			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
-				${name}Dimension.portal.portalSpawn(world, pos);
-				itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
+				${name}PortalBlock.portalSpawn(world, pos);
+				itemstack.hurtAndBreak(1, entity, c -> c.sendBreakAnimation(context.getHand()));
 				success = true;
 			}
 
 			<#if hasProcedure(data.whenPortaTriggerlUsed)>
 				<#if hasReturnValueOf(data.whenPortaTriggerlUsed, "actionresulttype")>
-					ActionResultType result = <@procedureOBJToActionResultTypeCode data.whenPortaTriggerlUsed/>;
+					ActionResultType result = <@procedureOBJToInteractionResultCode data.whenPortaTriggerlUsed/>;
 					return success ? ActionResultType.SUCCESS : result;
 				<#else>
 					<@procedureOBJToCode data.whenPortaTriggerlUsed/>
@@ -74,5 +72,4 @@ public class ${name}Item extends Item {
 		}
 	}
 }
-
 <#-- @formatter:on -->
