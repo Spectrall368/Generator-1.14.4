@@ -4,12 +4,12 @@
 		if (event!=null && event.getEntity()!=null) {
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.getEntity().getX()",
-				"y": "event.getEntity().getY()",
-				"z": "event.getEntity().getZ()",
-				"world": "event.getEntity().level",
+				"x": "event.getEntity().posX",
+				"y": "event.getEntity().posY",
+				"z": "event.getEntity().posZ",
+				"world": "event.getEntity().world",
 				"entity": "event.getEntity()",
-				"sourceentity": "event.getSource().getEntity()",
+				"sourceentity": "event.getSource().getTrueSource()",
 				"event": "event"
 				}/>
 			</#compress></#assign>
