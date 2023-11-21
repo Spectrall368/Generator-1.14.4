@@ -48,9 +48,6 @@ public class ${name}Item extends Item {
 				<#else>
 				.maxStackSize(${data.stackSize})
 				</#if>
-				<#if data.immuneToFire>
-				.fireResistant()
-				</#if>
 				.rarity(Rarity.${data.rarity})
 				<#if data.isFood>
 				.food((new Food.Builder())
