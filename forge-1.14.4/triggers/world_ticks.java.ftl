@@ -1,10 +1,10 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onWorldTick(TickEvent.LevelTickEvent event) {
+	@SubscribeEvent public static void onWorldTick(TickEvent.WorldTickEvent event) {
 		if (event.phase==TickEvent.Phase.END) {
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"world": "event.level",
+				"world": "event.world",
 				"event": "event"
 				}/>
 			</#compress></#assign>
