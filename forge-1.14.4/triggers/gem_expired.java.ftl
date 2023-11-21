@@ -3,12 +3,12 @@
 	@SubscribeEvent public static void onItemExpire(ItemExpireEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntity().getX()",
-			"y": "event.getEntity().getY()",
-			"z": "event.getEntity().getZ()",
-			"world": "event.getEntity().level",
+			"x": "event.getEntity().posX",
+			"y": "event.getEntity().posY",
+			"z": "event.getEntity().posZ",
+			"world": "event.getEntity().world",
 			"entity": "event.getEntity()",
-			"itemstack": "event.getEntity().getItem()",
+			"itemstack": "event.getEntityItem().getItem()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
