@@ -6,7 +6,7 @@
 			"x": "event.getAttemptedSpawnPos().x",
 			"y": "event.getAttemptedSpawnPos().y",
 			"z": "event.getAttemptedSpawnPos().z",
-			"world": "event.getLevel()",
+			"world": "event.getWorld()",
 			"entity": "event.getPlayer()",
 			"event": "event"
 			}/>
