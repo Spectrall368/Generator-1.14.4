@@ -1,5 +1,5 @@
 templates:
-  - template: dimension.java.ftl
+  - template: dimension/dimension.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
   - template: dimension/portaltrigger.java.ftl
     condition: enablePortal
