@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-
 package ${package}.item;
 
 public class ${name}Item extends Item {
@@ -54,13 +53,13 @@ public class ${name}Item extends Item {
 
 			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
 				${name}PortalBlock.portalSpawn(world, pos);
-				itemstack.hurtAndBreak(1, entity, c -> c.sendBreakAnimation(context.getHand()));
+				itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
 				success = true;
 			}
 
 			<#if hasProcedure(data.whenPortaTriggerlUsed)>
 				<#if hasReturnValueOf(data.whenPortaTriggerlUsed, "actionresulttype")>
-					ActionResultType result = <@procedureOBJToInteractionResultCode data.whenPortaTriggerlUsed/>;
+					ActionResultType result = <@procedureOBJToActionResultTypeCode data.whenPortaTriggerlUsed/>;
 					return success ? ActionResultType.SUCCESS : result;
 				<#else>
 					<@procedureOBJToCode data.whenPortaTriggerlUsed/>
