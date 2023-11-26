@@ -218,7 +218,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 		}
 
 		<#-- #47997 -->
-		@Override ${mcc.getMethod("net.minecraft.world.inventory.container.Container", "mergeItemStack", "ItemStack", "int", "int", "boolean")
+		@Override ${mcc.getMethod("net.minecraft.inventory.container.Container", "mergeItemStack", "ItemStack", "int", "int", "boolean")
 			.replace("slot.onSlotChanged();", "slot.putStack(itemstack);")
 			.replace("!itemstack.isEmpty()", "slot.isItemValid(itemstack) && !itemstack.isEmpty()")}
 
