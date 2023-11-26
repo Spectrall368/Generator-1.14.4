@@ -42,7 +42,9 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public void init(FMLCommonSetupEvent event) {
+		<#if data.bulletModel != "Default">
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
+		</#if>
 	}
 
 	@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
