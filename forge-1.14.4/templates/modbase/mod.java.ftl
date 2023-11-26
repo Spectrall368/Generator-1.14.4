@@ -30,6 +30,8 @@ import org.apache.logging.log4j.Logger;
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID),
 		() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
+	private static int messageID = 0;
+
 	public ${JavaModName}Elements elements;
 
 	public ${JavaModName}() {
@@ -83,5 +85,10 @@ import org.apache.logging.log4j.Logger;
 		event.getRegistry().registerAll(elements.getBiomes().stream().map(Supplier::get).toArray(Biome[]::new));
 	}
 	</#if>
+
+	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, PacketBuffer> encoder, Function<PacketBuffer, T> decoder, BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
+		PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
+		messageID++;
+	}
 }
 <#-- @formatter:on -->
