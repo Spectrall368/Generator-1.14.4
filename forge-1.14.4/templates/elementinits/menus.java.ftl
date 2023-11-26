@@ -36,14 +36,14 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Menus {
 
-    private static final List<MenuType<?>> REGISTRY = new ArrayList<>();
+    private static final List<ContainerType<?>> REGISTRY = new ArrayList<>();
 
     <#list guis as gui>
     public static final ContainerType<${gui.getModElement().getName()}Menu> ${gui.getModElement().getRegistryNameUpper()}
 		= register("${gui.getModElement().getRegistryName()}", (id, inv, extraData) -> new ${gui.getModElement().getName()}Menu(id, inv, extraData));
     </#list>
 
-    private static <T extends Container> MenuType<T> register(String registryname, IContainerFactory<T> containerFactory) {
+    private static <T extends Container> ContainerType<T> register(String registryname, IContainerFactory<T> containerFactory) {
 		MenuType<T> menuType = new MenuType<T>(containerFactory);
 		menuType.setRegistryName(registryname);
 		REGISTRY.add(menuType);
