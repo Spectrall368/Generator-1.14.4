@@ -149,7 +149,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		double dx = target.posX - entity.posX;
 		double dy = target.posY + target.getEyeHeight() - 1.1;
 		double dz = target.posZ - entity.posZ;
-		entityarrow.shoot(dx, dy - entityarrow.posY + MathHelper.hypot(dx, dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
+		entityarrow.shoot(dx, dy - entityarrow.posY + MathHelper.sqrt(dx, dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
 		entityarrow.setDamage(${data.bulletDamage});
@@ -160,7 +160,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		</#if>
 		entity.world.addEntity(entityarrow);
 		entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (Random.create().nextFloat() * 0.5f + 1));
+				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (Random().nextFloat() * 0.5f + 1));
 
 		return entityarrow;
 	}
