@@ -51,7 +51,7 @@ package ${package}.init;
     }
 
 	@SubscribeEvent public static void registerContainers(RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new MenuType[0]));
+		event.getRegistry().registerAll(REGISTRY.toArray(new ContainerType[0]));
 	}
 }
 <#-- @formatter:on -->
