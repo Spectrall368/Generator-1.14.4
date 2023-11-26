@@ -121,7 +121,7 @@ public class ${name}Item extends Item {
 
 	<#if data.enableMeleeDamage>
 		@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-			Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
+			Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
 			if (equipmentSlot == EquipmentSlotType.MAINHAND) {
 				multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "item_damage", ${data.damageVsEntity - 2}d, AttributeModifier.Operation.ADDITION));
 				multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "item_attack_speed", -2.4, AttributeModifier.Operation.ADDITION));
@@ -152,16 +152,16 @@ public class ${name}Item extends Item {
 
 		<#if data.hasInventory()>
 		if(entity instanceof ServerPlayerEntity) {
-			NetworkHooks.openScreen((ServerPlayerEntity) entity, new INamedContainerProvider() {
+			NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 				@Override public ITextComponent getDisplayName() {
-					return StringTextComponent("${data.name}");
+					return new StringTextComponent("${data.name}");
 				}
 
 				@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
 					PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
 					packetBuffer.writeBlockPos(new BlockPos(x, y, z));
 					packetBuffer.writeByte(hand == Hand.MAIN_HAND ? 0 : 1);
-					return new ${data.guiBoundTo}Gui.GuiContainerMod(id, inventory, packetBuffer);
+					return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 				}
 			}, buf -> {
 				buf.writeBlockPos(new BlockPos(x, y, z));
@@ -227,7 +227,7 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public CompoundNBT getShareTag(ItemStack stack) {
-		CompoundTag nbt = super.getShareTag(stack);
+		CompoundNBT nbt = super.getShareTag(stack);
 		if(nbt != null)
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
