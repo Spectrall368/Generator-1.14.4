@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.block.entity;
 
-public class ${name}BlockEntity extends TileEntity {
+public class ${name}BlockEntity extends ContainerBlock {
 
 	public ${name}BlockEntity(BlockPos pos, BlockState state) {
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), pos, state);
