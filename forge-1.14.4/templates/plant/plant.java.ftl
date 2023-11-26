@@ -33,7 +33,6 @@
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
 <#include "../mcitems.ftl">
-
 package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
@@ -257,7 +256,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	<@onBlockTick data.onTickUpdate, false, 0/>
 
 	<#if data.plantType == "growapable">
-	@Override public void randomTick(BlockState blockstate, World world, BlockPos blockpos, Random random) {
+	@Override public void tick(BlockState blockstate, World world, BlockPos blockpos, Random random) {
 		if (world.isEmptyBlock(blockpos.up())) {
 			int i = 1;
 			for(;world.getBlockState(blockpos.down(i)).getBlock() == this; ++i);
@@ -361,7 +360,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>
 }
 <#-- @formatter:on -->
-
 <#macro canPlaceOnList blockList condition>
 <#if (blockList?size > 1) && condition>(</#if>
 <#list blockList as canBePlacedOn>
