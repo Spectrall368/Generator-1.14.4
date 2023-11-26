@@ -46,7 +46,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		<#if component.getClass().getSimpleName() == "TextField">
 	    TextFieldWidget ${component.name};
 		<#elseif component.getClass().getSimpleName() == "Checkbox">
-	    Checkbox ${component.name};
+	    CheckboxButton ${component.name};
 		</#if>
 	</#list>
 
@@ -99,7 +99,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			<#if component.getClass().getSimpleName() == "Image">
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-					this.blit(ms, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
+					this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
@@ -148,17 +148,17 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 	@Override public void removed() {
 		super.removed();
-		Minecraft.getInstance().keyboardHandler.enableRepeatEvents(false);
+		Minecraft.getInstance().keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override public void init(Minecraft minecraft, int width, int height) {
 		super.init(minecraft, width, height);
-		this.minecraft.keyboardHandler.enableRepeatEvents(true);
+		this.minecraft.keyboardListener.enableRepeatEvents(true);
 
 		<#assign btid = 0>
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, "${component.placeholder}")
 				<#if component.placeholder?has_content>
 				{
@@ -190,7 +190,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				this.children.add(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TextComponent("${component.text}"), e -> {
+					${component.width}, ${component.height}, "${component.text}", e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
