@@ -40,7 +40,7 @@ import ${package}.${JavaModName};
 <#if hasProcedure(data.onTick)>
 @Mod.EventBusSubscriber
 </#if>
-public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot>> {
 
 	public final static HashMap<String, Object> guistate = new HashMap<>();
 
