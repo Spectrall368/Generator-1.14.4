@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
-
 package ${package}.potion;
 
 <#compress>
@@ -60,41 +59,53 @@ public class ${name}PotionEffect extends Effect {
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
 			@Override public void affectEntity(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
-				World world = entity.world;
-				double x = entity.posX;
-				double y = entity.posY;
-				double z = entity.posZ;
-				<@procedureOBJToCode data.onStarted/>
+			<@procedureCode data.onStarted, {
+				"x": "entity.posX",
+				"y": "entity.posY",
+				"z": "entity.posZ",
+				"world": "entity.world",
+				"entity": "entity",
+				"amplifier": "amplifier"
+			}/>
 			}
 		<#else>
 			@Override public void applyAttributesModifiersToEntity(LivingEntity entity, AbstractAttributeMap attributeMapIn, int amplifier) {
-				World world = entity.world;
-				double x = entity.posX;
-				double y = entity.posY;
-				double z = entity.posZ;
-				<@procedureOBJToCode data.onStarted/>
+			<@procedureCode data.onStarted, {
+				"x": "entity.posX",
+				"y": "entity.posY",
+				"z": "entity.posZ",
+				"world": "entity.world",
+				"entity": "entity",
+				"amplifier": "amplifier"
+			}/>
 			}
 		</#if>
 	</#if>
 
 	<#if hasProcedure(data.onActiveTick)>
 		@Override public void performEffect(LivingEntity entity, int amplifier) {
-			World world = entity.world;
-			double x = entity.posX;
-			double y = entity.posY;
-			double z = entity.posZ;
-			<@procedureOBJToCode data.onActiveTick/>
+		<@procedureCode data.onActiveTick, {
+			"x": "entity.posX",
+			"y": "entity.posY",
+			"z": "entity.posZ",
+			"world": "entity.world",
+			"entity": "entity",
+			"amplifier": "amplifier"
+		}/>
 		}
 	</#if>
 
 	<#if hasProcedure(data.onExpired)>
 		@Override public void removeAttributesModifiersFromEntity(LivingEntity entity, AbstractAttributeMap attributeMapIn, int amplifier) {
 			super.removeAttributesModifiersFromEntity(entity, attributeMapIn, amplifier);
-    				World world = entity.world;
-				double x = entity.posX;
-				double y = entity.posY;
-				double z = entity.posZ;
-				<@procedureOBJToCode data.onExpired/>
+		<@procedureCode data.onExpired, {
+			"x": "entity.posX",
+			"y": "entity.posY",
+			"z": "entity.posZ",
+			"world": "entity.world",
+			"entity": "entity",
+			"amplifier": "amplifier"
+		}/>
 		}
 	</#if>
 
