@@ -33,11 +33,11 @@ package ${package}.item.inventory;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
+@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundNBT> {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
 		if(event.getEntityItem().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
-			if (Minecraft.getInstance().currentScreen instanceof ${data.guiBoundTo}GuiWindow) {
+			if (Minecraft.getInstance().currentScreen instanceof ${data.guiBoundTo}Screen) {
 				Minecraft.getInstance().player.closeScreen();
 			}
 		}
@@ -46,10 +46,10 @@ import javax.annotation.Nullable;
 	private final LazyOptional<ItemStackHandler> inventory = LazyOptional.of(this::createItemHandler);
 
 	@Override public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-		return capability == ForgeCapabilities.ITEM_HANDLER_CAPABILITY ? this.inventory.cast() : LazyOptional.empty();
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? this.inventory.cast() : LazyOptional.empty();
 	}
 
-	@Override public CompoundTag serializeNBT() {
+	@Override public CompoundNBT serializeNBT() {
 		return getItemHandler().serializeNBT();
 	}
 
