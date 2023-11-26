@@ -180,7 +180,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 			ItemStack itemstack = ItemStack.EMPTY;
 			Slot slot = (Slot) this.inventorySlots.get(index);
 
-			if (slot != null && slot.hasItem()) {
+			if (slot != null && slot.getHasStack()) {
 				ItemStack itemstack1 = slot.getStack();
 				itemstack = itemstack1.copy();
 
