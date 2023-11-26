@@ -44,7 +44,7 @@ package ${package}.init;
     </#list>
 
     private static <T extends Container> ContainerType<T> register(String registryname, IContainerFactory<T> containerFactory) {
-		MenuType<T> menuType = new MenuType<T>(containerFactory);
+		ContainerType<T> menuType = new ContainerType<T>(containerFactory);
 		menuType.setRegistryName(registryname);
 		REGISTRY.add(menuType);
     	return menuType;
