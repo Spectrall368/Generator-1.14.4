@@ -35,12 +35,10 @@ package ${package}.world.structure;
 
 @Mod.EventBusSubscriber public class ${name}Structure {
 
-	private static Feature<NoFeatureConfig> feature = null;
-
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
 
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
+			private static final Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 					int ci = (pos.getX() >> 4) << 4;
 					int ck = (pos.getZ() >> 4) << 4;
