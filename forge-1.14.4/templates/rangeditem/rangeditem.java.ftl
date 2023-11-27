@@ -41,11 +41,9 @@ public class ${name}Item extends Item {
 		super(new Item.Properties().group(${data.creativeTab})<#if data.usageCount != 0>.maxDamage(${data.usageCount})<#else>.maxStackSize(${data.stackSize})</#if>);
 	}
 
-	<#if data.bulletModel != "Default">
 	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
 	}
-	</#if>
 
 	@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 		entity.setActiveHand(hand);
