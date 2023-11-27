@@ -135,11 +135,13 @@ package ${package}.world.structure;
 					return true;
 				}
 			};
+
+			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 		}
 
 	}
 
-	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
@@ -153,8 +155,7 @@ package ${package}.world.structure;
 					continue;
 			</#if>
 
-			biome.addFeature(GenerationStage.Decoration.
-				<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES<#elseif data.spawnLocation=="Air">RAW_GENERATION<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>,
+			biome.addFeature(GenerationStage.Decoration.<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES<#elseif data.spawnLocation=="Air">RAW_GENERATION<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>,
 				Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 		}
 	}
