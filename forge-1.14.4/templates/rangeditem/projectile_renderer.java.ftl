@@ -37,23 +37,23 @@ package ${package}.client.renderer;
 
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public void registerModels(ModelRegistryEvent event) {
 			<#if data.bulletModel != "Default">
-			RenderingRegistry.registerEntityRenderingHandler(${name}Item.arrow, renderManager -> new CustomRender(renderManager));
+			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, renderManager -> new CustomRender(renderManager));
 			<#else>
-			RenderingRegistry.registerEntityRenderingHandler(${name}Item.arrow, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
 		}
 
 	}
 
 	<#if data.bulletModel != "Default">
-	@OnlyIn(Dist.CLIENT) public static class CustomRender extends EntityRenderer<${name}Item.ArrowCustomEntity> {
+	@OnlyIn(Dist.CLIENT) public static class CustomRender extends EntityRenderer<${name}Entity> {
 		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
 
 		public CustomRender(EntityRendererManager renderManager) {
 			super(renderManager);
 		}
 
-		@Override public void doRender(${name}Item.ArrowCustomEntity entityIn, double d, double d1, double d2, float f, float f1) {
+		@Override public void doRender(${name}Entity entityIn, double d, double d1, double d2, float f, float f1) {
 				this.bindEntityTexture(bullet);
 				GlStateManager.pushMatrix();
 				GlStateManager.translatef((float) d, (float) d1, (float) d2);
@@ -64,7 +64,7 @@ package ${package}.client.renderer;
 				GlStateManager.popMatrix();
 			}
 
-		@Override public ResourceLocation getEntityTexture(${name}Item.ArrowCustomEntity entity) {
+		@Override public ResourceLocation getEntityTexture(${name}Entity entity) {
 			return texture;
 		}
 	}
