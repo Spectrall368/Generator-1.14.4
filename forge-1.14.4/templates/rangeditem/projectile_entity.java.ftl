@@ -149,7 +149,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		double dx = target.posX - entity.posX;
 		double dy = target.posY + target.getEyeHeight() - 1.1;
 		double dz = target.posZ - entity.posZ;
-		entityarrow.shoot(dx, dy - entityarrow.posY + (double) MathHelper.sqrt(dx, dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
+		entityarrow.shoot(dx, dy - entityarrow.posY + MathHelper.sqrt(dx * dx + dz * dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
 		entityarrow.setDamage(${data.bulletDamage});
