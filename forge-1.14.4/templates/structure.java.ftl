@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,118 +31,115 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
-
 package ${package}.world.structure;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Structure extends ${JavaModName}Elements.ModElement{
+@Mod.EventBusSubscriber public class ${name}Structure {
 
-	private static final Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
-		@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-			int ci = (pos.getX() >> 4) << 4;
-			int ck = (pos.getZ() >> 4) << 4;
+	private static Feature<NoFeatureConfig> feature = null;
 
-			DimensionType dimensionType = world.getDimension().getType();
-			boolean dimensionCriteria = false;
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
 
-    		<#list data.spawnWorldTypes as worldType>
-				<#if worldType=="Surface">
-					if(dimensionType == DimensionType.OVERWORLD)
-						dimensionCriteria = true;
-				<#elseif worldType=="Nether">
-					if(dimensionType == DimensionType.THE_NETHER)
-						dimensionCriteria = true;
-				<#elseif worldType=="End">
-					if(dimensionType == DimensionType.THE_END)
-						dimensionCriteria = true;
-				<#else>
-					if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
-						dimensionCriteria = true;
-				</#if>
-			</#list>
+		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
+				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+					int ci = (pos.getX() >> 4) << 4;
+					int ck = (pos.getZ() >> 4) << 4;
 
-			if(!dimensionCriteria)
-				return false;
+					DimensionType dimensionType = world.getDimension().getType();
+					boolean dimensionCriteria = false;
 
-			if ((random.nextInt(1000000) + 1) <= ${data.spawnProbability}) {
-				int count = random.nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
-				for(int a = 0; a < count; a++) {
-					int i = ci + random.nextInt(16);
-					int k = ck + random.nextInt(16);
-					int j = world.getHeight(Heightmap.Type.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#elseif data.surfaceDetectionType=="First motion blocking block">OCEAN_FLOOR_WG</#if>, i, k);
+    				<#list data.spawnWorldTypes as worldType>
+						<#if worldType=="Surface">
+							if(dimensionType == DimensionType.OVERWORLD)
+								dimensionCriteria = true;
+						<#elseif worldType=="Nether">
+							if(dimensionType == DimensionType.THE_NETHER)
+								dimensionCriteria = true;
+						<#elseif worldType=="End">
+							if(dimensionType == DimensionType.THE_END)
+								dimensionCriteria = true;
+						<#else>
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+								dimensionCriteria = true;
+						</#if>
+    				</#list>
 
-					<#if data.spawnLocation=="Ground">
-						j -= 1;
-					<#elseif data.spawnLocation=="Air">
-						j += random.nextInt(64) + 16;
-					<#elseif data.spawnLocation=="Underground">
-						j = MathHelper.nextInt(random, 8, Math.max(j, 9));
-					</#if>
-
-					<#if data.restrictionBlocks?has_content>
-						BlockState blockAt = world.getBlockState(new BlockPos(i, j, k));
-						boolean blockCriteria = false;
-						<#list data.restrictionBlocks as restrictionBlock>
-							if (blockAt.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
-								blockCriteria = true;
-						</#list>
-						if (!blockCriteria)
-							continue;
-					</#if>
-
-					<#if data.randomlyRotateStructure>
-						Rotation rotation = Rotation.values()[random.nextInt(3)];
-						Mirror mirror = Mirror.values()[random.nextInt(2)];
-					<#else>
-						Rotation rotation = Rotation.NONE;
-						Mirror mirror = Mirror.NONE;
-					</#if>
-
-					BlockPos spawnTo = new BlockPos(i + ${data.spawnXOffset}, j + ${data.spawnHeightOffset}, k + ${data.spawnZOffset});
-
-					int x = spawnTo.getX();
-					int y = spawnTo.getY();
-					int z = spawnTo.getZ();
-
-					<#if hasProcedure(data.generateCondition)>
-					if (!<@procedureOBJToConditionCode data.generateCondition/>)
-						continue;
-					</#if>
-
-					Template template = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager().getTemplateDefaulted(new ResourceLocation("${modid}" ,"${data.structure}"));
-
-					if (template == null)
+					if(!dimensionCriteria)
 						return false;
 
-					template.addBlocksToWorld(world, spawnTo,
-							new PlacementSettings()
-									.setRotation(rotation)
-									.setRandom(random)
-									.setMirror(mirror)
-									.addProcessor(BlockIgnoreStructureProcessor.${data.ignoreBlocks})
-									.setChunk(null)
-									.setIgnoreEntities(false));
+					if ((random.nextInt(1000000) + 1) <= ${data.spawnProbability}) {
+						int count = random.nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
+						for(int a = 0; a < count; a++) {
+							int i = ci + random.nextInt(16);
+							int k = ck + random.nextInt(16);
+							int j = world.getHeight(Heightmap.Type.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#elseif data.surfaceDetectionType=="First motion blocking block">OCEAN_FLOOR_WG</#if>, i, k);
 
-					<#if hasProcedure(data.onStructureGenerated)>
-						<@procedureOBJToCode data.onStructureGenerated/>
-					</#if>
+							<#if data.spawnLocation=="Ground">
+								j -= 1;
+							<#elseif data.spawnLocation=="Air">
+								j += random.nextInt(64) + 16;
+							<#elseif data.spawnLocation=="Underground">
+								j = MathHelper.nextInt(random, 8, Math.max(j, 9));
+							</#if>
+
+							<#if data.restrictionBlocks?has_content>
+								BlockState blockAt = world.getBlockState(new BlockPos(i, j, k));
+								boolean blockCriteria = false;
+								<#list data.restrictionBlocks as restrictionBlock>
+									if (blockAt.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
+										blockCriteria = true;
+								</#list>
+								if (!blockCriteria)
+									continue;
+							</#if>
+
+							<#if data.randomlyRotateStructure>
+								Rotation rotation = Rotation.values()[random.nextInt(3)];
+								Mirror mirror = Mirror.values()[random.nextInt(2)];
+							<#else>
+								Rotation rotation = Rotation.NONE;
+								Mirror mirror = Mirror.NONE;
+							</#if>
+
+							BlockPos spawnTo = new BlockPos(i + ${data.spawnXOffset}, j + ${data.spawnHeightOffset}, k + ${data.spawnZOffset});
+
+							int x = spawnTo.getX();
+							int y = spawnTo.getY();
+							int z = spawnTo.getZ();
+
+							<#if hasProcedure(data.generateCondition)>
+							if (!<@procedureOBJToConditionCode data.generateCondition/>)
+								continue;
+							</#if>
+
+							Template template = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager().getTemplateDefaulted(new ResourceLocation("${modid}" ,"${data.structure}"));
+
+							if (template == null)
+								return false;
+
+							template.addBlocksToWorld(world, spawnTo,
+									new PlacementSettings()
+											.setRotation(rotation)
+											.setRandom(random)
+											.setMirror(mirror)
+											.addProcessor(BlockIgnoreStructureProcessor.${data.ignoreBlocks})
+											.setChunk(null)
+											.setIgnoreEntities(false));
+
+							<#if hasProcedure(data.onStructureGenerated)>
+								<@procedureOBJToCode data.onStructureGenerated/>
+							</#if>
+						}
+					}
+
+					return true;
 				}
-			}
-
-			return true;
+			};
 		}
-	};
 
-	public ${name}Structure (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
-	@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-		event.getRegistry().register(feature.setRegistryName("${registryname}"));
-	}
-
-	@Override public void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
@@ -160,6 +158,5 @@ package ${package}.world.structure;
 				Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 		}
 	}
-
 }
 <#-- @formatter:on -->
