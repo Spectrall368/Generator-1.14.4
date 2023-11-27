@@ -35,10 +35,13 @@ package ${package}.world.structure;
 
 @Mod.EventBusSubscriber public class ${name}Structure {
 
+	private static Feature<NoFeatureConfig> feature = null;
+	private static Feature<NoFeatureConfig> configuredFeature = null;
+
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
 
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			private static final Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
+			feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 					int ci = (pos.getX() >> 4) << 4;
 					int ck = (pos.getZ() >> 4) << 4;
@@ -134,12 +137,13 @@ package ${package}.world.structure;
 				}
 			};
 
+			configuredFeature = feature;
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 		}
 
 	}
 
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
@@ -154,7 +158,7 @@ package ${package}.world.structure;
 			</#if>
 
 			biome.addFeature(GenerationStage.Decoration.<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES<#elseif data.spawnLocation=="Air">RAW_GENERATION<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>,
-				Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+				Biome.createDecoratedFeature(configuredFeature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 		}
 	}
 }
