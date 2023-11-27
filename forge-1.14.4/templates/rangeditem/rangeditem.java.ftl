@@ -42,7 +42,7 @@ public class ${name}Item extends Item {
 	}
 
 	<#if data.bulletModel != "Default">
-	public static void init() {
+	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
 	}
 	</#if>
