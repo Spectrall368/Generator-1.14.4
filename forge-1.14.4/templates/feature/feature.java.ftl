@@ -40,7 +40,7 @@ package ${package}.world.feature;
 	private static Feature<${configuration}> feature = null;
 	
 	public ${name}Feature() {
-		super(${configurationcodec});
+		super(${configurationcodec}::deserialize);
 
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
@@ -52,22 +52,21 @@ package ${package}.world.feature;
 	<#if data.hasGenerationConditions() || featuretype == "feature_simple_block">
 			@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, LakesConfig config) {
 		<#if data.restrictionDimensions?has_content>
-					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 	
 			<#list data.restrictionDimensions as dimension>
 				<#if dimension=="Surface">
-							if(dimensionType == World.OVERWORLD)
+							if(dimensionType == DimensionType.OVERWORLD)
 								dimensionCriteria = true;
 				<#elseif dimension=="Nether">
-							if(dimensionType == World.THE_NETHER)
+							if(dimensionType == DimensionType.THE_NETHER)
 								dimensionCriteria = true;
 				<#elseif dimension=="End">
-							if(dimensionType == World.THE_END)
+							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 				<#else>
-							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-									new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}")))
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
 								dimensionCriteria = true;
 				</#if>
 			</#list>
