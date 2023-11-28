@@ -1,6 +1,13 @@
 templates:
-  - template: plant.java.ftl
+  - template: plant/plant.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: plant/plantgen.java.ftl
+    condition: doesGenerateInWorld()
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/plants/@NAMEFeature.java"
+  - template: plant/plantblockentity.java.ftl
+    condition: hasTileEntity
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
+
   - template: json/plant_item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
@@ -29,12 +36,16 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/plant_double_bottom.json.ftl
-    condition: [ "plantType %= double", "tintType %= No tint" ]
+    condition:
+      - "plantType %= double"
+      - "tintType %= No tint"
     writer: json
     variables: "model=cross"
     name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
   - template: json/plant_double_bottom.json.ftl
-    condition: [ "plantType %= double", "isBlockTinted()" ]
+    condition:
+      - "plantType %= double"
+      - "isBlockTinted()"
     writer: json
     variables: "model=tinted_cross"
     name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
@@ -42,9 +53,8 @@ templates:
   - template: json/block_states.json.ftl
     writer: json
     condition: "plantType %= normal"
-    variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/block_states_gplant.json.ftl
+  - template: json/block_states.json.ftl
     writer: json
     condition: "plantType %= growapable"
     name: "@MODASSETSROOT/blockstates/@registryname.json"
