@@ -33,7 +33,7 @@
 package ${package}.world.feature;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
-<#assign modifiedCode = placementcode?replace(".withPlacement(", "")?replace("configure(", ',')?replace("NoPlacementConfig.INSTANCE", 'IPlacementConfig.NO_PLACEMENT_CONFIG')>
+<#assign modifiedCode = placementcode?replace(".withPlacement(", "")?replace(".configure(", ',')?replace("NoPlacementConfig.INSTANCE", 'IPlacementConfig.NO_PLACEMENT_CONFIG')>
 
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
