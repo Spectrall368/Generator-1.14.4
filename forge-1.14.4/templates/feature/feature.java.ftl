@@ -117,7 +117,7 @@ package ${package}.world.feature;
 				if (!biomeCriteria)
 					continue;
 			</#if>
-			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")}, Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementcode};
+			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")}, Biome.createDecoratedFeature(feature, ${configurationcode}, ${modifiedCode};
 			}
 		}
 	};
