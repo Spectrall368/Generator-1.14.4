@@ -100,6 +100,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 	</#if>
 
+	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
+	}
+
 	<#if data.isReplaceable>
 	@Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
 		return useContext.getItem().getItem() != this.asItem();
