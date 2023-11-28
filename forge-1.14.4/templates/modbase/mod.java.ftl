@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 	public ${JavaModName}Elements elements;
 
 	public ${JavaModName}() {
+		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 		elements = new ${JavaModName}Elements();
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
@@ -44,13 +45,14 @@ import org.apache.logging.log4j.Logger;
 		MinecraftForge.EVENT_BUS.register(this);
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}PotionEffects.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 	}
 
 	private void init(FMLCommonSetupEvent event) {
@@ -66,18 +68,6 @@ import org.apache.logging.log4j.Logger;
     	@SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {
 		elements.getElements().forEach(element -> element.serverLoad(event));
 	}
-
-	<#if w.hasElementsOfBaseType("block")>
-	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
-		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
-	}
-	</#if>
-
-	<#if w.hasElementsOfBaseType("item")>
-	@SubscribeEvent public void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(elements.getItems().stream().map(Supplier::get).toArray(Item[]::new));
-	}
-	</#if>
 
 	<#if w.hasElementsOfType("biome")>
 	@SubscribeEvent public void registerBiomes(RegistryEvent.Register<Biome> event) {
