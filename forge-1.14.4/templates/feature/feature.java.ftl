@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "procedures.java.ftl">
+<#include "../procedures.java.ftl">
 package ${package}.world.feature;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
