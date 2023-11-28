@@ -279,7 +279,7 @@ import ${package}.${JavaModName};
 
 		public void syncPlayerVariables(Entity entity) {
 			if (entity instanceof ServerPlayerEntity)
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayerEntity))entity), new PlayerVariablesSyncMessage(this));
+			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
 		}
 
 		public INBT writeNBT() {
