@@ -50,7 +50,7 @@ package ${package}.world.feature;
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 		feature = new ${name}Feature() {
 	<#if data.hasGenerationConditions() || featuretype == "feature_simple_block">
-			@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, LakesConfig config) {
+			@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, ${configuration} config) {
 		<#if data.restrictionDimensions?has_content>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
