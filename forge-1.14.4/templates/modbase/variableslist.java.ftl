@@ -20,6 +20,7 @@ import ${package}.${JavaModName};
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
+			FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		</#if>
 	}
 
@@ -92,7 +93,7 @@ import ${package}.${JavaModName};
 	</#if>
 
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-	public static class WorldVariables extends SavedData {
+	public static class WorldVariables extends WorldSavedData {
 
 		public static final String DATA_NAME = "${modid}_worldvars";
 
@@ -116,7 +117,7 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override public CompoundNBT save(CompoundNBT nbt) {
+		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
@@ -129,7 +130,7 @@ import ${package}.${JavaModName};
 			this.markDirty();
 
 			if (!world.getWorld().isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld()::dimension::getType), new SavedDataSyncMessage(1, this));
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld().dimension::getType), new SavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
@@ -144,7 +145,7 @@ import ${package}.${JavaModName};
 
 	}
 
-	public static class MapVariables extends SavedData {
+	public static class MapVariables extends WorldSavedData {
 
 		public static final String DATA_NAME = "${modid}_mapvars";
 
@@ -168,7 +169,7 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override public CompoundNBT save(CompoundNBT nbt) {
+		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['write']?interpret/>
@@ -219,7 +220,7 @@ import ${package}.${JavaModName};
 
 		public static void buffer(WorldSavedDataSyncMessage message, PacketBuffer buffer) {
 			buffer.writeInt(message.type);
-			buffer.writeCompoundTag(message.data.save(new CompoundNBT()));
+			buffer.writeCompoundTag(message.data.write(new CompoundNBT()));
 		}
 
 		public static void handler(WorldSavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
@@ -293,8 +294,8 @@ import ${package}.${JavaModName};
 			return nbt;
 		}
 
-		public void readNBT(INBT INBT) {
-			CompoundNBT nbt = (CompoundNBT) INBT;
+		public void readNBT(INBT inbt) {
+			CompoundNBT nbt = (CompoundNBT) inbt;
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
@@ -312,7 +313,7 @@ import ${package}.${JavaModName};
 
 		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
-			this.data.readNBT(buffer.readNbt());
+			this.data.readNBT(buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
@@ -320,7 +321,7 @@ import ${package}.${JavaModName};
 		}
 
 		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
-			buffer.writeNbt((CompoundNBT) message.data.writeNBT());
+			buffer.writeCompoundTag((CompoundNBT) message.data.writeNBT());
 		}
 
 		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
