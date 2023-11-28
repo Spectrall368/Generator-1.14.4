@@ -19,7 +19,7 @@ import ${package}.${JavaModName};
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
+			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesProvider(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 			FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		</#if>
