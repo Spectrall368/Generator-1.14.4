@@ -99,8 +99,8 @@ package ${package}.world.feature;
 					return super.place(world, generator, rand, pos, config);
 		</#if>
 		}
-	};
 	</#if>
+	};
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 		}
 
