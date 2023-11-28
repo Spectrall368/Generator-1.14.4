@@ -19,16 +19,11 @@ import ${package}.${JavaModName};
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
+			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 			FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		</#if>
 	}
-
-	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
-	}
-	</#if>
 
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT") || w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 	@Mod.EventBusSubscriber public static class EventBusVariableHandlers {
@@ -72,8 +67,8 @@ import ${package}.${JavaModName};
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 		@SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
 			if (!event.getPlayer().world.isRemote) {
-				SavedData mapdata = MapVariables.get(event.getPlayer().world);
-				SavedData worlddata = WorldVariables.get(event.getPlayer().world);
+				WorldSavedData mapdata = MapVariables.get(event.getPlayer().world);
+				WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 				if(mapdata != null)
 					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SavedDataSyncMessage(0, mapdata));
 				if(worlddata != null)
@@ -83,7 +78,7 @@ import ${package}.${JavaModName};
 
 		@SubscribeEvent public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
 			if (!event.getPlayer().world.isRemote) {
-				SavedData worlddata = WorldVariables.get(event.getPlayer().world);
+				WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 				if(worlddata != null)
 					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SavedDataSyncMessage(1, worlddata));
 			}
@@ -137,7 +132,7 @@ import ${package}.${JavaModName};
 
 		public static WorldVariables get(IWorld world) {
 			if (world.getWorld() instanceof ServerWorld) {
-				return ((ServerWorld) world.getWorld()).getSavedData().computeIfAbsent(e -> WorldVariables.load(e), WorldVariables::new, DATA_NAME);
+				return ((ServerWorld) world.getWorld()).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -189,8 +184,7 @@ import ${package}.${JavaModName};
 
 		public static MapVariables get(IWorld world) {
 			if (world.getWorld() instanceof ServerWorld) {
-				return ((ServerWorld) world.getWorld()).getServer().getWorld(DimensionType.OVERWORLD).getSavedData()
-						.computeIfAbsent(e -> MapVariables.load(e), MapVariables::new, DATA_NAME);
+				return ((ServerWorld) world.getWorld()).getServer().getWorld(DimensionType.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -208,9 +202,9 @@ import ${package}.${JavaModName};
 			this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 
 			if(this.data instanceof MapVariables)
-				((MapVariables)this.data).read(buffer.readNbt());
+				((MapVariables)this.data).read(buffer.readCompoundTag());
 			else if(this.data instanceof WorldVariables)
-				((WorldVariables)this.data).read(buffer.readNbt());
+				((WorldVariables)this.data).read(buffer.readCompoundTag());
 		}
 
 		public SavedDataSyncMessage(int type, WorldSavedData data) {
@@ -218,12 +212,12 @@ import ${package}.${JavaModName};
 			this.data = data;
 		}
 
-		public static void buffer(WorldSavedDataSyncMessage message, PacketBuffer buffer) {
+		public static void buffer(SavedDataSyncMessage message, PacketBuffer buffer) {
 			buffer.writeInt(message.type);
 			buffer.writeCompoundTag(message.data.write(new CompoundNBT()));
 		}
 
-		public static void handler(WorldSavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
+		public static void handler(SavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
 				if (!context.getDirection().getReceptionSide().isServer()) {
