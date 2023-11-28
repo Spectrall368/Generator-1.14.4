@@ -33,14 +33,13 @@
 package ${package}.world.feature;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
-<#assign configurationcodec = generator.map(featuretype, "features", 2)>
 
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static Feature<${configuration}> feature = null;
 	
 	public ${name}Feature() {
-		super(${configurationcodec}::deserialize);
+		super(${configuration}::deserialize);
 
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
