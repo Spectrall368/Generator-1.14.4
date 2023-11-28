@@ -33,6 +33,7 @@
 package ${package}.world.feature;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
+<#assign modifiedCode = placementcode?replace(".withPlacement(", "")?replace("configure(", ',')?replace("NoPlacementConfig.INSTANCE", 'IPlacementConfig.NO_PLACEMENT_CONFIG')>
 
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
@@ -116,7 +117,7 @@ package ${package}.world.feature;
 				if (!biomeCriteria)
 					continue;
 			</#if>
-			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")}, Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementcode}));
+			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")}, Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementcode};
 			}
 		}
 	};
