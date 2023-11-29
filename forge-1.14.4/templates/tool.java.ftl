@@ -82,9 +82,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				new Item.Properties()
 			 	.group(${data.creativeTab})
 		<#elseif data.toolType=="Shears">
-			new Item.Properties()
+			new ShearsItem(Item.Properties()
 				.group(${data.creativeTab})
-				.maxDamage(${data.usageCount})
+				.maxDamage(${data.usageCount}))
 		</#if>);
 	}
 
@@ -96,45 +96,33 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		@Override public float getDestroySpeed(ItemStack stack, BlockState blockstate) {
 			return ${data.efficiency}f;
 		}
-	<#elseif data.toolType=="MultiTool">
-		@Override public boolean isCorrectToolForDrops(BlockState blockstate) {
-			int tier = ${data.harvestLevel};
-			if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
-				return false;
-			} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
-				return false;
-			} else {
-				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : (
-								blockstate.is(BlockTags.MINEABLE_WITH_AXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_HOE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL)
-						);
-			}
-		}
 
-		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-			return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
-		}
+	<#elseif data.toolType=="MultiTool">
+		@Override public boolean canHarvestBlock(BlockState blockstate) {
+		      return ${data.harvestLevel} >= state.getHarvestLevel();
+		   }
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 			return ${data.efficiency}f;
 		}
 
-		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-			if (equipmentSlot == EquipmentSlot.MAINHAND) {
-				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-				builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
-				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-				return builder.build();
-			}
+		@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+			Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
+				if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+		         		multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
+		         		multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+		      		}
+			return multimap;
+		}
 
-			return super.getDefaultAttributeModifiers(equipmentSlot);
+		@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+			stack.damageItem(1, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+			return true;
+		}
+
+		@Override public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+			stack.damageItem(1, entityLiving, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+			return true;
 		}
 	</#if>
 
@@ -158,20 +146,13 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-			.tab(${data.creativeTab})
-			.durability(${data.usageCount})
-			<#if data.immuneToFire>
-			.fireResistant()
-			</#if>
+			.group(${data.creativeTab})
+			.maxDamage(${data.usageCount})
 		);
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		return List.of(
-			<#list data.blocksAffected as restrictionBlock>
-			${mappedBlockToBlock(restrictionBlock)}<#sep>,
-			</#list>
-		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
+		return List.of(<#list data.blocksAffected as restrictionBlock>${mappedBlockToBlock(restrictionBlock)}<#sep>,</#list>).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
@@ -180,20 +161,27 @@ public class ${name}Item extends Item {
 	
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
+	@Override public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+		stack.damageItem(1, entityLiving, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+		return true;
+	}
+
+	@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		stack.damageItem(2, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+		return true;
+	}
+
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
 	}
 
-	@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-		if (equipmentSlot == EquipmentSlot.MAINHAND) {
-			ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-			builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
-			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-			return builder.build();
+	@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
+		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
 		}
-
-		return super.getDefaultAttributeModifiers(equipmentSlot);
+		return multimap;
 	}
 
 	<@commonMethods/>
@@ -251,15 +239,15 @@ public class ${name}Item extends FishingRodItem {
 
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
-		@Override public boolean hasCraftingRemainingItem(ItemStack stack) {
+		@Override public boolean hasContainerItem() {
 			return true;
 		}
 
 		<#if data.damageOnCrafting && data.usageCount != 0>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
-				retval.setDamageValue(itemstack.getDamageValue() + 1);
-				if(retval.getDamageValue() >= retval.getMaxDamage()) {
+				retval.setDamage(itemstack.getDamage() + 1);
+				if(retval.getDamage() >= retval.getMaxDamage()) {
 					return ItemStack.EMPTY;
 				}
 				return retval;
@@ -269,7 +257,7 @@ public class ${name}Item extends FishingRodItem {
 				return false;
 			}
 		<#else>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
 
@@ -281,14 +269,7 @@ public class ${name}Item extends FishingRodItem {
 		</#if>
 	</#if>
 
-	<#if data.specialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-			super.appendHoverText(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-	</#if>
+	<@addSpecialInformation data.specialInfo/>
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
