@@ -111,7 +111,7 @@ import ${package}.${JavaModName};
 			return data;
 		}
 
-		public void read(CompoundNBT nbt) {
+		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['read']?interpret/>
@@ -171,7 +171,7 @@ import ${package}.${JavaModName};
 			return data;
 		}
 
-		public void read(CompoundNBT nbt) {
+		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['read']?interpret/>
@@ -276,7 +276,7 @@ import ${package}.${JavaModName};
 
 	}
 
-	public static class PlayerVariables {
+	public static class PlayerVariables implements Capability.IStorage<PlayerVariables> {
 
 		<#list variables as var>
 			<#if var.getScope().name() == "PLAYER_LIFETIME">
@@ -291,7 +291,7 @@ import ${package}.${JavaModName};
 			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
 		}
 
-		public INBT writeNBT() {
+		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
 			CompoundNBT nbt = new CompoundNBT();
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
@@ -303,7 +303,7 @@ import ${package}.${JavaModName};
 			return nbt;
 		}
 
-		public void readNBT(INBT inbt) {
+		@Override public void readNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side, INBT inbt) {
 			CompoundNBT nbt = (CompoundNBT) inbt;
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
@@ -322,7 +322,7 @@ import ${package}.${JavaModName};
 
 		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
-			this.data.readNBT(buffer.readCompoundTag());
+			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
@@ -330,7 +330,7 @@ import ${package}.${JavaModName};
 		}
 
 		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
-			buffer.writeCompoundTag((CompoundNBT) message.data.writeNBT());
+			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
 		}
 
 		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
