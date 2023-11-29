@@ -34,6 +34,8 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
+<#assign hasBlocks = false>
+<#assign hasDoubleBlocks = false>
 
 public class ${JavaModName}Items {
 
@@ -77,7 +79,7 @@ public class ${JavaModName}Items {
             		public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
                 	REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
                     	${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()<#if item.creativeTab??>.group(${item.creativeTab})<#else>
-                    	.tab(ItemGroup.MISC)</#if>));
+                    	.group(ItemGroup.MISC)</#if>));
 		<#else>
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
 				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
