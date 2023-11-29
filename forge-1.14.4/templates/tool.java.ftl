@@ -216,19 +216,19 @@ public class ${name}Item extends FishingRodItem {
 	<@onEntityHitWith data.onEntityHitWith/>
 
 	<#if hasProcedure(data.onRightClickedInAir)>
-	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-		super.use(world, entity, hand);
-		ItemStack itemstack = entity.getItemInHand(hand);
+	@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
+		ActionResult<ItemStack> retval = super.onItemRightClick(world, entity, hand);
+		ItemStack itemstack = retval.getResult();
 		<@procedureCode data.onRightClickedInAir, {
-			"x": "entity.getX()",
-			"y": "entity.getY()",
-			"z": "entity.getZ()",
+			"x": "entity.posX",
+			"y": "entity.posY",
+			"z": "entity.posZ",
 			"world": "world",
 			"entity": "entity",
 			"itemstack": "itemstack"
 		}/>
 
-		return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
+		return retval;
 	}
 	</#if>
 
@@ -236,7 +236,6 @@ public class ${name}Item extends FishingRodItem {
 }
 </#if>
 </#compress>
-
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
 		@Override public boolean hasContainerItem() {
