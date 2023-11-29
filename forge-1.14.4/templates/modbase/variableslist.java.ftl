@@ -322,7 +322,7 @@ import ${package}.${JavaModName};
 
 		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
-			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
+			new PlayerVariablesProvider().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
@@ -330,7 +330,7 @@ import ${package}.${JavaModName};
 		}
 
 		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
-			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
+			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesProvider().writeNBT(null, message.data, null));
 		}
 
 		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
