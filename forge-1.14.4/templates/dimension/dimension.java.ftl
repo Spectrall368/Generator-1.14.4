@@ -89,8 +89,8 @@ import org.apache.logging.log4j.util.Supplier;
 			return BlockRenderLayer.TRANSLUCENT;
 		}
 
-		<#include "dimension/blockportal.java.ftl">
-		<#include "dimension/teleporter.java.ftl">
+		<#include "blockportal.java.ftl">
+		<#include "teleporter.java.ftl">
 	</#if>
 
 	public static class CustomModDimension extends ModDimension {
@@ -214,13 +214,13 @@ import org.apache.logging.log4j.util.Supplier;
 	</#if>
 
 	<#if data.worldGenType == "Normal world gen">
-        <#include "dimension/cp_normal.java.ftl">
+        <#include "cp_normal.java.ftl">
     	<#elseif data.worldGenType == "Nether like gen">
-        <#include "dimension/cp_nether.java.ftl">
+        <#include "cp_nether.java.ftl">
     	<#elseif data.worldGenType == "End like gen">
-        <#include "dimension/cp_end.java.ftl">
+        <#include "cp_end.java.ftl">
     	</#if>
 
-	<#include "dimension/biomegen.java.ftl">
+	<#include "biomegen.java.ftl">
 }
 <#-- @formatter:on -->
