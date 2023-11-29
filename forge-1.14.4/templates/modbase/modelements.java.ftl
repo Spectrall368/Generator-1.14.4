@@ -38,10 +38,6 @@ public class ${JavaModName}Elements {
 
 		Collections.sort(elements);
 		elements.forEach(${JavaModName}Elements.ModElement::initElements);
-
-		<#if w.hasVariables()>
-		MinecraftForge.EVENT_BUS.register(new ${JavaModName}Variables(this));
-		</#if>
 	}
 
 	public List<ModElement> getElements() {
