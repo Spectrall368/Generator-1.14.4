@@ -21,7 +21,6 @@ import ${package}.${JavaModName};
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesProvider(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
-			FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		</#if>
 	}
 
@@ -98,6 +97,14 @@ import ${package}.${JavaModName};
 			</#if>
 		</#list>
 
+		public WorldVariables() {
+			super(DATA_NAME);
+		}
+
+		public WorldVariables(String s) {
+			super(s);
+		}
+
 		public static WorldVariables load(CompoundNBT tag) {
 			WorldVariables data = new WorldVariables();
 			data.read(tag);
@@ -149,6 +156,14 @@ import ${package}.${JavaModName};
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['init']?interpret/>
 			</#if>
 		</#list>
+
+		public MapVariables() {
+			super(DATA_NAME);
+		}
+
+		public MapVariables(String s) {
+			super(s);
+		}
 
 		public static MapVariables load(CompoundNBT tag) {
 			MapVariables data = new MapVariables();
@@ -234,7 +249,7 @@ import ${package}.${JavaModName};
 	</#if>
 
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-	public static final Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = CapabilityManager.get(new CapabilityToken<PlayerVariables>() {});
+	@CapabilityInject(PlayerVariables.class) public static Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = null;
 
 	@Mod.EventBusSubscriber private static class PlayerVariablesProvider implements ICapabilitySerializable<INBT> {
 
@@ -245,18 +260,18 @@ import ${package}.${JavaModName};
 
 		private final PlayerVariables playerVariables = new PlayerVariables();
 
-		private final LazyOptional<PlayerVariables> instance = LazyOptional.of(() -> playerVariables);
+		private final LazyOptional<PlayerVariables> instance = LazyOptional.of(PLAYER_VARIABLES_CAPABILITY::getDefaultInstance);
 
 		@Override public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 			return cap == PLAYER_VARIABLES_CAPABILITY ? instance.cast() : LazyOptional.empty();
 		}
 
 		@Override public INBT serializeNBT() {
-			return playerVariables.writeNBT();
+			return PLAYER_VARIABLES_CAPABILITY.getStorage().writeNBT(PLAYER_VARIABLES_CAPABILITY, this.instance.orElseThrow(RuntimeException::new), null);
 		}
 
 		@Override public void deserializeNBT(INBT nbt) {
-			playerVariables.readNBT(nbt);
+			PLAYER_VARIABLES_CAPABILITY.getStorage().readNBT(PLAYER_VARIABLES_CAPABILITY, this.instance.orElseThrow(RuntimeException::new), null, nbt);
 		}
 
 	}
