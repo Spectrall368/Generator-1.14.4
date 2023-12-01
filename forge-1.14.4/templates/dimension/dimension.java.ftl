@@ -32,10 +32,6 @@
 <#include "../procedures.java.ftl">
 package ${package}.world.dimension;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.Supplier;
-
 @${JavaModName}Elements.ModElement.Tag public class ${name}Dimension extends ${JavaModName}Elements.ModElement {
 
 	@ObjectHolder("${modid}:${registryname}")
