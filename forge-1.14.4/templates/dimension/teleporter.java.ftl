@@ -58,5 +58,5 @@ package ${package}.world.teleporter;
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
 				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
-				   .replace("Teleporter.PortalPosition", "TeleporterDimensionMod.PortalPosition")}
+				   .replace("Teleporter.PortalPosition", name + "Teleporter.PortalPosition")}
 <#-- @formatter:on -->
