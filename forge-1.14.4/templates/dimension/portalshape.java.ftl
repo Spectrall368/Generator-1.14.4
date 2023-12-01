@@ -30,6 +30,6 @@
 <#-- @formatter:off -->
 package ${package}.world.teleporter;
 
-public class ${name}PortalShape ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
+public class ${name}PortalPosition ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
 
 <#-- @formatter:on -->
