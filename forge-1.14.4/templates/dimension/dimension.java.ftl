@@ -178,7 +178,7 @@ import org.apache.logging.log4j.util.Supplier;
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
-		Entity entity = event.getEntity();
+		Entity entity = event.getPlayer();
 		World world = entity.world;
 		double x = entity.posX;
 		double y = entity.posY;
