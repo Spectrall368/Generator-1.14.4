@@ -31,6 +31,10 @@
 <#include "../mcitems.ftl">
 package ${package}.world.teleporter;
 
-public class ${name}PortalShape ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
+public class ${name}PortalShape @Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
+				   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
+				   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
+
+       ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
 
 <#-- @formatter:on -->
