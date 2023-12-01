@@ -31,6 +31,10 @@
 <#include "../mcitems.ftl">
 package ${package}.world.teleporter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Supplier;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -40,7 +44,7 @@ package ${package}.world.teleporter;
 
 	protected final ServerWorld world;
 	protected final Random random;
-	protected final Map<ColumnPos, TeleporterDimensionMod.PortalPosition> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
+	protected final Map<ColumnPos, ${name}Teleporter.PortalPosition> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
 	private final Object2LongMap<ColumnPos> field_222275_f = new Object2LongOpenHashMap();
 
 	public ${name}Teleporter(ServerWorld worldServer, Vec3d lastPortalVec, Direction teleportDirection) {
