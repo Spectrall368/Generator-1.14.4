@@ -60,4 +60,8 @@ package ${package}.world.teleporter;
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
 				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 				   .replace("Teleporter.PortalPosition", name + "Teleporter.PortalPosition")}
+
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
+					   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
+					   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
 <#-- @formatter:on -->
