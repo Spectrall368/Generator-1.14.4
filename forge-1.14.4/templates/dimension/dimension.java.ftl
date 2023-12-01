@@ -36,15 +36,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Supplier;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Dimension extends ${JavaModName}Elements.ModElement{
+@${JavaModName}Elements.ModElement.Tag public class ${name}Dimension extends ${JavaModName}Elements.ModElement {
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final ModDimension dimension = null;
-
-	<#if data.enablePortal>
-	@ObjectHolder("${modid}:${registryname}_portal")
-	public static final {name}PortalBlock portal = null;
-	</#if>
 
 	public static DimensionType type = null;
 
@@ -80,16 +75,6 @@ import org.apache.logging.log4j.util.Supplier;
 	}
 
 	<#if data.enablePortal>
-		@Override public void initElements() {
-			elements.blocks.add(() -> new CustomPortalBlock());
-			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
-		}
-
-		@OnlyIn(Dist.CLIENT) public BlockRenderLayer getRenderLayer() {
-			return BlockRenderLayer.TRANSLUCENT;
-		}
-
-		<#include "blockportal.java.ftl">
 		<#include "teleporter.java.ftl">
 	</#if>
 
