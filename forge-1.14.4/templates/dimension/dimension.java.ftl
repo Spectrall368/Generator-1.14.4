@@ -74,10 +74,6 @@ import org.apache.logging.log4j.util.Supplier;
 		};
 	}
 
-	<#if data.enablePortal>
-		<#include "teleporter.java.ftl">
-	</#if>
-
 	public static class CustomModDimension extends ModDimension {
 
 		@Override
