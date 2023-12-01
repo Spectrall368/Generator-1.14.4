@@ -33,7 +33,7 @@
 <#include "../procedures.java.ftl">
 package ${package}.block;
 
-public static class ${name}PortalBlock extends NetherPortalBlock {
+public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
@@ -57,7 +57,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	</#if>
 
 	public void portalSpawn(World world, BlockPos pos) {
-		CustomPortalBlock.Size portalsize = this.isValid(world, pos);
+		${name}PortalBlock.Size portalsize = this.isValid(world, pos);
 		if (portalsize != null)
 			portalsize.placePortalBlocks();
 	}
@@ -106,9 +106,9 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 			if (player.timeUntilPortal > 0) {
 				player.timeUntilPortal = 10;
-			} else if (player.dimension != type) {
+			} else if (player.dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
 				player.timeUntilPortal = 10;
-				teleportToDimension(player, type);
+				teleportToDimension(player, DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
 			} else {
 				player.timeUntilPortal = 10;
 				teleportToDimension(player, DimensionType.OVERWORLD);
@@ -122,7 +122,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 
 		ServerWorld nextWorld = player.getServer().getWorld(destinationType);
 
-		TeleporterDimensionMod teleporter = getTeleporterForDimension(player, player.getPosition(), nextWorld);
+		${name}Teleporter teleporter = getTeleporterForDimension(player, player.getPosition(), nextWorld);
 
 		player.connection.sendPacket(new SChangeGameStatePacket(4, 0));
 
@@ -142,12 +142,12 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
-		BlockPattern.PatternHelper bph = portal.createPatternHelper(entity.world, new BlockPos(pos));
+		BlockPattern.PatternHelper bph = ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}_PORTAL.get().createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
 		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
 		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
 		double d2 = MathHelper.pct(entity.posY - 1, (double) bph.getFrontTopLeft().getY(), (double) (bph.getFrontTopLeft().getY() - bph.getHeight()));
-		return new TeleporterDimensionMod(nextWorld, new Vec3d(d1, d2, 0), bph.getForwards());
+		return new ${name}Teleporter(nextWorld, new Vec3d(d1, d2, 0), bph.getForwards());
 	}
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
