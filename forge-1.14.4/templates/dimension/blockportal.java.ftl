@@ -151,7 +151,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
 					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
+					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
 					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
 						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
