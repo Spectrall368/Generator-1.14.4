@@ -37,6 +37,10 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
 				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(${data.portalLuminance}).noDrops());
+
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.TRANSLUCENT;
+		}
 	}
 
 	<#if hasProcedure(data.onPortalTickUpdate)>
@@ -58,14 +62,14 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	${mcc.getMethod("net.minecraft.block.NetherPortalBlock", "isPortal", "IWorld", "BlockPos")
-		 .replace("NetherPortalBlock.", "CustomPortalBlock.")
+		 .replace("NetherPortalBlock.", name + "PortalBlock.")
 		 .replace("isPortal", "isValid")}
 
 	@Override ${mcc.getMethod("net.minecraft.block.NetherPortalBlock", "createPatternHelper", "IWorld", "BlockPos")
-	               .replace("NetherPortalBlock.", "CustomPortalBlock.")}
+	               .replace("NetherPortalBlock.", name + "PortalBlock.")}
 
 	@Override ${mcc.getMethod("net.minecraft.block.NetherPortalBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "IWorld", "BlockPos", "BlockPos")
-				   .replace("NetherPortalBlock.", "CustomPortalBlock.")}
+				   .replace("NetherPortalBlock.", name + "PortalBlock.")}
 
 	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
 		for (int i = 0; i < 4; i++) {
@@ -136,11 +140,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 		player.connection.sendPacket(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
 	}
 
-		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
-			return BlockRenderLayer.TRANSLUCENT;
-		}
-
-	private TeleporterDimensionMod getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
+	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
 		BlockPattern.PatternHelper bph = portal.createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
 		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
@@ -151,7 +151,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
 					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-					.replace("Blocks.NETHER_PORTAL", "portal")
+					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
 						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
