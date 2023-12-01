@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../mcitems.ftl">
 package ${package}.world.teleporter;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
