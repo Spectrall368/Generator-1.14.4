@@ -27,7 +27,10 @@
  # exception.
 -->
 
-public static class TeleporterDimensionMod extends Teleporter {
+<#-- @formatter:off -->
+package ${package}.world.teleporter;
+
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -39,29 +42,21 @@ public static class TeleporterDimensionMod extends Teleporter {
 	protected final Map<ColumnPos, TeleporterDimensionMod.PortalPosition> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
 	private final Object2LongMap<ColumnPos> field_222275_f = new Object2LongOpenHashMap();
 
-	public TeleporterDimensionMod(ServerWorld worldServer, Vec3d lastPortalVec, Direction teleportDirection) {
+	public ${name}Teleporter(ServerWorld worldServer, Vec3d lastPortalVec, Direction teleportDirection) {
 		super(worldServer);
 
 		this.world = worldServer;
 		this.random = new Random(worldServer.getSeed());
 		this.lastPortalVec = lastPortalVec;
 		this.teleportDirection = teleportDirection;
-
 		worldServer.customTeleporters.add(this);
 	}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
 				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-				   .replace("BLOCK_NETHER_PORTAL", "portal")}
+				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
-				   .replace("BLOCK_NETHER_PORTAL", "portal")
+				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 				   .replace("Teleporter.PortalPosition", "TeleporterDimensionMod.PortalPosition")}
-
-	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
-				   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
-				   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
-
-	public static class PortalPosition ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
-
-}
+<#-- @formatter:on -->
