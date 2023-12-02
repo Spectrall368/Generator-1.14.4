@@ -88,13 +88,13 @@ public class ${JavaModName}Items {
 
     <#if hasBlocks>
 	private static RegistryObject<Item> block(RegistryObject<Block> block, ItemGroup tab) {
-		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().group(tab)));
 	}
     </#if>
 
     <#if hasDoubleBlocks>
 	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block, ItemGroup tab) {
-		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties().tab(tab)));
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties().group(tab)));
 	}
     </#if>
 }
