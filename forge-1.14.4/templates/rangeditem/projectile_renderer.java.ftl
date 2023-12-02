@@ -37,9 +37,13 @@ package ${package}.client.renderer;
 
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public void registerModels(ModelRegistryEvent event) {
 			<#if data.bulletModel != "Default">
-			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, renderManager -> new CustomRender(renderManager));
+			RenderingRegistry.registerEntityRenderingHandler((EntityType.Builder.<${entity.getModElement().getName()}Entity>
+					create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
+					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f)), renderManager -> new CustomRender(renderManager));
 			<#else>
-			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+			RenderingRegistry.registerEntityRenderingHandler((EntityType.Builder.<${entity.getModElement().getName()}Entity>
+					create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
+					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f)), renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
 		}
 
