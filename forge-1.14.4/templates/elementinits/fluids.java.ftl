@@ -36,7 +36,7 @@ package ${package}.init;
 
 public class ${JavaModName}Fluids {
 
-	public static final DeferredRegister<Fluid> REGISTRY = DeferredRegister.create(ForgeRegistries.FLUIDS, ${JavaModName}.MODID);
+	public static final DeferredRegister<Fluid> REGISTRY = new DeferredRegister<>(ForgeRegistries.FLUIDS, ${JavaModName}.MODID);
 
 	<#list fluids as fluid>
 	public static final RegistryObject<Fluid> ${fluid.getModElement().getRegistryNameUpper()} =
