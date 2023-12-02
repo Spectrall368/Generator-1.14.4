@@ -19,7 +19,7 @@ import ${package}.${JavaModName};
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-			CapabilityManager.register(PlayerVariables.class, new PlayerVariablesProvider(), PlayerVariables::new);
+			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 		</#if>
 	}
@@ -276,20 +276,7 @@ import ${package}.${JavaModName};
 
 	}
 
-	public static class PlayerVariables {
-
-		<#list variables as var>
-			<#if var.getScope().name() == "PLAYER_LIFETIME">
-				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['init']?interpret/>
-			<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
-				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['init']?interpret/>
-			</#if>
-		</#list>
-
-		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayerEntity)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
-		}
+	private static class PlayerVariablesStorage implements Capability.IStorage<PlayerVariables> {
 
 		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
 			CompoundNBT nbt = new CompoundNBT();
@@ -316,13 +303,30 @@ import ${package}.${JavaModName};
 
 	}
 
+	public static class PlayerVariables {
+
+		<#list variables as var>
+			<#if var.getScope().name() == "PLAYER_LIFETIME">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['init']?interpret/>
+			<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['init']?interpret/>
+			</#if>
+		</#list>
+
+		public void syncPlayerVariables(Entity entity) {
+			if (entity instanceof ServerPlayerEntity)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
+		}
+
+	}
+
 	public static class PlayerVariablesSyncMessage {
 
 		public PlayerVariables data;
 
 		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
-			new PlayerVariables().readNBT(null, this.data, null, buffer.readCompoundTag());
+			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
@@ -330,7 +334,7 @@ import ${package}.${JavaModName};
 		}
 
 		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
-			buffer.writeCompoundTag((CompoundNBT) new PlayerVariables().writeNBT(null, message.data, null));
+			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
 		}
 
 		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
