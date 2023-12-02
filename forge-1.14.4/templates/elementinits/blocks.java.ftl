@@ -77,7 +77,7 @@ public class ${JavaModName}Blocks {
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
 
         <#if hasTransparentBlocks>
-	    @SubscribeEvent public void clientSetup(FMLClientSetupEvent event) {
+	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
 	    	<#list blocks as block>
                 <#if block.getModElement().getTypeString() == "block">
                     <#if block.transparencyType != "SOLID" || block.hasTransparency>
