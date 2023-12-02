@@ -38,7 +38,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
+		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get());
 	}
 
 	@Override public void read(CompoundNBT compound) {
@@ -102,7 +102,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 	}
 
 	@Override public ITextComponent getDefaultName() {
-		return StringTextComponent("${registryname}");
+		return new StringTextComponent("${registryname}");
 	}
 
 	@Override public int getInventoryStackLimit() {
@@ -118,7 +118,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 	}
 
 	@Override public ITextComponent getDisplayName() {
-		return StringTextComponent("${data.name}");
+		return new StringTextComponent("${data.name}");
 	}
 
 	@Override protected NonNullList<ItemStack> getItems() {
@@ -129,7 +129,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 		this.stacks = stacks;
 	}
 
-	@Override public boolean isItemValidForSlot(int index, ItemStack) {
+	@Override public boolean isItemValidForSlot(int index, ItemStack stack) {
 		<#list data.inventoryOutSlotIDs as id>
 		if (index == ${id})
 			return false;
@@ -209,16 +209,16 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
     </#if>
 
 	@Override public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		if (!this.removed && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return handlers[facing.ordinal()].cast();
 
 		<#if data.hasEnergyStorage>
-		if (!this.remove && capability == CapabilityEnergy.ENERGY)
+		if (!this.removed && capability == CapabilityEnergy.ENERGY)
 			return LazyOptional.of(() -> energyStorage).cast();
         </#if>
 
 		<#if data.isFluidTank>
-		if (!this.remove && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+		if (!this.removed && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return LazyOptional.of(() -> fluidTank).cast();
         </#if>
 
