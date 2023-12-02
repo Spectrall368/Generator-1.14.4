@@ -76,22 +76,6 @@ public class ${JavaModName}Blocks {
 	<#if hasTransparentBlocks || hasTintedBlocks || hasTintedBlockItems>
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
 
-        <#if hasTransparentBlocks>
-	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
-	    	<#list blocks as block>
-                <#if block.getModElement().getTypeString() == "block">
-                    <#if block.transparencyType != "SOLID" || block.hasTransparency>
-                        ${block.getModElement().getName()}Block.getRenderLayer();
-                    </#if>
-                <#elseif block.getModElement().getTypeString() == "plant">
-                    ${block.getModElement().getName()}Block.getRenderLayer();
-                <#elseif block.getModElement().getTypeString() == "dimension">
-                    ${block.getModElement().getName()}PortalBlock.getRenderLayer();
-                </#if>
-            </#list>
-		}
-        </#if>
-
         <#if hasTintedBlocks>
         @SubscribeEvent public static void blockColorLoad(ColorHandlerEvent.Block event) {
 	    	<#list blocks as block>
