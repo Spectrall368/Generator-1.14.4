@@ -401,4 +401,4 @@ global_templates:
     deleteWhenConditionFalse: true
     condition: ${w.hasBlocksMineableWith('hoe')}
 
-field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor, generationShape, requiresCorrectTool]
+field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor, generationShape]
