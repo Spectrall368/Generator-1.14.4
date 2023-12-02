@@ -358,7 +358,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.isWaterloggable>
-	@Override public FluidState getFluidState(BlockState state) {
+	@Override public IFluidState getFluidState(BlockState state) {
 	    return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 	</#if>
