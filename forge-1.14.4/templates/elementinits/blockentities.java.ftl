@@ -34,8 +34,6 @@
  */
 package ${package}.init;
 
-import net.minecraft.tileentity.TileEntityType;
-
 public class ${JavaModName}BlockEntities {
 
 	public static final DeferredRegister<TileEntityType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ${JavaModName}.MODID);
@@ -47,7 +45,7 @@ public class ${JavaModName}BlockEntities {
     </#list>
 
 	private static RegistryObject<TileEntityType<?>> register(String registryname, RegistryObject<Block> block, Supplier<?> supplier) {
-		return REGISTRY.register(registryname, () -> TileEntityType.Builder.create(supplier, block.get()).build(null));
+		return REGISTRY.register(registryname, () -> TileEntityType.Builder.create((Supplier<?>)supplier, block.get()).build(null));
 	}
 }
 <#-- @formatter:on -->
