@@ -37,7 +37,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
-	public ${name}BlockEntity(BlockPos position, BlockState state) {
+	public ${name}BlockEntity() {
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get());
 	}
 
