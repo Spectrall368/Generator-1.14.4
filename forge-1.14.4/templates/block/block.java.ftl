@@ -631,6 +631,10 @@ public class ${name}Block extends
 		    return new ${name}BlockEntity();
 		}
 
+	 	@Override public TileEntity createNewTileEntity(IBlockReader world) {
+	 		return new ${name}BlockEntity();
+	 	}
+
 	    @Override public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 			super.eventReceived(state, world, pos, eventID, eventParam);
 			TileEntity blockEntity = world.getTileEntity(pos);
