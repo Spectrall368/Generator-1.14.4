@@ -180,6 +180,16 @@ public class ${name}Block extends
 
 	<@addSpecialInformation data.specialInfo, true/>
 
+	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+	<#if data.transparencyType != "SOLID">
+		return BlockRenderLayer.${data.transparencyType};
+	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
+		return BlockRenderLayer.CUTOUT;
+	<#else>
+		return BlockRenderLayer.SOLID;
+	</#if>
+	}
+
 	<#if data.emissiveRendering>
 	@OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
 		return 15728880;
@@ -657,20 +667,20 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.tintType != "No tint">
-		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
+		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
 				<#if data.tintType == "Default foliage">
-					return FoliageColor.getDefault();
+					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Birch foliage">
-					return FoliageColor.getBirch();
+					return FoliageColors.getBirch();
 				<#elseif data.tintType == "Spruce foliage">
-					return FoliageColor.getSpruce();
+					return FoliageColors.getSpruce();
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
-						BiomeColors.getGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
+						BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
-						BiomeColors.getFoliageColor(world, pos) : FoliageColor.getDefault();
+						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						BiomeColors.getWaterColor(world, pos) : -1;
 					<#else>
@@ -681,16 +691,16 @@ public class ${name}Block extends
 		}
 
 		<#if data.isItemTinted>
-		@OnlyIn(Dist.CLIENT) public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
+		@OnlyIn(Dist.CLIENT) public static void itemColorLoad(ColorHandlerEvent.Item event) {
 			event.getItemColors().register((stack, index) -> {
 				<#if data.tintType == "Grass">
-					return GrassColor.get(0.5D, 1.0D);
+					return GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
-					return FoliageColor.getDefault();
+					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Birch foliage">
-					return FoliageColor.getBirch();
+					return FoliageColors.getBirch();
 				<#elseif data.tintType == "Spruce foliage">
-					return FoliageColor.getSpruce();
+					return FoliageColors.getSpruce();
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#else>
