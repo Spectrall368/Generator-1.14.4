@@ -161,7 +161,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 			int retval = super.receiveEnergy(maxReceive, simulate);
 			if(!simulate) {
 				markDirty();
-				world.notifyBlockUpdate(worldPosition, world.getBlockState(worldPosition), world.getBlockState(worldPosition), 2);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
 			}
 			return retval;
 		}
@@ -170,7 +170,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 			int retval = super.extractEnergy(maxExtract, simulate);
 			if(!simulate) {
 				markDirty();
-				world.notifyBlockUpdate(worldPosition, world.getBlockState(worldPosition), world.getBlockState(worldPosition), 2);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
 			}
 			return retval;
 		}
@@ -194,7 +194,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 			@Override protected void onContentsChanged() {
 				super.onContentsChanged();
 				markDirty();
-				world.notifyBlockUpdate(worldPosition, world.getBlockState(worldPosition), world.getBlockState(worldPosition), 2);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
 			}
 		};
         <#else>
@@ -202,7 +202,7 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 			@Override protected void onContentsChanged() {
 				super.onContentsChanged();
 				markDirty();
-				world.notifyBlockUpdate(worldPosition, world.getBlockState(worldPosition), world.getBlockState(worldPosition), 2);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
 			}
 		};
         </#if>
