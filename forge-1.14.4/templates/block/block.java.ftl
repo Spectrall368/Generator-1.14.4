@@ -74,7 +74,7 @@ public class ${name}Block extends
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			Block.Properties.create(Material.${data.material}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
-			BlockBehaviour.Properties.create(Material.${data.material})
+			Block.Properties.create(Material.${data.material})
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null) {
@@ -180,8 +180,8 @@ public class ${name}Block extends
 
 	<@addSpecialInformation data.specialInfo, true/>
 
-  <#if data.emissiveRendering>
-  @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+	<#if data.emissiveRendering>
+	@OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
 		return 15728880;
 	}
 	</#if>
@@ -193,10 +193,10 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.hasTransparency>
-  @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+  	@Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return false;
 	}
-  </#if>
+	</#if>
 
 	<#if data.connectedSides>
 	@Override public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
@@ -211,7 +211,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 0>
-	@Override public int getOpacity(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	@Override public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return ${data.lightOpacity};
 	}
 	</#if>
