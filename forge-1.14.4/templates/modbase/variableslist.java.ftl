@@ -19,7 +19,7 @@ import ${package}.${JavaModName};
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesProvider(), PlayerVariables::new);
+			CapabilityManager.register(PlayerVariables.class, new PlayerVariablesProvider(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 		</#if>
 	}
