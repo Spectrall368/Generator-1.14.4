@@ -437,7 +437,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
-	@Override public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, Mob entity) {
+	@Override public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, MobEntity entity) {
 		return PathNodeType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
 	}
 	</#if>
@@ -550,7 +550,7 @@ public class ${name}Block extends
 	<#if hasProcedure(data.onRandomUpdateEvent) || data.spawnParticles>
 	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
 		super.animateTick(blockstate, world, pos, random);
-		Player entity = Minecraft.getInstance().player;
+		PlayerEntity entity = Minecraft.getInstance().player;
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -627,8 +627,8 @@ public class ${name}Block extends
 			return true;
 		}
 
-		@Override public TileEntity createTileEntity(BlockPos pos, BlockState state) {
-		    return new ${name}BlockEntity(pos, state);
+		@Override public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		    return new ${name}BlockEntity();
 		}
 
 	    @Override public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
