@@ -474,8 +474,8 @@ public class ${name}Block extends
 
 	<#if data.requiresCorrectTool>
 	@Override public boolean canHarvestBlock(BlockState state, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		if(player.getInventory().getSelected().getItem() instanceof TieredItem)
-			return ((TieredItem) player.getInventory().getSelected().getItem()).getTier().getLevel() >= ${data.breakHarvestLevel};
+		if(player.getHeldItemMainhand().getItem() instanceof TieredItem)
+			return ((TieredItem) player.getHeldItemMainhand().getItem()).getTier().getHarvestLevel() >= ${data.breakHarvestLevel};
 		return false;
 	}
 	</#if>
