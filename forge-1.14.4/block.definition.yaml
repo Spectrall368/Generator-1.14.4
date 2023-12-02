@@ -22,7 +22,7 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
-   # Normal block templates
+  # Normal block templates
   - template: json/block_states.json.ftl
     writer: json
     variables: "variant= "
@@ -137,11 +137,6 @@ templates:
     writer: json
     variables: "model=template_wall_side;txname=wall"
     name: "@MODASSETSROOT/models/block/@registryname.json"
-  - template: json/block.json.ftl
-    condition: "blockBase %= Wall"
-    writer: json
-    variables: "model=template_wall_side_tall;txname=wall"
-    name: "@MODASSETSROOT/models/block/@registryname_side_tall.json"
   - template: json/block.json.ftl
     deleteWhenConditionFalse: true
     condition: "blockBase %= Wall"
@@ -273,38 +268,22 @@ templates:
     condition: "blockBase %= Door"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/door_bottom_left.json.ftl
+  - template: json/txblock/door_top.json.ftl
     condition: "blockBase %= Door"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_bottom_left.json"
-  - template: json/txblock/door_bottom_left_open.json.ftl
+    name: "@MODASSETSROOT/models/block/@registryname_top.json"
+  - template: json/txblock/door_top_hinge.json.ftl
     condition: "blockBase %= Door"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_bottom_left_open.json"
-  - template: json/txblock/door_bottom_right.json.ftl
+    name: "@MODASSETSROOT/models/block/@registryname_top_hinge.json"
+  - template: json/txblock/door_bottom.json.ftl
     condition: "blockBase %= Door"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_bottom_right.json"
-  - template: json/txblock/door_bottom_right_open.json.ftl
+    name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
+  - template: json/txblock/door_bottom_hinge.json.ftl
     condition: "blockBase %= Door"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_bottom_right_open.json"
-  - template: json/txblock/door_top_left.json.ftl
-    condition: "blockBase %= Door"
-    writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_top_left.json"
-  - template: json/txblock/door_top_left_open.json.ftl
-    condition: "blockBase %= Door"
-    writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_top_left_open.json"
-  - template: json/txblock/door_top_right.json.ftl
-    condition: "blockBase %= Door"
-    writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_top_right.json"
-  - template: json/txblock/door_top_right_open.json.ftl
-    condition: "blockBase %= Door"
-    writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_top_right_open.json"
+    name: "@MODASSETSROOT/models/block/@registryname_bottom_hinge.json"
 
   # TX: FenceGate templates
   - template: json/txblock/fence_gate_item.json.ftl
