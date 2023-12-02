@@ -34,6 +34,8 @@
  */
 package ${package}.init;
 
+import net.minecraft.tileentity.TileEntityType;
+
 public class ${JavaModName}BlockEntities {
 
 	public static final DeferredRegister<TileEntityType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ${JavaModName}.MODID);
