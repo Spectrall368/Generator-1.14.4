@@ -49,10 +49,9 @@ public class ${name}Block extends
 		Block
 	</#if>
 
-	<#if data.isWaterloggable || data.hasInventory>
+	<#if data.isWaterloggable>
 	implements
 		<#if data.isWaterloggable>IWaterLoggable</#if>
-		<#if data.hasInventory><#if data.isWaterloggable>,</#if>ITileEntityProvider</#if>
 	</#if>
 {
 
@@ -632,10 +631,6 @@ public class ${name}Block extends
 		@Override public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		    return new ${name}BlockEntity();
 		}
-
-	 	@Override public TileEntity createNewTileEntity(IBlockReader world) {
-	 		return new ${name}BlockEntity();
-	 	}
 
 	    @Override public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 			super.eventReceived(state, world, pos, eventID, eventParam);
