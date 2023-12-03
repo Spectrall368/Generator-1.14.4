@@ -33,7 +33,7 @@
 <#include "../procedures.java.ftl">
 package ${package}.block;
 
-public class ${name}PortalBlock extends NetherPortalBlock {
+public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
