@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../triggers.java.ftl">
 package ${package}.item;
 
 public class ${name}Item extends BucketItem {
@@ -39,6 +40,6 @@ public class ${name}Item extends BucketItem {
 			<#if data.creativeTab?has_content>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>);
 	}
 
-	<@addSpecialInformation data.specialInfo, true/>
+	<@addSpecialInformation data.specialInfo>
 }
 <#-- @formatter:on -->
