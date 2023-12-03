@@ -32,7 +32,7 @@
 <#include "../triggers.java.ftl">
 package ${package}.block;
 
-public class ${name}Block extends LiquidBlock {
+public class ${name}Block extends FlowingFluidBlock {
 	public ${name}Block() {
 		super(() -> (FlowingFluid) ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
