@@ -55,6 +55,13 @@ package ${package}.world.features.plants;
 
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${featurename}(${configuration}::deserialize) {
+			<#if data.plantType == "normal">
+				<#if data.staticPlantGenerationType == "Flower">
+				@Override public BlockState getRandomFlower(Random random, BlockPos pos) {
+      					return ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState();
+   				}
+				</#if>
+			</#if>
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
