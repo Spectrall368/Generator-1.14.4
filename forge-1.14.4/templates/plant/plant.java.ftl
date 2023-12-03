@@ -123,7 +123,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
 	@Override public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, MobEntity entity) {
-		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return PathNodeType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
 	}
 	</#if>
 
