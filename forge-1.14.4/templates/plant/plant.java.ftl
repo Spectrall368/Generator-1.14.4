@@ -38,7 +38,7 @@ package ${package}.block;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.property.Properties;
 
-public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements ITileEntityProvider</#if>{
+public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -310,13 +310,13 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		return true;
 	}
 
-	@Override public TileEntity createTileEntity(BlockPos pos, IBlockReader state) {
+	@Override public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new ${name}BlockEntity();
 	}
 
 	@Override public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 		super.eventReceived(state, world, pos, eventID, eventParam);
-		TileEntity blockEntity = world.getBlockEntity(pos);
+		TileEntity blockEntity = world.getTileEntity(pos);
 		return blockEntity == null ? false : blockEntity.receiveClientEvent(eventID, eventParam);
 	}
 	</#if>
