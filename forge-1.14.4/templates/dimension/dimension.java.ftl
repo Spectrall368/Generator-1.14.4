@@ -75,8 +75,8 @@ import org.apache.logging.log4j.util.Supplier;
 	}
 
 	<#if data.enablePortal>
-		<#include "dimension/blockportal.java.ftl">
-		<#include "dimension/teleporter.java.ftl">
+		<#include "blockportal.java.ftl">
+		<#include "teleporter.java.ftl">
 	</#if>
 
 	public static class CustomModDimension extends ModDimension {
