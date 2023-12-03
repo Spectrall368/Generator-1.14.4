@@ -86,10 +86,6 @@ public class ${name}BlockEntity extends LockableLootTileEntity implements ISided
 		return this.write(new CompoundNBT());
 	}
 
-	@Override public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.read(pkt.getNbtCompound());
-	}
-
 	@Override public int getSizeInventory() {
 		return stacks.size();
 	}
