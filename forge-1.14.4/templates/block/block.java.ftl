@@ -103,7 +103,7 @@ public class ${name}Block extends
 			.harvestLevel(${data.breakHarvestLevel})
 			.harvestTool(ToolType.${data.destroyTool?upper_case})
 		</#if>
-		<#if data.isNotColidable>
+		<#if data.isNotColidable || data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
 			.doesNotBlockMovement()
 		</#if>
 		<#if data.slipperiness != 0.6>
@@ -111,6 +111,10 @@ public class ${name}Block extends
 		</#if>
 		<#if data.tickRandomly>
 			.tickRandomly()
+		</#if>
+		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
+				|| (data.blockBase?has_content && data.blockBase == "Stairs")>
+			.variableOpacity()
 		</#if>
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
 			.noDrops()
@@ -688,7 +692,7 @@ public class ${name}Block extends
 					<#elseif data.tintType == "Water">
 						BiomeColors.getWaterColor(world, pos) : -1;
 					<#else>
-						Minecraft.getInstance().world.getBiome(pos).value().getWaterFogColor() : 329011;
+						Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 					</#if>
 				</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
