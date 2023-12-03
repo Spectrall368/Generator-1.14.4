@@ -62,8 +62,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if data.unbreakable>
 		.hardnessAndResistance(-1, 3600000)
-		<#elseif (data.hardness == 0) && (data.resistance == 0)>
-		.zeroHardnessAndResistance()
 		<#else>
 		.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 		</#if>
