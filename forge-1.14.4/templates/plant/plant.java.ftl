@@ -327,21 +327,21 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
 				<#if data.tintType == "Default foliage">
-					return FoliageColor.getDefault();
+					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Birch foliage">
-					return FoliageColor.getBirch();
+					return FoliageColors.getBirch();
 				<#elseif data.tintType == "Spruce foliage">
-					return FoliageColor.getSpruce();
+					return FoliageColors.getSpruce();
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
-						BiomeColors.getGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
+						BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
-						BiomeColors.getFoliageColor(world, pos) : FoliageColor.getDefault();
+						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						BiomeColors.getWaterColor(world, pos) : -1;
 					<#else>
-						Minecraft.getInstance().world.getBiome(pos).value().getWaterFogColor() : 329011;
+						Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 					</#if>
 				</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
@@ -351,13 +351,13 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		@OnlyIn(Dist.CLIENT) public static void itemColorLoad(ColorHandlerEvent.Item event) {
 			event.getItemColors().register((stack, index) -> {
 				<#if data.tintType == "Grass">
-					return GrassColor.get(0.5D, 1.0D);
+					return GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
-					return FoliageColor.getDefault();
+					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Birch foliage">
-					return FoliageColor.getBirch();
+					return FoliageColors.getBirch();
 				<#elseif data.tintType == "Spruce foliage">
-					return FoliageColor.getSpruce();
+					return FoliageColors.getSpruce();
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#else>
