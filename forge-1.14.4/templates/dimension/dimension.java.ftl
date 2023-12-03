@@ -32,7 +32,11 @@
 <#include "../procedures.java.ftl">
 package ${package}.world.dimension;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Dimension extends ${JavaModName}Elements.ModElement {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Supplier;
+
+@${JavaModName}Elements.ModElement.Tag public class ${name}Dimension extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final ModDimension dimension = null;
@@ -70,10 +74,14 @@ package ${package}.world.dimension;
 		};
 	}
 
+	<#if data.enablePortal>
+		<#include "dimension/blockportal.java.ftl">
+		<#include "dimension/teleporter.java.ftl">
+	</#if>
+
 	public static class CustomModDimension extends ModDimension {
 
-		@Override
-		public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 			return CustomDimension::new;
 		}
 
@@ -165,7 +173,6 @@ package ${package}.world.dimension;
    		}
 
 		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
-
 	}
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
@@ -180,13 +187,13 @@ package ${package}.world.dimension;
 		if (event.getFrom() == type) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
-        	</#if>
+        </#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
 		if (event.getTo() == type) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
-        	</#if>
+        </#if>
 	}
 	</#if>
 
@@ -199,5 +206,6 @@ package ${package}.world.dimension;
     	</#if>
 
 	<#include "biomegen.java.ftl">
+
 }
 <#-- @formatter:on -->
