@@ -72,17 +72,9 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		<#if data.generateBucket>.bucket(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET)</#if>
 		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 
-	private ${name}Fluid() {
-		super(PROPERTIES);
+	private ${name}Fluid(Properties properties) {
+		super(properties);
 	}
-
-	<#if data.extendsForgeFlowingFluid()>
-	${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}) new ${name}FlowingFluid.Source(PROPERTIES);
-	${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}) new ${name}FlowingFluid.Flowing(PROPERTIES);
-	<#else>
-	${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}) new ForgeFlowingFluid.Source(PROPERTIES);
-	${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}) new ForgeFlowingFluid.Flowing(PROPERTIES);
-	</#if>
 
 	<#if data.spawnParticles>
 	@OnlyIn(Dist.CLIENT) @Override public IParticleData getDripParticleData() {
