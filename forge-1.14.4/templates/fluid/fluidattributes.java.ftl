@@ -48,8 +48,7 @@ public class ${name}FluidAttributes extends FluidAttributes {
 	}
 
 	<#if data.isFluidTinted()>
-	@Override
-	public int getColor(IEnviromentBlockReader world, BlockPos pos) {
+	@Override public int getColor(IEnviromentBlockReader world, BlockPos pos) {
 		return
 		<#if data.tintType == "Grass">
 			BiomeColors.getGrassColor(world, pos)
