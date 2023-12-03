@@ -34,8 +34,6 @@
 <#include "../triggers.java.ftl">
 package ${package}.item;
 
-import javax.annotation.Nullable;
-
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
