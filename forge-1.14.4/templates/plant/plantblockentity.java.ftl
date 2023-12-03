@@ -44,9 +44,5 @@ public class ${name}BlockEntity extends TileEntity {
 	@Override public CompoundNBT getUpdateTag() {
 		return this.saveWithFullMetadata();
 	}
-
-	@Override public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.read(pkt.getNbtCompound());
-	}
 }
 <#-- @formatter:on -->
