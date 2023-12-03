@@ -33,24 +33,15 @@
 <#include "../procedures.java.ftl">
 package ${package}.world.features.lakes;
 
-public class ${name}Feature {
+@Mod.EventBusSubscriber public class ${name}Feature {
 
-		@Override public void init(FMLCommonSetupEvent event) {
-		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-			<#if data.restrictionBiomes?has_content>
-				boolean biomeCriteria = false;
-				<#list data.restrictionBiomes as restrictionBiome>
-					<#if restrictionBiome.canProperlyMap()>
-					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-						biomeCriteria = true;
-					</#if>
-				</#list>
-				if (!biomeCriteria)
-					continue;
-			</#if>
+	private static Feature<LakesConfig> feature = null;
 
-			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Biome.createDecoratedFeature(new LakesFeature(LakesConfig::deserialize) {
-					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, LakesConfig config) {
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
+
+		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			feature = new LakesFeature(LakesConfig::deserialize) {
+				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, LakesConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 
@@ -81,8 +72,31 @@ public class ${name}Feature {
 						return false;
 					</#if>
 
-					return super.place(world, generator, rand, pos, config);
-				}}, new LakesConfig(block.getDefaultState()), Placement.WATER_LAKE, new LakeChanceConfig(${data.frequencyOnChunks})));
+					return super.place(world, generator, random, pos, config);
+						}
+			};
+
+			event.getRegistry().register(feature.setRegistryName("${registryname}"));
+		}
+
+		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+				<#if data.restrictionBiomes?has_content>
+					boolean biomeCriteria = false;
+					<#list data.restrictionBiomes as restrictionBiome>
+						<#if restrictionBiome.canProperlyMap()>
+						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+							biomeCriteria = true;
+						</#if>
+					</#list>
+					if (!biomeCriteria)
+						continue;
+				</#if>
+	
+				biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS,
+					Biome.createDecoratedFeature(feature, new LakesConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState()), Placement.WATER_LAKE, new LakeChanceConfig(${data.frequencyOnChunks})));
+			}
 		}
 	}
+}
 <#-- @formatter:on -->
