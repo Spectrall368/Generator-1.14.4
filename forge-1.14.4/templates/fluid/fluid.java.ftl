@@ -74,6 +74,14 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		super(PROPERTIES);
 	}
 
+	<#if data.extendsForgeFlowingFluid()>
+	${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}) new ${name}FlowingFluid.Source(PROPERTIES);
+	${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}) new ${name}FlowingFluid.Flowing(PROPERTIES);
+	<#else>
+	${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}) new ForgeFlowingFluid.Source(PROPERTIES);
+	${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()} = (${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}) new ForgeFlowingFluid.Flowing(PROPERTIES);
+	</#if>
+
 	<#if data.spawnParticles>
 	@OnlyIn(Dist.CLIENT) @Override public IParticleData getDripParticleData() {
 		return ${data.dripParticle};
