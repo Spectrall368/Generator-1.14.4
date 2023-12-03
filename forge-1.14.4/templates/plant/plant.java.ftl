@@ -36,7 +36,7 @@
 package ${package}.block;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraftforge.common.property.Properties;
 
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements ITileEntityProvider</#if>{
 	public ${name}Block() {
@@ -62,13 +62,23 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if data.unbreakable>
 		.hardnessAndResistance(-1, 3600000)
+		<#elseif (data.hardness == 0) && (data.resistance == 0)>
+		.zeroHardnessAndResistance()
 		<#else>
 		.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 		</#if>
 		<#if data.luminance != 0>
 		.lightValue(${data.luminance})
 		</#if>
-		<#if !data.isSolid>
+		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
+		.noDrops()
+		</#if>
+		<#if data.isSolid>
+		.doesNotBlockMovement()
+			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
+			.variableOpacity()
+			</#if>
+		<#else>
 		.doesNotBlockMovement()
 		</#if>
 		);
@@ -98,10 +108,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		}
 		</#if>
 	</#if>
-
-	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
 
 	<#if data.isReplaceable>
 	@Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
@@ -313,7 +319,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	@OnlyIn(Dist.CLIENT) public BlockRenderLayer getRenderLayer() {
+	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
