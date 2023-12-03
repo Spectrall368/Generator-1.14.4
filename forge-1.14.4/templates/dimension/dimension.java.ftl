@@ -206,6 +206,5 @@ import org.apache.logging.log4j.util.Supplier;
     	</#if>
 
 	<#include "biomegen.java.ftl">
-
 }
 <#-- @formatter:on -->
