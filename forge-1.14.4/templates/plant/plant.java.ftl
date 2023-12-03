@@ -266,7 +266,9 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<#if data.plantType == "growapable">
 	@Override public void tick(BlockState blockstate, World world, BlockPos blockpos, Random random) {
-		if (world.isEmptyBlock(blockpos.up())) {
+		if (!blockstate.isValidPosition(world, blockpos)) {
+			   world.destroyBlock(pos, true);
+		} else if (world.isAirBlock(blockpos.up())) {
 			int i = 1;
 			for(;world.getBlockState(blockpos.down(i)).getBlock() == this; ++i);
 			if (i < ${data.growapableMaxHeight}) {
