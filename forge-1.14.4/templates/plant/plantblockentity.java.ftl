@@ -33,8 +33,8 @@ package ${package}.block.entity;
 
 public class ${name}BlockEntity extends TileEntity {
 
-	public ${name}BlockEntity(BlockPos pos, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), pos, state);
+	public ${name}BlockEntity() {
+		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get());
 	}
 
 	@Override public SUpdateTileEntityPacket getUpdatePacket() {
