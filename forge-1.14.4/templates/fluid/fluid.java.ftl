@@ -31,6 +31,8 @@
 <#include "../procedures.java.ftl">
 package ${package}.fluid;
 
+import net.minecraftforge.common.property.Properties;
+
 public abstract class ${name}Fluid extends ForgeFlowingFluid {
 
 	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
@@ -68,7 +70,7 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
 		<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
 		<#if data.generateBucket>.bucket(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET)</#if>
-		.block(() -> (LiquidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 
 	private ${name}Fluid() {
 		super(PROPERTIES);
