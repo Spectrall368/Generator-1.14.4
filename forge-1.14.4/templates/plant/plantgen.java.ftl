@@ -102,8 +102,8 @@ package ${package}.world.features.plants;
 							int k = 1 + random.nextInt(random.nextInt(${data.growapableMaxHeight}) + 1);
 							k = Math.min(${data.growapableMaxHeight}, k);
 							for(int l = 0; l < k; ++l) {
-								if (block.getDefaultState().isValidPosition(world, blockpos)) {
-									world.setBlockState(blockpos.up(l), block.getDefaultState(), 2);
+								if (${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
+									world.setBlockState(blockpos.up(l), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), 2);
 									generated++;
 								}
 							}
@@ -120,8 +120,8 @@ package ${package}.world.features.plants;
                         			int i = 0;
                         			for (int j = 0; j < 128; ++j) {
                         				BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4), random.nextInt(8) - random.nextInt(8));
-                        				if (world.isAirBlock(blockpos) && block.getDefaultState().isValidPosition(world, blockpos)) {
-                        					((DoublePlantBlock) block).placeAt(world, blockpos, 2);
+                        				if (world.isAirBlock(blockpos) && ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
+                        					((DoublePlantBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()).placeAt(world, blockpos, 2);
                         					++i;
                         				}
                         			}
