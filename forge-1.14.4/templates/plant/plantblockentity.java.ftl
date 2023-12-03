@@ -42,7 +42,7 @@ public class ${name}BlockEntity extends TileEntity {
 	}
 
 	@Override public CompoundNBT getUpdateTag() {
-		return this.saveWithFullMetadata();
+		return this.write(new CompoundNBT());
 	}
 }
 <#-- @formatter:on -->
