@@ -1,7 +1,6 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020 Pylo and contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,12 +32,9 @@
 <#include "../triggers.java.ftl">
 package ${package}.block;
 
-import net.minecraftforge.common.property.Properties;
-
-<#compress>
-public class ${name}Block extends LiquidBlock {
+public class ${name}Block extends FlowingFluidBlock {
 	public ${name}Block() {
-		super(() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		super(() -> (FlowingFluid) ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			Block.Properties.create(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 			<#else>
@@ -46,7 +42,6 @@ public class ${name}Block extends LiquidBlock {
 			</#if>
 			.hardnessAndResistance(${data.resistance}f)
 			<#if data.luminance != 0>.lightValue(${data.luminance})</#if>
-			.doesNotBlockMovement().noDrops()
 		);
 	}
 
@@ -89,4 +84,4 @@ public class ${name}Block extends LiquidBlock {
 	<@onAnimateTick data.onRandomUpdateEvent/>
 
 	<@onDestroyedByExplosion data.onDestroyedByExplosion/>
-}</#compress>
+}
