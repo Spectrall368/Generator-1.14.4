@@ -40,9 +40,9 @@ package ${package}.init;
 
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "rangeditem">
-			public static final EntityType<${entity.getModElement().getName()}Renderer.${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
-				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Renderer.${entity.getModElement().getName()}Entity>
-					create(${entity.getModElement().getName()}Renderer.${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Renderer.${entity.getModElement().getName()}Entity::new)
+			public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
+				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
+					create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f));
 		<#else>
 			public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
