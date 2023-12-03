@@ -29,8 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
-<#include "../procedures.java.ftl">
 package ${package}.client.renderer;
 
 @OnlyIn(Dist.CLIENT) public class ${name}Renderer {
