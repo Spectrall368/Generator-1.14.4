@@ -27,15 +27,7 @@
  # exception.
 -->
 
-<#-- @formatter:off -->
-<#include "../mcitems.ftl">
-package ${package}.world.teleporter;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.Supplier;
-
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
+public class ${name}Teleporter extends Teleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -71,4 +63,3 @@ import org.apache.logging.log4j.util.Supplier;
 
 	public static class PortalPosition ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
 }
-<#-- @formatter:on -->
