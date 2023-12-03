@@ -30,7 +30,6 @@
 <#-- @formatter:off -->
 <#include "tokens.ftl">
 <#include "procedures.java.ftl">
-
 <#assign hasTextures = data.baseTexture?has_content>
 <#list data.components as component>
 	<#if component.getClass().getSimpleName() == "Image">
@@ -38,7 +37,6 @@
 		<#break>
 	</#if>
 </#list>
-
 package ${package}.gui.overlay;
 
 @Mod.EventBusSubscriber public class ${name}Overlay {
@@ -51,7 +49,7 @@ package ${package}.gui.overlay;
 			int w = event.getWindow().getScaledWidth();
 			int h = event.getWindow().getScaledHeight();
 	<#else>
-	public void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
+	public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
 		if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
 			int w = event.getGui().width;
 			int h = event.getGui().height;
@@ -80,11 +78,11 @@ package ${package}.gui.overlay;
 
 			<#if hasTextures>
 				GlStateManager.disableDepthTest();
-      			GlStateManager.depthMask(false);
-      			GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+				GlStateManager.depthMask(false);
+				GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
 						GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-      			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-      			GlStateManager.disableAlphaTest();
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.disableAlphaTest();
 			</#if>
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
@@ -115,13 +113,11 @@ package ${package}.gui.overlay;
 
 			<#if hasTextures>
 				GlStateManager.depthMask(true);
-      			GlStateManager.enableDepthTest();
-      			GlStateManager.enableAlphaTest();
-      			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.enableDepthTest();
+				GlStateManager.enableAlphaTest();
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			</#if>
-
 		}
 	}
-
 }
 <#-- @formatter:on -->
