@@ -28,12 +28,7 @@
  # exception.
 -->
 
-<#-- @formatter:off -->
-<#include "../mcitems.ftl">
-<#include "../procedures.java.ftl">
-package ${package}.block;
-
-public class ${name}PortalBlock extends NetherPortalBlock {
+public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
@@ -101,14 +96,13 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!world.isRemote && !entity.isPassenger() && !entity.isBeingRidden()
-				&& entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
+		if (!world.isRemote && !entity.isPassenger() && !entity.isBeingRidden() && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 			if (player.timeUntilPortal > 0) {
 				player.timeUntilPortal = 10;
-			} else if (player.dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
+			} else if (player.dimension != type) {
 				player.timeUntilPortal = 10;
-				teleportToDimension(player, DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
+				teleportToDimension(player, type);
 			} else {
 				player.timeUntilPortal = 10;
 				teleportToDimension(player, DimensionType.OVERWORLD);
@@ -159,4 +153,3 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 
 }
-<#-- @formatter:on -->
