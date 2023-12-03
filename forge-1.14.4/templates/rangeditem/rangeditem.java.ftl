@@ -126,7 +126,7 @@ public class ${name}Item extends Item {
 	if (entity.abilities.isCreativeMode || stack != ItemStack.EMPTY) {
 	</#if>
 
-	${name}Renderer.${name}Entity entityarrow = ${name}Renderer.${name}Entity.shoot(world, entity, world.getRandom(), ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
+	${name}Entity entityarrow = ${name}Entity.shoot(world, entity, world.getRandom(), ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
 
 	itemstack.damageItem(1, entity, e -> e.sendBreakAnimation(entity.getActiveHand()));
 
