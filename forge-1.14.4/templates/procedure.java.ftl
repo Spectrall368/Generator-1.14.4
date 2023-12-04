@@ -73,7 +73,9 @@ public class ${name}Procedure {
 		<#if nullableDependencies?has_content>
 			if(
 			<#list nullableDependencies as dependency>
+			<#if dependency.getType(generator.getWorkspace()) != "int">
 			${dependency} == null <#if dependency?has_next>||</#if>
+			</#if>
 			</#list>
 			) return <#if return_type??>${return_type.getDefaultValue(generator.getWorkspace())}</#if>;
 		</#if>
@@ -84,7 +86,6 @@ public class ${name}Procedure {
 
 		${procedurecode}
 	}
-
 }
 </#compress>
 <#-- @formatter:on -->
