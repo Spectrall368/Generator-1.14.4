@@ -45,7 +45,7 @@ public class ${JavaModName}BlockEntities {
     </#list>
 
 	private static RegistryObject<TileEntityType<?>> register(String registryname, RegistryObject<Block> block, Supplier<?> supplier) {
-		return REGISTRY.register(registryname, () -> TileEntityType.Builder.create(supplier, block).build(null));
+		return REGISTRY.register(registryname, () -> TileEntityType.Builder.create(supplier, block.get()).build(null));
 	}
 }
 <#-- @formatter:on -->
