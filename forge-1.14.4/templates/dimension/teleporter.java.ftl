@@ -27,7 +27,7 @@
  # exception.
 -->
 
-public class ${name}Teleporter extends Teleporter {
+public static class ${name}Teleporter extends Teleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
