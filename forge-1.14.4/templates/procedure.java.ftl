@@ -42,6 +42,7 @@ import net.minecraftforge.eventbus.api.Event;
 		&& dependency.getType(generator.getWorkspace()) != "ActionResultType"
 		&& dependency.getType(generator.getWorkspace()) != "boolean"
 		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSource>">
+		&& dependency.getType(generator.getWorkspace()) != "int"
 		<#assign nullableDependencies += [dependency.getName()]/>
 	</#if>
 </#list>
@@ -73,9 +74,7 @@ public class ${name}Procedure {
 		<#if nullableDependencies?has_content>
 			if(
 			<#list nullableDependencies as dependency>
-			<#if dependency.getName() != "dimension">
 			${dependency} == null <#if dependency?has_next>||</#if>
-			</#if>
 			</#list>
 			) return <#if return_type??>${return_type.getDefaultValue(generator.getWorkspace())}</#if>;
 		</#if>
