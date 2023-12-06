@@ -178,7 +178,7 @@
 <#if hasProcedure(procedure)>
 @Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
 	ActionResultType retval = super.onItemUseFirst(stack, context);
-	<#if hasReturnValueOf(procedure, "actionresulttype")> return <@procedureCodeWithOptResult procedure, "actionresulttype", "ActionResultType.SUCCESS", {<#else><@procedureCode procedure, {</#if>
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "ActionResultType.SUCCESS", {
 		"world": "context.getWorld()",
 		"x": "context.getPos().getX()",
 		"y": "context.getPos().getY()",
@@ -189,9 +189,7 @@
 		"direction": "context.getFace()",
 		"itemstack": "context.getItem()"
 	}/>
-	<#if !(hasReturnValueOf(procedure, "actionresulttype"))>
 		return retval;
-	</#if>
 }
 </#if>
 </#macro>
