@@ -28,15 +28,14 @@
 -->
 
 <#-- @formatter:off -->
-public static class BiomeLayerCustom implements IC0Transformer {
+public static class ${name}BiomeLayer implements IC0Transformer {
 
 	@Override public int apply(INoiseRandom context, int value) {
 		return Registry.BIOME.getId(dimensionBiomes[context.random(dimensionBiomes.length)]);
 	}
-
 }
 
-public static class BiomeProviderCustom extends BiomeProvider {
+public static class ${name}BiomeProvider extends BiomeProvider {
 
 	private final Layer genBiomes;
 	private final Layer biomeFactoryLayer;
@@ -49,7 +48,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 	private static boolean biomesPatched = false;
 	</#if>
 
-	public BiomeProviderCustom(World world) {
+	public ${name}BiomeProvider(World world) {
 		Layer[] aLayer = makeTheWorld(world.getSeed());
 		this.genBiomes = aLayer[0];
 		this.biomeFactoryLayer = aLayer[1];
@@ -65,11 +64,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 				biome.addCarver(GenerationStage.Carving.AIR, Biome.createCarver(new CaveWorldCarver(ProbabilityConfig::deserialize, 256) {
 
 					{
-						carvableBlocks = ImmutableSet.of(
-							${mappedBlockToBlock(data.mainFillerBlock)},
-							biome.getSurfaceBuilder().getConfig().getTop().getBlock(),
-							biome.getSurfaceBuilder().getConfig().getUnder().getBlock()
-						);
+						carvableBlocks = ImmutableSet.of(${mappedBlockToBlock(data.mainFillerBlock)}, biome.getSurfaceBuilder().getConfig().getTop().getBlock(), biome.getSurfaceBuilder().getConfig().getUnder().getBlock());
 					}
 
 				}, new ProbabilityConfig(0.14285715f)));
@@ -83,7 +78,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 		LongFunction<IExtendedNoiseRandom<LazyArea>> contextFactory = l -> new LazyAreaLayerContext(25, seed, l);
 
 		IAreaFactory<LazyArea> parentLayer = IslandLayer.INSTANCE.apply(contextFactory.apply(1));
-		IAreaFactory<LazyArea> biomeLayer = (new BiomeLayerCustom()).apply(contextFactory.apply(200), parentLayer);
+		IAreaFactory<LazyArea> biomeLayer = (new ${name}BiomeLayer()).apply(contextFactory.apply(200), parentLayer);
 
 		biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1000), biomeLayer);
 		biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001), biomeLayer);
@@ -108,6 +103,5 @@ public static class BiomeProviderCustom extends BiomeProvider {
 	<#if data.worldGenType == "End like gen">
 	@Override ${mcc.getMethod("net.minecraft.world.biome.provider.EndBiomeProvider", "func_222365_c", "int", "int")}
     </#if>
-
 }
 <#-- @formatter:on -->
