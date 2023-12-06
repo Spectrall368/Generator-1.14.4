@@ -35,7 +35,11 @@ package ${package}.item;
 public class ${name}Item extends MusicDiscItem {
 
 	public ${name}Item() {
+		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
+		super(${data.analogOutput}, ${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}")),
+		<#else>
 		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
+		</#if>
 				new Item.Properties().group(${data.creativeTab}).maxStackSize(1).rarity(Rarity.RARE));
 	}
 
@@ -56,6 +60,5 @@ public class ${name}Item extends MusicDiscItem {
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
 	<@hasGlow data.glowCondition/>
-
 }
 <#-- @formatter:on -->
