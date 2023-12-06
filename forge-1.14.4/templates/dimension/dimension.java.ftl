@@ -58,7 +58,7 @@ import org.apache.logging.log4j.util.Supplier;
 	}
 
 	@SubscribeEvent public void registerDimension(RegistryEvent.Register<ModDimension> event) {
-		event.getRegistry().register(new CustomModDimension().setRegistryName("${registryname}"));
+		event.getRegistry().register(new ${name}ModDimension().setRegistryName("${registryname}"));
 	}
 
 	@SubscribeEvent public void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
@@ -88,18 +88,18 @@ import org.apache.logging.log4j.util.Supplier;
 		<#include "teleporter.java.ftl">
 	</#if>
 
-	public static class CustomModDimension extends ModDimension {
+	public static class ${name}ModDimension extends ModDimension {
 
 		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-			return CustomDimension::new;
+			return ${name}Dimension::new;
 		}
 	}
 
-	public static class CustomDimension extends Dimension {
+	public static class ${name}Dimension extends Dimension {
 
 		private BiomeProviderCustom biomeProviderCustom = null;
 
-		public CustomDimension(World world, DimensionType type) {
+		public ${name}Dimension(World world, DimensionType type) {
 			super(world, type);
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
