@@ -40,12 +40,6 @@ import org.apache.logging.log4j.util.Supplier;
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final ModDimension dimension = null;
-
-	<#if data.enablePortal>
-	@ObjectHolder("${modid}:${registryname}_portal")
-	public static final CustomPortalBlock portal = null;
-	</#if>
-
 	public static DimensionType type = null;
 
 	private static Biome[] dimensionBiomes;
@@ -79,11 +73,6 @@ import org.apache.logging.log4j.util.Supplier;
 	}
 
 	<#if data.enablePortal>
-		@Override public void initElements() {
-			elements.blocks.add(() -> new CustomPortalBlock());
-			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
-		}
-
 		<#include "blockportal.java.ftl">
 		<#include "teleporter.java.ftl">
 	</#if>
