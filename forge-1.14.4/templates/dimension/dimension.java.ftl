@@ -40,6 +40,12 @@ import org.apache.logging.log4j.util.Supplier;
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final ModDimension dimension = null;
+
+	<#if data.enablePortal>
+	@ObjectHolder("${modid}:${registryname}_portal")
+	public static final ${name}PortalBlock portal = null;
+	</#if>
+
 	public static DimensionType type = null;
 
 	private static Biome[] dimensionBiomes;
@@ -73,6 +79,10 @@ import org.apache.logging.log4j.util.Supplier;
 	}
 
 	<#if data.enablePortal>
+		@Override public void initElements() {
+			elements.blocks.add(() -> new ${name}PortalBlock());
+		}
+
 		<#include "blockportal.java.ftl">
 		<#include "teleporter.java.ftl">
 	</#if>
@@ -166,7 +176,7 @@ import org.apache.logging.log4j.util.Supplier;
 		</#if>
 
 		@Override public boolean doesWaterVaporize() {
-      		return ${data.doesWaterVaporize};
+      			return ${data.doesWaterVaporize};
    		}
 
 		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
@@ -195,11 +205,11 @@ import org.apache.logging.log4j.util.Supplier;
 	</#if>
 
 	<#if data.worldGenType == "Normal world gen">
-        <#include "cp_normal.java.ftl">
+	        <#include "cp_normal.java.ftl">
     	<#elseif data.worldGenType == "Nether like gen">
-        <#include "cp_nether.java.ftl">
+	        <#include "cp_nether.java.ftl">
     	<#elseif data.worldGenType == "End like gen">
-        <#include "cp_end.java.ftl">
+	        <#include "cp_end.java.ftl">
     	</#if>
 
 	<#include "biomegen.java.ftl">
