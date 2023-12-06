@@ -90,8 +90,7 @@ import org.apache.logging.log4j.util.Supplier;
 
 	public static class CustomModDimension extends ModDimension {
 
-		@Override
-		public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 			return CustomDimension::new;
 		}
 	}
