@@ -65,8 +65,6 @@ public class ${JavaModName}Blocks {
 
     <#list blocks as block>
         <#if block.getModElement().getTypeString() == "dimension">
-            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
-			    REGISTRY.register("${block.getModElement().getRegistryName()}_portal", () -> new ${block.getModElement().getName()}Dimension.${block.getModElement().getName()}PortalBlock());
         <#else>
             public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
 				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
