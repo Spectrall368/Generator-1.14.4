@@ -348,7 +348,8 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.placingCondition)>
 	@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {
-		if (worldIn instanceof IWorld world) {
+		if (worldIn instanceof IWorld) {
+			World world = worldIn.getDimension().getWorld();
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
