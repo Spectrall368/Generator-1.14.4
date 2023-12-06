@@ -32,7 +32,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
-				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(${data.portalLuminance}).noDrops());
+				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(${data.portalLuminance}).noDrops());setRegistryName("${registryname}_portal");
 	}
 
 	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
@@ -136,7 +136,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
-		BlockPattern.PatternHelper bph = ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}_PORTAL.get().createPatternHelper(entity.world, new BlockPos(pos));
+		BlockPattern.PatternHelper bph = portal.createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
 		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
 		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
@@ -146,7 +146,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
 					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+					.replace("Blocks.NETHER_PORTAL", "portal")
 					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
 						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
