@@ -213,8 +213,8 @@
 	<#else>
 	return true;
 	</#if>
-</#if>
 }
+</#if>
 </#macro>
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
