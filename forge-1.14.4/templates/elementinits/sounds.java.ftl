@@ -29,31 +29,21 @@
 -->
 
 <#-- @formatter:off -->
-
-<#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 import net.minecraft.util.SoundEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Sounds {
+public class ${JavaModName}Sounds {
 
-	public static Map<ResourceLocation, SoundEvent> REGISTRY = new HashMap<>();
+	public static final DeferredRegister<SoundEvent> REGISTRY = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, ${JavaModName}.MODID);
 
-	static {
-		<#list sounds as sound>
-		REGISTRY.put(new ResourceLocation("${modid}" ,"${sound}"), new SoundEvent(new ResourceLocation("${modid}", "${sound}")));
-		</#list>
-	}
+	<#list sounds as sound>
+	public static final RegistryObject<SoundEvent> ${sound.getName()?upper_case?replace(".", "_")?replace("/", "_")?replace(":", "_")?replace("-", "_")} = REGISTRY.register("${sound.getName()}", () ->
+			new SoundEvent(new ResourceLocation(${JavaModName}.MODID, "${sound}")));
+	</#list>
 
-	@SubscribeEvent public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-		for (Map.Entry<ResourceLocation, SoundEvent> sound : REGISTRY.entrySet())
-			event.getRegistry().register(sound.getValue().setRegistryName(sound.getKey()));
-	}
 }
-
 <#-- @formatter:on -->
