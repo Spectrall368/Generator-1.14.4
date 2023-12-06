@@ -41,6 +41,11 @@ import org.apache.logging.log4j.util.Supplier;
 	@ObjectHolder("${modid}:${registryname}")
 	public static final ModDimension dimension = null;
 
+	<#if data.enablePortal>
+	@ObjectHolder("${modid}:${registryname}_portal")
+	public static final CustomPortalBlock portal = null;
+	</#if>
+
 	public static DimensionType type = null;
 
 	private static Biome[] dimensionBiomes;
@@ -60,7 +65,6 @@ import org.apache.logging.log4j.util.Supplier;
 		if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
 			DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension, null, ${data.hasSkyLight});
 		}
-
 		type = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
 	}
 
@@ -75,16 +79,21 @@ import org.apache.logging.log4j.util.Supplier;
 	}
 
 	<#if data.enablePortal>
+		@Override public void initElements() {
+			elements.blocks.add(() -> new CustomPortalBlock());
+			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
+		}
+
 		<#include "blockportal.java.ftl">
 		<#include "teleporter.java.ftl">
 	</#if>
 
 	public static class CustomModDimension extends ModDimension {
 
-		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+		@Override
+		public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 			return CustomDimension::new;
 		}
-
 	}
 
 	public static class CustomDimension extends Dimension {
@@ -113,17 +122,17 @@ import org.apache.logging.log4j.util.Supplier;
 		</#if>
 
 		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
-			<#if data.airColor?has_content>
+		<#if data.airColor?has_content>
 			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
-			<#else>
+		<#else>
 			float f = MathHelper.clamp(MathHelper.cos(celestialAngle * ((float)Math.PI * 2)) * 2 + 0.5f, 0, 1);
-      		float f1 = 0.7529412f;
-      		float f2 = 0.84705883f;
-      		float f3 = 1;
-      		f1 = f1 * (f * 0.94F + 0.06F);
-      		f2 = f2 * (f * 0.94F + 0.06F);
-      		f3 = f3 * (f * 0.91F + 0.09F);
-      		return new Vec3d(f1, f2, f3);
+	      		float f1 = 0.7529412f;
+	      		float f2 = 0.84705883f;
+	      		float f3 = 1;
+	      		f1 = f1 * (f * 0.94F + 0.06F);
+	      		f2 = f2 * (f * 0.94F + 0.06F);
+	      		f3 = f3 * (f * 0.91F + 0.09F);
+	      		return new Vec3d(f1, f2, f3);
 			</#if>
 		}
 
