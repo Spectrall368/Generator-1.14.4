@@ -16,6 +16,9 @@ public class ${JavaModName}Elements {
 
 	public final List<ModElement> elements = new ArrayList<>();
 
+	<#if w.hasElementsOfBaseType("block")>
+	public final List<Supplier<Block>> blocks = new ArrayList<>();
+	</#if>
 	<#if w.hasElementsOfType("biome")>
 	public final List<Supplier<Biome>> biomes = new ArrayList<>();
 	</#if>
@@ -43,6 +46,12 @@ public class ${JavaModName}Elements {
 	public List<ModElement> getElements() {
 		return elements;
 	}
+
+	<#if w.hasElementsOfBaseType("block")>
+	public List<Supplier<Block>> getBlocks() {
+		return blocks;
+	}
+	</#if>
 
 	<#if w.hasElementsOfType("biome")>
 	public List<Supplier<Biome>> getBiomes() {
