@@ -23,9 +23,9 @@
 <#macro boundingBoxWithRotation positiveBoxes negativeBoxes noOffset rotationMode enablePitch=false>
     <#compress>
     <#if rotationMode == 0>
-        return <@makeBoundingBox positiveBoxes negativeBoxes "north"/><#if !noOffset>.withOffset(offset.x, offset.y, offset.z)</#if>;
+        <@makeBoundingBox positiveBoxes negativeBoxes "north"/><#if !noOffset>.withOffset(offset.x, offset.y, offset.z)</#if>;
     <#else>
-        return <#if !noOffset>(</#if>
+        <#if !noOffset>(</#if>
         <#if rotationMode != 5>
             <#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
             switch ((Direction) state.get(FACING)) {
