@@ -92,15 +92,15 @@ import net.minecraft.util.SoundEvent;
 	public static class ${name}ModDimension extends ModDimension {
 
 		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-			return ${name}Dimension::new;
+			return ${name}MyDimension::new;
 		}
 	}
 
-	public static class ${name}Dimension extends Dimension {
+	public static class ${name}MyDimension extends Dimension {
 
 		private ${name}BiomeProvider ${name}BiomeProvider = null;
 
-		public ${name}Dimension(World world, DimensionType type) {
+		public ${name}MyDimension(World world, DimensionType type) {
 			super(world, type);
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
