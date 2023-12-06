@@ -213,6 +213,7 @@
 	<#else>
 	return true;
 	</#if>
+</#if>
 }
 </#macro>
 <#-- Armor triggers -->
