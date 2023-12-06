@@ -97,7 +97,7 @@ import org.apache.logging.log4j.util.Supplier;
 
 	public static class ${name}Dimension extends Dimension {
 
-		private BiomeProviderCustom biomeProviderCustom = null;
+		private ${name}BiomeProvider ${name}BiomeProvider = null;
 
 		public ${name}Dimension(World world, DimensionType type) {
 			super(world, type);
@@ -105,19 +105,19 @@ import org.apache.logging.log4j.util.Supplier;
 		}
 
 		<#if !data.imitateOverworldBehaviour>
-		@Override public void calculateInitialWeather() {
-		}
-
-    		@Override public void updateWeather(Runnable defaultWeather) {
-		}
-
-		@Override public boolean canDoLightning(Chunk chunk) {
-			return false;
-		}
-
-		@Override public boolean canDoRainSnowIce(Chunk chunk) {
-			return false;
-		}
+			@Override public void calculateInitialWeather() {
+			}
+	
+	    		@Override public void updateWeather(Runnable defaultWeather) {
+			}
+	
+			@Override public boolean canDoLightning(Chunk chunk) {
+				return false;
+			}
+	
+			@Override public boolean canDoRainSnowIce(Chunk chunk) {
+				return false;
+			}
 		</#if>
 
 		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
@@ -136,10 +136,10 @@ import org.apache.logging.log4j.util.Supplier;
 		}
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
-			if(this.biomeProviderCustom == null) {
-				this.biomeProviderCustom = new BiomeProviderCustom(this.world);
+			if(this.${name}BiomeProvider == null) {
+				this.${name}BiomeProvider = new ${name}BiomeProvider(this.world);
 			}
-			return new ChunkProviderModded(this.world, this.biomeProviderCustom);
+			return new ChunkProviderModded(this.world, this.${name}BiomeProvider);
 		}
 
 		@Override public boolean isSurfaceWorld() {
