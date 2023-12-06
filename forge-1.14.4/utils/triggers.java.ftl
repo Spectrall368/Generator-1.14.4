@@ -183,6 +183,7 @@
 		"x": "context.getPos().getX()",
 		"y": "context.getPos().getY()",
 		"z": "context.getPos().getZ()",
+		"pos": "context.getPos()",
 		"blockstate": "context.getWorld().getBlockState(context.getPos())",
 		"entity": "context.getPlayer()",
 		"direction": "context.getFace()",
