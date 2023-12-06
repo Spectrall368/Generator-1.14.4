@@ -12,9 +12,6 @@
 	</#if>
 </#macro>
 
-<#include "procedures.java.ftl">
-
-<#-- Item-related triggers -->
 <#macro onEntitySwing procedure="">
 <#if hasProcedure(procedure)>
 @Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
