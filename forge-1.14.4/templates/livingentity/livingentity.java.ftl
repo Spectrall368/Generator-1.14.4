@@ -683,6 +683,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		double x = this.posX;
 		double y = this.posY;
 		double z = this.posZ;
+		Random random = this.rand;
 		Entity entity = this;
 		World world = this.world;
 		<#if hasProcedure(data.particleCondition)>
