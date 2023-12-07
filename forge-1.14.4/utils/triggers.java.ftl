@@ -178,7 +178,7 @@
 <#if hasProcedure(procedure)>
 @Override public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
 	ActionResultType retval = super.onItemUseFirst(stack, context);
-	<@procedureCodeWithOptResult procedure, "actionresulttype", "ActionResultType.SUCCESS", {
+	<@procedureCode procedure, {
 		"world": "context.getWorld()",
 		"x": "context.getPos().getX()",
 		"y": "context.getPos().getY()",
