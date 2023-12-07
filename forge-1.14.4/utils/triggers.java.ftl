@@ -195,7 +195,6 @@
 </#macro>
 
 <#macro hasGlow procedure="">
-<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
 		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
@@ -214,7 +213,6 @@
 		return true;
 	</#if>
 }
-</#if>
 </#macro>
 
 <#-- Armor triggers -->
