@@ -560,7 +560,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		}
 
 		@Override public boolean isBreedingItem(ItemStack stack) {
-			List<ItemStack> breedingItem = new ArrayList<>();
+			List<Item> breedingItem = new ArrayList<>();
 			<#list data.breedTriggerItems as breedTriggerItem>
 			breedingItem.add(${mappedMCItemToItem(breedTriggerItem)});
 			</#list>
