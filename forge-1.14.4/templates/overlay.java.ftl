@@ -37,7 +37,7 @@
 		<#break>
 	</#if>
 </#list>
-package ${package}.gui.overlay;
+package ${package}.client.screens;
 
 @Mod.EventBusSubscriber public class ${name}Overlay {
 
