@@ -195,27 +195,28 @@
 </#macro>
 
 <#macro hasGlow procedure="">
-<#if procedure?has_content>
+<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
-	<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
-	<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
-	Entity entity = Minecraft.getInstance().player;
-	</#if>
-	return <@procedureCode procedure, {
-		"x": "entity.posX",
-		"y": "entity.posY",
-		"z": "entity.posZ",
-		"entity": "entity",
-		"world": "entity.world",
-		"itemstack": "itemstack"
-	}/>
+		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+		<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+		Entity entity = Minecraft.getInstance().player;
+		</#if>
+		return <@procedureCode procedure, {
+			"x": "entity.posX",
+			"y": "entity.posY",
+			"z": "entity.posZ",
+			"entity": "entity",
+			"world": "entity.world",
+			"itemstack": "itemstack"
+		}/>
 	<#else>
-	return true;
+		return true;
 	</#if>
 }
 </#if>
 </#macro>
+
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
 <#if hasProcedure(procedure)>
