@@ -14,7 +14,7 @@
                 <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
             case CEILING:
                 <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
-        };
+        }
     <#else>
         <@makeBoundingBox positiveBoxes negativeBoxes facing/>;
     </#if>
