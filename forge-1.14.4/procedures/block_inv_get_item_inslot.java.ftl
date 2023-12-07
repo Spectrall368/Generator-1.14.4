@@ -6,7 +6,7 @@
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null)
 			_ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
-				.ifPresent(capability -> _retval.set(capability.getStackInSlot(sltid).copy()));
+				.ifPresent(capability -> _retval.set(capability.getStackInSlot(slotid).copy()));
 		return _retval.get();
 	}
 }.getItemStack(world, ${toBlockPos(input$x,input$y,input$z)}, ${opt.toInt(input$slotid)}))
