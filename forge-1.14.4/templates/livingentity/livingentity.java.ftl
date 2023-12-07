@@ -240,7 +240,10 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
     </#if>
 
 	<#if hasProcedure(data.whenMobFalls) || data.flyingMob>
-	@Override public boolean fall(float l, float d) {
+	@Override public void fall(float l, float d) {
+		<#if !data.flyingMob>
+			super.fall(l, d);
+		</#if>
 		<#if hasProcedure(data.whenMobFalls)>
 			<@procedureCode data.whenMobFalls, {
 				"x": "this.posX",
@@ -249,12 +252,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				"entity": "this",
 				"world": "this.world"
 			}/>
-		</#if>
-
-		<#if data.flyingMob >
-			return false;
-		<#else>
-			return super.causeFallDamage(l, d);
 		</#if>
 	}
     </#if>
