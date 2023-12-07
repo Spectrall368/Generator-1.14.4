@@ -118,21 +118,22 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 					<#if hasProcedure(component.onSlotChanged)>
         	        @Override public void onSlotChanged() {
 						super.onSlotChanged();
-						slotChanged(${component.id}, 0, 0);
+						${name}Menu.this.slotChanged(${component.id}, 0, 0);
 					}
 					</#if>
 
 					<#if hasProcedure(component.onTakenFromSlot)>
-        	        @Override public void onTake(PlayerEntity entity, ItemStack stack) {
-						super.onTake(entity, stack);
-						slotChanged(${component.id}, 1, 0);
+        	        @Override public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
+						ItemStack retval = super.onTake(entity, stack);
+						${name}Menu.this.slotChanged(${component.id}, 1, 0);
+						return retval;
 					}
 					</#if>
 
 					<#if hasProcedure(component.onStackTransfer)>
         	        @Override public void onSlotChange(ItemStack a, ItemStack b) {
 						super.onSlotChange(a, b);
-						slotChanged(${component.id}, 2, b.getCount() - a.getCount());
+						${name}Menu.this.slotChanged(${component.id}, 2, b.getCount() - a.getCount());
 					}
 					</#if>
 
