@@ -555,7 +555,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	<#if data.breedable>
         @Override public AgeableEntity createChild(AgeableEntity ageable) {
 			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.create(this.world);
-			retval.onInitialSpawn(this.world, this.world.getDifficultyForLocation(retval.blockPosition()), SpawnReason.BREEDING, null, null);
+			retval.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(retval)), SpawnReason.BREEDING, null, null);
 			return retval;
 		}
 
