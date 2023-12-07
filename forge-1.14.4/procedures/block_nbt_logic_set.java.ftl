@@ -6,6 +6,6 @@ if(!world.getWorld().isRemote) {
 	if(_tileEntity != null)
 		_tileEntity.getTileData().putBoolean(${input$tagName}, ${input$tagValue});
 
-	if(world instanceof World)
+	if(world.getWorld() instanceof World)
 		((World) world).getWorld().notifyBlockUpdate(_bp, _bs, _bs, 3);
 }
