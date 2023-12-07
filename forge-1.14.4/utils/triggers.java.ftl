@@ -90,7 +90,7 @@
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
 	<#if hurtStack>
-		itemstack.damageItem(1, entity, i -> i.sendBreakAnimation(EquipmentSlot.MAINHAND));
+		itemstack.damageItem(1, entity, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
 	<#else>
 		boolean retval = super.onBlockDestroyed(itemstack,world,blockstate,pos,entity);
 	</#if>
