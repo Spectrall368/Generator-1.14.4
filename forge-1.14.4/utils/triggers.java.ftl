@@ -305,7 +305,7 @@
 
 <#macro onEntityWalksOn procedure="">
 <#if hasProcedure(procedure)>
-@Override public void onEntityWalk(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
+@Override public void onEntityWalk(World world, BlockPos pos, Entity entity) {
 	super.onEntityWalk(world, pos, blockstate, entity);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
@@ -313,7 +313,7 @@
 	"z": "pos.getZ()",
 	"world": "world",
 	"entity": "entity",
-	"blockstate": "blockstate"
+	"blockstate": "world.getBlockState(pos)"
 	}/>
 }
 </#if>
