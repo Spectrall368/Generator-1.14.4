@@ -100,7 +100,7 @@ public class ${name}Block extends
 			.harvestLevel(${data.breakHarvestLevel})
 			.harvestTool(ToolType.${data.destroyTool?upper_case})
 		</#if>
-		<#if data.isNotColidable || data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+		<#if data.isNotColidable>
 			.doesNotBlockMovement()
 		</#if>
 		<#if data.slipperiness != 0.6>
