@@ -585,12 +585,12 @@ public class ${name}Block extends
     boolean retval = super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
 		<#if data.shouldOpenGUIOnRightClick()>
 		if(entity instanceof ServerPlayerEntity) {
-			NetworkHooks.openScreen((ServerPlayerEntity) entity, new INamedContainerProvider() {
+			NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 				@Override public ITextComponent getDisplayName() {
-					return StringTextComponent("${data.name}");
+					return new StringTextComponent("${data.name}");
 				}
-				@Override public Container createMenu(int id, Inventory inventory, PlayerEntity player) {
-					return new ${data.guiBoundTo}Menu(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
+				@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+					return new ${data.guiBoundTo}Menu(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(pos));
 				}
 			}, pos);
 		}
