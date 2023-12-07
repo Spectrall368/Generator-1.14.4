@@ -54,7 +54,7 @@
                     <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
             }
         </#if>
-        <#if !noOffset>).withOffset(offset.x, offset.y, offset.z)</#if>;
+        <#if !noOffset>).withOffset(offset.x, offset.y, offset.z);</#if>
     </#if>
     </#compress>
 </#macro>
