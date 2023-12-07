@@ -1,5 +1,8 @@
 <#include "mcelements.ftl">
 <#include "mcitems.ftl">
+<#if field$nbt?lower_case == "false" && field$state?lower_case == "false">
+world.setBlockState(${toBlockPos(input$x,input$y,input$z)}, ${mappedBlockToBlockStateCode(input$block)},3);
+<#else>
 {
 	BlockPos _bp = ${toBlockPos(input$x,input$y,input$z)};
 	BlockState _bs = ${mappedBlockToBlockStateCode(input$block)};
@@ -37,3 +40,4 @@
 	}
 	</#if>
 }
+</#if>
