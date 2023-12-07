@@ -61,7 +61,7 @@ package ${package}.init;
 			if (Minecraft.getInstance().currentScreen == null) {
 			<#list keybinds as keybind>
 				<#if hasProcedure(keybind.onKeyPressed) || hasProcedure(keybind.onKeyReleased)>
-					if (event.getKey() == ${keybind.getModElement().getRegistryNameUpper()}.getKey().getValue()) {
+					if (event.getKey() == ${keybind.getModElement().getRegistryNameUpper()}.getKey().getKeyCode()) {
 						if(event.getAction() == GLFW.GLFW_PRESS) {
 								<#if hasProcedure(keybind.onKeyPressed)>
 									${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(0, 0));
