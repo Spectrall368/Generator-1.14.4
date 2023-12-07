@@ -114,16 +114,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		      		}
 			return multimap;
 		}
-
-		@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-			stack.damageItem(1, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-			return true;
-		}
-
-		@Override public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-			stack.damageItem(1, entityLiving, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-			return true;
-		}
 	</#if>
 
 	<#if data.toolType=="MultiTool">
@@ -152,7 +142,11 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		return List.of(<#list data.blocksAffected as restrictionBlock>${mappedBlockToBlock(restrictionBlock)}<#sep>,</#list>).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
+	<#list data.blocksAffected as restrictionBlock>
+        	if (blockstate.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
+                 	return ${data.efficiency}f;
+        </#list>
+		return 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
@@ -161,17 +155,7 @@ public class ${name}Item extends Item {
 	
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
-	@Override public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-		stack.damageItem(1, entityLiving, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-		return true;
-	}
-
-	@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.damageItem(2, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-		return true;
-	}
-
-	@Override public int getEnchantmentValue() {
+	@Override public int getItemEnchantability() {
 		return ${data.enchantability};
 	}
 
