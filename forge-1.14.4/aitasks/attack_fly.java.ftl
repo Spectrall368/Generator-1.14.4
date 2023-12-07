@@ -42,7 +42,7 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 	}
 
 	@Override public void tick() {
-		LivingEntity livingentity = CustomEntity.this.getAttackTarget();
+		LivingEntity livingentity = ${name}Entity.this.getAttackTarget();
 		if (${name}Entity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
 			${name}Entity.this.attackEntityAsMob(livingentity);
 		} else {
