@@ -74,7 +74,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		.noDrops()
 		</#if>
 		<#if data.isSolid>
-		.doesNotBlockMovement()
 			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
 			.variableOpacity()
 			</#if>
@@ -141,7 +140,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<#if data.isSolid>
    	@Override public boolean isSolid(BlockState state) {
-     	 	return this.blocksMovement && this.getRenderLayer() == BlockRenderLayer.SOLID;
+     	 	return true;
    	}
 	</#if>
 
