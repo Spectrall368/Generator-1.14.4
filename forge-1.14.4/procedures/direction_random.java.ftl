@@ -1,1 +1,1 @@
-Direction.byIndex(4)
+Direction.getRandomFace(new Random())
