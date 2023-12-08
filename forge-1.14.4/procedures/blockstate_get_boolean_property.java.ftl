@@ -1,6 +1,2 @@
 <#include "mcitems.ftl">
-(new Object() {
-	public boolean get(BlockState _bs, String _property) {
-		IProperty _prop = _bs.getBlock().getStateContainer().getProperty(_property);
-		return _prop instanceof BooleanProperty ? _bs.get((BooleanProperty)_prop) : false;
-}}.get(${mappedBlockToBlockStateCode(input$block)}, ${input$property}))
+return ${mappedBlockToBlockStateCode(input$block)}.getBlock().getStateContainer().getProperty(${input$property}) instanceof BooleanProperty ? ${mappedBlockToBlockStateCode(input$block)}.get((BooleanProperty) ${mappedBlockToBlockStateCode(input$block)}.getBlock().getStateContainer().getProperty(${input$property})) : false
