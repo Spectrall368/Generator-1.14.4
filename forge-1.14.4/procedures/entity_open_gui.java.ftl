@@ -1,7 +1,7 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
 {
-	if(${input$entity} instanceof ServerPlayer) {
+	if(${input$entity} instanceof ServerPlayerEntity) {
 		BlockPos _bpos = ${toBlockPos(input$x,input$y,input$z)};
 		NetworkHooks.openGui((ServerPlayerEntity) ${input$entity}, new INamedContainerProvider() {
 			@Override public ITextComponent getDisplayName() {
