@@ -1,2 +1,2 @@
 if(${input$entity} instanceof LivingEntity)
-	((LivingEntity)${input$entity}).addPotionEffect(new EffectInstance(${generator.map(field$potion, "effects")},${opt.toInt(input$duration)},${opt.toInt(input$level)}));
+	((LivingEntity) ${input$entity}).addPotionEffect(new EffectInstance(${generator.map(field$potion, "effects")},${opt.toInt(input$duration)},${opt.toInt(input$level)}));
