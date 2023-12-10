@@ -1,1 +1,1 @@
-(${input$entity}.func_223314_ad())
+/*@int*/(${input$entity}.func_223314_ad())
