@@ -1,1 +1,1 @@
-(${input$entity} instanceof TameableEntity ? (Entity) ((TameableEntity) ${input$entity}).getOwner():null)
+(${input$entity} instanceof TameableEntity ? (TameableEntity) ((TameableEntity) ${input$entity}).getOwner():null)
