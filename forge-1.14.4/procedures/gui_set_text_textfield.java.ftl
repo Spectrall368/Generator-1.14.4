@@ -1,2 +1,2 @@
 if (guistate.get("text:${field$textfield}") instanceof TextFieldWidget)
-	guistate.get("text:${field$textfield}").setValue(${input$text});
+	((TextFieldWidget) guistate.get("text:${field$textfield}")).setText(${input$text});
