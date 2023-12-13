@@ -1,1 +1,1 @@
-(world.getWorld().getDayTime())
+/*@float*/(world.getWorld().getDayTime())
