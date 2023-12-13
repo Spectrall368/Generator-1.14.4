@@ -9,7 +9,7 @@ if (${input$entity} instanceof ServerPlayerEntity && !((ServerPlayerEntity) ${in
 	<#else>
 		DimensionType destinationType = ${(field$dimension.toString().replace("CUSTOM:", ""))}Dimension.type;
 	</#if>
-	if (((ServerPlayerEntity) ${input$entity}).world.dimension == destinationType) return;
+	if (((ServerPlayerEntity) ${input$entity}).dimension.getId() == destinationType) return;
 
 	ServerWorld nextWorld = ((ServerPlayerEntity) ${input$entity}).getServer().getWorld(destinationType);
 	if (nextWorld != null) {
