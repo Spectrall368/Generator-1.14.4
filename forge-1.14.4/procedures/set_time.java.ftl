@@ -1,1 +1,1 @@
-if(world instanceof World) world.getWorld().setDayTime((int) ${input$time});
+if(world.getWorld() instanceof ServerWorld) ((ServerWorld) world.getWorld()).setDayTime(${opt.toInt(input$time)});
