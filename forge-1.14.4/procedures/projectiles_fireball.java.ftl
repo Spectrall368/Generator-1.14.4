@@ -5,7 +5,7 @@ new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$p
 <#else>
 new Object() {
 	public Entity getFireball(World world<#if hasShooter>, Entity shooter</#if><#if hasAcceleration>, double ax, double ay, double az</#if>) {
-		DamagingProjectileEntity entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world);
+		DamagingProjectileEntity entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, world.getWorld());
 		<#if hasShooter>entityToSpawn.setShooter(shooter);</#if>
 		<#if hasAcceleration>
 		entityToSpawn.accelerationX = ax;
