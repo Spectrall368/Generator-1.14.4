@@ -1,1 +1,1 @@
-(${input$entity}.onGround())
+(${input$entity}.onGround)
