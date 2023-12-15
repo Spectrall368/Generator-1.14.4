@@ -32,11 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 	private static int messageID = 0;
 
-	<#if w.hasElementsOfBaseType("dimension")>public ${JavaModName}Elements elements;</#if>
+	<#if w.hasElementsOfType("dimension")>public ${JavaModName}Elements elements;</#if>
 
 	public ${JavaModName}() {
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
-		<#if w.hasElementsOfBaseType("dimension")>elements = new ${JavaModName}Elements();</#if>
+		<#if w.hasElementsOfType("dimension")>elements = new ${JavaModName}Elements();</#if>
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
@@ -71,7 +71,7 @@ import org.apache.logging.log4j.Logger;
 		elements.getElements().forEach(element -> element.serverLoad(event));
 	}
 
-	<#if w.hasElementsOfBaseType("dimension")>
+	<#if w.hasElementsOfType("dimension")>
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
 	}
