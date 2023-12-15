@@ -16,7 +16,7 @@ public class ${JavaModName}Elements {
 
 	public final List<ModElement> elements = new ArrayList<>();
 
-	<#if w.hasElementsOfBaseType("block")>
+	<#if w.hasElementsOfType("dimension")>
 	public final List<Supplier<Block>> blocks = new ArrayList<>();
 	</#if>
 
@@ -44,7 +44,7 @@ public class ${JavaModName}Elements {
 		return elements;
 	}
 
-	<#if w.hasElementsOfBaseType("dimension")>
+	<#if w.hasElementsOfType("dimension")>
 	public List<Supplier<Block>> getBlocks() {
 		return blocks;
 	}
