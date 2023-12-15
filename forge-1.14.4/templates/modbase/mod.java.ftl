@@ -57,19 +57,22 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
 	}
 
+	private void clientSetup(FMLClientSetupEvent event) {
+        	OBJLoader.INSTANCE.addDomain(MODID);
+		<#if w.hasElementsOfType("dimension")>
+        	elements.getElements().forEach(element -> element.clientLoad(event));
+		</#if>
+    	}
+
+	<#if w.hasElementsOfType("dimension")>
 	private void init(FMLCommonSetupEvent event) {
 		elements.getElements().forEach(element -> element.init(event));
 	}
 
-	private void clientSetup(FMLClientSetupEvent event) {
-        	OBJLoader.INSTANCE.addDomain(MODID);
-	
-        	elements.getElements().forEach(element -> element.clientLoad(event));
-    	}
-
     	@SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {
 		elements.getElements().forEach(element -> element.serverLoad(event));
 	}
+	</#if>
 
 	<#if w.hasElementsOfType("dimension")>
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
