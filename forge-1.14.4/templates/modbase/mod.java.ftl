@@ -35,16 +35,10 @@ import org.apache.logging.log4j.Logger;
 	<#if w.hasElementsOfType("dimension")>public ${JavaModName}Elements elements;</#if>
 
 	public ${JavaModName}() {
-		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 		<#if w.hasElementsOfType("dimension")>elements = new ${JavaModName}Elements();</#if>
 
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-
-		MinecraftForge.EVENT_BUS.register(this);
-
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
@@ -55,6 +49,18 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
+
+		bus.addListener(this::init);
+		bus.addListener(this::clientSetup);
+		bus.register(this);
+
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	private void init(FMLCommonSetupEvent event) {
+		<#if w.hasElementsOfType("dimension")>
+		elements.getElements().forEach(element -> element.init(event));
+		</#if>
 	}
 
 	private void clientSetup(FMLClientSetupEvent event) {
@@ -65,16 +71,10 @@ import org.apache.logging.log4j.Logger;
     	}
 
 	<#if w.hasElementsOfType("dimension")>
-	private void init(FMLCommonSetupEvent event) {
-		elements.getElements().forEach(element -> element.init(event));
-	}
-
     	@SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {
 		elements.getElements().forEach(element -> element.serverLoad(event));
 	}
-	</#if>
 
-	<#if w.hasElementsOfType("dimension")>
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
 	}
