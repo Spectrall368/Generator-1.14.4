@@ -44,7 +44,7 @@ public class ${JavaModName}Elements {
 		return elements;
 	}
 
-	<#if w.hasElementsOfBaseType("block")>
+	<#if w.hasElementsOfBaseType("dimension")>
 	public List<Supplier<Block>> getBlocks() {
 		return blocks;
 	}
