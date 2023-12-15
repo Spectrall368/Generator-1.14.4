@@ -50,7 +50,7 @@ public class ${name}Biome extends Biome {
         </#if>
 	}
 
-	public ${name}Biome() {
+	public static Biome ${name}Biome() {
 		super(new Biome.Builder()
 			.downfall(${data.rainingPossibility}f)
 			.depth(${data.baseHeight}f)
