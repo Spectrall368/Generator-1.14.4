@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 package ${package}.world.biome;
 
 public class ${name}Biome extends Biome {
