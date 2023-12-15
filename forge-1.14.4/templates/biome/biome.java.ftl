@@ -60,9 +60,6 @@ public class ${name}Biome extends Biome {
 			.category(Biome.Category.NONE)
 			.waterColor(${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)})
 			.waterFogColor(${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)})
-			<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
-			.parent("${data.parent}")
-			</#if>
 			.surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}, ${mappedBlockToBlockStateCode(data.getUnderwaterBlock())})));
 
         	<#list data.defaultFeatures as defaultFeature>
