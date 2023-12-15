@@ -34,7 +34,7 @@ package ${package}.world.features.treedecorators;
 
 public class ${name}TreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 
-		${name}TreeFeature() {
+		public ${name}TreeFeature() {
 		  super(NoFeatureConfig::deserialize, false);
 		}
 
