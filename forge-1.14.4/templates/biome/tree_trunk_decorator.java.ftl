@@ -218,3 +218,4 @@ public class ${name}TreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 			changedBlocks.add(pos.toImmutable());
 		}
 }
+<#-- @formatter:on -->
