@@ -32,11 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 	private static int messageID = 0;
 
-	public ${JavaModName}Elements elements;
+	<#if w.hasElementsOfBaseType("dimension")>public ${JavaModName}Elements elements;</#if>
 
 	public ${JavaModName}() {
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
-		elements = new ${JavaModName}Elements();
+		<#if w.hasElementsOfBaseType("dimension")>elements = new ${JavaModName}Elements();</#if>
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
