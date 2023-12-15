@@ -71,7 +71,7 @@ import org.apache.logging.log4j.Logger;
 		elements.getElements().forEach(element -> element.serverLoad(event));
 	}
 
-	<#if w.hasElementsOfBaseType("block")>
+	<#if w.hasElementsOfBaseType("dimension")>
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
 	}
