@@ -60,6 +60,7 @@ base_templates:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
   - template: modbase/modelements.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameElements.java"
+    condition: ${w.hasElementsOfType("dimension")}
 
 language_file:
   format: json
