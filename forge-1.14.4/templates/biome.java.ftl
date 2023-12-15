@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -13,7 +14,7 @@
  # GNU General Public License for more details.
  #
  # You should have received a copy of the GNU General Public License
- # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ # along setValue this program.  If not, see <https://www.gnu.org/licenses/>.
  #
  # Additional permission for code generator templates (*.ftl files)
  #
@@ -45,7 +46,7 @@ public class ${name}Biome extends Biome {
 		WARM
 		<#elseif (data.temperature > 1.0)>
 		DESERT
-		</#if>, new BiomeManager.BiomeEntry(biome, ${data.biomeWeight}));
+		</#if>, new BiomeManager.BiomeEntry(${name}Biome, ${data.biomeWeight}));
         </#if>
 	}
 
