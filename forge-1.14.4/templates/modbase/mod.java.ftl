@@ -52,6 +52,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}PotionEffects.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
 	}
@@ -73,12 +74,6 @@ import org.apache.logging.log4j.Logger;
 	<#if w.hasElementsOfBaseType("block")>
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
-	}
-	</#if>
-
-	<#if w.hasElementsOfType("biome")>
-	@SubscribeEvent public void registerBiomes(RegistryEvent.Register<Biome> event) {
-		event.getRegistry().registerAll(elements.getBiomes().stream().map(Supplier::get).toArray(Biome[]::new));
 	}
 	</#if>
 
