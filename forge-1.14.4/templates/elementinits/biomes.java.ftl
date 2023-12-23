@@ -33,8 +33,13 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
-
-@Mod.EventBusSubscriber public class ${JavaModName}Biomes {
+<#assign spawn_overworld = []>
+<#list biomes as biome>
+	<#if biome.spawnBiome>
+		<#assign spawn_overworld += [biome]>
+	</#if>
+</#list>
+<#if spawn_overworld?has_content>@Mod.EventBusSubscriber</#if> public class ${JavaModName}Biomes {
 
 	public static final DeferredRegister<Biome> REGISTRY = new DeferredRegister<>(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
 
@@ -43,10 +48,12 @@ package ${package}.init;
         = REGISTRY.register("${biome.getModElement().getRegistryName()}", () -> new ${biome.getModElement().getName()}Biome());
     </#list>
 
+	<#if spawn_overworld?has_content>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-	    <#list biomes as biome>
+	    <#list spawn_overworld as biome>
             ${biome.getModElement().getName()}Biome.init();
-        </#list>
+            </#list>
 	}
+	</#if>
 }
 <#-- @formatter:on -->
