@@ -39,7 +39,7 @@ package ${package}.init;
 		<#assign spawn_overworld += [biome]>
 	</#if>
 </#list>
-<#if spawn_overworld?has_content>@Mod.EventBusSubscriber</#if> public class ${JavaModName}Biomes {
+<#if spawn_overworld?has_content>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if> public class ${JavaModName}Biomes {
 
 	public static final DeferredRegister<Biome> REGISTRY = new DeferredRegister<>(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
 
