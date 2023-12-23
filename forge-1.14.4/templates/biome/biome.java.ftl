@@ -34,8 +34,8 @@ package ${package}.world.biome;
 
 public class ${name}Biome extends Biome {
 
-	public static void init() {
 	<#if data.spawnBiome>
+	public static void init() {
 	BiomeManager.addSpawnBiome(${JavaModName}Biomes.${data.getModElement().getRegistryNameUpper()}.get());
 		BiomeManager.addBiome(BiomeManager.BiomeType.
 		<#if (data.temperature < -0.25)>
@@ -47,8 +47,8 @@ public class ${name}Biome extends Biome {
 		<#elseif (data.temperature > 1.0)>
 		DESERT
 		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${data.getModElement().getRegistryNameUpper()}.get(), ${data.biomeWeight}));
-        </#if>
 	}
+	</#if>
 
 	public ${name}Biome() {
 		super(new Biome.Builder()
