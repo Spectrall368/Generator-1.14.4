@@ -4,27 +4,31 @@ license="${settings.getLicense()}"
 
 [[mods]]
 modId="${settings.getModID()}"
-version="${settings.getVersion()}"
+version="${settings.getCleanVersion()}"
 displayName="${settings.getModName()}"
-credits="${settings.getCredits()}"
-displayURL="${settings.getWebsiteURL()}"
 <#if settings.getUpdateURL()?has_content>
 updateJSONURL="${settings.getUpdateURL()}"
 </#if>
+<#if settings.getWebsiteURL()?has_content>
+displayURL="${settings.getWebsiteURL()}"
+</#if>
 <#if settings.getModPicture()?has_content>
 logoFile="logo.png"
+</#if>
+<#if settings.getCredits()?has_content>
+credits="${settings.getCredits()}"
 </#if>
 <#if settings.getAuthor()?has_content>
 authors="${settings.getAuthor()}"
 </#if>
 <#if settings.getDescription()?has_content>
-description='''${settings.getDescription()}'''
+description="${settings.getDescription()}"
 </#if>
 
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[${generator.getGeneratorMinecraftVersion()}]"
     ordering="NONE"
     side="BOTH"
 
