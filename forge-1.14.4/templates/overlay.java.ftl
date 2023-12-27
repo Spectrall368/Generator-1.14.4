@@ -102,12 +102,11 @@ package ${package}.client.screens;
 
 			<#list data.getComponentsOfType("EntityModel") as component>
 			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity) {
-				livingEntity = LivingEntity;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-			        InventoryScreen.renderEntityInInventoryRaw(posX + ${component.x - 202}, posY + ${component.y - 100},
-                        ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
+			        InventoryScreen.drawEntityOnScreen(posX + ${component.x - 202}, posY + ${component.y - 100},
+                        ${component.scale}, ${component.rotationX / 20.0}f, 0, ((LivingEntity) <@procedureOBJToConditionCode component.entityModel/>));
 			    }
 			</#list>
 	}
