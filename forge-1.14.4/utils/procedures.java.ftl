@@ -73,6 +73,14 @@
     </#if>
 </#macro>
 
+<#macro procedureOBJToBoundingBoxCode object="">
+    <#if hasProcedure(object)>
+        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+    <#else>
+        this.getBoundingBox();
+    </#if>
+</#macro>
+
 <#macro procedureOBJToItemstackCode object="" addMarker=true>
     <#if addMarker>/*@ItemStack*/</#if>
     <#if hasProcedure(object)>
@@ -86,7 +94,7 @@
     <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        InteractionResult.PASS
+        ActionResultType.PASS
     </#if>
 </#macro>
 
