@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -43,9 +44,9 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 	<#list data.components as component>
 		<#if component.getClass().getSimpleName() == "TextField">
-	    TextFieldWidget ${component.name};
+	    TextFieldWidget ${component.getName()};
 		<#elseif component.getClass().getSimpleName() == "Checkbox">
-	    CheckboxButton ${component.name};
+	    CheckboxButton ${component.getName()};
 		</#if>
 	</#list>
 
@@ -77,7 +78,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.render(mouseX, mouseY, partialTicks);
+				${component.getName()}.render(mouseX, mouseY, partialTicks);
 			</#if>
 		</#list>
 	}
@@ -116,8 +117,8 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-		    if(${component.name}.isFocused())
-		    	return ${component.name}.keyPressed(key, b, c);
+		    if(${component.getName()}.isFocused())
+		    	return ${component.getName()}.keyPressed(key, b, c);
 			</#if>
 		</#list>
 
@@ -128,7 +129,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		super.tick();
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.tick();
+				${component.getName()}.tick();
 			</#if>
 		</#list>
 	}
@@ -157,7 +158,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+				${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, "${component.placeholder}")
 				<#if component.placeholder?has_content>
 				{
@@ -184,9 +185,9 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 					}
 				}
 				</#if>;
-                guistate.put("text:${component.name}", ${component.name});
-				${component.name}.setMaxStringLength(32767);
-				this.children.add(this.${component.name});
+                guistate.put("text:${component.getName()}", ${component.getName()});
+				${component.getName()}.setMaxStringLength(32767);
+				this.children.add(this.${component.getName()});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, "${component.text}", e -> {
@@ -208,11 +209,11 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				</#if>);
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
-            	${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+            	${component.getName()} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 						20, 20, "${component.text}", <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                guistate.put("checkbox:${component.name}", ${component.name});
-                this.addButton(${component.name});
+                guistate.put("checkbox:${component.getName()}", ${component.getName()});
+                this.addButton(${component.getName()});
 			</#if>
 		</#list>
 	}
