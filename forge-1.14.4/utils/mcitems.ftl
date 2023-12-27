@@ -115,3 +115,7 @@
         </#if>
     </#if>
 </#function>
+
+<#function toMappedMCItem unmappedValue>
+    <#return generator.toMappedMItemBlock(unmappedValue)>
+</#function>
