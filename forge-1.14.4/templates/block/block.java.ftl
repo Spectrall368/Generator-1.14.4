@@ -480,8 +480,12 @@ public class ${name}Block extends
 				<#elseif data.destroyTool == "axe">AxeItem
 				<#elseif data.destroyTool == "shovel">ShovelItem
 				<#elseif data.destroyTool == "hoe">HoeItem
-				<#else>TieredItem</#if> tieredItem)
-			return tieredItem.getTier().getHarvestLevel() >= ${data.breakHarvestLevel};
+				<#else>TieredItem</#if>)
+			return ((<#if data.destroyTool == "pickaxe">PickaxeItem
+				<#elseif data.destroyTool == "axe">AxeItem
+				<#elseif data.destroyTool == "shovel">ShovelItem
+				<#elseif data.destroyTool == "hoe">HoeItem
+				<#else>TieredItem</#if>) player.inventory.getCurrentItem().getItem()).getTier().getHarvestLevel() >= ${data.breakHarvestLevel};
 		return false;
 	}
 	</#if>
