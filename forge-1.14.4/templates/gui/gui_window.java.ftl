@@ -94,12 +94,12 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
-				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-					this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-				<#if hasProcedure(component.displayCondition)>}</#if>
+			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+				Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
+				this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
 		GlStateManager.disableBlend();
@@ -128,11 +128,11 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 	@Override protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		<#list data.getComponentsOfType("Label") as component>
-				<#if hasProcedure(component.displayCondition)>
+			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
-				</#if>
-		    	this.font.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+			</#if>
+			this.font.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 		</#list>
 	}
 
@@ -147,36 +147,36 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#assign btid = 0>
 		<#list data.getComponentsOfType("TextField") as component>
-				${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"))
-				<#if component.placeholder?has_content>
-				{
-					{
-						setSuggestion(TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
-					}
-
-					@Override public void writeText(String text) {
-						super.writeText(text);
-
-						if (getText().isEmpty())
-							setSuggestion(TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
-						else
-							setSuggestion(null);
-					}
-
-					@Override public void setCursorPosition(int pos) {
-						super.setCursorPosition(pos);
-
-						if (getText().isEmpty())
-							setSuggestion(TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
-						else
-							setSuggestion(null);
-					}
+			${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+			${component.width}, ${component.height}, TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"))
+			<#if component.placeholder?has_content>
+			{
+					setSuggestion(TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 				}
-				</#if>;
-                guistate.put("text:${component.getName()}", ${component.getName()});
-				${component.getName()}.setMaxStringLength(32767);
-				this.children.add(this.${component.getName()});
+
+				@Override public void writeText(String text) {
+					super.writeText(text);
+
+					if (getText().isEmpty())
+						setSuggestion(TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
+					else
+						setSuggestion(null);
+				}
+
+				@Override public void setCursorPosition(int pos) {
+					super.setCursorPosition(pos);
+
+					if (getText().isEmpty())
+						setSuggestion(TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
+					else
+						setSuggestion(null);
+				}
+			}
+			</#if>;
+			${component.getName()}.setMaxStringLength(32767);
+
+			guistate.put("text:${component.getName()}", ${component.getName()});
+			this.children.add(this.${component.getName()});
 		</#list>
 
 		<#list data.getComponentsOfType("Button") as component>
@@ -202,11 +202,12 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
-            	${component.getName()} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-						20, 20, TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
-            	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                guistate.put("checkbox:${component.getName()}", ${component.getName()});
-                this.addButton(${component.getName()});
+			${component.getName()} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+					20, 20, TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
+				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
+
+			guistate.put("checkbox:${component.getName()}", ${component.getName()});
+			this.addButton(${component.getName()});
 		</#list>
 	}
 }
