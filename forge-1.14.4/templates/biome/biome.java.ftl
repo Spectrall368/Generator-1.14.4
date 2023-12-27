@@ -30,6 +30,16 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#assign genContinentalness = (data.genContinentalness.min + data.genContinentalness.max) / 2>
+<#assign genContinentalness = genContinentalness?string["0.###"]>
+<#assign genErosion = (data.genErosion.min + data.genErosion.max) / 2>
+<#assign genErosion = genErosion?string["0.###"]>
+<#assign genTemperature = (data.genTemperature.min + data.genTemperature.max) / 2>
+<#assign genTemperature = genTemperature?string["0.###"]>
+<#assign genHumidity = (data.genHumidity.min + data.genHumidity.max) / 2>
+<#assign genHumidity = genHumidity?string["0.###"]>
+<#assign genWeirdness = (data.genWeirdness.min + data.genWeirdness.max) / 2>
+<#assign genWeirdness = genWeirdness?string["0"]>
 package ${package}.world.biome;
 
 public class ${name}Biome extends Biome {
@@ -46,16 +56,16 @@ public class ${name}Biome extends Biome {
 		WARM
 		<#elseif (data.temperature > 1.0)>
 		DESERT
-		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${data.getModElement().getRegistryNameUpper()}.get(), ${data.biomeWeight}));
+		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${data.getModElement().getRegistryNameUpper()}.get(), ${genWeirdness}));
 	}
 	</#if>
 
 	public ${name}Biome() {
 		super(new Biome.Builder()
-			.downfall(${data.rainingPossibility}f)
-			.depth(${data.baseHeight}f)
-			.scale(${data.heightVariation}f)
-			.temperature(${data.temperature}f)
+			.downfall(${genHumidity}f)
+			.depth(${genContinentalness}f)
+			.scale(${genErosion}f)
+			.temperature(${genTemperature}f)
 			.precipitation(Biome.RainType.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
 			.category(Biome.Category.NONE)
 			.waterColor(${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)})
