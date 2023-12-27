@@ -105,25 +105,25 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName()?ends_with("Slot")>
 					<#assign slotnum += 1>
-        	    this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
+        	    			this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
 					${(component.x - mx)?int + 1},
 					${(component.y - my)?int + 1}) {
 
-        	    	<#if component.disableStackInteraction>
-					@Override public boolean canTakeStack(PlayerEntity player) {
-						return false;
-					}
+			<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
+			@Override public boolean canTakeStack(PlayerEntity entity) {
+				return <@procedureOBJToConditionCode component.disablePickup false true/>;
+			}
         	    	</#if>
 
 					<#if hasProcedure(component.onSlotChanged)>
-        	        @Override public void onSlotChanged() {
+        	        		@Override public void onSlotChanged() {
 						super.onSlotChanged();
 						${name}Menu.this.slotChanged(${component.id}, 0, 0);
 					}
 					</#if>
 
 					<#if hasProcedure(component.onTakenFromSlot)>
-        	        @Override public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
+        	        		@Override public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
 						ItemStack retval = super.onTake(entity, stack);
 						${name}Menu.this.slotChanged(${component.id}, 1, 0);
 						return retval;
@@ -131,27 +131,27 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 					</#if>
 
 					<#if hasProcedure(component.onStackTransfer)>
-        	        @Override public void onSlotChange(ItemStack a, ItemStack b) {
+        	        		@Override public void onSlotChange(ItemStack a, ItemStack b) {
 						super.onSlotChange(a, b);
 						${name}Menu.this.slotChanged(${component.id}, 2, b.getCount() - a.getCount());
 					}
 					</#if>
 
-					<#if component.disableStackInteraction>
-						@Override public boolean isItemValid(ItemStack stack) {
-							return false;
-						}
-        	        		<#elseif component.getClass().getSimpleName() == "InputSlot">
-						<#if component.inputLimit.toString()?has_content>
-						@Override public boolean isItemValid(ItemStack stack) {
-							<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
-								<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "") + "\"">
-								return ItemTags.getCollection().getOrCreate(new ResourceLocation(${tag})).contains(stack);
-							<#else>
-								return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();
-						</#if>
-						}
-						</#if>
+							<#if component.getClass().getSimpleName() == "InputSlot">
+							<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
+								@Override public boolean isItemValid(ItemStack itemstack) {
+									return <@procedureOBJToConditionCode component.disablePlacement false true/>;
+								}
+							<#elseif component.inputLimit.toString()?has_content>
+								@Override public boolean isItemValid(ItemStack stack) {
+								<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
+									<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "") + "\"">
+									return ItemTags.getCollection().getOrCreate(new ResourceLocation(${tag})).contains(stack);
+								<#else>
+									return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();
+								</#if>
+								}
+							</#if>
 					<#elseif component.getClass().getSimpleName() == "OutputSlot">
         	            @Override public boolean isItemValid(ItemStack stack) {
 							return false;
