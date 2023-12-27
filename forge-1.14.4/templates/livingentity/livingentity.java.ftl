@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
-<#include "../particles.java.ftl">
 package ${package}.entity;
 
 import net.minecraft.block.material.Material;
@@ -669,28 +668,11 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
    	@Override public void setNoGravity(boolean ignored) {
 		super.setNoGravity(true);
 	}
-    </#if>
 
-    <#if data.spawnParticles || data.flyingMob>
-    public void livingTick() {
+	public void livingTick() {
 		super.livingTick();
-
-		<#if data.flyingMob>
+	
 		this.setNoGravity(true);
-		</#if>
-
-		<#if data.spawnParticles>
-		double x = this.posX;
-		double y = this.posY;
-		double z = this.posZ;
-		Random random = this.rand;
-		Entity entity = this;
-		World world = this.world;
-		<#if hasProcedure(data.particleCondition)>
-			if(<@procedureOBJToConditionCode data.particleCondition/>)
-		</#if>
-        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
-		</#if>
 	}
     </#if>
 
