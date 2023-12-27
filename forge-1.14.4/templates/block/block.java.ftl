@@ -37,6 +37,7 @@ package ${package}.block;
 
 import net.minecraft.util.SoundEvent;
 
+<#compress>
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
@@ -48,9 +49,15 @@ public class ${name}Block extends
 		Block
 	</#if>
 
+	<#assign interfaces = []>
 	<#if data.isWaterloggable>
-	implements
-		<#if data.isWaterloggable>IWaterLoggable</#if>
+		<#assign interfaces += ["IWaterLoggable"]>
+	</#if>
+	<#if data.isBonemealable>
+		<#assign interfaces += ["IGrowable"]>
+	</#if>
+	<#if interfaces?size gt 0>
+		implements ${interfaces?join(",")}
 	</#if>
 {
 
@@ -266,8 +273,7 @@ public class ${name}Block extends
 		builder.add(${props?join(", ")});
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	@Override public BlockState getStateForPlacement(BlockItemUseContext context) {
 		<#if data.isWaterloggable>
 		boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
 		</#if>
@@ -606,6 +612,10 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if data.isBonemealable>
+	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
+	</#if>
+
 	<#if data.hasInventory>
 		@Override public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
 			TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -700,4 +710,5 @@ public class ${name}Block extends
 		</#if>
 	</#if>
 }
+</#compress>
 <#-- @formatter:on -->
