@@ -37,8 +37,8 @@ package ${package}.client.screens;
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
 	public static void eventHandler(RenderGameOverlayEvent.Post event) {
-			int w = event.getWindow().getScaledWidth();
-			int h = event.getWindow().getScaledHeight();
+		int w = event.getWindow().getScaledWidth();
+		int h = event.getWindow().getScaledHeight();
 	<#else>
 	public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
 		if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
@@ -46,69 +46,69 @@ package ${package}.client.screens;
 			int h = event.getGui().height;
 	</#if>
 
-			int posX = w / 2;
-			int posY = h / 2;
+	int posX = w / 2;
+	int posY = h / 2;
 
-			World world = null;
-			double x = 0;
-			double y = 0;
-			double z = 0;
+	World world = null;
+	double x = 0;
+	double y = 0;
+	double z = 0;
 
-			PlayerEntity entity = Minecraft.getInstance().player;
-			if (entity != null) {
-				world = entity.world;
-				x = entity.posX;
-				y = entity.posY;
-				z = entity.posZ;
-			}
+	PlayerEntity entity = Minecraft.getInstance().player;
+	if (entity != null) {
+		world = entity.world;
+		x = entity.posX;
+		y = entity.posY;
+		z = entity.posZ;
+	}
 
-        		<#if data.hasTextures()>
-				GlStateManager.disableDepthTest();
-				GlStateManager.depthMask(false);
-				GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-						GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GlStateManager.disableAlphaTest();
-			</#if>
+        <#if data.hasTextures()>
+	GlStateManager.disableDepthTest();
+	GlStateManager.depthMask(false);
+	GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+		GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+	GlStateManager.disableAlphaTest();
+	</#if>
 
-			if (<@procedureOBJToConditionCode data.displayCondition/>) {
-			<#if data.baseTexture?has_content>
-				Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
-				Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, w, h, w, h);
-			</#if>
+	if (<@procedureOBJToConditionCode data.displayCondition/>) {
+	<#if data.baseTexture?has_content>
+		Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
+		Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, w, h, w, h);
+	</#if>
 
-            		<#list data.getComponentsOfType("Image") as component>
-                		<#assign x = component.x - 213>
-                		<#assign y = component.y - 120>
-                		<#if hasProcedure(component.displayCondition)>
-                       	if (<@procedureOBJToConditionCode component.displayCondition/>) {
-                		</#if>
-                    		Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-                    		Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
-                        	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-                        	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-                	<#if hasProcedure(component.displayCondition)>}</#if>
-            		</#list>
+        <#list data.getComponentsOfType("Image") as component>
+        	<#assign x = component.x - 213>
+                <#assign y = component.y - 120>
+                <#if hasProcedure(component.displayCondition)>
+                	if (<@procedureOBJToConditionCode component.displayCondition/>) {
+                </#if>
+                	Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
+                    	Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
+                        ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+                        ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+                <#if hasProcedure(component.displayCondition)>}</#if>
+        </#list>
 
-            		<#list data.getComponentsOfType("Label") as component>
-	                	<#assign x = component.x - 213>
-	                	<#assign y = component.y - 120>
-				<#if hasProcedure(component.displayCondition)>
+        <#list data.getComponentsOfType("Label") as component>
+		<#assign x = component.x - 213>
+	        <#assign y = component.y - 120>
+		<#if hasProcedure(component.displayCondition)>
 			if (<@procedureOBJToConditionCode component.displayCondition/>)
-				</#if>
-				Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-            		</#list>
-		        }
+		</#if>
+		Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+		posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+        </#list>
+	}
 
-			<#if data.hasTextures()>
-				GlStateManager.depthMask(true);
-				GlStateManager.enableDepthTest();
-				GlStateManager.enableAlphaTest();
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        		</#if>
+	<#if data.hasTextures()>
+		GlStateManager.depthMask(true);
+		GlStateManager.enableDepthTest();
+		GlStateManager.enableAlphaTest();
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+	</#if>
     <#if generator.map(data.overlayTarget, "screens") != "Ingame">
-        	}
+        }
     </#if>
 	}
 }
