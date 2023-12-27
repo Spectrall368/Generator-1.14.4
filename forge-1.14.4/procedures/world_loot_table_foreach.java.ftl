@@ -1,6 +1,6 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
-if (!world.isClientSide() && world.getServer() != null) {
+if (!world.isRemote && world.getServer() != null) {
 	BlockPos _bp = ${toBlockPos(input$x, input$y, input$z)};
 
 	for (ItemStack itemstackiterator : world.getServer().getLootTables().get(${toResourceLocation(input$location)})
