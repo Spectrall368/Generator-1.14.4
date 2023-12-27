@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -28,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "tokens.ftl">
 <#include "procedures.java.ftl">
 <#assign hasTextures = data.baseTexture?has_content>
 <#list data.components as component>
@@ -39,13 +39,11 @@
 </#list>
 package ${package}.client.screens;
 
-@Mod.EventBusSubscriber public class ${name}Overlay {
+@Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
 
-	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
 	public static void eventHandler(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
 			int w = event.getWindow().getScaledWidth();
 			int h = event.getWindow().getScaledHeight();
 	<#else>
@@ -92,32 +90,37 @@ package ${package}.client.screens;
 				</#if>
 
 				<#list data.components as component>
-	                <#assign x = component.x - 213>
-	                <#assign y = component.y - 120>
-	                <#if component.getClass().getSimpleName() == "Label">
+	                		<#assign x = component.x - 213>
+	                		<#assign y = component.y - 120>
+	                		<#if component.getClass().getSimpleName() == "Label">
 						<#if hasProcedure(component.displayCondition)>
-						if (<@procedureOBJToConditionCode component.displayCondition/>)
+							if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+						Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-	                <#elseif component.getClass().getSimpleName() == "Image">
-						<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+	                			<#elseif component.getClass().getSimpleName() == "Image">
+				                    <#if hasProcedure(component.displayCondition)>
+				                        if (<@procedureOBJToConditionCode component.displayCondition/>) {
+				                    </#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
 						Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-						<#if hasProcedure(component.displayCondition)>}</#if>
-	                </#if>
-	            		</#list>
-			}
+
+		                    <#if hasProcedure(component.displayCondition)>}</#if>
+		                </#if>
+		            </#list>
+		        }
 
 			<#if hasTextures>
 				GlStateManager.depthMask(true);
 				GlStateManager.enableDepthTest();
 				GlStateManager.enableAlphaTest();
 				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-			</#if>
-		}
+        </#if>
+    <#if generator.map(data.overlayTarget, "screens") != "Ingame">
+        }
+    </#if>
 	}
 }
 <#-- @formatter:on -->
