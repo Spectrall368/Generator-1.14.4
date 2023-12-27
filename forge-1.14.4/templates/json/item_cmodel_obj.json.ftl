@@ -12,7 +12,12 @@
     <@textures data.getTextureMap()/>
     "particle": "${modid}:items/${data.texture}"
 </#if>
-  }
+  },
+  <#if var_type?? && var_type=="tool">
+  "transform": "forge:default-tool"
+  <#else>
+  "transform": "forge:default-item"
+  </#if>
 }
 
 <#macro textures textureMap>
