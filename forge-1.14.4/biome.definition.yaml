@@ -6,7 +6,6 @@ templates:
     condition_any:
       - hasVines()
       - hasFruits()
-    deleteWhenConditionFalse: true
 
 global_templates:
   - template: elementinits/biomes.java.ftl
