@@ -77,7 +77,7 @@
     <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        this.getBoundingBox();
+        this.getBoundingBox()
     </#if>
 </#macro>
 
