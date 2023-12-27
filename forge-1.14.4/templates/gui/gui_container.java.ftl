@@ -141,11 +141,16 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 						@Override public boolean isItemValid(ItemStack stack) {
 							return false;
 						}
-        	        <#elseif component.getClass().getSimpleName() == "InputSlot">
+        	        		<#elseif component.getClass().getSimpleName() == "InputSlot">
 						<#if component.inputLimit.toString()?has_content>
-        	             @Override public boolean isItemValid(ItemStack stack) {
-							 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
-						 }
+						@Override public boolean isItemValid(ItemStack stack) {
+							<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
+								<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "") + "\"">
+								return ItemTags.getCollection().getOrCreate(new ResourceLocation(${tag}).contains(stack);
+							<#else>
+								return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();
+						</#if>
+						}
 						</#if>
 					<#elseif component.getClass().getSimpleName() == "OutputSlot">
         	            @Override public boolean isItemValid(ItemStack stack) {
