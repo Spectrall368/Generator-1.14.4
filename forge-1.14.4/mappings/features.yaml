@@ -1,0 +1,9 @@
+_default:
+  - Feature<NoFeatureConfig>
+  - NoFeatureConfig
+feature_lake:
+  - LakesFeature
+  - LakesConfig
+feature_simple_block:
+  - BlockWithContextFeature
+  - BlockWithContextConfig
