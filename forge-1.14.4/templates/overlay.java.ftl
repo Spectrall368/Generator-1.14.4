@@ -30,13 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-<#assign hasTextures = data.baseTexture?has_content>
-<#list data.components as component>
-	<#if component.getClass().getSimpleName() == "Image">
-		<#assign hasTextures = true>
-		<#break>
-	</#if>
-</#list>
 package ${package}.client.screens;
 
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
@@ -69,7 +62,7 @@ package ${package}.client.screens;
 				z = entity.posZ;
 			}
 
-			<#if hasTextures>
+        		<#if data.hasTextures()>
 				GlStateManager.disableDepthTest();
 				GlStateManager.depthMask(false);
 				GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
@@ -79,42 +72,43 @@ package ${package}.client.screens;
 			</#if>
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
-				<#if data.baseTexture?has_content>
-					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
-					Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, w, h, w, h);
+			<#if data.baseTexture?has_content>
+				Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
+				Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, w, h, w, h);
+			</#if>
+
+            		<#list data.getComponentsOfType("Image") as component>
+                		<#assign x = component.x - 213>
+                		<#assign y = component.y - 120>
+                		<#if hasProcedure(component.displayCondition)>
+                       	if (<@procedureOBJToConditionCode component.displayCondition/>) {
+                		</#if>
+                    		Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
+                    		Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
+                        	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+                        	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+                	<#if hasProcedure(component.displayCondition)>}</#if>
+            		</#list>
+
+            		<#list data.getComponentsOfType("Label") as component>
+	                	<#assign x = component.x - 213>
+	                	<#assign y = component.y - 120>
+				<#if hasProcedure(component.displayCondition)>
+			if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-
-				<#list data.components as component>
-	                		<#assign x = component.x - 213>
-	                		<#assign y = component.y - 120>
-	                		<#if component.getClass().getSimpleName() == "Label">
-						<#if hasProcedure(component.displayCondition)>
-							if (<@procedureOBJToConditionCode component.displayCondition/>)
-						</#if>
-						Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-	                			<#elseif component.getClass().getSimpleName() == "Image">
-				                    <#if hasProcedure(component.displayCondition)>
-				                        if (<@procedureOBJToConditionCode component.displayCondition/>) {
-				                    </#if>
-						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-						Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
-							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-
-		                    <#if hasProcedure(component.displayCondition)>}</#if>
-		                </#if>
-		            </#list>
+				Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+				posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+            		</#list>
 		        }
 
-			<#if hasTextures>
+			<#if data.hasTextures()>
 				GlStateManager.depthMask(true);
 				GlStateManager.enableDepthTest();
 				GlStateManager.enableAlphaTest();
 				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        </#if>
+        		</#if>
     <#if generator.map(data.overlayTarget, "screens") != "Ingame">
-        }
+        	}
     </#if>
 	}
 }
