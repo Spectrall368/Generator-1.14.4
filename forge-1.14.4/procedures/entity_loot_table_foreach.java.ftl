@@ -15,7 +15,7 @@ if (${input$entity} instanceof LivingEntity && !((LivingEntity) ${input$entity})
 					.withParameter(LootParameters.TOOL, ((LivingEntity) ${input$entity}) instanceof PlayerEntity ? ((PlayerEntity) ((LivingEntity) ${input$entity})).inventory.getCurrentItem() : ((LivingEntity) ${input$entity}).getActiveItemStack())
 					.withParameter(LootParameters.EXPLOSION_RADIUS, 0f)
 					.withLuck(((LivingEntity) ${input$entity}) instanceof PlayerEntity ? ((PlayerEntity) ((LivingEntity) ${input$entity})).getLuck() : 0)
-					.build(LootParameterSet.EMPTY))) {
+					.build(LootParameterSets.EMPTY))) {
 		${statement$foreach}
 	}
 }
