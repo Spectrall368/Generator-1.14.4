@@ -1,8 +1,8 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
-if (!world.isRemote && world.getServer() != null) {
-	for (ItemStack itemstackiterator : world.getServer().getLootTables().get(${toResourceLocation(input$location)})
-			.generate(new LootContext.Builder((ServerWorld) world).build(LootParameterSets.EMPTY))) {
+if (!world.getWorld().isRemote && world.getWorld().getServer() != null) {
+	for (ItemStack itemstackiterator : world.getServer().getLootTableManager().get(${toResourceLocation(input$location)})
+			.generate(new LootContext.Builder((ServerWorld) world.getWorld()).build(LootParameterSets.EMPTY))) {
 		${statement$foreach}
 	}
 }
