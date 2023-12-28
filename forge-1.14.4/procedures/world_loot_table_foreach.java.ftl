@@ -3,7 +3,7 @@
 if (!world.getWorld().isRemote && world.getWorld().getServer() != null) {
 	BlockPos _bpLootTblWorld = ${toBlockPos(input$x, input$y, input$z)};
 
-	for (ItemStack itemstackiterator : world.getWorld().getServer().getLootTableManager().get(${toResourceLocation(input$location)})
+	for (ItemStack itemstackiterator : world.getWorld().getServer().getLootTableManager().getLootTableFromLocation(${toResourceLocation(input$location)})
 			.generate(new LootContext.Builder((ServerWorld) world.getWorld())
 					.withParameter(LootParameters.BLOCK_STATE, world.getWorld().getBlockState(_bpLootTblWorld))
 					.withNullableParameter(LootParameters.BLOCK_ENTITY, world.getWorld().getTileEntity(_bpLootTblWorld))
