@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 package ${package}.client.screens;
+<#if data.getComponentsOfType("Label")>import net.minecraft.util.text.TranslationTextComponent;</#if>
 
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
 
