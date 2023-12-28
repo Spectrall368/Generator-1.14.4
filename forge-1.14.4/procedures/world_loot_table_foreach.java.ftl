@@ -5,8 +5,8 @@ if (!world.getWorld().isRemote && world.getWorld().getServer() != null) {
 
 	for (ItemStack itemstackiterator : world.getWorld().getServer().getLootTableManager().get(${toResourceLocation(input$location)})
 			.generate(new LootContext.Builder((ServerWorld) world.getWorld())
-					.withParameter(LootParameters.BLOCK_STATE, world.getBlockState(_bpLootTblWorld))
-					.withNullableParameter(LootParameters.BLOCK_ENTITY, world.getTileEntity(_bpLootTblWorld))
+					.withParameter(LootParameters.BLOCK_STATE, world.getWorld().getBlockState(_bpLootTblWorld))
+					.withNullableParameter(LootParameters.BLOCK_ENTITY, world.getWorld().getTileEntity(_bpLootTblWorld))
 					.build(LootParameterSets.EMPTY))) {
 		${statement$foreach}
 	}
