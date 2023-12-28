@@ -597,14 +597,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
 
 	@Override public AxisAlignedBB getCollisionBoundingBox() {
-		<#if hasProcedure(data.solidBoundingBox)>
-		Entity entity = this;
-		World world = entity.world;
-		double x = entity.posX;
-		double y = entity.posY;
-		double z = entity.posZ;
-		</#if>
-		return <@procedureOBJToBoundingBoxCode data.solidBoundingBox/>;
+		return this.getBoundingBox();
 	}
 	</#if>
 
