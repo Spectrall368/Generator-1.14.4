@@ -33,6 +33,7 @@
 package ${package}.client.gui;
 <#assign mx = data.W - data.width>
 <#assign my = data.H - data.height>
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
