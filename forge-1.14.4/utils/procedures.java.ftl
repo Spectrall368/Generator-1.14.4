@@ -78,7 +78,7 @@
     <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        InteractionResult.PASS
+        ActionResultType.PASS
     </#if>
 </#macro>
 
@@ -89,5 +89,4 @@
 <#function hasReturnValueOf object="" type="">
     <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
-
 <#-- @formatter:on -->
