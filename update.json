@@ -1,8 +1,8 @@
 {
   "generator-1.14.4": {
-    "latest": "2.6.2",
+    "latest": "2.6.3",
 	"changes": [
-		"Bug Fix/Improvements"
+		"Minor Bug Fixes"
 	]
   }
 }
