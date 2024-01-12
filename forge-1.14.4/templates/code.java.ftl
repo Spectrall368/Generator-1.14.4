@@ -43,36 +43,26 @@
  *
  * This class will be added in the mod root package.
 */
-
 package ${package};
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ${name} {
 
 	public ${name}() {
-
 	}
 
-	@SubscribeEvent
-	public static void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		new ${name}();
 	}
 
-    @Mod.EventBusSubscriber
-	private static class ForgeBusEvents {
+    @Mod.EventBusSubscriber private static class ForgeBusEvents {
 
-		@SubscribeEvent
-		public static void serverLoad(FMLServerStartingEvent event) {
-
+		@SubscribeEvent public static void serverLoad(FMLServerStartingEvent event) {
 		}
 
-		@OnlyIn(Dist.CLIENT)
-		@SubscribeEvent
-		public static void clientLoad(FMLClientSetupEvent event) {
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 
 		}
-
 	}
-
 }
 <#-- @formatter:on -->
