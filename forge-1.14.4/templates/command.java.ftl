@@ -40,6 +40,5 @@ package ${package}.command;
 			${argscode}
 		);
 	}
-
 }
 <#-- @formatter:on -->
