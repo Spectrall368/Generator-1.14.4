@@ -30,10 +30,9 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
 package ${package}.client.particle;
-
 <#compress>
+
 @OnlyIn(Dist.CLIENT) public class ${name}Particle extends SpriteTexturedParticle {
 
 	public static ${name}IParticleFactory factory(IAnimatedSprite spriteSet) {
@@ -123,7 +122,6 @@ package ${package}.client.particle;
 			this.setExpired();
 		</#if>
 	}
-
 }
 </#compress>
 <#-- @formatter:on -->
