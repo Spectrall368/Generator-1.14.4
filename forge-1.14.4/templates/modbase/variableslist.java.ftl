@@ -197,17 +197,20 @@ import ${package}.${JavaModName};
 
 	public static class SavedDataSyncMessage {
 
-		public int type;
-		public WorldSavedData data;
+		private final int type;
+		private WorldSavedData data;
 
 		public SavedDataSyncMessage(PacketBuffer buffer) {
 			this.type = buffer.readInt();
-			this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 
-			if(this.data instanceof MapVariables)
-				((MapVariables)this.data).read(buffer.readCompoundTag());
-			else if(this.data instanceof WorldVariables)
-				((WorldVariables)this.data).read(buffer.readCompoundTag());
+			CompoundTag nbt = buffer.readCompoundTag();
+			if (nbt != null) {
+				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
+				if(this.data instanceof MapVariables)
+					((MapVariables) this.data).read(nbt);
+				else if(this.data instanceof WorldVariables)
+					((WorldVariables) this.data).read(nbt);
+			}
 		}
 
 		public SavedDataSyncMessage(int type, WorldSavedData data) {
@@ -217,13 +220,14 @@ import ${package}.${JavaModName};
 
 		public static void buffer(SavedDataSyncMessage message, PacketBuffer buffer) {
 			buffer.writeInt(message.type);
-			buffer.writeCompoundTag(message.data.write(new CompoundNBT()));
+			if (message.data != null)
+				buffer.writeCompoundTag(message.data.write(new CompoundNBT()));
 		}
 
 		public static void handler(SavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
-				if (!context.getDirection().getReceptionSide().isServer()) {
+				if (!context.getDirection().getReceptionSide().isServer() && message.data != null) {
 					if (message.type == 0)
 						MapVariables.clientSide = (MapVariables) message.data;
 					else
@@ -310,7 +314,7 @@ import ${package}.${JavaModName};
 
 	public static class PlayerVariablesSyncMessage {
 
-		public PlayerVariables data;
+		private final PlayerVariables data;
 
 		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
