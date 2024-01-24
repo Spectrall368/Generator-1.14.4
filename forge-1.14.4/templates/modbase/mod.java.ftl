@@ -41,7 +41,6 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
-		<#if settings.isServerSideOnly()>ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));</#if>
 
 		<#if w.hasElementsOfType("dimension")>bus.addListener(this::init);</#if>
 		bus.addListener(this::clientSetup);
