@@ -30,7 +30,7 @@ description="${settings.getDescription()}"
     mandatory=true
     versionRange="[1.14.4]"
     ordering="NONE"
-    <#if settings.isServerSideOnly()>side="SERVER<#else>"side="BOTH"</#if>
+    side="<#if settings.isServerSideOnly()>SERVER<#else>BOTH</#if>"
 
 <#if !settings.isDisableForgeVersionCheck()>
 [[dependencies.${settings.getModID()}]]
