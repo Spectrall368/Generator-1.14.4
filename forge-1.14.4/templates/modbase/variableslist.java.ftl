@@ -203,7 +203,7 @@ import ${package}.${JavaModName};
 		public SavedDataSyncMessage(PacketBuffer buffer) {
 			this.type = buffer.readInt();
 
-			CompoundTag nbt = buffer.readCompoundTag();
+			CompoundNBT nbt = buffer.readCompoundTag();
 			if (nbt != null) {
 				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 				if(this.data instanceof MapVariables)
