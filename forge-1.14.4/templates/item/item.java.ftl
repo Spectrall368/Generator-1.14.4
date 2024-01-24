@@ -225,9 +225,8 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public CompoundNBT getShareTag(ItemStack stack) {
-		CompoundNBT nbt = super.getShareTag(stack);
-		if(nbt != null)
-			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
+		CompoundNBT nbt = stack.getOrCreateTag();
+		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
 	}
 
