@@ -58,23 +58,18 @@ package ${package}.client.screens;
 			int posX = w / 2;
 			int posY = h / 2;
 
-			World _world = null;
-			double _x = 0;
-			double _y = 0;
-			double _z = 0;
+			World world = null;
+			double x = 0;
+			double y = 0;
+			double z = 0;
 
 			PlayerEntity entity = Minecraft.getInstance().player;
 			if (entity != null) {
-				_world = entity.world;
-				_x = entity.posX;
-				_y = entity.posY;
-				_z = entity.posZ;
+				world = entity.world;
+				x = entity.posX;
+				y = entity.posY;
+				z = entity.posZ;
 			}
-
-			World world = _world;
-			double x = _x;
-			double y = _y;
-			double z = _z;
 
 			<#if hasTextures>
 				GlStateManager.disableDepthTest();
