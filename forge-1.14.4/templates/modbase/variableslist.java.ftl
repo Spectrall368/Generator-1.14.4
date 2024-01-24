@@ -105,12 +105,6 @@ import ${package}.${JavaModName};
 			super(s);
 		}
 
-		public static WorldVariables load(CompoundNBT tag) {
-			WorldVariables data = new WorldVariables();
-			data.read(tag);
-			return data;
-		}
-
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
@@ -163,12 +157,6 @@ import ${package}.${JavaModName};
 
 		public MapVariables(String s) {
 			super(s);
-		}
-
-		public static MapVariables load(CompoundNBT tag) {
-			MapVariables data = new MapVariables();
-			data.read(tag);
-			return data;
 		}
 
 		@Override public void read(CompoundNBT nbt) {
