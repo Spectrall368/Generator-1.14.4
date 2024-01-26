@@ -67,6 +67,6 @@ package ${package}.item.extension;
 						return itemstack;
 					</#if>
 				}
-			}));
+			});
 		}
 }</#compress>
