@@ -47,6 +47,5 @@ package ${package}.init;
 				GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
-
 }
 <#-- @formatter:on -->
