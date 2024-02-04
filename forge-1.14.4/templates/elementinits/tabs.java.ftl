@@ -43,7 +43,7 @@ public class ${JavaModName}Tabs {
 
 	public static void load() {
         <#list tabs as tab>
-        TAB_${tab.getModElement().getRegistryNameUpper()} = new ItemGroup("tab${tab.getModElement().getRegistryName()}") {
+        TAB_${tab.getModElement().getRegistryNameUpper()} = new ItemGroup("tab_${tab.getModElement().getRegistryName()}") {
 			@Override public ItemStack createIcon() {
 				return ${mappedMCItemToItemStackCode(tab.icon, 1)};
 			}
