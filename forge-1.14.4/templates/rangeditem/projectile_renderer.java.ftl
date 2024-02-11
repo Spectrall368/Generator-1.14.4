@@ -60,7 +60,7 @@ package ${package}.client.renderer;
 				GlStateManager.rotatef(f, 0, 1, 0);
 				GlStateManager.rotatef(90f - bullet.prevRotationPitch - (bullet.rotationPitch - bullet.prevRotationPitch) * f1, 1, 0, 0);
 				EntityModel model = new ${data.bulletModel}();
-				model.render(bullet, 0, 0, 0, 0, 0, 0.0625f);
+				model.render(bullet, 0, 0, 0, 0, 0, 1);
 				GlStateManager.popMatrix();
 			}
 
