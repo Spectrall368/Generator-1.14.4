@@ -41,6 +41,5 @@ package ${package}.init;
 		Minecraft.getInstance().particles.registerFactory((BasicParticleType) ${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::factory);
 		</#list>
 	}
-
 }
 <#-- @formatter:on -->
