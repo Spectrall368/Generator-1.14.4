@@ -733,7 +733,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).getMaterial() == Material.ORGANIC && world.getLightSubtracted(pos, 0) > 8)
+							(world.getBlockState(pos.down()).getMaterial() == Material.ORGANIC && world.getLightSubtracted(pos, 0) > 8)
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
@@ -761,24 +761,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER))
-					</#if>
-			);
-			<#elseif data.mobSpawningType == "undergroundWaterCreature">
-			EntitySpawnPlacementRegistry.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
-					EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-					<#if hasProcedure(data.spawningCondition)>
-					(entityType, world, reason, pos, random) -> {
-						int x = pos.getX();
-						int y = pos.getY();
-						int z = pos.getZ();
-						return <@procedureOBJToConditionCode data.spawningCondition/>;
-					}
-					<#else>
-					(entityType, world, reason, pos, random) -> {
-					    return world.getFluidState(pos.below()).is(FluidTags.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER) && pos.posY >= (world.getSeaLevel() - 13) && pos.posY <= world.getSeaLevel();
-                    }
+					SquidEntity::func_223315_a
 					</#if>
 			);
 			<#else>
@@ -792,9 +775,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-						(entityType, world, reason, pos, random) ->
-								(world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.func_223323_a(world, pos, random)
-										&& MobEntity.func_223315_a(entityType, world, reason, pos, random))
+					MonsterEntity::func_223315_a
 					</#if>
 			);
 			</#if>
@@ -819,7 +800,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 
 		if (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) == null)
 			this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-			this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(${data.attackStrength});
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(${data.attackStrength});
 
 		if (this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE) != null)
 			this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(${data.followRange});
@@ -827,19 +808,19 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		<#if (data.knockbackResistance > 0)>
 		if (this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE) == null)
 			this.getAttributes().registerAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
-			this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(${data.knockbackResistance}D);
+		this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(${data.knockbackResistance}D);
 		</#if>
 
 		<#if (data.attackKnockback > 0)>
 		if (this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK) == null)
 			this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK);
-			this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(${data.attackKnockback}D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(${data.attackKnockback}D);
 		</#if>
 
 		<#if data.flyingMob>
 		if (this.getAttribute(SharedMonsterAttributes.FLYING_SPEED) == null)
 			this.getAttributes().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-			this.getAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(${data.movementSpeed});
+		this.getAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(${data.movementSpeed});
 		</#if>
 	}
 }
