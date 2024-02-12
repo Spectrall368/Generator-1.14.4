@@ -70,13 +70,11 @@ import javax.annotation.Nullable;
 
 			@Override public void setSize(int size) {
 			}
-
 		};
 	}
 
 	private ItemStackHandler getItemHandler() {
 		return inventory.orElseThrow(RuntimeException::new);
 	}
-
 }
 <#-- @formatter:on -->
