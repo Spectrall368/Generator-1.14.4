@@ -128,7 +128,7 @@ package ${package}.client.renderer;
 			int i = 61680;
 			int j = i % 65536;
 			int k = i / 65536;
-			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float)j, (float)k);
+			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float) j, (float) k);
 			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			gamerenderer.setupFogColor(true);
@@ -137,7 +137,7 @@ package ${package}.client.renderer;
 			i = entityIn.getBrightnessForRender();
 			j = i % 65536;
 			k = i / 65536;
-			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float)j, (float)k);
+			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float) j, (float) k);
 			this.func_215334_a(entityIn);
 			GlStateManager.depthMask(true);
 			GlStateManager.disableBlend();
@@ -163,9 +163,7 @@ package ${package}.client.renderer;
 			.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")
 		}
 	</#if>
-
 }
-
 <#macro renderConditions>
     <#if hasProcedure(data.transparentModelCondition)>
         @Override protected boolean isVisible(LivingEntity _ent) {
