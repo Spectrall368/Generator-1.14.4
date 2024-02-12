@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 package ${package}.item.extension;
