@@ -43,5 +43,4 @@ public class ${JavaModName}PotionEffects {
 			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}PotionEffect());
 	</#list>
 }
-
 <#-- @formatter:on -->
