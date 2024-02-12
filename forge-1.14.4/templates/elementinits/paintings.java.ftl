@@ -43,5 +43,4 @@ public class ${JavaModName}Paintings {
 			REGISTRY.register("${painting.getModElement().getRegistryName()}", () -> new PaintingType(${painting.width}, ${painting.height}));
 	</#list>
 }
-
 <#-- @formatter:on -->
