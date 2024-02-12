@@ -276,7 +276,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 
 	<#if hasProcedure(data.onTick)>
 	@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		Player entity = event.player;
+		PlayerEntity entity = event.player;
 		if(event.phase == TickEvent.Phase.END && entity.openContainer instanceof ${name}Menu) {
 			World world = entity.world;
 				double x = entity.posX;
