@@ -127,7 +127,7 @@ package ${package}.world.features.plants;
                         			}
                         			return i > 0;
                 	    			</#if>
-					<#elseif data.plantType == "normal">
+					<#else>
 					return super.place(world, generator, random, pos, config);
 					</#if>
 				}
