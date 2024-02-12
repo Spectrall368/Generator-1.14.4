@@ -634,7 +634,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				this.stepHeight = 1.0F;
 
 				if (entity instanceof LivingEntity) {
-					this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED));
+					this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
 
 					<#if data.canControlForward>
 						float forward = ((LivingEntity) entity).moveForward;
