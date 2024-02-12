@@ -3,7 +3,7 @@
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
 	<#if procedure?has_content>
-		@Override public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
 		super.addInformation(itemstack, world, list, flag);
 		<#list procedure as entry>
 		list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
@@ -66,7 +66,7 @@
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
-		itemstack.damageItem(2, entity, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+		itemstack.damageItem(2, sourceentity, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
 	<#else>
 		boolean retval = super.hitEntity(itemstack, entity, sourceentity);
 	</#if>
