@@ -98,7 +98,7 @@ import net.minecraft.util.SoundEvent;
 
 	public static class ${name}MyDimension extends Dimension {
 
-		private ${name}BiomeProvider ${name}BiomeProvider = null;
+		private ${name}BiomeProvider biome${name}Provider = null;
 
 		public ${name}MyDimension(World world, DimensionType type) {
 			super(world, type);
@@ -137,10 +137,10 @@ import net.minecraft.util.SoundEvent;
 		}
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
-			if(this.${name}BiomeProvider == null) {
-				this.${name}BiomeProvider = new ${name}BiomeProvider(this.world);
+			if(this.biome${name}Provider == null) {
+				this.biome${name}Provider = new ${name}BiomeProvider(this.world);
 			}
-			return new ChunkProviderModded(this.world, this.${name}BiomeProvider);
+			return new ChunkProviderModded(this.world, this.biome${name}Provider);
 		}
 
 		@Override public boolean isSurfaceWorld() {
