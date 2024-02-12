@@ -419,7 +419,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 							packetBuffer.writeBlockPos(sourceentity.blockPosition());
 							packetBuffer.writeByte(0);
 							packetBuffer.writeVarInt(${name}Entity.this.getEntityId());
-							return new ${data.guiBoundTo}Gui.GuiContainerMod(id, inventory, packetBuffer);
+							return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 						}
 
 					}, buf -> {
