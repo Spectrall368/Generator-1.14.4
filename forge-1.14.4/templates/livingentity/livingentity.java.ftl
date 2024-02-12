@@ -733,7 +733,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).getMaterial() == Material.GRASS && world.getLightSubtracted(pos, 0) > 8)
+							(world.getBlockState(pos.below()).getMaterial() == Material.ORGANIC && world.getLightSubtracted(pos, 0) > 8)
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
