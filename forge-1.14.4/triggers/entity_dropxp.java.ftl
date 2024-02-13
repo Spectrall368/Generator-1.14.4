@@ -4,9 +4,9 @@
 		if (event != null && event.getEntity() != null) {
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.getEntity().getPosX()",
-				"y": "event.getEntity().getPosY()",
-				"z": "event.getEntity().getPosZ()",
+				"x": "event.getEntity().posX",
+				"y": "event.getEntity().posY",
+				"z": "event.getEntity().posZ",
 				"droppedexperience": "event.getDroppedExperience()",
 				"originalexperience": "event.getOriginalExperience()",
 				"sourceentity": "event.getAttackingPlayer()",
