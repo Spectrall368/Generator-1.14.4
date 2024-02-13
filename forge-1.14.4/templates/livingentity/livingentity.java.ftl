@@ -401,7 +401,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public boolean processInteract(PlayerEntity sourceentity, Hand hand) {
 		ItemStack itemstack = sourceentity.getHeldItem(hand);
-		boolean retval = true;
+		boolean retval = this.world.isRemote;
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 			<#if data.ridable>
@@ -429,7 +429,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					});
 				}
 			<#if data.ridable>
-					return true;
+					return this.world.isRemote;
 				}
 			</#if>
 		</#if>
@@ -439,18 +439,18 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			if (itemstack.getItem() instanceof SpawnEggItem) {
 				retval = super.processInteract(sourceentity, hand);
 			} else if (this.world.isRemote) {
-				retval = this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack);
+				retval = this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack) ? this.world.isRemote;
 			} else {
 				if (this.isTamed()) {
 					if (this.isOwner(sourceentity)) {
 						if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal((float)item.getFood().getHealing());
-							retval = true;
+							retval = this.world.isRemote;
 						} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal(4);
-							retval = true;
+							retval = this.world.isRemote;
 						} else {
 							retval = super.processInteract(sourceentity, hand);
 						}
@@ -465,7 +465,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 					}
 
 					this.enablePersistence();
-					retval = true;
+					retval = this.world.isRemote;
 				} else {
 					retval = super.processInteract(sourceentity, hand);
 					if (retval)
@@ -487,7 +487,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			Entity entity = this;
 			World world = this.world;
 			<#if hasReturnValueOf(data.onRightClickedOn, "actionresulttype")>
-				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/>;
+				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/> != ActionResultType.FAIL;
 			<#else>
 				<@procedureOBJToCode data.onRightClickedOn/>
 				return retval;
