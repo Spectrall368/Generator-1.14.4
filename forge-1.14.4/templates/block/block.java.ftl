@@ -576,7 +576,7 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
 	@Override public boolean onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-    boolean retval = super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
+    boolean result = super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
 		<#if data.shouldOpenGUIOnRightClick()>
 		if(entity instanceof ServerPlayerEntity) {
 			NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
@@ -599,7 +599,7 @@ public class ${name}Block extends
 			double hitZ = hit.getHitVec().z;
 			Direction direction = hit.getFace();
 			<#if hasReturnValueOf(data.onRightClicked, "actionresulttype")>
-			ActionResultType result = <@procedureOBJToInteractionResultCode data.onRightClicked/>;
+			result = (boolean) <@procedureOBJToInteractionResultCode data.onRightClicked/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClicked/>
 			</#if>
@@ -608,7 +608,7 @@ public class ${name}Block extends
 		<#if data.shouldOpenGUIOnRightClick() || !hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 		return true;
 		<#else>
-		return false;
+		return result;
 		</#if>
 	}
 	</#if>
