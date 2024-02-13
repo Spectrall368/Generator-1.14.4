@@ -14,16 +14,20 @@
 </#compress>
 </#macro>
 
-<#macro procedureCode object dependencies={} semicolon=true>
-    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if semicolon>;</#if>
+<#macro procedureCode object dependencies={} lie=false>
+    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if lie> != ActionResultType.FAIL</#if>;
 </#macro>
 
-<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={} lie=false>
     <#if hasReturnValueOf(object, type)>
-        return <@procedureCode object dependencies/>
+            return <@procedureCode object dependencies lie/>
     <#else>
         <@procedureCode object dependencies/>
+        <#if lie>
+        return ${defaultResult} != ActionResultType.FAIL;
+        <#else>
         return ${defaultResult};
+        </#if>
     </#if>
 </#macro>
 
