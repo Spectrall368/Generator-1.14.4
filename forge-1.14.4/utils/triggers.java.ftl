@@ -426,8 +426,8 @@
 <#macro onBlockRightClicked procedure="">
 <#if hasProcedure(procedure)>
 @Override public boolean onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-	boolean retval = super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
-	<@procedureCode procedure, {
+	super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "ActionResultType.SUCCESS", {
 	"x": "pos.getX()",
 	"y": "pos.getY()",
 	"z": "pos.getZ()",
@@ -438,7 +438,7 @@
 	"hitX": "hit.getHitVec().x()",
 	"hitY": "hit.getHitVec().y()",
 	"hitZ": "hit.getHitVec().z()"
-	}/>
+	}, true/>
 }
 </#if>
 </#macro>
