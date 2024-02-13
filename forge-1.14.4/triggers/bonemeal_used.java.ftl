@@ -8,7 +8,7 @@
 			"z": "event.getPos().getZ()",
 			"world": "event.getWorld()",
 			"itemstack": "event.getStack()",
-			"entity": "event.getEntity()",
+			"entity": "event.getPlayer()",
 			"blockstate": "event.getBlock()",
 			"event": "event"
 			}/>

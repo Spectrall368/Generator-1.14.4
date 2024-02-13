@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
-		if (event.getHand() != event.getEntity().getActiveHand())
+		if (event.getHand() != event.getPlayer().getActiveHand())
 			return;
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
@@ -10,7 +10,7 @@
 			"z": "event.getPos().getZ()",
 			"world": "event.getWorld()",
 			"entity": "event.getTarget()",
-			"sourceentity": "event.getEntity()",
+			"sourceentity": "event.getPlayer()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

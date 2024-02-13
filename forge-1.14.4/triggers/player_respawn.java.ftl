@@ -3,11 +3,11 @@
 	@SubscribeEvent public static void onPlayerRespawned(PlayerEvent.PlayerRespawnEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntity().posX",
-			"y": "event.getEntity().posY",
-			"z": "event.getEntity().posZ",
-			"world": "event.getEntity().world",
-			"entity": "event.getEntity()",
+			"x": "event.getPlayer().getPosX()",
+			"y": "event.getPlayer().getPosY()",
+			"z": "event.getPlayer().getPosZ()",
+			"world": "event.getPlayer().world",
+			"entity": "event.getPlayer()",
 			"endconquered": "event.isEndConquered()",
 			"event": "event"
 			}/>

@@ -3,12 +3,12 @@
 	@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntity().posX",
-			"y": "event.getEntity().posY",
-			"z": "event.getEntity().posZ",
-			"world": "event.getEntity().world",
-			"entity": "event.getEntity()",
-			"itemstack": "event.getItem().getItem()",
+			"x": "event.getPlayer().getPosX()",
+			"y": "event.getPlayer().getPosY()",
+			"z": "event.getPlayer().getPosZ()",
+			"world": "event.getPlayer().world",
+			"entity": "event.getPlayer()",
+			"itemstack": "event.getItem()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

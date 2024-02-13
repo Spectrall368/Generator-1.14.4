@@ -6,8 +6,8 @@
 			"x": "event.getPos().getX()",
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",
-			"world": "event.getEntity().world",
-			"entity": "event.getEntity()",
+			"world": "event.getPlayer().world",
+			"entity": "event.getPlayer()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

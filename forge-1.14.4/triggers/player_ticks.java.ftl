@@ -4,9 +4,9 @@
 		if (event.phase == TickEvent.Phase.END) {
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.player.posX",
-				"y": "event.player.posY",
-				"z": "event.player.posZ",
+				"x": "event.player.getPosX()",
+				"y": "event.player.getPosY()",
+				"z": "event.player.getPosZ()",
 				"world": "event.player.world",
 				"entity": "event.player",
 				"event": "event"

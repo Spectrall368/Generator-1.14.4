@@ -3,9 +3,9 @@
 	@SubscribeEvent public static void onEntitySpawned(EntityJoinWorldEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntity().posX",
-			"y": "event.getEntity().posY",
-			"z": "event.getEntity().posZ",
+			"x": "event.getEntity().getPosX()",
+			"y": "event.getEntity().getPosY()",
+			"z": "event.getEntity().getPosZ()",
 			"world": "event.getWorld()",
 			"entity": "event.getEntity()",
 			"event": "event"
