@@ -3,9 +3,9 @@
 	@SubscribeEvent public static void onPlayerFishItem(ItemFishedEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getPlayer().getPosX()",
-			"y": "event.getPlayer().getPosY()",
-			"z": "event.getPlayer().getPosZ()",
+			"x": "event.getPlayer().posX",
+			"y": "event.getPlayer().posY",
+			"z": "event.getPlayer().posZ",
 			"world": "event.getPlayer().world",
 			"entity": "event.getPlayer()",
 			"event": "event"
