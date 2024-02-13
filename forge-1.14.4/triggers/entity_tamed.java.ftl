@@ -3,9 +3,9 @@
 	@SubscribeEvent public static void onEntityTamed(AnimalTameEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getAnimal().getPosX()",
-			"y": "event.getAnimal().getPosY()",
-			"z": "event.getAnimal().getPosZ()",
+			"x": "event.getAnimal().posX",
+			"y": "event.getAnimal().posY",
+			"z": "event.getAnimal().posZ",
 			"world": "event.getAnimal().world",
 			"entity": "event.getAnimal()",
 			"sourceentity": "event.getTamer()",
