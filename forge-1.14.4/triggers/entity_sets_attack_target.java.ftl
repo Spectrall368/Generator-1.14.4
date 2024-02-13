@@ -3,9 +3,9 @@
 	@SubscribeEvent public static void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getTarget().getPosX()",
-			"y": "event.getTarget().getPosY()",
-			"z": "event.getTarget().getPosZ()",
+			"x": "event.getTarget().posX",
+			"y": "event.getTarget().posY",
+			"z": "event.getTarget().posZ",
 			"world": "event.getEntityLiving().getEntityWorld()",
 			"entity": "event.getTarget()",
 			"sourceentity": "event.getEntityLiving()",
