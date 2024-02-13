@@ -5,9 +5,9 @@
 		if (entity != null) {
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "entity.getPosX()",
-				"y": "entity.getPosY()",
-				"z": "entity.getPosZ()",
+				"x": "entity.posX",
+				"y": "entity.posY",
+				"z": "entity.posZ",
 				"world": "entity.world",
 				"entity": "entity",
 				"command": "event.getParseResults().getReader().getString()",
