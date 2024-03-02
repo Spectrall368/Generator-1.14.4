@@ -62,10 +62,6 @@ public class ${name}Item extends Item {
 	<@hasGlow data.glowCondition/>
 	</#if>
 
-	public static void init() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
-	}
-
 	<#if data.enableMeleeDamage>
 		@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot) {
 			Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
