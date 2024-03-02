@@ -17,6 +17,7 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 			double y = ${name}Entity.this.posY;
 			double z = ${name}Entity.this.posZ;
 			Entity entity = ${name}Entity.this;
+			World world = ${name}Entity.this.world;
 			</#if>
 			return <#if hasProcedure(conditions[0])><@procedureOBJToConditionCode conditions[0]/><#else>true</#if>;
 		} else {
@@ -30,6 +31,7 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 		double y = ${name}Entity.this.posY;
 		double z = ${name}Entity.this.posZ;
 		Entity entity = ${name}Entity.this;
+		World world = ${name}Entity.this.world;
 		</#if>
 		return <#if hasProcedure(conditions[1])><@procedureOBJToConditionCode conditions[1]/> &&</#if>
 			${name}Entity.this.getMoveHelper().isUpdating() && ${name}Entity.this.getAttackTarget() != null && ${name}Entity.this.getAttackTarget().isAlive();
