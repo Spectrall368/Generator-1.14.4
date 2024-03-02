@@ -34,7 +34,7 @@
 <#include "../triggers.java.ftl">
 package ${package}.item;
 
-public class ${name}Item extends <#if data.isFood && (data.animation == "drink")>Potion</#if>Item {
+public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
