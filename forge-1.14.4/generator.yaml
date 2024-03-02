@@ -63,6 +63,12 @@ base_templates:
     condition: ${w.hasElementsOfType("dimension")}
     deleteWhenConditionFalse: true
 
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
 language_file:
   format: json
   root_folder: "@MODASSETSROOT/lang/"
