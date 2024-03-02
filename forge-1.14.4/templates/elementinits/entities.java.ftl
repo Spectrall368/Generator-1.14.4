@@ -80,9 +80,6 @@ package ${package}.init;
 		<#if entity.getModElement().getTypeString() == "livingentity">
 		${entity.getModElement().getName()}Entity.init();
 		</#if>
-		<#if entity.getModElement().getTypeString() == "rangeditem">
-		${entity.getModElement().getName()}Item.init();
-		</#if>
 	</#list>
 	}
 	</#if>
