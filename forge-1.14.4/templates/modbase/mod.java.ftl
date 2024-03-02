@@ -89,6 +89,10 @@ import org.apache.logging.log4j.Logger;
 		</#if>
     	}
 
+	private void init(FMLCommonSetupEvent event) {
+		${JavaModName}EntityRenderers.init();
+	}
+
 	<#if w.hasElementsOfType("dimension")>
 	private void init(FMLCommonSetupEvent event) {
 		elements.getElements().forEach(element -> element.init(event));
