@@ -705,8 +705,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
     </#if>
 
 	public static void init() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(new ${name}Renderer.ModelRegisterHandler());
-
 		<#if data.spawnThisMob>
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 			<#if data.restrictionBiomes?has_content>
