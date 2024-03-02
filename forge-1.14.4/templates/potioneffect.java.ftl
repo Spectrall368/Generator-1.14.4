@@ -40,10 +40,6 @@ public class ${name}PotionEffect extends Effect {
 		super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 		}
 
-	@Override public String getName() {
-		return "effect.${modid}.${registryname}";
-	}
-
 	<#if data.isBenefitical>
 		@Override public boolean isBeneficial() {
 			return true;
