@@ -37,6 +37,7 @@ package ${package}.init;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
 
 	private static final List<EntityType<?>> REGISTRY = new ArrayList<>();
+	<#assign hasLivingEntities = false>
 
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "rangeditem">
@@ -45,6 +46,7 @@ package ${package}.init;
 					create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f));
 		<#else>
+			<#assign hasLivingEntities = true>
 			public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}",
 					EntityType.Builder.<${entity.getModElement().getName()}Entity>
@@ -72,6 +74,7 @@ package ${package}.init;
 		event.getRegistry().registerAll(REGISTRY.toArray(new EntityType[0]));
 	}
 
+	<#if hasLivingEntities>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "livingentity">
@@ -82,5 +85,6 @@ package ${package}.init;
 		</#if>
 	</#list>
 	}
+	</#if>
 }
 <#-- @formatter:on -->
