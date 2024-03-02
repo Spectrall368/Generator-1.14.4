@@ -335,12 +335,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
 	</#if>
 
-	<#if data.immuneToFire>
-	@Override public final boolean isImmuneToFire() {
-		return true;
-	}
-	</#if>
-
 	<#if hasProcedure(data.whenMobDies)>
 	@Override public void onDeath(DamageSource source) {
 		super.onDeath(source);
