@@ -36,10 +36,12 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT}) public class ${JavaModName}EntityRenderers {
 
+  public static void init() {
   <#list entities as entity>
   register(${entity.getModElement().getName()}Entity.class, ${entity.getModElement().getName()}Renderer::new);
   </#list>
-  
+  }
+
   private static <T extends Entity> void register(Class<T> entityClass, IRenderFactory<? super T> renderFactory) {
     RenderingRegistry.registerEntityRenderingHandler(entityClass, renderFactory);
   }
