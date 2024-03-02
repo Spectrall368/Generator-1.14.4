@@ -391,7 +391,7 @@
 
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+@Override @OnlyIn(Dist.CLIENT) public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
 	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
