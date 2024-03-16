@@ -1,4 +1,5 @@
 if(world.getWorld() instanceof ServerWorld) {
+	World projectileLevel = (World) world.getWorld();
 	Entity _entityToSpawn = ${input$projectile};
 	_entityToSpawn.setPosition(${input$x}, ${input$y}, ${input$z});
 	if (_entityToSpawn instanceof IProjectile)
