@@ -43,20 +43,21 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	<#if hasProcedure(data.onPortalTickUpdate)>
-	@Override public void tick(BlockState blockstate, World world, BlockPos pos, Random random) {
-		<@procedureCode data.onPortalTickUpdate, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"blockstate": "blockstate"
-		}/>
+	@Override public void randomTick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+		<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
+		<#if hasProcedure(data.onPortalTickUpdate)>
+			<@procedureCode data.onPortalTickUpdate, {
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
+			}/>
+		</#if>
 	}
-	</#if>
 
 	public void portalSpawn(World world, BlockPos pos) {
-		${name}PortalBlock.Size portalsize = this.isValid(world, pos);
+		${name}PortalShape portalsize = this.isValid(world, pos);
 		if (portalsize != null)
 			portalsize.placePortalBlocks();
 	}
@@ -93,9 +94,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 
 		<#if data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
-			world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-					ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(("${data.portalSound}"))), SoundCategory.BLOCKS, 0.5f,
-					random.nextFloat() * 0.4f + 0.8f, false);
+			world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(("${data.portalSound}"))), SoundCategory.BLOCKS, 0.5f, random.nextFloat() * 0.4f + 0.8f, false);
         	</#if>
 	}
 
@@ -147,13 +146,4 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		double d2 = MathHelper.pct(entity.posY - 1, (double) bph.getFrontTopLeft().getY(), (double) (bph.getFrontTopLeft().getY() - bph.getHeight()));
 		return new ${name}Teleporter(nextWorld, new Vec3d(d1, d2, 0), bph.getForwards());
 	}
-
-	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
-					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-					.replace("Blocks.NETHER_PORTAL", "portal")
-					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
-						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
-					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
-						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
-
 }
