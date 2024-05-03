@@ -181,4 +181,4 @@ package ${package}.world.dimension;
 
 	<#include "biomegen.java.ftl">
 }
-<#-- @formatter:on -->
+</#compress>
