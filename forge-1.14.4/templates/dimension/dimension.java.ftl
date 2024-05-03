@@ -35,6 +35,9 @@ package ${package}.world.dimension;
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
+	public static DimensionType type = null;
+	private static Biome[] dimensionBiomes;
+
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
