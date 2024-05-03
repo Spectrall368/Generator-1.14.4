@@ -28,11 +28,15 @@
  # exception.
 -->
 
-public static class ${name}PortalBlock extends NetherPortalBlock {
+<#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+package ${package}.block;
+
+public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
-				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(${data.portalLuminance}).noDrops());setRegistryName("${registryname}_portal");
+				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(${data.portalLuminance}).noDrops());
 	}
 
 	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
