@@ -37,14 +37,14 @@ package ${package}.init;
 public class ${JavaModName}Dimensions {
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-  <#list dimensions as dimension>
+  	<#list dimensions as dimension>
 		${dimension.getModElement().getRegistryNameUpper()}Dimension.init();
-  </#list>
+  	</#list>
 	}
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
-  <#list dimensions as dimension>
+  	<#list dimensions as dimension>
 		${dimension.getModElement().getRegistryNameUpper()}Dimension.init();
-  </#list>
+  	</#list>
 	}
 }
