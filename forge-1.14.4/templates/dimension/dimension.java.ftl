@@ -32,71 +32,36 @@
 <#include "../procedures.java.ftl">
 package ${package}.world.dimension;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.Supplier;
+<#compress>
+@Mod.EventBusSubscriber public class ${name}Dimension {
 
-import net.minecraft.util.SoundEvent;
-
-@${JavaModName}Elements.ModElement.Tag public class ${name}Dimension extends ${JavaModName}Elements.ModElement{
-
-	@ObjectHolder("${modid}:${registryname}")
-	public static final ModDimension dimension = null;
-
-	<#if data.enablePortal>
-	@ObjectHolder("${modid}:${registryname}_portal")
-	public static final ${name}PortalBlock portal = null;
-	</#if>
-
-	public static DimensionType type = null;
-
-	private static Biome[] dimensionBiomes;
-
-	public ${name}Dimension (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-	}
-
-	@SubscribeEvent public void registerDimension(RegistryEvent.Register<ModDimension> event) {
-		event.getRegistry().register(new ${name}ModDimension().setRegistryName("${registryname}"));
-	}
-
-	@SubscribeEvent public void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
-		if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-			DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension, null, ${data.hasSkyLight});
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
+		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
+			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
+				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension, null, ${data.hasSkyLight});
+			}
+			type = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
 		}
-		type = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
-	}
-
-	@Override public void init(FMLCommonSetupEvent event) {
-		dimensionBiomes = new Biome[] {
-    		<#list data.biomesInDimension as biome>
-				<#if biome.canProperlyMap()>
-				ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}")),
-				</#if>
-			</#list>
-		};
-	}
-
-	<#if data.enablePortal>
-		@Override public void initElements() {
-			elements.blocks.add(() -> new ${name}PortalBlock());
+	
+		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+			dimensionBiomes = new Biome[] {
+	    		<#list data.biomesInDimension as biome>
+					<#if biome.canProperlyMap()>
+					ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}")),
+					</#if>
+				</#list>
+			};
 		}
-
-		<#include "blockportal.java.ftl">
-		<#include "teleporter.java.ftl">
-	</#if>
+	}
 
 	public static class ${name}ModDimension extends ModDimension {
 
 		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-			return ${name}MyDimension::new;
+			return ${name}World::new;
 		}
 	}
 
-	public static class ${name}MyDimension extends Dimension {
+	public static class ${name}World extends Dimension {
 
 		private ${name}BiomeProvider biome${name}Provider = null;
 
@@ -196,13 +161,13 @@ import net.minecraft.util.SoundEvent;
 		if (event.getFrom() == type) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
-        </#if>
+        	</#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
 		if (event.getTo() == type) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
-        </#if>
+	        </#if>
 	}
 	</#if>
 
