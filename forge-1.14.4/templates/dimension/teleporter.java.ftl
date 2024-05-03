@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -27,16 +28,18 @@
  # exception.
 -->
 
-public static class ${name}Teleporter extends Teleporter {
+<#-- @formatter:off -->
+<#include "../mcitems.ftl">
+package ${package}.world.teleporter;
 
-	private static final Logger LOGGER = LogManager.getLogger();
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
 
 	private Vec3d lastPortalVec;
 	private Direction teleportDirection;
 
 	protected final ServerWorld world;
 	protected final Random random;
-	protected final Map<ColumnPos, ${name}Teleporter.PortalPosition> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
+	protected final Map<ColumnPos, ${name}PortalShape> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
 	private final Object2LongMap<ColumnPos> field_222275_f = new Object2LongOpenHashMap();
 
 	public ${name}Teleporter(ServerWorld worldServer, Vec3d lastPortalVec, Direction teleportDirection) {
@@ -51,15 +54,14 @@ public static class ${name}Teleporter extends Teleporter {
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
 				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-				   .replace("BLOCK_NETHER_PORTAL", "portal")}
+				   .replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
-				   .replace("BLOCK_NETHER_PORTAL", "portal")
-				   .replace("Teleporter.PortalPosition", name + "Teleporter.PortalPosition")}
+				   .replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+				   .replace("Teleporter.PortalPosition", name + "PortalShape")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
 					   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
 					   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
-
-	public static class PortalPosition ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
 }
+<#-- @formatter:on -->
