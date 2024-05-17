@@ -102,8 +102,8 @@ package ${package}.world.dimension;
 		}
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
-			if(this.biome${name}Provider == null) {
-				this.biome${name}Provider = new ${name}BiomeProvider(this.world);
+			if(this.${name}BiomeProvider == null) {
+				this.${name}BiomeProvider = new ${name}BiomeProvider(this.world);
 			}
 			return new ChunkProviderModded(this.world, this.biome${name}Provider);
 		}
