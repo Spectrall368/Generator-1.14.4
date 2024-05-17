@@ -56,7 +56,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		</#if>
 	}
 
-	public void portalSpawn(World world, BlockPos pos) {
+	public static void portalSpawn(World world, BlockPos pos) {
 		${name}PortalShape portalsize = this.isValid(world, pos);
 		if (portalsize != null)
 			portalsize.placePortalBlocks();
@@ -99,43 +99,23 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!world.isRemote && !entity.isPassenger() && !entity.isBeingRidden() && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
-			ServerPlayerEntity player = (ServerPlayerEntity) entity;
-			if (player.timeUntilPortal > 0) {
-				player.timeUntilPortal = 10;
-			} else if (player.dimension != type) {
-				player.timeUntilPortal = 10;
-				teleportToDimension(player, type);
+		if (!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss()
+				&& !entity.world.isRemote && <@procedureOBJToConditionCode data.portalUseCondition/>) {
+			if (entity.timeUntilPortal > 0) {
+				entity.timeUntilPortal = entity.getPortalCooldown();
+			} else if (entity.dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) {
+				entity.timeUntilPortal = entity.getPortalCooldown();
+				teleportToDimension(entity, DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
 			} else {
-				player.timeUntilPortal = 10;
-				teleportToDimension(player, DimensionType.OVERWORLD);
+				entity.timeUntilPortal = entity.getPortalCooldown();
+				teleportToDimension(entity, DimensionType.OVERWORLD);
 			}
 
 		}
 	}
 
-	private void teleportToDimension(ServerPlayerEntity player, DimensionType destinationType) {
-		ObfuscationReflectionHelper.setPrivateValue(ServerPlayerEntity.class, player, true, "field_184851_cj");
-
-		ServerWorld nextWorld = player.getServer().getWorld(destinationType);
-
-		${name}Teleporter teleporter = getTeleporterForDimension(player, player.getPosition(), nextWorld);
-
-		player.connection.sendPacket(new SChangeGameStatePacket(4, 0));
-
-		if (!teleporter.func_222268_a(player, player.rotationYaw)) {
-			teleporter.makePortal(player);
-			teleporter.func_222268_a(player, player.rotationYaw);
-		}
-
-		player.teleport(nextWorld, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), player.rotationYaw, player.rotationPitch);
-
-		player.connection.sendPacket(new SPlayerAbilitiesPacket(player.abilities));
-		for(EffectInstance effectinstance : player.getActivePotionEffects()) {
-			player.connection.sendPacket(new SPlayEntityEffectPacket(player.getEntityId(), effectinstance));
-		}
-
-		player.connection.sendPacket(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
+	private void teleportToDimension(Entity entity, DimensionType destinationType) {
+		entity.changeDimension(destinationType);
 	}
 
 	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
