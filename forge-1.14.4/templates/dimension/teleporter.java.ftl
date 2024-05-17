@@ -63,5 +63,7 @@ package ${package}.world.teleporter;
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
 					   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
 					   .replace("p_222268_1_.getLastPortalVec()", "lastPortalVec")}
+
+	public static class PortalPosition ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
 }
 <#-- @formatter:on -->
