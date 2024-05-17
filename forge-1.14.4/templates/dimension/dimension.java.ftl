@@ -34,8 +34,6 @@ package ${package}.world.dimension;
 
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
-
-	public static DimensionType type = null;
 	private static Biome[] dimensionBiomes;
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
@@ -43,7 +41,6 @@ package ${package}.world.dimension;
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
 				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension, null, ${data.hasSkyLight});
 			}
-			type = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
 		}
 	
 		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
@@ -68,7 +65,7 @@ package ${package}.world.dimension;
 
 		private ${name}BiomeProvider biome${name}Provider = null;
 
-		public ${name}MyDimension(World world, DimensionType type) {
+		public ${name}World(World world, DimensionType type) {
 			super(world, type);
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
@@ -161,13 +158,13 @@ package ${package}.world.dimension;
 		double z = entity.posZ;
 
 		<#if hasProcedure(data.onPlayerLeavesDimension)>
-		if (event.getFrom() == type) {
+		if (event.getFrom() == DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
         	</#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
-		if (event.getTo() == type) {
+		if (event.getTo() == DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
 	        </#if>
