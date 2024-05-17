@@ -32,5 +32,11 @@
 <#include "../mcitems.ftl">
 package ${package}.world.teleporter;
 
-public class ${name}PortalShape ${mcc.getInnerClassBody("net.minecraft.world.Teleporter", "PortalPosition")}
+public class ${name}PortalShape ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
+					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
+					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
+						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
+					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
+						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 <#-- @formatter:on -->
