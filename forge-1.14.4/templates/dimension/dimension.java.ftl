@@ -39,7 +39,7 @@ package ${package}.world.dimension;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension, null, ${data.hasSkyLight});
+				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), null, null, ${data.hasSkyLight});
 			}
 		}
 	
@@ -63,7 +63,7 @@ package ${package}.world.dimension;
 
 	public static class ${name}World extends Dimension {
 
-		private ${name}BiomeProvider biome${name}Provider = null;
+		private BiomeProvider${name} biomeProvider${name} = null;
 
 		public ${name}World(World world, DimensionType type) {
 			super(world, type);
@@ -71,19 +71,17 @@ package ${package}.world.dimension;
 		}
 
 		<#if !data.imitateOverworldBehaviour>
-			@Override public void calculateInitialWeather() {
-			}
+		@Override public void calculateInitialWeather() {}
 	
-	    		@Override public void updateWeather(Runnable defaultWeather) {
-			}
+	    	@Override public void updateWeather(Runnable defaultWeather) {}
 	
-			@Override public boolean canDoLightning(Chunk chunk) {
-				return false;
-			}
+		@Override public boolean canDoLightning(Chunk chunk) {
+			return false;
+		}
 	
-			@Override public boolean canDoRainSnowIce(Chunk chunk) {
-				return false;
-			}
+		@Override public boolean canDoRainSnowIce(Chunk chunk) {
+			return false;
+		}
 		</#if>
 
 		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
@@ -98,14 +96,14 @@ package ${package}.world.dimension;
 	      		f2 = f2 * (f * 0.94F + 0.06F);
 	      		f3 = f3 * (f * 0.91F + 0.09F);
 	      		return new Vec3d(f1, f2, f3);
-			</#if>
+		</#if>
 		}
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
-			if(this.${name}BiomeProvider == null) {
-				this.${name}BiomeProvider = new ${name}BiomeProvider(this.world);
+			if(this.biomeProvider${name} == null) {
+				this.biomeProvider${name} = new BiomeProvider${name}(this.world);
 			}
-			return new ChunkProviderModded(this.world, this.biome${name}Provider);
+			return new ChunkProviderModded(this.world, this.biomeProvider${name});
 		}
 
 		@Override public boolean isSurfaceWorld() {
