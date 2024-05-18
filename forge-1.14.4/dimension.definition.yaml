@@ -1,6 +1,10 @@
 templates:
   - template: dimension/dimension.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
+  - template: dimension/moddimension.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEModDimension.java"
+  - template: dimension/world.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEWorld.java"
   - template: dimension/teleporter.java.ftl
     condition: enablePortal
     deleteWhenConditionFalse: true
@@ -34,6 +38,10 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: enablePortal
     deleteWhenConditionFalse: true
+
+global_templates:
+  - template: elementinits/dimensions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDimensions.java"
 
 localizationkeys:
   - key: item.@modid.@registryname
