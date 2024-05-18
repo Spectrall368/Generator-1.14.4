@@ -44,7 +44,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	@Override public void randomTick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+	@Override public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
 		<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
 		<#if hasProcedure(data.onPortalTickUpdate)>
 			<@procedureCode data.onPortalTickUpdate, {
@@ -57,7 +57,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		</#if>
 	}
 
-	public static void portalSpawn(World world, BlockPos pos) {
+	public void portalSpawn(World world, BlockPos pos) {
 		${name}PortalBlock.Size portalsize = this.isValid(world, pos);
 		if (portalsize != null)
 			portalsize.placePortalBlocks();
