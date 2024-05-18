@@ -36,6 +36,7 @@ package ${package}.world.dimension;
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
+	private static Biome[] dimensionBiomes;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
@@ -44,7 +45,7 @@ package ${package}.world.dimension;
 		}
 	
 		@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
-			private static Biome [] dimensionBiomes = new Biome[] {
+			dimensionBiomes = new Biome[] {
 	    		<#list data.biomesInDimension as biome>
 					<#if biome.canProperlyMap()>
 					ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}")),
