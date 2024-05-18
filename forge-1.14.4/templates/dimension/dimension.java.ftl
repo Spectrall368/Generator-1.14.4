@@ -39,7 +39,7 @@ package ${package}.world.dimension;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${name.getRegistryNameUpper()}.get(), null, ${data.hasSkyLight});
+				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${name?upper_case}.get(), null, ${data.hasSkyLight});
 			}
 		}
 	
