@@ -31,7 +31,7 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber public class ${name}ModDimension extends ModDimension {
+public class ${name}ModDimension extends ModDimension {
 
 		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 			return ${name}World::new;
