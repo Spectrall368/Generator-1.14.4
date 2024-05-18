@@ -23,11 +23,8 @@ import org.apache.logging.log4j.Logger;
 
 	public static final String MODID = "${modid}";
 
-	<#if w.hasElementsOfType("dimension")>public ${JavaModName}Elements elements;</#if>
-
 	public ${JavaModName}() {
 		MinecraftForge.EVENT_BUS.register(this);
-		<#if w.hasElementsOfType("dimension")>elements = new ${JavaModName}Elements();</#if>
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
@@ -42,7 +39,6 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
 
-		<#if w.hasElementsOfType("dimension")>bus.addListener(this::init);</#if>
 		bus.addListener(this::clientSetup);
 		bus.register(this);
 	}
@@ -84,23 +80,6 @@ import org.apache.logging.log4j.Logger;
 
 	private void clientSetup(FMLClientSetupEvent event) {
         	OBJLoader.INSTANCE.addDomain(MODID);
-		<#if w.hasElementsOfType("dimension")>
-        	elements.getElements().forEach(element -> element.clientLoad(event));
-		</#if>
     	}
-
-	<#if w.hasElementsOfType("dimension")>
-	private void init(FMLCommonSetupEvent event) {
-		elements.getElements().forEach(element -> element.init(event));
-	}
-
-    	@SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {
-		elements.getElements().forEach(element -> element.serverLoad(event));
-	}
-
-	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
-		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
-	}
-	</#if>
 }
 <#-- @formatter:on -->
