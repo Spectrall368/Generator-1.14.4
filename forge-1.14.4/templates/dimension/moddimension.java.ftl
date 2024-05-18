@@ -36,4 +36,5 @@ package ${package}.world.dimension;
 		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 			return ${name}World::new;
 		}
+}
 </#compress>
