@@ -63,7 +63,8 @@ import org.apache.logging.log4j.util.Supplier;
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
 				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
-				   .replace("Teleporter.PortalPosition", name + "Teleporter.PortalPosition")}
+				   .replace("Teleporter.PortalPosition", name + "Teleporter.PortalPosition")
+				   .replace(JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get().createPatternHelper", "new " + name + "PortalBlock().createPatternHelper")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
 					   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
