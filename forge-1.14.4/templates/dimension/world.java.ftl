@@ -31,7 +31,7 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber public class ${name}World extends Dimension {
+public class ${name}World extends Dimension {
 
 		private BiomeProvider${name} biomeProvider${name} = null;
 
