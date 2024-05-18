@@ -34,6 +34,7 @@ package ${package}.world.teleporter;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
 
+	private static final Logger LOGGER = LogManager.getLogger();
 	private Vec3d lastPortalVec;
 	private Direction teleportDirection;
 
@@ -54,11 +55,11 @@ package ${package}.world.teleporter;
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
 				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-				   .replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
+				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
-				   .replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
-				   .replace("Teleporter.PortalPosition", name + "PortalShape")}
+				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+				   .replace("Teleporter.PortalPosition", name + "Teleporter.PortalPosition")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222268_a", "Entity", "float")
 					   .replace("p_222268_1_.getTeleportDirection()", "teleportDirection")
