@@ -35,7 +35,7 @@ public static class ${name}BiomeLayer implements IC0Transformer {
 	}
 }
 
-public static class ${name}BiomeProvider extends BiomeProvider {
+public static class BiomeProvider${name} extends BiomeProvider {
 
 	private final Layer genBiomes;
 	private final Layer biomeFactoryLayer;
@@ -48,7 +48,7 @@ public static class ${name}BiomeProvider extends BiomeProvider {
 	private static boolean biomesPatched = false;
 	</#if>
 
-	public ${name}BiomeProvider(World world) {
+	public BiomeProvider${name}(World world) {
 		Layer[] aLayer = makeTheWorld(world.getSeed());
 		this.genBiomes = aLayer[0];
 		this.biomeFactoryLayer = aLayer[1];
@@ -62,9 +62,10 @@ public static class ${name}BiomeProvider extends BiomeProvider {
 		if(!biomesPatched) {
 			for (Biome biome : this.biomes) {
 				biome.addCarver(GenerationStage.Carving.AIR, Biome.createCarver(new CaveWorldCarver(ProbabilityConfig::deserialize, 256) {
-
 					{
-						carvableBlocks = ImmutableSet.of(${mappedBlockToBlock(data.mainFillerBlock)}, biome.getSurfaceBuilder().getConfig().getTop().getBlock(), biome.getSurfaceBuilder().getConfig().getUnder().getBlock());
+						carvableBlocks = ImmutableSet.of(${mappedBlockToBlock(data.mainFillerBlock)}, 
+							biome.getSurfaceBuilder().getConfig().getTop().getBlock(), 
+							biome.getSurfaceBuilder().getConfig().getUnder().getBlock());
 					}
 
 				}, new ProbabilityConfig(0.14285715f)));
