@@ -57,7 +57,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	public static void portalSpawn(World world, BlockPos pos) {
-		${name}PortalShape portalsize = this.isValid(world, pos);
+		${name}PortalBlock.Size portalsize = this.isValid(world, pos);
 		if (portalsize != null)
 			portalsize.placePortalBlocks();
 	}
@@ -118,12 +118,11 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		entity.changeDimension(destinationType);
 	}
 
-	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
-		BlockPattern.PatternHelper bph = portal.createPatternHelper(entity.world, new BlockPos(pos));
-		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
-		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
-		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
-		double d2 = MathHelper.pct(entity.posY - 1, (double) bph.getFrontTopLeft().getY(), (double) (bph.getFrontTopLeft().getY() - bph.getHeight()));
-		return new ${name}Teleporter(nextWorld, new Vec3d(d1, d2, 0), bph.getForwards());
-	}
+	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
+					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
+					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
+						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
+					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
+						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 }
