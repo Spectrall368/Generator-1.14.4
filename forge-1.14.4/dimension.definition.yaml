@@ -5,10 +5,6 @@ templates:
     condition: enablePortal
     deleteWhenConditionFalse: true
     name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMETeleporter.java"
-  - template: dimension/portalshape.java.ftl
-    condition: enablePortal
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMEPortalShape.java"
   - template: dimension/blockportal.java.ftl
     condition: enablePortal
     deleteWhenConditionFalse: true
