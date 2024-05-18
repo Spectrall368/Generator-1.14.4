@@ -32,6 +32,9 @@
 <#include "../mcitems.ftl">
 package ${package}.world.teleporter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
