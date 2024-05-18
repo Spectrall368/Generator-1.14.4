@@ -8,7 +8,7 @@ if (world instanceof ServerWorld) {
     <#elseif field$dimension=="End">
         world = ((ServerWorld) world).getServer().getWorld(DimensionType.THE_END);
     <#else>
-        world = ((ServerWorld) world).getServer().getWorld(${(field$dimension.toString().replace("CUSTOM:", ""))}Dimension.type);
+        world = ((ServerWorld) world).getServer().getWorld(DimensionType.byName(new ResourceLocation("${modid}:${(field$dimension.toString().replace("CUSTOM:", "").replace("Dimension", ""))?lower_case}")));
     </#if>
 
     if (world != null) {
