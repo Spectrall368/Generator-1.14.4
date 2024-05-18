@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
+<#include "../mcitems.ftl">
 package ${package}.block;
 
 public class ${name}PortalBlock extends NetherPortalBlock {
