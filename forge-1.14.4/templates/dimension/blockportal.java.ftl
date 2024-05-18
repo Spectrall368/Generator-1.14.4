@@ -101,22 +101,46 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss()
-				&& !entity.world.isRemote && <@procedureOBJToConditionCode data.portalUseCondition/>) {
-			if (entity.timeUntilPortal > 0) {
-				entity.timeUntilPortal = entity.getPortalCooldown();
-			} else if (entity.dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
-				entity.timeUntilPortal = entity.getPortalCooldown();
-				teleportToDimension(entity, DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
+				&& !entity.world.isRemote && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
+			if (((ServerPlayerEntity) entity).timeUntilPortal > 0) {
+				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
+			} else if (((ServerPlayerEntity) entity).dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
+				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
+				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
 			} else {
-				entity.timeUntilPortal = entity.getPortalCooldown();
-				teleportToDimension(entity, DimensionType.OVERWORLD);
+				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
+				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.OVERWORLD);
 			}
 
 		}
 	}
 
-	private void teleportToDimension(Entity entity, DimensionType destinationType) {
-		entity.changeDimension(destinationType);
+	private void teleportToDimension(ServerPlayerEntity player, DimensionType destinationType) {
+		ObfuscationReflectionHelper.setPrivateValue(ServerPlayerEntity.class, player, true, "field_184851_cj");
+
+		ServerWorld nextWorld = player.getServer().getWorld(destinationType);
+		${name}Teleporter teleporter = getTeleporterForDimension(player, player.getPosition(), nextWorld);
+		player.connection.sendPacket(new SChangeGameStatePacket(4, 0));
+
+		if (!teleporter.func_222268_a(player, player.rotationYaw)) {
+			teleporter.makePortal(player);
+			teleporter.func_222268_a(player, player.rotationYaw);
+		}
+
+		player.teleport(nextWorld, player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+		player.connection.sendPacket(new SPlayerAbilitiesPacket(player.abilities));
+		for(EffectInstance effectinstance : player.getActivePotionEffects())
+			player.connection.sendPacket(new SPlayEntityEffectPacket(player.getEntityId(), effectinstance));
+		player.connection.sendPacket(new SPlaySoundEventPacket(1032, BlockPos.ZERO, 0, false));
+	}
+
+	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
+		BlockPattern.PatternHelper bph = new ${name}PortalBlock().createPatternHelper(entity.world, new BlockPos(pos));
+		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
+		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
+		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
+		double d2 = MathHelper.pct(entity.posY - 1, (double) bph.getFrontTopLeft().getY(), (double) (bph.getFrontTopLeft().getY() - bph.getHeight()));
+		return new ${name}Teleporter(nextWorld, new Vec3d(d1, d2, 0), bph.getForwards());
 	}
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
