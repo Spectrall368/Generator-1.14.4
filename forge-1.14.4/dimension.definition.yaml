@@ -4,7 +4,9 @@ templates:
   - template: dimension/moddimension.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEModDimension.java"
   - template: dimension/world.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEWorld.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEWorld.java"
+  - template: dimension/biomegen.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/gen/@NAMEBiomeProvider.java"
   - template: dimension/teleporter.java.ftl
     condition: enablePortal
     deleteWhenConditionFalse: true
