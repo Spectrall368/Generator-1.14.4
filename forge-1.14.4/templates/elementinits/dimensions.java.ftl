@@ -39,7 +39,7 @@ public class ${JavaModName}Dimensions {
 	public static final DeferredRegister<ModDimension> REGISTRY = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, ${JavaModName}.MODID);
 
 	<#list dimensions as dimension>
-		public static final RegistryObject<ModDimension> ${dimension.getModElement().getRegistryNameUpper()} = REGISTRY.register("${dimension.getModElement().getRegistryName()}", ${dimension.getModElement().getName()}ModDimension::new);
+		public static final RegistryObject<ModDimension> ${dimension.getModElement().getRegistryNameUpper()} = REGISTRY.register("${dimension.getModElement().getRegistryName()}", ${dimension.getModElement().getName()}Dimension.${dimension.getModElement().getName()}ModDimension::new);
 	</#list>
 }
 <#-- @formatter:on -->
