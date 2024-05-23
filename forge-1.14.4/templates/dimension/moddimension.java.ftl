@@ -28,7 +28,7 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.world.dimension;
+package ${package}.world;
 
 <#compress>
 public class ${name}ModDimension extends ModDimension {
