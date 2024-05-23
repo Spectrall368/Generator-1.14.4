@@ -76,12 +76,12 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlotType.HEAD, new Item.Properties().group(${data.creativeTab})<#if data.helmetImmuneToFire>.isImmuneToFire()</#if>);
+			super(EquipmentSlotType.HEAD, new Item.Properties()<#if data.enableHelmet>.group(${data.creativeTab})</#if>);
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel(1);
+			BipedModel armorModel = new BipedModel();
 			armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
 			armorModel.bipedHeadwear = new ${data.helmetModelName}().${data.helmetModelPart};
 			armorModel.isSneak = living.isSneaking();
@@ -109,12 +109,12 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlotType.CHEST, new Item.Properties().group(${data.creativeTab})<#if data.bodyImmuneToFire>.isImmuneToFire()</#if>);
+			super(EquipmentSlotType.CHEST, new Item.Properties()<#if data.enableBody>.group(${data.creativeTab})</#if>);
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel(1);
+			BipedModel armorModel = new BipedModel();
 			armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
 
 			<#if data.armsModelPartL?has_content>
@@ -149,12 +149,12 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlotType.LEGS, new Item.Properties().group(${data.creativeTab})<#if data.leggingsImmuneToFire>.isImmuneToFire()</#if>);
+			super(EquipmentSlotType.LEGS, new Item.Properties()<#if data.enableLeggings>.group(${data.creativeTab})</#if>);
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel(1);
+			BipedModel armorModel = new BipedModel();
 			armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
 
 			<#if data.leggingsModelPartL?has_content>
@@ -189,12 +189,12 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlotType.FEET, new Item.Properties().group(${data.creativeTab})<#if data.bootsImmuneToFire>.isImmuneToFire()</#if>);
+			super(EquipmentSlotType.FEET, new Item.Properties()<#if data.enableBoots>.group(${data.creativeTab})</#if>);
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel(1);
+			BipedModel armorModel = new BipedModel();
 
 			<#if data.bootsModelPartL?has_content>
 			armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
