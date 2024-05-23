@@ -85,6 +85,10 @@ package ${package}.world.dimension;
 	        <#include "cp_end.java.ftl">
     	</#if>
 
-	<#include "biomegen.java.ftl">
+	public static class ${name}BiomeLayer implements IC0Transformer {
+		@Override public int apply(INoiseRandom context, int value) {
+			return Registry.BIOME.getId(dimensionBiomes[context.random(dimensionBiomes.length)]);
+		}
+	}
 }
 </#compress>
