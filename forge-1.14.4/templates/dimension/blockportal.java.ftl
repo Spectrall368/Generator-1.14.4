@@ -28,7 +28,14 @@
  # exception.
 -->
 
-public static class ${name}PortalBlock extends NetherPortalBlock {
+<#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+<#include "../mcitems.ftl">
+package ${package}.block;
+
+public class ${name}PortalBlock extends NetherPortalBlock {
+
+	public static final ${name}PortalBlock portal${name} = null;
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
@@ -130,7 +137,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
-		BlockPattern.PatternHelper bph = portal.createPatternHelper(entity.world, new BlockPos(pos));
+		BlockPattern.PatternHelper bph = portal${name}.createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
 		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
 		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
