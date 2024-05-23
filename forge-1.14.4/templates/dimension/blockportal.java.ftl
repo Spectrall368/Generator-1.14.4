@@ -151,3 +151,4 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
 						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 }
+<#-- @formatter:on -->
