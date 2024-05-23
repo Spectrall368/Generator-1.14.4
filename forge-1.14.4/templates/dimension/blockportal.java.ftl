@@ -104,9 +104,9 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 				&& !world.isRemote && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			if (((ServerPlayerEntity) entity).timeUntilPortal > 0) {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-			} else if (((ServerPlayerEntity) entity).dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
+			} else if (((ServerPlayerEntity) entity).dimension != ${name}Dimension.type${name}) {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
+				teleportToDimension(((ServerPlayerEntity) entity), ${name}Dimension.type${name});
 			} else {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
 				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.OVERWORLD);
