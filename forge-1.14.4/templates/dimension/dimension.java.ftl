@@ -36,14 +36,25 @@ package ${package}.world.dimension;
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
+	@ObjectHolder("${modid}:${registryname}")
+	public static final ModDimension dimension${name} = null;
+	public static DimensionType type${name} = null;
+
 	private static Biome[] dimensionBiomes${name};
+
+	<#if data.enablePortal>
 	public static final ${name}PortalBlock portal${name} = null;
+	</#if>
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
+		@SubscribeEvent public static void registerDimension(RegistryEvent.Register<ModDimension> event) {
+			event.getRegistry().register(new ${name}ModDimension().setRegistryName("${registryname}"));
+		}
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${name?upper_case}.get(), null, ${data.hasSkyLight});
+				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension${name}, null, ${data.hasSkyLight});
 			}
+			type = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
 		}
 	
 		@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
@@ -158,13 +169,13 @@ package ${package}.world.dimension;
 		double z = entity.posZ;
 
 		<#if hasProcedure(data.onPlayerLeavesDimension)>
-		if (event.getFrom() == DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
+		if (event.getFrom() == type${name}) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
         	</#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
-		if (event.getTo() == DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
+		if (event.getTo() == type${name}) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
 	        </#if>
