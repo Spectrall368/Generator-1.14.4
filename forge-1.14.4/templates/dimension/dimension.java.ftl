@@ -54,7 +54,7 @@ package ${package}.world.dimension;
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
 				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), dimension${name}, null, ${data.hasSkyLight});
 			}
-			type = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
+			type${name} = DimensionType.byName(new ResourceLocation("${modid}:${registryname}"));
 		}
 	
 		@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
