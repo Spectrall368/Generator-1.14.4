@@ -37,6 +37,8 @@ package ${package}.world.dimension;
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
 	private static Biome[] dimensionBiomes;
+	public static final ${name}PortalBlock portal = null;
+
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
@@ -146,6 +148,8 @@ package ${package}.world.dimension;
 
 		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
 	}
+
+	<#include "blockportal.java.ftl">
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
