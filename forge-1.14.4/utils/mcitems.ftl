@@ -60,23 +60,66 @@
     </#if>
 </#function>
 
+<#function mappedMCItemToIngredient mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "Ingredient.fromTag(ItemTags.getCollection().getTagByID(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\")))">
+    <#elseif generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+        <#return "Ingredient.fromTag(ItemTags.getCollection().getTagByID(new ResourceLocation(\"" + generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "") + "\")))">
+    <#else>
+        <#return "Ingredient.fromStacks(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
+    </#if>
+</#function>
+
+<#function mappedMCItemsToIngredient mappedBlocks=[]>
+    <#if !mappedBlocks??>
+        <#return "Ingredient.EMPTY">
+    <#elseif mappedBlocks?size == 1>
+        <#return mappedMCItemToIngredient(mappedBlocks[0])>
+    <#else>
+        <#assign itemsOnly = true>
+
+        <#list mappedBlocks as mappedBlock>
+            <#if mappedBlock.getUnmappedValue().startsWith("TAG:") || generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+                <#assign itemsOnly = false>
+                <#break>
+            </#if>
+        </#list>
+
+        <#if itemsOnly>
+            <#assign retval = "Ingredient.fromStacks(">
+            <#list mappedBlocks as mappedBlock>
+                <#assign retval += mappedMCItemToItemStackCode(mappedBlock, 1)>
+
+                <#if mappedBlock?has_next>
+                    <#assign retval += ",">
+                </#if>
+            </#list>
+            <#return retval + ")">
+        <#else>
+            <#list mappedBlocks as mappedBlock>
+                <#assign retval += mappedMCItemToIngredient(mappedBlock)>
+
+                <#if mappedBlock?has_next>
+                    <#assign retval += " && ">
+                </#if>
+            </#list>
+        </#if>
+    </#if>
+</#function>
+
 <#function mappedElementToRegistryEntry mappedElement>
     <#return JavaModName + generator.isBlock(mappedElement)?then("Blocks", "Items") + "."
     + generator.getRegistryNameFromFullName(mappedElement)?upper_case + transformExtension(mappedElement)?upper_case + ".get()">
 </#function>
 
 <#function transformExtension mappedBlock>
-    <#return (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
-    + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
-    + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
-    + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
-    + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")>
+    <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
+    <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 
 <#function mappedMCItemToIngameItemName mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
             + transformExtension(mappedBlock)
@@ -100,8 +143,7 @@
 
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement + transformExtension(mappedBlock)>
         <#else>
