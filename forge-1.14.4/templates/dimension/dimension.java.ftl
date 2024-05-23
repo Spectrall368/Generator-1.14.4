@@ -36,8 +36,8 @@ package ${package}.world.dimension;
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
-	private static Biome[] dimensionBiomes;
-	public static final ${name}PortalBlock portal = null;
+	private static Biome[] dimensionBiomes${name};
+	public static final ${name}PortalBlock portal${name} = null;
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
@@ -47,7 +47,7 @@ package ${package}.world.dimension;
 		}
 	
 		@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
-			dimensionBiomes = new Biome[] {
+			dimensionBiomes${name} = new Biome[] {
 	    		<#list data.biomesInDimension as biome>
 					<#if biome.canProperlyMap()>
 					ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}")),
@@ -148,8 +148,6 @@ package ${package}.world.dimension;
 
 		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
 	}
-
-	<#include "blockportal.java.ftl">
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
