@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -34,9 +34,6 @@
 <#include "triggers.java.ftl">
 package ${package}.item;
 
-import net.minecraft.util.SoundEvent;
-import java.util.function.Consumer;
-
 public abstract class ${name}Item extends ArmorItem {
 
 	public ${name}Item(EquipmentSlotType type, Item.Properties properties) {
@@ -45,7 +42,7 @@ public abstract class ${name}Item extends ArmorItem {
 				return new int[]{13, 15, 16, 11}[type.getIndex()] * ${data.maxDamage};
 			}
 
-  		 	@Override public int getDamageReductionAmount(EquipmentSlotType type) {
+			@Override public int getDamageReductionAmount(EquipmentSlotType type) {
 				return new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} }[type.getIndex()];
 			}
 
@@ -53,7 +50,7 @@ public abstract class ${name}Item extends ArmorItem {
 				return ${data.enchantability};
 			}
 
-			@Override public SoundEvent getSoundEvent() {
+			@Override public net.minecraft.util.SoundEvent getSoundEvent() {
 				<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
 				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
@@ -62,15 +59,7 @@ public abstract class ${name}Item extends ArmorItem {
 			}
 
 			@Override public Ingredient getRepairMaterial() {
-				<#if data.repairItems?has_content>
-				return Ingredient.fromStacks(
-							<#list data.repairItems as repairItem>
-							${mappedMCItemToItemStackCode(repairItem,1)}<#if repairItem?has_next>,</#if>
-                					</#list>
-						);
-				<#else>
-				return Ingredient.EMPTY;
-				</#if>
+				return ${mappedMCItemsToIngredient(data.repairItems)};
 			}
 
 			@Override @OnlyIn(Dist.CLIENT) public String getName() {
@@ -78,7 +67,7 @@ public abstract class ${name}Item extends ArmorItem {
 			}
 
 			@Override public float getToughness() {
-				return 	${data.toughness}f;
+				return ${data.toughness}f;
 			}
 		}, type, properties);
 	}
@@ -87,18 +76,19 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlotType.HEAD, new Item.Properties()<#if data.enableHelmet>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.HEAD, new Item.Properties().group(${data.creativeTab})<#if data.helmetImmuneToFire>.isImmuneToFire()</#if>);
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-					BipedModel armorModel = new BipedModel();
-					armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
-					armorModel.isSneak = living.isSneaking();
-					armorModel.isSitting = defaultModel.isSitting;
-					armorModel.isChild = living.isChild();
-					return armorModel;
-				}
+		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
+			BipedModel armorModel = new BipedModel(1);
+			armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
+			armorModel.bipedHeadwear = new ${data.helmetModelName}().${data.helmetModelPart};
+			armorModel.isSneak = living.isSneaking();
+			armorModel.isSitting = defaultModel.isSitting;
+			armorModel.isChild = living.isChild();
+			return armorModel;
+		}
 		</#if>
 
 		<@addSpecialInformation data.helmetSpecialInfo/>
@@ -119,25 +109,26 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlotType.CHEST, new Item.Properties()<#if data.enableBody>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.CHEST, new Item.Properties().group(${data.creativeTab})<#if data.bodyImmuneToFire>.isImmuneToFire()</#if>);
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
-				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-					BipedModel armorModel = new BipedModel();
-					armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
-					<#if data.armsModelPartL?has_content>
-					armorModel.bipedLeftArm = new ${data.bodyModelName}().${data.armsModelPartL};
-					</#if>
-					<#if data.armsModelPartR?has_content>
-					armorModel.bipedRightArm = new ${data.bodyModelName}().${data.armsModelPartR};
-					</#if>
+		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
+			BipedModel armorModel = new BipedModel(1);
+			armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
 
-					armorModel.isSneak = living.isSneaking();
-					armorModel.isSitting = defaultModel.isSitting;
-					armorModel.isChild = living.isChild();
-					return armorModel;
-				}
+			<#if data.armsModelPartL?has_content>
+			armorModel.bipedLeftArm = new ${data.bodyModelName}().${data.armsModelPartL};
+			</#if>
+			<#if data.armsModelPartR?has_content>
+			armorModel.bipedRightArm = new ${data.bodyModelName}().${data.armsModelPartR};
+			</#if>
+
+			armorModel.isSneak = living.isSneaking();
+			armorModel.isSitting = defaultModel.isSitting;
+			armorModel.isChild = living.isChild();
+			return armorModel;
+		}
 		</#if>
 
 		<@addSpecialInformation data.bodySpecialInfo/>
@@ -158,19 +149,26 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlotType.LEGS, new Item.Properties()<#if data.enableLeggings>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.LEGS, new Item.Properties().group(${data.creativeTab})<#if data.leggingsImmuneToFire>.isImmuneToFire()</#if>);
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
-				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-					BipedModel armorModel = new BipedModel();
-					armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
-					armorModel.bipedRightLeg = new ${data.leggingsModelName}().${data.leggingsModelPartR};
-					armorModel.isSneak = living.isSneaking();
-					armorModel.isSitting = defaultModel.isSitting;
-					armorModel.isChild = living.isChild();
-					return armorModel;
-				}
+		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
+			BipedModel armorModel = new BipedModel(1);
+			armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
+
+			<#if data.leggingsModelPartL?has_content>
+			armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
+			</#if>
+			<#if data.leggingsModelPartR?has_content>
+			armorModel.bipedRightLeg = new ${data.leggingsModelName}().${data.leggingsModelPartR};
+			</#if>
+
+			armorModel.isSneak = living.isSneaking();
+			armorModel.isSitting = defaultModel.isSitting;
+			armorModel.isChild = living.isChild();
+			return armorModel;
+		}
 		</#if>
 
 		<@addSpecialInformation data.leggingsSpecialInfo/>
@@ -191,19 +189,25 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlotType.FEET, new Item.Properties()<#if data.enableBoots>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.FEET, new Item.Properties().group(${data.creativeTab})<#if data.bootsImmuneToFire>.isImmuneToFire()</#if>);
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
-				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-					BipedModel armorModel = new BipedModel();
-					armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
-					armorModel.bipedRightLeg = new ${data.bootsModelName}().${data.bootsModelPartR};
-					armorModel.isSneak = living.isSneaking();
-					armorModel.isSitting = defaultModel.isSitting;
-					armorModel.isChild = living.isChild();
-					return armorModel;
-				}
+		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
+			BipedModel armorModel = new BipedModel(1);
+
+			<#if data.bootsModelPartL?has_content>
+			armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
+			</#if>
+			<#if data.bootsModelPartR?has_content>
+			armorModel.bipedRightLeg = new ${data.bootsModelName}().${data.bootsModelPartR};
+			</#if>
+
+			armorModel.isSneak = living.isSneaking();
+			armorModel.isSitting = defaultModel.isSitting;
+			armorModel.isChild = living.isChild();
+			return armorModel;
+		}
 		</#if>
 
 		<@addSpecialInformation data.bootsSpecialInfo/>
@@ -218,18 +222,6 @@ public abstract class ${name}Item extends ArmorItem {
 
 		<@onArmorTick data.onBootsTick/>
 	}
-	</#if>
-	<#if data.getArmorModelsCode()??>
-	${data.getArmorModelsCode().toString()
-		.replace("ModelRenderer", "RendererModel").replace("extends ModelBase", "extends EntityModel<Entity>")
-		.replace("GlStateManager.translate", "GlStateManager.translated")
-		.replace("GlStateManager.scale", "GlStateManager.scaled")
-		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
-					"setRotationAngles(Entity e, float f, float f1, float f2, float f3, float f4, float f5)")
-		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+entity\\)",
-					"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")}
 	</#if>
 }
 <#-- @formatter:on -->
