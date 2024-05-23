@@ -28,6 +28,9 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../mcitems.ftl">
+package ${package}.world.gen;
+
 public class BiomeProvider${name} extends BiomeProvider {
 
 	private final Layer genBiomes;
