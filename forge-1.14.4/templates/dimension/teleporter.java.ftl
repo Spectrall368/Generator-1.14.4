@@ -59,7 +59,7 @@ import org.apache.logging.log4j.util.Supplier;
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
 				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-				   .replace("BLOCK_NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
+				   .replace("BLOCK_NETHER_PORTAL", name + "Dimension.portal" + name)}
 
 	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "func_222272_a", "BlockPos", "Vec3d", "Direction", "double", "double", "boolean")
 				   .replace("BLOCK_NETHER_PORTAL", name + "Dimension.portal" + name)
