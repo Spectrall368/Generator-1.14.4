@@ -28,14 +28,7 @@
 -->
 
 <#-- @formatter:off -->
-public static class ${name}BiomeLayer implements IC0Transformer {
-
-	@Override public int apply(INoiseRandom context, int value) {
-		return Registry.BIOME.getId(dimensionBiomes[context.random(dimensionBiomes.length)]);
-	}
-}
-
-public static class BiomeProvider${name} extends BiomeProvider {
+public class BiomeProvider${name} extends BiomeProvider {
 
 	private final Layer genBiomes;
 	private final Layer biomeFactoryLayer;
