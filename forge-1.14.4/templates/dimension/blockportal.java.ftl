@@ -101,7 +101,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss()
-				&& !entity.world.isRemote && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
+				&& !world.isRemote && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			if (((ServerPlayerEntity) entity).timeUntilPortal > 0) {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
 			} else if (((ServerPlayerEntity) entity).dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
@@ -145,7 +145,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
 					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-					.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+					.replace("Blocks.NETHER_PORTAL", name + "Dimension.portal" + name)
 					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
 						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
