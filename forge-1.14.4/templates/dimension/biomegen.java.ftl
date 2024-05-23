@@ -28,10 +28,15 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
-package ${package}.world.biome.provider;
+public static class ${name}BiomeLayer implements IC0Transformer {
 
-public class BiomeProvider${name} extends BiomeProvider {
+	@Override public int apply(INoiseRandom context, int value) {
+		return Registry.BIOME.getId(dimensionBiomes[context.random(dimensionBiomes.length)]);
+	}
+
+}
+
+public static class BiomeProvider${name} extends BiomeProvider {
 
 	private final Layer genBiomes;
 	private final Layer biomeFactoryLayer;
