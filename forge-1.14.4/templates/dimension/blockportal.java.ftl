@@ -135,7 +135,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
-		BlockPattern.PatternHelper bph = ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().createPatternHelper(entity.world, new BlockPos(pos));
+		BlockPattern.PatternHelper bph = ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}_PORTAL.get().createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
 		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
 		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
