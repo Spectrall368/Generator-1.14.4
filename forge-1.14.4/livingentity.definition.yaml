@@ -9,7 +9,7 @@ templates:
     deleteWhenConditionFalse: true
   - template: livingentity/glowing_layer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/entity/layers/@NAMEEyesLayer.java"
-    condition: mobModelGlowTexture?has_content
+    condition: mobModelGlowTexture
     deleteWhenConditionFalse: true
   - template: json/spawn_egg.json.ftl
     writer: json
