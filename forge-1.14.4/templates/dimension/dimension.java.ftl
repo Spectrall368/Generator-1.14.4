@@ -35,21 +35,17 @@ package ${package}.world.dimension;
 
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
-	private static Biome[] dimensionBiomes${name};
-
-	<#if data.enablePortal>
-	public static final ${name}PortalBlock portal${name} = null;
-	</#if>
+	private static Biome[] dimension${name}Biomes;
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${name?upper_case}.get(), null, ${data.hasSkyLight});
+				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${data.getModElement().getRegistryNameUpper()}.get(), null, ${data.hasSkyLight});
 			}
 		}
 	
 		@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
-			dimensionBiomes${name} = new Biome[] {
+			dimension${name}Biomes = new Biome[] {
 	    		<#list data.biomesInDimension as biome>
 					<#if biome.canProperlyMap()>
 					ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}")),
@@ -107,7 +103,7 @@ package ${package}.world.dimension;
 		@Override public ChunkGenerator<?> createChunkGenerator() {
 			if(this.biomeProvider${name} == null)
 				this.biomeProvider${name} = new BiomeProvider${name}(this.world);
-			return new ChunkProviderModded(this.world, this.biomeProvider${name});
+			return new ChunkProvider${name}(this.world, this.biomeProvider${name});
 		}
 
 		@Override public boolean isSurfaceWorld() {
