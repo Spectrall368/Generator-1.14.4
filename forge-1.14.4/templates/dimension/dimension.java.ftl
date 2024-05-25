@@ -189,7 +189,6 @@ package ${package}.world.dimension;
     	<#elseif data.worldGenType == "End like gen">
 	        <#include "cp_end.java.ftl">
     	</#if>
-	<#include "blockportal.java.ftl">
 
 	<#include "biomegen.java.ftl">
 }
