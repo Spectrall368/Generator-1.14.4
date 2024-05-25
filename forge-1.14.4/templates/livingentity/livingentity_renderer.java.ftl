@@ -125,6 +125,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	    }
     </#if>
 
+    <#if data.mobModelGlowTexture?has_content>
     @OnlyIn(Dist.CLIENT) private static class ${name}EyesLayer<T extends LivingEntity> extends LayerRenderer<T, ${model}<T>> {
         private static final ResourceLocation ${data.getModElement().getRegistryNameUpper()}_EYES = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
 	
@@ -159,4 +160,5 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		return false;
 	}
     }
+    </#if>
 }
