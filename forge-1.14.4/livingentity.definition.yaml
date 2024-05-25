@@ -7,17 +7,13 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntityProjectile.java"
     condition: hasCustomProjectile()
     deleteWhenConditionFalse: true
-  - template: livingentity/glowing_layer.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/entity/layers/@NAMEEyesLayer.java"
-    condition: mobModelGlowTexture
-    deleteWhenConditionFalse: true
   - template: json/spawn_egg.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname_spawn_egg.json"
     condition: hasSpawnEgg
     deleteWhenConditionFalse: true
 
-unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
+unmodifiable_ai_bases: [Bat, MagmaCube, Slime]
 
 localizationkeys:
   - key: item.@modid.@registryname_spawn_egg
@@ -25,5 +21,3 @@ localizationkeys:
     suffix: " Spawn Egg"
   - key: entity.@modid.@registryname
     mapto: mobName
-
-field_exclusions: [isShakingCondition]
