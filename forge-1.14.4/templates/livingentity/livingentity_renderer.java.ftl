@@ -1,178 +1,127 @@
+<#--
+ # MCreator (https://mcreator.net/)
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ #
+ # Additional permission for code generator templates (*.ftl files)
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
+ # exception.
+-->
+
+<#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 package ${package}.client.renderer;
+<#assign humanoid = false>
+<#assign model = "PlayerModel">
 
-@OnlyIn(Dist.CLIENT) public class ${name}Renderer {
+<#if data.mobModelName == "Chicken">
+	<#assign super = "super(context, new ChickenModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "ChickenModel">
+<#elseif data.mobModelName == "Cod">
+	<#assign super = "super(context, new CodModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "CodModel">
+<#elseif data.mobModelName == "Cow">
+	<#assign super = "super(context, new CowModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "CowModel">
+<#elseif data.mobModelName == "Creeper">
+	<#assign super = "super(context, new CreeperModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "CreeperModel">
+<#elseif data.mobModelName == "Ghast">
+	<#assign super = "super(context, new GhastModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "GhastModel">
+<#elseif data.mobModelName == "Ocelot">
+	<#assign super = "super(context, new OcelotModel(0.0F), " + data.modelShadowSize + "f);">
+	<#assign model = "OcelotModel">
+<#elseif data.mobModelName == "Pig">
+	<#assign super = "super(context, new PigModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "PigModel">
+<#elseif data.mobModelName == "Piglin">
+	<#assign super = "super(context, new ZombieModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "PiglinModel">
+	<#assign humanoid = true>
+<#elseif data.mobModelName == "Slime">
+	<#assign super = "super(context, new SlimeModel(16), " + data.modelShadowSize + "f);">
+	<#assign model = "SlimeModel">
+<#elseif data.mobModelName == "Salmon">
+	<#assign super = "super(context, new SalmonModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "SalmonModel">
+<#elseif data.mobModelName == "Spider">
+	<#assign super = "super(context, new SpiderModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "SpiderModel">
+<#elseif data.mobModelName == "Villager">
+	<#assign super = "super(context, new VillagerModel(0.0F), " + data.modelShadowSize + "f);">
+	<#assign model = "VillagerModel">
+<#elseif data.mobModelName == "Silverfish">
+	<#assign super = "super(context, new SilverfishModel(), " + data.modelShadowSize + "f);">
+	<#assign model = "SilverfishModel">
+<#elseif data.mobModelName == "Witch">
+	<#assign super = "super(context, new WitchModel(0.0F), " + data.modelShadowSize + "f);">
+	<#assign model = "WitchModel">
+<#elseif !data.isBuiltInModel()>
+	<#assign super = "super(context, new ${data.mobModelName}(), " + data.modelShadowSize + "f);">
+	<#assign model = data.mobModelName>
+<#else>
+	<#assign super = "super(context, new PlayerModel(0.0F, false), " + data.modelShadowSize + "f);">
+	<#assign model = "PlayerModel">
+	<#assign humanoid = true>
+</#if>
 
-	public static class ModelRegisterHandler {
+<#assign model = model + "<" + name + "Entity>">
 
-		@SubscribeEvent @OnlyIn(Dist.CLIENT) public void registerModels(ModelRegistryEvent event) {
-		<#if data.mobModelName == "Chicken">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new ChickenModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-            	<#elseif data.mobModelName == "Cod">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new CodModel(), ${data.modelShadowSize}f) {
-						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Cow">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new CowModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Creeper">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new CreeperModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Ghast">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new GhastModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-            	<#elseif data.mobModelName == "Ocelot">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new OcelotModel(0), ${data.modelShadowSize}f) {
-						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Pig">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new PigModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-            	<#elseif data.mobModelName == "Salmon">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new SalmonModel(), ${data.modelShadowSize}f) {
-						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Slime">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new SlimeModel(0), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Spider">
-			RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new SpiderModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Villager">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new VillagerModel(0), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-            	<#elseif data.mobModelName == "Witch">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new WitchModel(0), ${data.modelShadowSize}f) {
-						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif data.mobModelName == "Silverfish">
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				});
-		<#elseif !data.isBuiltInModel()>
-				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> {
-					return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				};
-			});
-		<#else>
-			RenderingRegistry.registerEntityRenderingHandler(${name}Entity.class, renderManager -> {
-				BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(), ${data.modelShadowSize}f) {
-					@Override protected ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
-					<@renderConditions/>
-				};
-				customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
-				<#if data.mobModelGlowTexture?has_content>customRender.addLayer(new GlowingLayer<>(customRender));</#if>
-				return customRender;
-			});
+public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
+
+	public ${name}Renderer(EntityRendererManager context) {
+		${super}
+
+		<#if humanoid && data.mobModelName != "Piglin">
+		this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5F), new BipedModel(1.0F)));
+		<#elseif humanoid && data.mobModelName == "Piglin">
+		this.addLayer(new BipedArmorLayer(this, new ZombieModel(0.5F, true), new ZombieModel(1.0F, true)));
 		</#if>
 
-
-		<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
-		RenderingRegistry.registerEntityRenderingHandler(${name}EntityProjectile.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+		<#if data.mobModelGlowTexture?has_content>
+		this.addLayer(new ${name}EyesLayer<>(this));
 		</#if>
 	}
-	}
 
-	<#if data.mobModelGlowTexture?has_content>
-	@OnlyIn(Dist.CLIENT) private static class GlowingLayer<T extends Entity, M extends EntityModel<T>> extends LayerRenderer<T, M> {
-		private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
-
-		public GlowingLayer(IEntityRenderer<T, M> er) {
-			super(er);
-		}
-
-		public void render(T entityIn, float l1, float l2, float l3, float l4, float l5, float l6, float l7) {
-			this.bindTexture(GLOW_TEXTURE);
-			GlStateManager.enableBlend();
-			GlStateManager.disableAlphaTest();
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-			GlStateManager.depthMask(!entityIn.isInvisible());
-			int i = 61680;
-			int j = i % 65536;
-			int k = i / 65536;
-			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float) j, (float) k);
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-			gamerenderer.setupFogColor(true);
-			((EntityModel<T>)this.getEntityModel()).render(entityIn, l1, l2, l4, l5, l6, l7);
-			gamerenderer.setupFogColor(false);
-			i = entityIn.getBrightnessForRender();
-			j = i % 65536;
-			k = i / 65536;
-			com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float) j, (float) k);
-			this.func_215334_a(entityIn);
-			GlStateManager.depthMask(true);
-			GlStateManager.disableBlend();
-			GlStateManager.enableAlphaTest();
-		}
-
-		public boolean shouldCombineTextures() {
-			return false;
-		}
+	<#if data.mobModelName == "Villager">
+	@Override protected void preRenderCallback(${name}Entity villager, float f) {
+		GlStateManager.scalef(0.9375f, 0.9375f, 0.9375f);
 	}
 	</#if>
 
-	<#if data.getModelCode()?? && !data.isBuiltInModel() >
-    	${data.getModelCode().toString()
-			.replace("ModelRenderer", "RendererModel").replace("extends ModelBase", "extends EntityModel<Entity>")
-			.replace("GlStateManager.translate", "GlStateManager.translated")
-			.replace("GlStateManager.scale", "GlStateManager.scaled")
-			.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
-						"setRotationAngles(Entity e, float f, float f1, float f2, float f3, float f4, float f5)")
-			.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+entity\\)",
-						"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
-			.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
-			.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")
-		}
-	</#if>
-}
-<#macro renderConditions>
+	@Override public ResourceLocation getEntityTexture(${name}Entity entity) {
+		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+	}
+
     <#if hasProcedure(data.transparentModelCondition)>
-        @Override protected boolean isVisible(LivingEntity _ent) {
+        @Override protected boolean isVisible(${name}Entity _ent) {
 	        Entity entity = _ent;
-	        World world = entity.world;
-	        double x = entity.posX;
-	        double y = entity.posY;
-	        double z = entity.posZ;
+	        Level world = entity.world;
+	        double x = entity.getX();
+	        double y = entity.getY();
+	        double z = entity.getZ();
 		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
 	</#if>
-</#macro>
+}
