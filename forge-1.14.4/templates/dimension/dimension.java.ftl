@@ -34,12 +34,8 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber public class ${name}Dimension {
-
-	@ObjectHolder("${modid}:${registryname}")
-	public static final ModDimension dimension${name} = null;
+@Mod.EventBusSubscriber public class ${name}Dimension 
 	public static DimensionType type${name} = null;
-
 	private static Biome[] dimensionBiomes${name};
 
 	<#if data.enablePortal>
