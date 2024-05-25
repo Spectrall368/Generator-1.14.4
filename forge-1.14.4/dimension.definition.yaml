@@ -35,6 +35,10 @@ templates:
     condition: enablePortal
     deleteWhenConditionFalse: true
 
+global_templates:
+  - template: elementinits/dimensions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDimensions.java"
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: igniterName
