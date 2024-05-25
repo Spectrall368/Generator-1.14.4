@@ -27,9 +27,9 @@
  # exception.
 -->
 
-public static class ChunkProviderModded extends EndChunkGenerator {
+public static class ChunkProvider${name} extends EndChunkGenerator {
 
-	public ChunkProviderModded(IWorld world, BiomeProvider provider) {
+	public ChunkProvider${name}(IWorld world, BiomeProvider provider) {
 		super(world, provider, new EndGenerationSettings() {
 			public BlockState getDefaultBlock() {
 				return ${mappedBlockToBlockStateCode(data.mainFillerBlock)};
@@ -41,5 +41,4 @@ public static class ChunkProviderModded extends EndChunkGenerator {
 		});
 		this.randomSeed.skip(3946);
 	}
-
 }
