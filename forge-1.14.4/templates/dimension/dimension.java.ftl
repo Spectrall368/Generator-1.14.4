@@ -34,7 +34,7 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber public class ${name}Dimension 
+@Mod.EventBusSubscriber public class ${name}Dimension {
 	public static DimensionType type${name} = null;
 	private static Biome[] dimensionBiomes${name};
 
