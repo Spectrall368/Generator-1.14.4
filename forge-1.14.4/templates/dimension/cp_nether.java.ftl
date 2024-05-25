@@ -27,9 +27,9 @@
  # exception.
 -->
 
-public static class ChunkProviderModded extends NetherChunkGenerator {
+public static class ChunkProvider${name} extends NetherChunkGenerator {
 
-	public ChunkProviderModded(World world, BiomeProvider provider) {
+	public ChunkProvider${name}(World world, BiomeProvider provider) {
 		super(world, provider, new NetherGenSettings() {
 			public BlockState getDefaultBlock() {
 				return ${mappedBlockToBlockStateCode(data.mainFillerBlock)};
@@ -45,5 +45,4 @@ public static class ChunkProviderModded extends NetherChunkGenerator {
 	@Override public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
 		return this.world.getBiome(pos).getSpawns(creatureType);
 	}
-
 }
