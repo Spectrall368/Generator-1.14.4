@@ -52,7 +52,7 @@ public class ${name}Item extends Item {
 			boolean success = false;
 
 			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
-				${name}Dimension.portal${name}.portalSpawn(world, pos);
+				${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}_PORTAL.get().portalSpawn(world, pos);
 				itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
 				success = true;
 			}
