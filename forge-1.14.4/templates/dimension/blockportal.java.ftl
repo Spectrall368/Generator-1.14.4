@@ -28,7 +28,12 @@
  # exception.
 -->
 
-public static class ${name}PortalBlock extends NetherPortalBlock {
+<#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+<#include "../mcitems.ftl">
+package ${package}.block;
+
+public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
@@ -95,13 +100,13 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss()
-				&& !world.isRemote && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
+		if (!world.isRemote && !entity.isPassenger() && !entity.isBeingRidden() &&
+				entity.isNonBoss() && entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			if (((ServerPlayerEntity) entity).timeUntilPortal > 0) {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-			} else if (((ServerPlayerEntity) entity).dimension != type${name}) {
+			} else if (((ServerPlayerEntity) entity).dimension != ${name}Dimension.type${name}) {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-				teleportToDimension(((ServerPlayerEntity) entity), type${name});
+				teleportToDimension(((ServerPlayerEntity) entity), ${name}Dimension.type${name});
 			} else {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
 				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.OVERWORLD);
@@ -130,7 +135,7 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	private ${name}Teleporter getTeleporterForDimension(Entity entity, BlockPos pos, ServerWorld nextWorld) {
-		BlockPattern.PatternHelper bph = portal${name}.createPatternHelper(entity.world, new BlockPos(pos));
+		BlockPattern.PatternHelper bph = ${name}Dimension.portal${name}.createPatternHelper(entity.world, new BlockPos(pos));
 		double d0 = bph.getForwards().getAxis() == Direction.Axis.X ? (double) bph.getFrontTopLeft().getZ() : (double) bph.getFrontTopLeft().getX();
 		double d1 = bph.getForwards().getAxis() == Direction.Axis.X ? entity.posZ : entity.posX;
 		d1 = Math.abs(MathHelper.pct(d1 - (double) (bph.getForwards().rotateY().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double) bph.getWidth()));
@@ -140,9 +145,10 @@ public static class ${name}PortalBlock extends NetherPortalBlock {
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
 					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
-					.replace("Blocks.NETHER_PORTAL", "portal" + name)
+					.replace("Blocks.NETHER_PORTAL", name + "Dimension.portal" + name)
 					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
 						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
 						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 }
+<#-- @formatter:on -->
