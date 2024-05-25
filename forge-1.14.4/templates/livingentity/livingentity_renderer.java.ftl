@@ -123,5 +123,40 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	        double z = entity.posZ;
 		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
-	</#if>
+    </#if>
+
+    @OnlyIn(Dist.CLIENT) private static class ${name}EyesLayer<T extends LivingEntity> extends LayerRenderer<T, ${model}<T>> {
+        private static final ResourceLocation ${data.getModElement().getRegistryNameUpper()}_EYES = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
+	
+        public ${name}EyesLayer(IEntityRenderer<T, ${model}<T>> er) {
+		super(er);
+	}
+	
+	public void render(T entityIn, float l1, float l2, float l3, float l4, float l5, float l6, float l7) {
+		this.bindTexture(${data.getModElement().getRegistryNameUpper()}_EYES);
+		GlStateManager.enableBlend();
+	      	GlStateManager.disableAlphaTest();
+	      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+	      	GlStateManager.disableLighting();
+	      	GlStateManager.depthMask(!entityIn.isInvisible());
+	      	int i = 61680;
+	      	int j = 61680;
+	      	int k = 0;
+	      	GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+	      	GlStateManager.enableLighting();
+	      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+	      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+	      	gamerenderer.setupFogColor(true);
+	      	this.getEntityModel().render(entityIn, l1, l2, l4, l5, l6, l7);
+	      	gamerenderer.setupFogColor(false);
+	      	this.func_215334_a(entityIn);
+	      	GlStateManager.depthMask(true);
+	      	GlStateManager.disableBlend();
+	      	GlStateManager.enableAlphaTest();
+	}
+	
+	public boolean shouldCombineTextures() {
+		return false;
+	}
+    }
 }
