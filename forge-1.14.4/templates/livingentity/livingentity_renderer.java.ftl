@@ -117,10 +117,10 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
     <#if hasProcedure(data.transparentModelCondition)>
         @Override protected boolean isVisible(${name}Entity _ent) {
 	        Entity entity = _ent;
-	        Level world = entity.world;
-	        double x = entity.getX();
-	        double y = entity.getY();
-	        double z = entity.getZ();
+	        World world = entity.world;
+	        double x = entity.posX;
+	        double y = entity.posY;
+	        double z = entity.posZ;
 		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
 	</#if>
