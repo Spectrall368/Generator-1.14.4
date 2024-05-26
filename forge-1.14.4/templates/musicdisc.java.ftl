@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -35,8 +35,12 @@ package ${package}.item;
 public class ${name}Item extends MusicDiscItem {
 
 	public ${name}Item() {
-		super(${data.analogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
-			new Item.Properties().group(${data.creativeTab}).maxStackSize(1).rarity(Rarity.RARE));
+		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
+		super(${data.analogOutput}, ${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}")),
+		<#else>
+		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
+		</#if>
+				new Item.Properties().group(${data.creativeTab}).maxStackSize(1).rarity(Rarity.RARE));
 	}
 
 	<@addSpecialInformation data.specialInformation/>
