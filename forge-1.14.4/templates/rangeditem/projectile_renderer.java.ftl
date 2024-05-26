@@ -43,13 +43,13 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 	}
 
 	@Override public void doRender(${name}Entity entityIn, double d, double d1, double d2, float f, float f1) {
-		this.bindEntityTexture(bullet);
+		this.bindEntityTexture(entityIn);
 		GlStateManager.pushMatrix();
 		GlStateManager.translatef((float) d, (float) d1, (float) d2);
 		GlStateManager.rotatef(f, 0, 1, 0);
-		GlStateManager.rotatef(90f - bullet.prevRotationPitch - (bullet.rotationPitch - bullet.prevRotationPitch) * f1, 1, 0, 0);
+		GlStateManager.rotatef(90f - entityIn.prevRotationPitch - (entityIn.rotationPitch - entityIn.prevRotationPitch) * f1, 1, 0, 0);
 		EntityModel model = new ${data.bulletModel}();
-		model.render(bullet, 0, 0, 0, 0, 0, 1);
+		model.render(entityIn, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 	}
 
