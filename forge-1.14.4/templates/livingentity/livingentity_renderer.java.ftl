@@ -57,7 +57,7 @@ package ${package}.client.renderer;
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
 	<#assign super = "super(context, new ZombieModel(), " + data.modelShadowSize + "f);">
-	<#assign model = "PiglinModel">
+	<#assign model = "ZombieModel">
 	<#assign humanoid = true>
 <#elseif data.mobModelName == "Slime">
 	<#assign super = "super(context, new SlimeModel(16), " + data.modelShadowSize + "f);">
@@ -114,17 +114,6 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
 
-    <#if hasProcedure(data.transparentModelCondition)>
-        @Override protected boolean isVisible(${name}Entity _ent) {
-	        Entity entity = _ent;
-	        World world = entity.world;
-	        double x = entity.posX;
-	        double y = entity.posY;
-	        double z = entity.posZ;
-		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
-	    }
-    </#if>
-
     <#if data.mobModelGlowTexture?has_content>
     @OnlyIn(Dist.CLIENT) private static class ${name}EyesLayer<T extends LivingEntity> extends LayerRenderer<T, ${model_}<T>> {
         private static final ResourceLocation ${data.getModElement().getRegistryNameUpper()}_EYES = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
@@ -160,5 +149,16 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		return false;
 	}
     }
+    </#if>
+
+    <#if hasProcedure(data.transparentModelCondition)>
+        @Override protected boolean isVisible(${name}Entity _ent) {
+	        Entity entity = _ent;
+	        World world = entity.world;
+	        double x = entity.posX;
+	        double y = entity.posY;
+	        double z = entity.posZ;
+		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
+	    }
     </#if>
 }
