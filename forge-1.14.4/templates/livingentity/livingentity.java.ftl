@@ -60,8 +60,12 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	</#if>
 
 	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, World world) {
-    	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
-    }
+    		this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
+    	}
+
+	public static EntityType entity${name} = (EntityType.Builder.<${name}Entity>create(${name}Entity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
+			.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(${name}Entity::new)
+					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f)).build("${registryname}");
 
 	public ${name}Entity(EntityType<${name}Entity> type, World world) {
     	super(type, world);
