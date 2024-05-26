@@ -101,7 +101,7 @@
                 <#assign retval += mappedMCItemToIngredient(mappedBlock)>
 
                 <#if mappedBlock?has_next>
-                    <#assign retval += " && ">
+                    <#assign retval += ",">
                 </#if>
             </#list>
             <#return retval + "))">
