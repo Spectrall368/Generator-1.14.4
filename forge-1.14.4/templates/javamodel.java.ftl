@@ -37,8 +37,6 @@ ${model.toString()
     .replace("extends ModelBase", "extends EntityModel<Entity>")
     .replace("extends EntityModel ", "extends EntityModel<Entity>")
     .replace(" extends EntityModel<Entity>", "<T extends Entity> extends EntityModel<T>")
-    .replace("RendererModel ", "ModelRenderer ")
-    .replace("RendererModel(", "ModelRenderer(")
     .replace("GlStateManager.translate", "GlStateManager.translated")
 		.replace("GlStateManager.scale", "GlStateManager.scaled")
 		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
