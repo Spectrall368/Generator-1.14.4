@@ -38,7 +38,7 @@ package ${package}.entity;
 public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem {
 
 	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, World world) {
-		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
+		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, world);
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, World world) {
@@ -127,7 +127,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	}
 
 	public static ${name}Entity shoot(World world, LivingEntity entity, Random random, float power, double damage, int knockback) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, world);
 		entityarrow.shoot(entity.getLook(1).x, entity.getLook(1).y, entity.getLook(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
 		entityarrow.setIsCritical(${data.bulletParticles});
@@ -145,7 +145,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	}
 
 	public static ${name}Entity shoot(LivingEntity entity, LivingEntity target) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.world);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, entity.world);
 		double dx = target.posX - entity.posX;
 		double dy = target.posY + target.getEyeHeight() - 1.1;
 		double dz = target.posZ - entity.posZ;
