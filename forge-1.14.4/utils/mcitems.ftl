@@ -103,6 +103,7 @@
                     <#assign retval += " && ">
                 </#if>
             </#list>
+            <#return retval>
         </#if>
     </#if>
 </#function>
