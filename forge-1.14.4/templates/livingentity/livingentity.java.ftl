@@ -546,7 +546,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	    @Override public void attackEntityWithRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
 				<#if !data.rangedAttackItem.isEmpty()>
-				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get().get(), this, this.world);
+				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), this, this.world);
 				<#else>
 				ArrowEntity entityarrow = new ArrowEntity(this.world, this);
 				</#if>
