@@ -96,7 +96,7 @@
             </#list>
             <#return retval + ")">
         <#else>
-            <#assign retval = "">
+            <#assign retval = "Ingredient.merge(Arrays.asList(">
             <#list mappedBlocks as mappedBlock>
                 <#assign retval += mappedMCItemToIngredient(mappedBlock)>
 
@@ -104,7 +104,7 @@
                     <#assign retval += " && ">
                 </#if>
             </#list>
-            <#return retval>
+            <#return retval + "))">
         </#if>
     </#if>
 </#function>
