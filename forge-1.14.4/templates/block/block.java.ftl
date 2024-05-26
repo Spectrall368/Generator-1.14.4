@@ -77,11 +77,11 @@ public class ${name}Block extends
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null) {
-					@Override public SoundEvent getBreakSound() { return new SoundEvent(new ResourceLocation("${data.breakSound}")); }
-					@Override public SoundEvent getStepSound() { return new SoundEvent(new ResourceLocation("${data.stepSound}")); }
-					@Override public SoundEvent getPlaceSound() { return new SoundEvent(new ResourceLocation("${data.placeSound}")); }
-					@Override public SoundEvent getHitSound() { return new SoundEvent(new ResourceLocation("${data.hitSound}")); }
-					@Override public SoundEvent getFallSound() { return new SoundEvent(new ResourceLocation("${data.fallSound}")); }
+					@Override public SoundEvent getBreakSound() { return () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")); }
+					@Override public SoundEvent getStepSound() { return () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")); }
+					@Override public SoundEvent getPlaceSound() { return () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")); }
+					@Override public SoundEvent getHitSound() { return () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")); }
+					@Override public SoundEvent getFallSound() { return () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}")); }
 				})
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
