@@ -43,13 +43,13 @@ package ${package}.init;
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 					create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
-						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f));
+						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f).build("${entity.registryname}"));
 		<#else>
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 						create(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
-							.setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
+							.setCustomClientFactory(${entity.getModElement().getName()}Entity::new).build("${entity.registryname}")
 							<#if entity.immuneToFire>.immuneToFire()</#if>
 							.size(${entity.modelWidth}f, ${entity.modelHeight}f)
 						);
@@ -57,7 +57,7 @@ package ${package}.init;
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}EntityProjectile>> ${entity.getModElement().getRegistryNameUpper()}_PROJECTILE =
 				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}EntityProjectile>
 					create(${entity.getModElement().getName()}EntityProjectile::new, EntityClassification.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
-						.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).size(0.5f, 0.5f));
+						.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).size(0.5f, 0.5f).build("projectile_${entity.registryname}"));
 			</#if>
 		</#if>
 	</#list>
