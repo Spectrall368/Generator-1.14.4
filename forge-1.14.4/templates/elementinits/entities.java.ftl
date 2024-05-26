@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -41,23 +41,22 @@ package ${package}.init;
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "rangeditem">
 			public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
-				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
-					create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
-						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f).build("${entity.getModElement().getRegistryName()}"));
+						register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
+							create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
+							.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).size(0.5f, 0.5f).build("${entity.getModElement().getRegistryName()}"));
 		<#else>
 			public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
-				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
-						create(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
-							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
-							.setCustomClientFactory(${entity.getModElement().getName()}Entity::new).build("${entity.getModElement().getRegistryName()}")
-							<#if entity.immuneToFire>.immuneToFire()</#if>
-							.size(${entity.modelWidth}f, ${entity.modelHeight}f)
-						);
+						register("${entity.getModElement().getRegistryName()}",
+								EntityType.Builder.<${entity.getModElement().getName()}Entity>
+								create(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
+								.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
+								.setCustomClientFactory(${entity.getModElement().getName()}Entity::new).build("${entity.getModElement().getRegistryName()}")
+							<#if entity.immuneToFire>.immuneToFire()</#if>.size(${entity.modelWidth}f, ${entity.modelHeight}f));
 			<#if entity.hasCustomProjectile()>
 			public static final EntityType<${entity.getModElement().getName()}EntityProjectile> ${entity.getModElement().getRegistryNameUpper()}_PROJECTILE =
-				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}EntityProjectile>
-					create(${entity.getModElement().getName()}EntityProjectile::new, EntityClassification.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
-						.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).size(0.5f, 0.5f).build("projectile_${entity.getModElement().getRegistryName()}"));
+					register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}EntityProjectile>
+							create(${entity.getModElement().getName()}EntityProjectile::new, EntityClassification.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
+							.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).size(0.5f, 0.5f).build("projectile_${entity.getModElement().getRegistryName()}"));
 			</#if>
 		</#if>
     </#list>
@@ -75,7 +74,7 @@ package ${package}.init;
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "livingentity">
-		${entity.getModElement().getName()}Entity.init();
+			${entity.getModElement().getName()}Entity.init();
 		</#if>
 	</#list>
 	}
