@@ -35,7 +35,7 @@
 <#include "../mcitems.ftl">
 package ${package}.block;
 
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.property.Properties;
 
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
