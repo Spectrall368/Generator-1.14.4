@@ -36,7 +36,7 @@ public class ${name}Item extends MusicDiscItem {
 
 	public ${name}Item() {
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		super(${data.analogOutput}, ${JavaModName}Sounds.${data.music?upper_case?replace(".", "_")?replace("/", "_")?replace(":", "_")?replace("-", "_")}.get(),
+		super(${data.analogOutput}, ${JavaModName}Sounds.${data.music?upper_case?replace(".", "_")?replace("/", "_")?replace(":", "_")?replace("-", "_")?replace(modid?upper_case + "_", "")}.get(),
 		<#else>
 		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
 		</#if>
