@@ -59,7 +59,7 @@ package ${package}.world.structure;
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${($worldType.toString().replace("CUSTOM:", ""))?lower_case}")))
+							if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${(worldType.toString().replace("CUSTOM:", ""))?lower_case}")))
 								dimensionCriteria = true;
 						</#if>
     				</#list>
