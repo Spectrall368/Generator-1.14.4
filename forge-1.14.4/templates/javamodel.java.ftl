@@ -33,18 +33,20 @@ package ${package}.client.model;
 
 ${model.toString()
     .replace("public static class", "public class")
-    .replace("private final ModelRenderer", "public final ModelRenderer")
+    .replace("ModelRenderer ", "RendererModel ")
+    .replace("ModelRenderer(", "RendererModel(")
+    .replace("private final RendererModel", "public final RendererModel")
     .replace("extends ModelBase", "extends EntityModel<Entity>")
     .replace("extends EntityModel ", "extends EntityModel<Entity>")
     .replace(" extends EntityModel<Entity>", "<T extends Entity> extends EntityModel<T>")
     .replace("GlStateManager.translate", "GlStateManager.translated")
-		.replace("GlStateManager.scale", "GlStateManager.scaled")
-		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
-					"setRotationAngles(Entity e, float f, float f1, float f2, float f3, float f4, float f5)")
-		.replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+entity\\)",
-					"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
-		.replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")?keep_before_last("}")}
+    .replace("GlStateManager.scale", "GlStateManager.scaled")
+    .replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+e\\)",
+	"setRotationAngles(Entity e, float f, float f1, float f2, float f3, float f4, float f5)")
+    .replaceAll("setRotationAngles\\(float[\n\r\t\\s]+f,[\n\r\t\\s]+float[\n\r\t\\s]+f1,[\n\r\t\\s]+float[\n\r\t\\s]+f2,[\n\r\t\\s]+float[\n\r\t\\s]+f3,[\n\r\t\\s]+float[\n\r\t\\s]+f4,[\n\r\t\\s]+float[\n\r\t\\s]+f5,[\n\r\t\\s]+Entity[\n\r\t\\s]+entity\\)",
+	"setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)")
+    .replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+e\\)", "setRotationAngles(e, f, f1, f2, f3, f4, f5)")
+    .replaceAll("setRotationAngles\\(f,[\n\r\t\\s]+f1,[\n\r\t\\s]+f2,[\n\r\t\\s]+f3,[\n\r\t\\s]+f4,[\n\r\t\\s]+f5,[\n\r\t\\s]+entity\\)", "setRotationAngles(entity, f, f1, f2, f3, f4, f5)")?keep_before_last("}")}
 
     <#if !model.contains("setRotationAngles")>
     @Override public void setRotationAngles(Entity e, float f1, float f2, float f3, float f4, float f5) {}
