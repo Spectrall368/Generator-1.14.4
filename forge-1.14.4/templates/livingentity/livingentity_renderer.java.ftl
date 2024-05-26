@@ -56,7 +56,7 @@ package ${package}.client.renderer;
 	<#assign super = "super(context, new PigModel(), " + data.modelShadowSize + "f);">
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
-	<#assign super = "super(context, new ZombieModel(), " + data.modelShadowSize + "f);">
+	<#assign super = "super(context, new PlayerModel(0.0F, false), " + data.modelShadowSize + "f);">
 	<#assign model = "BipedModel">
 	<#assign humanoid = true>
 <#elseif data.mobModelName == "Slime">
@@ -93,10 +93,8 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	public ${name}Renderer(EntityRendererManager context) {
 		${super}
 
-		<#if humanoid && data.mobModelName != "Piglin">
+		<#if humanoid>
 		this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5F), new BipedModel(1.0F)));
-		<#elseif humanoid && data.mobModelName == "Piglin">
-		this.addLayer(new BipedArmorLayer(this, new ZombieModel(0.5F, true), new ZombieModel(1.0F, true)));
 		</#if>
 
 		<#if data.mobModelGlowTexture?has_content>
