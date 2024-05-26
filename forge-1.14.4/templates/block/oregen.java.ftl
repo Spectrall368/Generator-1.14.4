@@ -56,7 +56,7 @@ package ${package}.world.features.ores;
 							if(dimensionType == DimensionType.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+							if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${($worldType.toString().replace("CUSTOM:", ""))?lower_case}")))
 								dimensionCriteria = true;
 						</#if>
 					</#list>
