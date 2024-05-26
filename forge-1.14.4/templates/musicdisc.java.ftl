@@ -36,7 +36,7 @@ public class ${name}Item extends MusicDiscItem {
 
 	public ${name}Item() {
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		super(${data.analogOutput}, new net.minecraft.util.SoundEvent(new ResourceLocation("${modid}" ,"${sound}")),
+		super(${data.analogOutput}, new net.minecraft.util.SoundEvent(new ResourceLocation("${data.music}")),
 		<#else>
 		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
 		</#if>
