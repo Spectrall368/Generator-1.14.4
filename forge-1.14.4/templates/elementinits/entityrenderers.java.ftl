@@ -49,7 +49,7 @@ package ${package}.init;
 		<#if entity.getModElement().getTypeString() == "livingentity">
 			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, ${entity.getModElement().getName()}Renderer::new);
 			<#if entity.hasCustomProjectile()>
-			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}EntityProjectile.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
 		<#elseif entity.getModElement().getTypeString() == "rangeditem">
 			<#if entity.isCustomModel()>
