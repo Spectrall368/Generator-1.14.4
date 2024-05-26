@@ -7,7 +7,7 @@ if (${input$entity} instanceof ServerPlayerEntity && !((ServerPlayerEntity) ${in
 	<#elseif field$dimension=="End">
 		DimensionType destinationType = DimensionType.THE_END;
 	<#else>
-		DimensionType destinationType = DimensionType.byName(new ResourceLocation("${modid}:${(field$dimension.toString().replace("CUSTOM:", ""))?lower_case}"));
+		DimensionType destinationType = DimensionType.byName(new ResourceLocation("${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))}"));
 	</#if>
 	if (((ServerPlayerEntity) ${input$entity}).dimension == destinationType) return;
 
