@@ -143,7 +143,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	      	int i = 61680;
 	      	int j = 61680;
 	      	int k = 0;
-	      	GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+	      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
 	      	GlStateManager.enableLighting();
 	      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 	      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
