@@ -85,7 +85,7 @@ package ${package}.client.renderer;
 	<#assign model = "PlayerModel">
 	<#assign humanoid = true>
 </#if>
-
+<#assign model_ = model>
 <#assign model = model + "<" + name + "Entity>">
 
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
@@ -126,10 +126,10 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
     </#if>
 
     <#if data.mobModelGlowTexture?has_content>
-    @OnlyIn(Dist.CLIENT) private static class ${name}EyesLayer<T extends LivingEntity> extends LayerRenderer<T, ${model}<T>> {
+    @OnlyIn(Dist.CLIENT) private static class ${name}EyesLayer<T extends LivingEntity> extends LayerRenderer<T, ${model_}<T>> {
         private static final ResourceLocation ${data.getModElement().getRegistryNameUpper()}_EYES = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
 	
-        public ${name}EyesLayer(IEntityRenderer<T, ${model}<T>> er) {
+        public ${name}EyesLayer(IEntityRenderer<T, ${model_}<T>> er) {
 		super(er);
 	}
 	
