@@ -57,7 +57,7 @@ package ${package}.client.renderer;
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
 	<#assign super = "super(context, new ZombieModel(), " + data.modelShadowSize + "f);">
-	<#assign model = "ZombieModel">
+	<#assign model = "BipedModel">
 	<#assign humanoid = true>
 <#elseif data.mobModelName == "Slime">
 	<#assign super = "super(context, new SlimeModel(16), " + data.modelShadowSize + "f);">
