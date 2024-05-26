@@ -38,7 +38,7 @@ package ${package}.init;
 
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
             <#list guis as gui>
-            ScreenManager.registerFactory(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}, ${gui.getModElement().getName()}Screen::new);
+            ScreenManager.registerFactory(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
             </#list>
 	}
 }
