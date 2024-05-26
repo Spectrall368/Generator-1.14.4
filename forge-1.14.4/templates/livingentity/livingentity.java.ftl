@@ -65,7 +65,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 
 	public static EntityType entity${name} = (EntityType.Builder.<${name}Entity>create(${name}Entity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(${name}Entity::new)
-					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f)).build("${registryname}");
+					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f)).build("${registryname}").setRegistryName("${registryname}");
 
 	public ${name}Entity(EntityType<${name}Entity> type, World world) {
     	super(type, world);
