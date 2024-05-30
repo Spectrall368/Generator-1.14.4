@@ -34,7 +34,7 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT}) public class ${JavaModName}Screens {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
 
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
             <#list guis as gui>
