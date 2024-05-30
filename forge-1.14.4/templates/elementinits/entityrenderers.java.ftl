@@ -34,7 +34,7 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT}) public class ${JavaModName}EntityRenderers {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
 
 	@SubscribeEvent public static void render(FMLClientSetupEvent event) {
 		${JavaModName}EntityRenderers.renders();
