@@ -33,7 +33,6 @@
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
-<#include "../particles.java.ftl">
 package ${package}.block;
 
 import net.minecraft.util.SoundEvent;
@@ -552,19 +551,13 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRandomUpdateEvent) || data.spawnParticles>
+	<#if hasProcedure(data.onRandomUpdateEvent)>
 	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
 		super.animateTick(blockstate, world, pos, random);
 		PlayerEntity entity = Minecraft.getInstance().player;
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		<#if data.spawnParticles>
-			<#if hasProcedure(data.particleCondition)>
-			if(<@procedureOBJToConditionCode data.particleCondition/>)
-			</#if>
-	        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
-	    </#if>
 		<@procedureOBJToCode data.onRandomUpdateEvent/>
 	}
 	</#if>
