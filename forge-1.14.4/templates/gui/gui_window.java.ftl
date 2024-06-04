@@ -41,12 +41,12 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 	private final int x, y, z;
 	private final PlayerEntity entity;
 
-	<#list data.components as component>
-		<#if component.getClass().getSimpleName() == "TextField">
+	<#list data.getComponentsOfType("TextField") as component>
 	    TextFieldWidget ${component.getName()};
-		<#elseif component.getClass().getSimpleName() == "Checkbox">
+	</#list>
+
+	<#list data.getComponentsOfType("Checkbox") as component>
 	    CheckboxButton ${component.getName()};
-		</#if>
 	</#list>
 
 	public ${name}Screen(${name}Menu container, PlayerInventory inventory, ITextComponent text) {
@@ -75,10 +75,8 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		super.render(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
 
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName() == "TextField">
+		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(mouseX, mouseY, partialTicks);
-			</#if>
 		</#list>
 	}
 
@@ -94,15 +92,13 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		this.blit(k, l, 0, 0, this.xSize, this.ySize, this.xSize, this.ySize);
 		</#if>
 
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName() == "Image">
+		<#list data.getComponentsOfType("Image") as component>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
 					this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
-			</#if>
 		</#list>
 
 		GlStateManager.disableBlend();
@@ -114,11 +110,9 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			return true;
 		}
 
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName() == "TextField">
+		<#list data.getComponentsOfType("TextField") as component>
 		    if(${component.getName()}.isFocused())
 		    	return ${component.getName()}.keyPressed(key, b, c);
-			</#if>
 		</#list>
 
 		return super.keyPressed(key, b, c);
@@ -126,22 +120,18 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 	@Override public void tick() {
 		super.tick();
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName() == "TextField">
+		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.tick();
-			</#if>
 		</#list>
 	}
 
 	@Override protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName() == "Label">
+		<#list data.getComponentsOfType("Label") as component>
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
 		    	this.font.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
-			</#if>
 		</#list>
 	}
 
@@ -155,8 +145,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		this.minecraft.keyboardListener.enableRepeatEvents(true);
 
 		<#assign btid = 0>
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName() == "TextField">
+		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"))
 				<#if component.placeholder?has_content>
@@ -187,7 +176,9 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
                 guistate.put("text:${component.getName()}", ${component.getName()});
 				${component.getName()}.setMaxStringLength(32767);
 				this.children.add(this.${component.getName()});
-			<#elseif component.getClass().getSimpleName() == "Button">
+		</#list>
+
+		<#list data.getComponentsOfType("Button") as component>
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"), e -> {
 							<#if hasProcedure(component.onClick)>
@@ -207,13 +198,14 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				}
 				</#if>);
 				<#assign btid +=1>
-			<#elseif component.getClass().getSimpleName() == "Checkbox">
+		</#list>
+
+		<#list data.getComponentsOfType("Checkbox") as component>
             	${component.getName()} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 						20, 20, I18n.format("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 guistate.put("checkbox:${component.getName()}", ${component.getName()});
                 this.addButton(${component.getName()});
-			</#if>
 		</#list>
 	}
 }
