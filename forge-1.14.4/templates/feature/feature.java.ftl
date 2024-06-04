@@ -33,10 +33,10 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
-<#assign placementconfig = "NoPlacementConfig.NO_PLACEMENT_CONFIG">
-<#if placementcode.contains("ChanceConfig")>
-	<#assign placementconfig = placementcode?substring(placementcode?index_of("ChanceConfig(") + "ChanceConfig(".length, placementcode?index_of(")", placementcode?index_of("ChanceConfig(") + "ChanceConfig(".length))>
-	<#assign placementcode = placementcode?replace(", ChanceConfig\([0-9]+\),?", "", "r")>
+<#assign placementconfig = "Placement.NOPE">
+<#if placementcode.contains("TOP_SOLID_HEIGHTMAP")>
+	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
+	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
@@ -80,21 +80,7 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
-				<#if featuretype == "feature_simple_block">
-				BlockState state = config.state;
-				if (state.isValidPosition(world, pos)) {
-					if (state.getBlock() instanceof DoublePlantBlock) {
-						if (!world.isAirBlock(pos.up()))
-							return false;
-						((DoublePlantBlock) state.getBlock()).placeAt(world, pos, 2);
-					} else
-						world.setBlockState(pos, config.state, 2);
-					return true;
-				}
-				return false;
-				<#else>
 				return super.place(world, generator, rand, pos, config);
-				</#if>
 			}
 			};
 
@@ -116,7 +102,7 @@ package ${package}.world.features;
 			</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, List.of(${placementcode?remove_ending(",")}), ${placementconfig}));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, List.of(${placementcode?remove_ending(",")})));
 			}
 		}
 	}
