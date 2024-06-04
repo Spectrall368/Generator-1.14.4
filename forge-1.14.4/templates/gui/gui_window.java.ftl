@@ -139,7 +139,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-		    	this.font.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+		    	this.font.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>
@@ -158,18 +158,18 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
 				${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"))
+				${component.width}, ${component.height}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"))
 				<#if component.placeholder?has_content>
 				{
 					{
-						setSuggestion(new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
+						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}").getString());
 					}
 
 					@Override public void writeText(String text) {
 						super.writeText(text);
 
 						if (getText().isEmpty())
-							setSuggestion(new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
+							setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
 					}
@@ -178,7 +178,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 						super.setCursorPosition(pos);
 
 						if (getText().isEmpty())
-							setSuggestion(new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
+							setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
 					}
@@ -189,7 +189,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				this.children.add(this.${component.getName()});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"), e -> {
+					${component.width}, ${component.height}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"), e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
@@ -209,7 +209,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.getName()} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-						20, 20, new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
+						20, 20, I18n.format("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 guistate.put("checkbox:${component.getName()}", ${component.getName()});
                 this.addButton(${component.getName()});
