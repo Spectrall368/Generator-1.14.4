@@ -1,0 +1,39 @@
+_default:
+  - NoOpFeature
+  - NoFeatureConfig
+feature_lake:
+  - LakesFeature
+  - LakesConfig
+feature_simple_block:
+  - BlockWithContextFeature
+  - BlockWithContextConfig
+feature_block_pile:
+  - BlockPileFeature
+  - NoFeatureConfig
+feature_huge_brown_mushroom:
+  - BigBrownMushroomFeature
+  - BigMushroomFeatureConfig
+feature_huge_red_mushroom:
+  - BigRedMushroomFeature
+  - BigMushroomFeatureConfig
+feature_coral_claw:
+  - CoralClawFeature
+  - NoFeatureConfig
+feature_coral_mushroom:
+  - CoralMushroomFeature
+  - NoFeatureConfig
+feature_coral_tree:
+  - CoralTreeFeature
+  - NoFeatureConfig
+feature_forest_rock:
+  - BlockBlobFeature
+  - BlockBlobConfig
+feature_replace_sphere:
+  - SphereReplaceFeature
+  - SphereReplaceConfig
+feature_seagrass:
+  - SeaGrassFeature
+  - SeaGrassConfig
+feature_bamboo:
+  - BambooFeature
+  - ProbabilityConfig
