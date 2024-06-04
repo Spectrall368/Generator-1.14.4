@@ -37,9 +37,13 @@ package ${package}.world.features;
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static Feature<${configuration}> feature = null;
 
+	public ${name}Feature() {
+		super(${configuration}::deserialize);
+	}
+
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			feature = new LakesFeature(LakesConfig::deserialize) {
+			feature = new ${name}Feature() {
 			@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
 				DimensionType dimensionType = world.getDimension().getType();
 				boolean dimensionCriteria = false;
@@ -71,7 +75,21 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
-				return super.place(world, generator, random, pos, config);
+				<#if featuretype == "feature_simple_block">
+				BlockState state = config.state;
+				if (state.isValidPosition(world, pos)) {
+					if (state.getBlock() instanceof DoublePlantBlock) {
+						if (!world.isAirBlock(pos.up()))
+							return false;
+						((DoublePlantBlock) state.getBlock()).placeAt(world, pos, 2);
+					} else
+						world.setBlockState(pos, config.state, 2);
+					return true;
+				}
+				return false;
+				<#else>
+				return super.place(world, generator, rand, pos, config);
+				</#if>
 			}
 			};
 
