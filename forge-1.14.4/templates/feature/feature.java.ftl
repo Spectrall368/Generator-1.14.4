@@ -33,7 +33,7 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
-
+<#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static Feature<${configuration}> feature = null;
 
@@ -115,5 +115,5 @@ package ${package}.world.features;
 			}
 		}
 	}
-}
+}</#compress>
 <#-- @formatter:on -->
