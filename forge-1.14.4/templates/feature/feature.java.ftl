@@ -33,6 +33,11 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
+<#assign placementconfig = "NoPlacementConfig.NO_PLACEMENT_CONFIG">
+<#if placementcode.contains("ChanceConfig")>
+	<#assign placementconfig = placementcode?substring(placementcode?index_of("ChanceConfig(") + "ChanceConfig(".length, placementcode?index_of(")", placementcode?index_of("ChanceConfig(") + "ChanceConfig(".length))>
+	<#assign placementcode = placementcode?replace(", ChanceConfig\([0-9]+\),?", "", "r")>
+</#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static Feature<${configuration}> feature = null;
@@ -111,7 +116,7 @@ package ${package}.world.features;
 			</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementcode?remove_ending(",")}));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, List.of(${placementcode?remove_ending(",")}), ${placementconfig}));
 			}
 		}
 	}
