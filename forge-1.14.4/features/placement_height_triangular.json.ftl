@@ -1,0 +1,1 @@
+TopSolidRangeConfig(${input$min}, ${input$max}),
