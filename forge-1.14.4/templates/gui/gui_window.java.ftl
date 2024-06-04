@@ -77,7 +77,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.render(mouseX, mouseY, partialTicks);
+				${component.getName()}.render(mouseX, mouseY, partialTicks);
 			</#if>
 		</#list>
 	}
