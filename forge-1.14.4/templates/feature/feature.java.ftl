@@ -33,18 +33,21 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
-<#assign placementconfig = "Placement.NOPE">
-<#if placementcode.contains("TOP_SOLID_HEIGHTMAP")>
-	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
-	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
-<#elseif placementcode.contains("LAVA") && configuration == "LakesConfig">
+<#if placementcode.contains("LAVA") && configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.LAVA_LAKE">
 <#elseif configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.WATER_LAKE">
-<#elseif configuration == "BlockPileFeature" || configuration == "BlockBlobFeature" || configuration == "SphereReplaceFeature">
+<#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig" || configuration == "SphereReplaceConfig">
 	<#assign placementconfig = "Placement.FOREST_ROCK">
-<#elseif configuration == "CoralClawFeature" || configuration == "CoralMushroomFeature" || configuration == "CoralTreeFeature">
+<#elseif generator.map(featuretype, "features") == "CoralClawFeature" || generator.map(featuretype, "features") == "CoralMushroomFeature" || generator.map(featuretype, "features") == "CoralTreeFeature">
 	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_32">
+<#elseif configuration == "BigMushroomFeatureConfig">
+	<#assign placementconfig = "Placement.DARK_OAK_TREE">
+<#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP")>
+	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
+	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
+<#else>
+	<#assign placementconfig = "Placement.NOPE">
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
