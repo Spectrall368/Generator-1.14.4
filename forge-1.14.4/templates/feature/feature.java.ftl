@@ -33,6 +33,7 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
+<#assign placementconfig = "Placement.NOPE">
 <#if placementcode.contains("LAVA") && configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.LAVA_LAKE">
 <#elseif configuration == "LakesConfig">
@@ -46,8 +47,6 @@ package ${package}.world.features;
 <#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP")>
 	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
 	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
-<#else>
-	<#assign placementconfig = "Placement.NOPE">
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
