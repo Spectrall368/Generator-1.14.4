@@ -1,1 +1,1 @@
-NoiseDependant(${field$threshold}, ${field$belowNoise}, ${field$aboveNoise}),
+new NoiseDependant(${field$threshold}, ${field$belowNoise}, ${field$aboveNoise}),
