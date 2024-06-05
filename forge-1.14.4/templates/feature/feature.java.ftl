@@ -53,18 +53,18 @@ package ${package}.world.features;
 				DimensionType dimensionType = world.getDimension().getType();
 				boolean dimensionCriteria = false;
 
-    				<#list data.spawnWorldTypes as worldType>
-					<#if worldType=="Surface">
+    				<#list data.restrictionDimensions as worldType>
+					<#if worldType == "Surface">
 					if(dimensionType == DimensionType.OVERWORLD)
 						dimensionCriteria = true;
-					<#elseif worldType=="Nether">
+					<#elseif worldType == "Nether">
 					if(dimensionType == DimensionType.THE_NETHER)
 						dimensionCriteria = true;
-					<#elseif worldType=="End">
+					<#elseif worldType == "End">
 					if(dimensionType == DimensionType.THE_END)
 						dimensionCriteria = true;
 					<#else>
-					if(dimensionType == DimensionType.byName(new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}")))
+					if(dimensionType == DimensionType.byName(new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
 						dimensionCriteria = true;
 					</#if>
 				</#list>
@@ -87,7 +87,7 @@ package ${package}.world.features;
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 		}
 
-		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+		@SubscribeEvent public static void addFeatureToBiomes(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
