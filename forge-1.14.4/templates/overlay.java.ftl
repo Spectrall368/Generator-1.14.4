@@ -29,12 +29,11 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-package ${package}.client.screens;
+package ${package}.client.gui;
 
 @Mod.EventBusSubscriber public class ${name}Overlay {
 
-	@OnlyIn(Dist.CLIENT)
-	@SubscribeEvent(priority = EventPriority.${data.priority})
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
 	public static void eventHandler(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
@@ -97,7 +96,7 @@ package ${package}.client.screens;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+						Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	            		</#list>
 
