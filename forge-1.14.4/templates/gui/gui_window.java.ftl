@@ -87,6 +87,22 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(mouseX, mouseY, partialTicks);
 		</#list>
+
+		<#list data.getComponentsOfType("EntityModel") as component>
+			<#assign followMouse = component.followMouseMovement>
+			<#assign x = (component.x - mx/2)?int>
+			<#assign y = (component.y - my/2)?int>
+			if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity) {
+				<#if hasProcedure(component.displayCondition)>
+					if (<@procedureOBJToConditionCode component.displayCondition/>)
+				</#if>
+				InventoryScreen.drawEntityOnScreen(this.guiLeft + ${x + 11}, this.guiTop + ${y + 21}, ${component.scale},
+					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.guiLeft + ${x + 11} - mouseX) / 40.0)</#if>,
+					<#if followMouse>(float) Math.atan((this.guiTop + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
+					((LivingEntity) <@procedureOBJToConditionCode component.entityModel/>)
+				);
+			}
+		</#list>
 	}
 
 	@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
