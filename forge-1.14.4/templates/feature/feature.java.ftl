@@ -36,14 +36,24 @@ package ${package}.world.features;
 <#assign placementconfig = "Placement.NOPE">
 <#if placementcode.contains("LAVA") && configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.LAVA_LAKE">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "LakeChanceConfig")>
+	</#if>
 <#elseif configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.WATER_LAKE">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "LakeChanceConfig")>
+	</#if>
 <#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig" || configuration == "SphereReplaceConfig">
 	<#assign placementconfig = "Placement.FOREST_ROCK">
 <#elseif generator.map(featuretype, "features") == "CoralClawFeature" || generator.map(featuretype, "features") == "CoralMushroomFeature" || generator.map(featuretype, "features") == "CoralTreeFeature">
 	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_32">
 <#elseif configuration == "BigMushroomFeatureConfig">
 	<#assign placementconfig = "Placement.DARK_OAK_TREE">
+<#elseif generator.map(featuretype, "features") == "BambooFeature">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "ProbabilityConfig")>
+	</#if>
 <#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP")>
 	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
 	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
