@@ -4,7 +4,7 @@ if (${input$entity} instanceof LivingEntity && !((LivingEntity) ${input$entity})
 	DamageSource _dsLootTbl = ((LivingEntity) ${input$entity}).getLastDamageSource();
 	if (_dsLootTbl == null) _dsLootTbl = DamageSource.GENERIC;
 	for (ItemStack itemstackiterator : ((LivingEntity) ${input$entity}).getServer().getLootTableManager().getValue(${toResourceLocation(input$location)})
-			.getRandomItems(new LootContext.Builder((ServerLevel) ((LivingEntity) ${input$entity}).world)
+			.getRandomItems(new LootContext.Builder((ServerWorld) ((LivingEntity) ${input$entity}).world)
 					.withParameter(LootParameters.THIS_ENTITY, ((LivingEntity) ${input$entity}))
 					.withNullableParameter(LootParameters.LAST_DAMAGE_PLAYER, ((LivingEntity) ${input$entity}).getRevengeTarget() instanceof PlayerEntity ?  ((PlayerEntity) ((LivingEntity) ${input$entity}).getRevengeTarget()) : null)
 					.withParameter(LootParameters.DAMAGE_SOURCE, _dsLootTbl)
