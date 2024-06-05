@@ -600,6 +600,23 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
    	@Override protected void collideWithNearbyEntities() {}
 	</#if>
 
+	<#if hasProcedure(data.solidBoundingBox) || data.solidBoundingBox.getFixedValue()>
+	@Override public AxisAlignedBB getCollisionBox(Entity entity) {
+		return entity.getBoundingBox();
+	}
+
+	@Override public AxisAlignedBB getCollisionBoundingBox() {
+		<#if hasProcedure(data.solidBoundingBox)>
+		Entity entity = this;
+		World world = entity.world;
+		double x = entity.posX;
+		double y = entity.posY;
+		double z = entity.posZ;
+		</#if>
+		return <@procedureOBJToConditionCode data.solidBoundingBox true false/> ? this.getBoundingBox() : null;
+	}
+	</#if>
+
 	<#if data.isBoss>
 	@Override public boolean isNonBoss() {
 		return false;
