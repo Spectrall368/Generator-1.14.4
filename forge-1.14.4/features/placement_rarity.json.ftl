@@ -1,1 +1,1 @@
-ChanceConfig(${field$rarity})
+new ChanceConfig(${field$rarity}f)
