@@ -37,10 +37,14 @@ package ${package}.world.features;
 <#if placementcode.contains("TOP_SOLID_HEIGHTMAP")>
 	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
 	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
-<#elseif placementcode.contains("WATER")>
-	<#assign placementconfig = "Placement.WATER_LAKE">
-<#elseif placementcode.contains("LAVA")>
+<#elseif placementcode.contains("LAVA") && configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.LAVA_LAKE">
+<#elseif configuration == "LakesConfig">
+	<#assign placementconfig = "Placement.WATER_LAKE">
+<#elseif configuration == "BlockPileFeature" || configuration == "BlockBlobFeature" || configuration == "SphereReplaceFeature">
+	<#assign placementconfig = "Placement.FOREST_ROCK">
+<#elseif configuration == "CoralClawFeature" || configuration == "CoralMushroomFeature" || configuration == "CoralTreeFeature">
+	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_32">
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
