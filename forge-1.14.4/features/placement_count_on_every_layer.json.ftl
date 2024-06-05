@@ -1,1 +1,1 @@
-CountConfig(${input$count}),
+new CountConfig(${input$count}),
