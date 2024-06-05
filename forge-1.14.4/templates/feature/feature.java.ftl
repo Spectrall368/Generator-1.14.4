@@ -37,6 +37,10 @@ package ${package}.world.features;
 <#if placementcode.contains("TOP_SOLID_HEIGHTMAP")>
 	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
 	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
+<#elseif placementcode.contains("WATER")>
+	<#assign placementconfig = "Placement.WATER_LAKE">
+<#elseif placementcode.contains("LAVA")>
+	<#assign placementconfig = "Placement.LAVA_LAKE">
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
@@ -80,7 +84,7 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
-				return super.place(world, generator, rand, pos, config);
+				return super.place(world, generator, random, pos, config);
 			}
 			};
 
