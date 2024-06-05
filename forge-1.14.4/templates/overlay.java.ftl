@@ -100,6 +100,16 @@ package ${package}.client.screens;
 						Minecraft.getInstance().fontRenderer.drawString(<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	            		</#list>
+
+				<#list data.getComponentsOfType("EntityModel") as component>
+				    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity) {
+				    	<#if hasProcedure(component.displayCondition)>
+	                        if (<@procedureOBJToConditionCode component.displayCondition/>)
+	                    </#if>
+				        InventoryScreen.drawEntityOnScreen(posX + ${component.x - 202}, posY + ${component.y - 100},
+	                        ${component.scale}, ${component.rotationX / 20.0}f, 0, ((LivingEntity) <@procedureOBJToConditionCode component.entityModel/>));
+				    }
+				</#list>
 			}
 
 			<#if data.hasTextures()>
