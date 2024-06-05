@@ -37,8 +37,15 @@ package ${package}.block;
 
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.property.Properties;
-
-public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
+<#compress>
+<#assign interfaces = []>
+<#if data.isBonemealable>
+	<#assign interfaces += ["IGrowable"]>
+</#if>
+public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block
+	<#if interfaces?size gt 0>
+		implements ${interfaces?join(",")}
+	</#if>{
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -304,6 +311,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
+	<#if data.isBonemealable>
+	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
+	</#if>
+
 	<#if data.hasTileEntity>
 	@Override public boolean hasTileEntity(BlockState state) {
 		return true;
@@ -369,6 +380,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 	</#if>
 }
+</#compress>
 <#-- @formatter:on -->
 <#macro canPlaceOnList blockList condition>
 <#if (blockList?size > 1) && condition>(</#if>
