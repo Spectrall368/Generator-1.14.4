@@ -1,5 +1,5 @@
 templates:
-  - template: json/advancement.json.ftl
+  - template: json/achievement.json.ftl
     writer: json
     name: "@MODDATAROOT/advancements/@registryname.json"
 
