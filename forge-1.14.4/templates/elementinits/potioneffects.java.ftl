@@ -34,7 +34,7 @@
  */
 package ${package}.init;
 
-public class ${JavaModName}PotionEffects {
+public class ${JavaModName}MobEffects {
 
 	public static final DeferredRegister<Effect> REGISTRY = new DeferredRegister<>(ForgeRegistries.POTIONS, ${JavaModName}.MODID);
 
