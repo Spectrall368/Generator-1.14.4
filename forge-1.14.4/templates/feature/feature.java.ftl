@@ -34,30 +34,49 @@ package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
 <#assign placementconfig = "Placement.NOPE">
+<#assign isworking = false>
 <#if placementcode.contains("LAVA") && configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.LAVA_LAKE">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementcode = placementcode?replace("ChanceConfig", "LakeChanceConfig")>
+		<#assign isworking = true>
 	</#if>
 <#elseif configuration == "LakesConfig">
 	<#assign placementconfig = "Placement.WATER_LAKE">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementcode = placementcode?replace("ChanceConfig", "LakeChanceConfig")>
+		<#assign isworking = true>
 	</#if>
 <#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig">
 	<#assign placementconfig = "Placement.FOREST_ROCK">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "LakeChanceConfig")>
+		<#assign isworking = true>
+	</#if>
 <#elseif generator.map(featuretype, "features") == "CoralClawFeature" || generator.map(featuretype, "features") == "CoralMushroomFeature" || generator.map(featuretype, "features") == "CoralTreeFeature">
 	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_32">
 <#elseif configuration == "BigMushroomFeatureConfig">
-	<#assign placementconfig = "Placement.DARK_OAK_TREE">
+	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "FrequencyConfig")>
+		<#assign isworking = true>
+	</#if>
 <#elseif configuration == "SphereReplaceConfig">
 	<#assign placementconfig = "Placement.COUNT_TOP_SOLID">
-<#elseif configuration == "BigMushroomFeatureConfig">
-	<#assign placementconfig = "Placement.DARK_OAK_TREE">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "FrequencyConfig")>
+		<#assign isworking = true>
+	</#if>
 <#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP") || configuration == "SeaGrassConfig">
 	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
 	<#if configuration != "SeaGrassConfig">
-	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
+		<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
+	</#if>
+<#elseif configuration == "ProbabilityConfig">
+	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_DOUBLE">
+	<#if placementcode.contains("ChanceConfig")>
+		<#assign placementcode = placementcode?replace("ChanceConfig", "FrequencyConfig")>
+		<#assign isworking = true>
 	</#if>
 </#if>
 <#compress>
@@ -124,7 +143,7 @@ package ${package}.world.features;
 			</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, <#if placementcode != "">${placementcode?keep_before("),")})<#else>IPlacementConfig.NO_PLACEMENT_CONFIG</#if>));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, <#if isworking>${placementcode?keep_before("),")})<#else>IPlacementConfig.NO_PLACEMENT_CONFIG</#if>));
 			}
 		}
 	}
