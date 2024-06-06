@@ -10,7 +10,7 @@
     },
     {
       "when": {
-        "north": "low"
+        "north": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -19,7 +19,7 @@
     },
     {
       "when": {
-        "east": "low"
+        "east": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -29,7 +29,7 @@
     },
     {
       "when": {
-        "south": "low"
+        "south": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -39,49 +39,10 @@
     },
     {
       "when": {
-        "west": "low"
+        "west": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
-        "y": 270,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "north": "tall"
-      },
-      "apply": {
-        "model": "${modid}:block/${registryname}_side_tall",
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "east": "tall"
-      },
-      "apply": {
-        "model": "${modid}:block/${registryname}_side_tall",
-        "y": 90,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "south": "tall"
-      },
-      "apply": {
-        "model": "${modid}:block/${registryname}_side_tall",
-        "y": 180,
-        "uvlock": true
-      }
-    },
-    {
-      "when": {
-        "west": "tall"
-      },
-      "apply": {
-        "model": "${modid}:block/${registryname}_side_tall",
         "y": 270,
         "uvlock": true
       }
