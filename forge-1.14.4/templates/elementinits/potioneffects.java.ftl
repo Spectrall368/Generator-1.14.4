@@ -40,7 +40,7 @@ public class ${JavaModName}PotionEffects {
 
 	<#list potioneffects as effect>
 	public static final RegistryObject<Effect> ${effect.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}PotionEffect());
+			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}MobEffect());
 	</#list>
 }
 <#-- @formatter:on -->
