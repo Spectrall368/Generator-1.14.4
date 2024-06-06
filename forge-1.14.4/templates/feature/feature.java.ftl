@@ -122,7 +122,7 @@ package ${package}.world.features;
 			</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, List.of(${placementcode?keep_before_last(",")})));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, Lists.newArrayList(${placementcode?keep_before_last(",")})));
 			}
 		}
 	}
