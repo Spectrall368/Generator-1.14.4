@@ -44,19 +44,21 @@ package ${package}.world.features;
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementcode = placementcode?replace("ChanceConfig", "LakeChanceConfig")>
 	</#if>
-<#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig" || configuration == "SphereReplaceConfig">
+<#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig">
 	<#assign placementconfig = "Placement.FOREST_ROCK">
 <#elseif generator.map(featuretype, "features") == "CoralClawFeature" || generator.map(featuretype, "features") == "CoralMushroomFeature" || generator.map(featuretype, "features") == "CoralTreeFeature">
 	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_32">
 <#elseif configuration == "BigMushroomFeatureConfig">
 	<#assign placementconfig = "Placement.DARK_OAK_TREE">
-<#elseif generator.map(featuretype, "features") == "BambooFeature">
-	<#if placementcode.contains("ChanceConfig")>
-		<#assign placementcode = placementcode?replace("ChanceConfig", "ProbabilityConfig")>
-	</#if>
-<#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP")>
+<#elseif configuration == "SphereReplaceConfig">
+	<#assign placementconfig = "Placement.COUNT_TOP_SOLID">
+<#elseif configuration == "BigMushroomFeatureConfig">
+	<#assign placementconfig = "Placement.DARK_OAK_TREE">
+<#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP") || configuration == "SeaGrassConfig">
 	<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
+	<#if configuration != "SeaGrassConfig">
 	<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
+	</#if>
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
@@ -122,7 +124,7 @@ package ${package}.world.features;
 			</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, Lists.newArrayList(${placementcode?keep_before_last(",")})));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, <#if placementcode != "">new IPlacementConfig[]{${placementcode?keep_before_last(",")}}<#else>NoPlacementConfig.NO_PLACEMENT_CONFIG</#if>));
 			}
 		}
 	}
