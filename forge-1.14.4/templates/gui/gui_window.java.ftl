@@ -175,14 +175,14 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			<#if component.placeholder?has_content>
 			{
 				{
-					setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}").getString());
+					setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
 				}
 
 				@Override public void writeText(String text) {
 					super.writeText(text);
 
 					if (getText().isEmpty())
-						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}").getString());
+						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
 					else
 						setSuggestion(null);
 				}
@@ -191,7 +191,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 					super.setCursorPosition(pos);
 
 					if (getText().isEmpty())
-						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}").getString());
+						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
 					else
 						setSuggestion(null);
 				}
