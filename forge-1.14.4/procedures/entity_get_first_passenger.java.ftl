@@ -1,1 +1,1 @@
-(${input$entity}.getPassengers().isEmpty() ? null : (Entity) ${input$entity}.getPassengers().get(0))
+(${input$entity}.getPassengers().isEmpty() ? null : ${input$entity}.getPassengers().get(0))
