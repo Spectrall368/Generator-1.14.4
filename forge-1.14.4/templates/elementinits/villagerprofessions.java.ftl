@@ -47,7 +47,7 @@ import net.minecraft.util.SoundEvent;
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			registerProfession(
 				"${villagerprofession.getModElement().getRegistryName()}",
-				() -> getAllStates(${mappedBlockToBlock(villagerprofession.pointOfInterest)}),
+				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
 			);
 	</#list>
