@@ -56,29 +56,27 @@ import net.minecraft.util.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null, soundEvent));
 
 		return PROFESSIONS.register(name, () -> {
-			PointOfInterestType poiPredicate = (POI_TYPES.get(name).poiType != null) && (poiPredicate.func_221045_c() == POI_TYPES.get(name).poiType.func_221045_c());
+			PointOfInterestType poiPredicate = POI_TYPES.get(name).poiType;
 			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, ImmutableSet.of(), ImmutableSet.of());
 		});
 	}
 
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-		event.getRegistry().register(registerHelper -> {
-			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
-       				SoundEvent soundEvent = entry.getValue().soundEvent.get();
-				Block block = entry.getValue().block.get();
-				String name = entry.getKey();
+		for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
+       			SoundEvent soundEvent = entry.getValue().soundEvent.get();
+			Block block = entry.getValue().block.get();
+			String name = entry.getKey();
 
-				Optional<PointOfInterestType> existingCheck = PointOfInterestType.forState(block.getDefaultState());
-				if (existingCheck.isPresent()) {
-					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
-					continue;
-				}
-
-				PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1);
-				registerHelper.register(name, poiType);
-				entry.getValue().poiType = poiType;
+			Optional<PointOfInterestType> existingCheck = PointOfInterestType.forState(block.getDefaultState());
+			if (existingCheck.isPresent()) {
+				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
+				continue;
 			}
-		});
+
+			PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1);
+			event.getRegistry().register(poiType.setRegistryName(new ResourceLocation(${modid}, name)));
+			entry.getValue().poiType = poiType;
+		}
 	}
 
 	private static class ProfessionPoiType {
