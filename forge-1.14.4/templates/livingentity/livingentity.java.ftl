@@ -210,7 +210,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
    	}
 	</#if>
 
-   	<#if data.livingSound.getMappedValue()?has_content>
+   	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
@@ -222,13 +222,17 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
 	</#if>
 
+	<#if data.hurtSound?has_content && data.hurtSound.getMappedValue()?has_content>
 	@Override public SoundEvent getHurtSound(DamageSource ds) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
 	}
+	</#if>
 
+	<#if data.deathSound?has_content && data.deathSound.getMappedValue()?has_content>
 	@Override public SoundEvent getDeathSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
+	</#if>
 
 	<#if hasProcedure(data.onStruckByLightning)>
 	@Override public void onStruckByLightning(LightningBoltEntity lightningBolt) {
