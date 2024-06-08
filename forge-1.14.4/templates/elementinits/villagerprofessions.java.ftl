@@ -56,7 +56,7 @@ import net.minecraft.util.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null, soundEvent));
 
 		return PROFESSIONS.register(name, () -> {
-			Optional<PointOfInterestType> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.func_221045_c() == POI_TYPES.get(name).poiType.get().func_221045_c());
+			Optional<PointOfInterestType> poiPredicate = POI_TYPES.get(name).poiType != null) && (poiPredicate.func_221045_c() == POI_TYPES.get(name).poiType.get().func_221045_c();
 			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, ImmutableSet.of(), ImmutableSet.of());
 		});
 	}
@@ -74,9 +74,9 @@ import net.minecraft.util.SoundEvent;
 					continue;
 				}
 
-				Optional<PointOfInterestType> poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1);
+				PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1);
 				registerHelper.register(name, poiType);
-				entry.getValue().poiType = poiType.get();
+				entry.getValue().poiType = poiType;
 			}
 		});
 	}
@@ -84,10 +84,10 @@ import net.minecraft.util.SoundEvent;
 	private static class ProfessionPoiType {
 
 		final Supplier<Block> block;
-		Predicate<PointOfInterestType> poiType;
+		PointOfInterestType poiType;
 		Supplier<SoundEvent> soundEvent;
 
-		ProfessionPoiType(Supplier<Block> block, Predicate<PointOfInterestType> poiType, @Nullable Supplier<SoundEvent> soundEvent) {
+		ProfessionPoiType(Supplier<Block> block, PointOfInterestType poiType, @Nullable Supplier<SoundEvent> soundEvent) {
 			this.block = block;
 			this.poiType = poiType;
 			this.soundEvent = soundEvent;
