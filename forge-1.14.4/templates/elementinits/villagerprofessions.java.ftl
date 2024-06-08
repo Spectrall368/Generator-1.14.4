@@ -44,7 +44,7 @@ public class ${JavaModName}VillagerProfessions {
 	public static final DeferredRegister<VillagerProfession> PROFESSIONS = new DeferredRegister<>(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
-		public static final RegistryObject<PointOfInterestType> ${villagerprofession.getModElement().getRegistryNameUpper()} =
+		public static final RegistryObject<PointOfInterestType> ${villagerprofession.getModElement().getRegistryNameUpper()}_POI =
 			POI_TYPES.register(${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}", () -> new PointOfInterestType(
 				${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}",
 				ImmutableSet.copyOf(${mappedBlockToBlock(villagerprofession.pointOfInterest)}.getStateContainer().getValidStates()),
@@ -55,7 +55,7 @@ public class ${JavaModName}VillagerProfessions {
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			PROFESSIONS.register(${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}", () -> new VillagerProfession(
 				${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}",
-				VillagerProfessions.POI_TYPES.${villagerprofession.getModElement().getRegistryName()?uppercase}.get(),
+				VillagerProfessions.${villagerprofession.getModElement().getRegistryNameUpper()}_POI.get(),
 				ImmutableSet.of(),
 				ImmutableSet.of());
 	</#list>
