@@ -56,27 +56,27 @@ import net.minecraft.util.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Predicate<Holder<PointOfInterestType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
+			Predicate<PointOfInterestType> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
 			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
 		});
 	}
 
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-		event.getRegistry().register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
+		event.getRegistry().register("point_of_interest_type", registerHelper -> {
 			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
-        SoundEvent soundevent = entry.get();
+       				SoundEvent soundEvent = entry.getValue().soundEvent.get();
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
-				Optional<Holder<PointOfInterestType>> existingCheck = PointOfInterestType.forState(block.getDefaultState());
+				Optional<Predicate<PointOfInterestType>> existingCheck = PointOfInterestType.forState(block.getDefaultState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
 				}
 
-				PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundevent, 1);
+				PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1);
 				registerHelper.register(name, poiType);
-				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
+				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getKey(poiType).get();
 			}
 		});
 	}
@@ -84,9 +84,9 @@ import net.minecraft.util.SoundEvent;
 	private static class ProfessionPoiType {
 
 		final Supplier<Block> block;
-		Holder<PoiType> poiType;
+		Predicate<PointOfInterestType> poiType;
 
-		ProfessionPoiType(Supplier<Block> block, Holder<PointOfInterestType> poiType) {
+		ProfessionPoiType(Supplier<Block> block, Predicate<PointOfInterestType> poiType) {
 			this.block = block;
 			this.poiType = poiType;
 		}
