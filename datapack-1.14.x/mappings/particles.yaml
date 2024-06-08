@@ -3,7 +3,6 @@ _mcreator_map_template: "(BasicParticleType) (@JavaModNameParticleTypes.@REGISTR
 _default: ParticleTypes.CRIT
 SPELL_MOB_AMBIENT: ParticleTypes.AMBIENT_ENTITY_EFFECT
 VILLAGER_ANGRY: ParticleTypes.ANGRY_VILLAGER
-BARRIER: ParticleTypes.BARRIER
 WATER_BUBBLE: ParticleTypes.BUBBLE
 CLOUD: ParticleTypes.CLOUD
 CRIT: ParticleTypes.CRIT
@@ -23,7 +22,6 @@ ENTITY_EFFECT: ParticleTypes.ENTITY_EFFECT
 EXPLOSION_EMITTER: ParticleTypes.EXPLOSION_EMITTER
 EXPLOSION_NORMAL: ParticleTypes.EXPLOSION
 FIREWORKS_SPARK: ParticleTypes.FIREWORK
-WATER_WAKE: ParticleTypes.FISHING
 FLAME: ParticleTypes.FLAME
 FLASH: ParticleTypes.FLASH
 VILLAGER_HAPPY: ParticleTypes.HAPPY_VILLAGER
@@ -34,7 +32,6 @@ SLIME: ParticleTypes.ITEM_SLIME
 SNOWBALL: ParticleTypes.ITEM_SNOWBALL
 SMOKE_LARGE: ParticleTypes.LARGE_SMOKE
 LAVA: ParticleTypes.LAVA
-TOWN_AURA: ParticleTypes.MYCELIUM
 NOTE: ParticleTypes.NOTE
 POOF: ParticleTypes.POOF
 PORTAL: ParticleTypes.PORTAL
@@ -55,6 +52,3 @@ NAUTILUS: ParticleTypes.NAUTILUS
 DOLPHIN: ParticleTypes.DOLPHIN
 CAMPFIRE_COSY_SMOKE: ParticleTypes.CAMPFIRE_COSY_SMOKE
 CAMPFIRE_SIGNAL_SMOKE: ParticleTypes.CAMPFIRE_SIGNAL_SMOKE
-SUSPENDED_DEPTH: ParticleTypes.UNDERWATER # Legacy Mapping
-SPELL_MOB: ParticleTypes.WITCH # Legacy Mapping
-SNOW_SHOVEL: ParticleTypes.ITEM_SNOWBALL # Legacy Mapping
