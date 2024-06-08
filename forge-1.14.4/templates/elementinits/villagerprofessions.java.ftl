@@ -53,11 +53,11 @@ import net.minecraft.util.SoundEvent;
 	</#list>
 
 	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
-		POI_TYPES.put(name, new ProfessionPoiType(block, null));
+		POI_TYPES.put(name, new ProfessionPoiType(block, null, soundEvent));
 
 		return PROFESSIONS.register(name, () -> {
-			Predicate<PointOfInterestType> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
-			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
+			 Predicate<PointOfInterestType> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.func_221045_c() == POI_TYPES.get(name).poiType.func_221045_c());
+			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, ImmutableSet.of(), ImmutableSet.of());
 		});
 	}
 
@@ -68,7 +68,7 @@ import net.minecraft.util.SoundEvent;
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
-				Optional<Predicate<PointOfInterestType>> existingCheck = PointOfInterestType.forState(block.getDefaultState());
+				Optional<PointOfInterestType> existingCheck = PointOfInterestType.forState(block.getDefaultState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
@@ -85,10 +85,12 @@ import net.minecraft.util.SoundEvent;
 
 		final Supplier<Block> block;
 		Predicate<PointOfInterestType> poiType;
+		SoundEvent soundEvent;
 
-		ProfessionPoiType(Supplier<Block> block, Predicate<PointOfInterestType> poiType) {
+		ProfessionPoiType(Supplier<Block> block, Predicate<PointOfInterestType> poiType, @Nullable SoundEvent soundEvent) {
 			this.block = block;
 			this.poiType = poiType;
+			this.soundEvent = soundEvent;
 		}
 	}
 }
