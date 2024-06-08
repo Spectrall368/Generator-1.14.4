@@ -1,6 +1,6 @@
 {
     "pack": {
-        "pack_format": 13,
+        "pack_format": 4,
         "description": "${settings.getDescription()!""}"
     }
 }
