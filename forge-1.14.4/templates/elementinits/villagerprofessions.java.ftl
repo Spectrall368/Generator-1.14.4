@@ -49,15 +49,15 @@ public class ${JavaModName}VillagerProfessions {
 				${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}",
 				ImmutableSet.copyOf(${mappedBlockToBlock(villagerprofession.pointOfInterest)}.getStateContainer().getValidStates()),
 				1,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"),
-				1);
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}")),
+				1));
 
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			PROFESSIONS.register(${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}", () -> new VillagerProfession(
 				${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}",
 				VillagerProfessions.${villagerprofession.getModElement().getRegistryNameUpper()}_POI.get(),
 				ImmutableSet.of(),
-				ImmutableSet.of());
+				ImmutableSet.of()));
 	</#list>
 }
 <#-- @formatter:on -->
