@@ -1,2 +1,2 @@
 if (world.getWorld() instanceof World && !((World) world.getWorld()).isRemote)
-	((World) world.getWorld()).createExplosion(null, ${input$x}, ${input$y}, ${input$z}, ${opt.toFloat(input$power)}, Explosion.Mode.${field$mode!"BREAK"});
+	((World) world.getWorld()).createExplosion(null, ${input$x}, ${input$y}, ${input$z}, ${opt.toFloat(input$power)}, Explosion.Mode.${field$mode?replace("BLOCK", "DESTROY")?replace("MOB", "DESTROY")?replace("TNT", "BREAK")});
