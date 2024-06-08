@@ -37,61 +37,27 @@ package ${package}.init;
 
 import net.minecraft.util.SoundEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
+public class ${JavaModName}VillagerProfessions {
 
-	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
+	public static final DeferredRegister<PointOfInterestType> POI_TYPES = new DeferredRegister<>(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
 
 	public static final DeferredRegister<VillagerProfession> PROFESSIONS = new DeferredRegister<>(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
-		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
-			registerProfession(
+		public static final RegistryObject<PointOfInterestType> ${villagerprofession.getModElement().getRegistryNameUpper()} =
+			POI_TYPES.register("${villagerprofession.getModElement().getRegistryName()}", () -> new PointOfInterestType(
 				"${villagerprofession.getModElement().getRegistryName()}",
-				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
-			);
+				ImmutableSet.copyOf(${mappedBlockToBlock(villagerprofession.pointOfInterest)}.getStateContainer().getValidStates()),
+				1,
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"),
+				1);
+
+		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
+			PROFESSIONS.register("${villagerprofession.getModElement().getRegistryName()}", () -> new VillagerProfession(
+				"${villagerprofession.getModElement().getRegistryName()}",
+				VillagerProfessions.POI_TYPES.${villagerprofession.getModElement().getRegistryName()?uppercase}.get(),
+				ImmutableSet.of(),
+				ImmutableSet.of());
 	</#list>
-
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
-		POI_TYPES.put(name, new ProfessionPoiType(block, null, soundEvent));
-
-		return PROFESSIONS.register(name, () -> {
-			PointOfInterestType poiPredicate;
-			if((POI_TYPES.get(name).poiType != null) && (poiPredicate.func_221045_c() == POI_TYPES.get(name).poiType.func_221045_c()))
-				poiPredicate = POI_TYPES.get(name).poiType;
-			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, ImmutableSet.of(), ImmutableSet.of());
-		});
-	}
-
-	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-		for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
-       			SoundEvent soundEvent = entry.getValue().soundEvent.get();
-			Block block = entry.getValue().block.get();
-			String name = entry.getKey();
-
-			Optional<PointOfInterestType> existingCheck = PointOfInterestType.forState(block.getDefaultState());
-			if (existingCheck.isPresent()) {
-				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
-				continue;
-			}
-
-			PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1);
-			event.getRegistry().register(poiType.setRegistryName(new ResourceLocation("${modid}", name)));
-			entry.getValue().poiType = poiType;
-		}
-	}
-
-	private static class ProfessionPoiType {
-
-		final Supplier<Block> block;
-		PointOfInterestType poiType;
-		Supplier<SoundEvent> soundEvent;
-
-		ProfessionPoiType(Supplier<Block> block, PointOfInterestType poiType, @Nullable Supplier<SoundEvent> soundEvent) {
-			this.block = block;
-			this.poiType = poiType;
-			this.soundEvent = soundEvent;
-		}
-	}
 }
 <#-- @formatter:on -->
