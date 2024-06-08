@@ -45,16 +45,16 @@ public class ${JavaModName}VillagerProfessions {
 
 	<#list villagerprofessions as villagerprofession>
 		public static final RegistryObject<PointOfInterestType> ${villagerprofession.getModElement().getRegistryNameUpper()} =
-			POI_TYPES.register("${villagerprofession.getModElement().getRegistryName()}", () -> new PointOfInterestType(
-				"${villagerprofession.getModElement().getRegistryName()}",
+			POI_TYPES.register(${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}", () -> new PointOfInterestType(
+				${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}",
 				ImmutableSet.copyOf(${mappedBlockToBlock(villagerprofession.pointOfInterest)}.getStateContainer().getValidStates()),
 				1,
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"),
 				1);
 
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
-			PROFESSIONS.register("${villagerprofession.getModElement().getRegistryName()}", () -> new VillagerProfession(
-				"${villagerprofession.getModElement().getRegistryName()}",
+			PROFESSIONS.register(${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}", () -> new VillagerProfession(
+				${JavaModName}.MODID + ":" + "${villagerprofession.getModElement().getRegistryName()}",
 				VillagerProfessions.POI_TYPES.${villagerprofession.getModElement().getRegistryName()?uppercase}.get(),
 				ImmutableSet.of(),
 				ImmutableSet.of());
