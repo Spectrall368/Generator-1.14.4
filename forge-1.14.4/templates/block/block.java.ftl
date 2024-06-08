@@ -82,11 +82,11 @@ public class ${name}Block extends
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null) {
-					@Override public SoundEvent getBreakSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")); }
-					@Override public SoundEvent getStepSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")); }
-					@Override public SoundEvent getPlaceSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")); }
-					@Override public SoundEvent getHitSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")); }
-					@Override public SoundEvent getFallSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}")); }
+					@Override public SoundEvent getBreakSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.breakSound?has_content && data.breakSound.getMappedValue()?has_content)?then(data.breakSound, "intentionally_empty")}")); }
+					@Override public SoundEvent getStepSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.stepSound?has_content && data.stepSound.getMappedValue()?has_content)?then(data.stepSound, "intentionally_empty")}")); }
+					@Override public SoundEvent getPlaceSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.placeSound?has_content && data.placeSound.getMappedValue()?has_content)?then(data.placeSound, "intentionally_empty")}")); }
+					@Override public SoundEvent getHitSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.hitSound?has_content && data.hitSound.getMappedValue()?has_content)?then(data.hitSound, "intentionally_empty")}")); }
+					@Override public SoundEvent getFallSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.fallSound?has_content && data.fallSound.getMappedValue()?has_content)?then(data.fallSound, "intentionally_empty")}")); }
 				})
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
