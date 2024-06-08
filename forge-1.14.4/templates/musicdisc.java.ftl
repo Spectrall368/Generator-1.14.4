@@ -36,9 +36,9 @@ public class ${name}Item extends MusicDiscItem {
 
 	public ${name}Item() {
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		super(${data.analogOutput}, new net.minecraft.util.SoundEvent(new ResourceLocation("${data.music}")),
+		super(${data.analogOutput}, new net.minecraft.util.SoundEvent(new ResourceLocation("${(data.music?has_content && data.music.getMappedValue()?has_content)?then(data.music, "intentionally_empty")}")),
 		<#else>
-		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
+		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.music?has_content && data.music.getMappedValue()?has_content)?then(data.music, "intentionally_empty")}")),
 		</#if>
 				new Item.Properties().group(${data.creativeTab}).maxStackSize(1).rarity(Rarity.RARE));
 	}
