@@ -62,7 +62,7 @@ import net.minecraft.util.SoundEvent;
 	}
 
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-		event.getRegistry().register("point_of_interest_type", registerHelper -> {
+		event.getRegistry().register(registerHelper -> {
 			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
        				SoundEvent soundEvent = entry.getValue().soundEvent.get();
 				Block block = entry.getValue().block.get();
@@ -85,9 +85,9 @@ import net.minecraft.util.SoundEvent;
 
 		final Supplier<Block> block;
 		Predicate<PointOfInterestType> poiType;
-		SoundEvent soundEvent;
+		Supplier<SoundEvent> soundEvent;
 
-		ProfessionPoiType(Supplier<Block> block, Predicate<PointOfInterestType> poiType, @Nullable SoundEvent soundEvent) {
+		ProfessionPoiType(Supplier<Block> block, Predicate<PointOfInterestType> poiType, @Nullable Supplier<SoundEvent> soundEvent) {
 			this.block = block;
 			this.poiType = poiType;
 			this.soundEvent = soundEvent;
