@@ -1,0 +1,1 @@
+${input$entity}.lookAt(EntityAnchorArgument.Type.EYES, new Vec3d(${input$x},${input$y},${input$z}));
