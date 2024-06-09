@@ -1,1 +1,1 @@
-new HeightWithChanceConfig(${input$height}, 5),
+new HeightWithChanceConfig(${input$height}, 0.2f),
