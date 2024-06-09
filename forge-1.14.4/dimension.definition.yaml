@@ -8,7 +8,7 @@ templates:
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
   - template: dimension/portaltrigger.java.ftl
-    condition: enableIgniter
+    condition: hasIgniter()
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
   - template: json/dimension_portal.json.ftl
@@ -26,7 +26,7 @@ templates:
   - template: json/item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
-    condition: enableIgniter
+    condition: hasIgniter()
 
 global_templates:
   - template: elementinits/dimensions.java.ftl
@@ -35,4 +35,4 @@ global_templates:
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: igniterName
-    condition: enableIgniter
+    condition: hasIgniter()
