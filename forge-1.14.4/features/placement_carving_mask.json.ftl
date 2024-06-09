@@ -1,1 +1,1 @@
-new CaveEdgeConfig(GenerationStage.Carving.${field$carver?upper_case}, 5f),
+new CaveEdgeConfig(GenerationStage.Carving.${field$carver?upper_case}, 0.1f),
