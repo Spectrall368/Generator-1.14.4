@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${mappedBlockToBlockStateCode(input$block)} == blockAt
+${mappedBlockToBlockStateCode(input$blockstate)} == blockAt
