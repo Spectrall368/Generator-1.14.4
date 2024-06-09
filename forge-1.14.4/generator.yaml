@@ -4,7 +4,7 @@ buildfileversion: 28.2.26
 subversion: 1.0.9
 
 import:
-  - datapack-1.14.4
+  - datapack-1.14.x
 
 java_models:
   key: legacy
