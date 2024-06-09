@@ -73,7 +73,7 @@ import net.minecraft.util.SoundEvent;
 				continue;
 			}
 
-			PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1).setRegistryName("${villagerprofession.getModElement().getRegistryName()}");
+			PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1).setRegistryName(name);
 			event.getRegistry().register(poiType);
 			entry.getValue().poiType = poiType;
 		}
