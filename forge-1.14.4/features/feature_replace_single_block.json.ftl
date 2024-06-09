@@ -1,1 +1,1 @@
-new ReplaceBlockConfig(Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before(")")}<#sep>,</#list>), Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before(")")}<#sep>,</#list>))
+new ReplaceBlockConfig(Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before(")")}<#sep>,</#list>)), Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before(")")}<#sep>,</#list>)))
