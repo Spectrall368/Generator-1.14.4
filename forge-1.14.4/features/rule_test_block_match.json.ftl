@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${mappedBlockToBlock(input$block)} == blockAt.getBlock()
+${mappedBlockToBlock(field$block)} == blockAt.getBlock()
