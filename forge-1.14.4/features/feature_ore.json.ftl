@@ -1,5 +1,8 @@
 new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
 boolean blockCriteria = false;
-if(${target?keep_after("Target(")?keep_before(")")})
+<#list input_list$target as target>
+if(${target?keep_after("Target(")?keep_before("),")})
   blockCriteria = true;
+</#list>
+return blockCriteria;
 }), Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before(")")}<#sep>,</#list>), ${field$size})
