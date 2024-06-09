@@ -1,1 +1,1 @@
-new SeaGrassConfig(4, ${field$probability})
+new SeaGrassConfig(80, ${field$probability})
