@@ -78,6 +78,11 @@ package ${package}.world.features;
 		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new FrequencyConfig")>
 		<#assign isworking = true>
 	</#if>
+<#elseif configuration == "OreFeatureConfig">
+	<#assign placementconfig = "Placement.COUNT_RANGE">
+</#if>
+<#elseif configuration == "ReplaceBlockConfig">
+	<#assign placementconfig = "Placement.EMERALD_ORE">
 </#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
