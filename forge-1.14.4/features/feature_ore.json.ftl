@@ -1,0 +1,1 @@
+new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {return true;}), Lists.newArrayList(<#list input_list$target as target>${target}.getDefaultState()<#sep>,</#list>), ${field$size})
