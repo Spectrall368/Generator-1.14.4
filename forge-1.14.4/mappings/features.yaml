@@ -37,3 +37,9 @@ feature_seagrass:
 feature_bamboo:
   - BambooFeature
   - ProbabilityConfig
+feature_ore:
+  - OreFeature
+  - OreFeatureConfig
+feature_replace_single_block:
+  - ReplaceBlockFeature
+  - ReplaceBlockConfig
