@@ -1,1 +1,1 @@
-Target(${input$target), State(${input$state})
+Target(${input$target)}, State(${input$state})
