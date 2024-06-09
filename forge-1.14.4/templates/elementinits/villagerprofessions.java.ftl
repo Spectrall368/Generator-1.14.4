@@ -56,7 +56,7 @@ import net.minecraft.util.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null, soundEvent));
 
 		return PROFESSIONS.register(name, () -> {
-			PointOfInterestType poiPredicate = POI_TYPES.get(name).poiType;
+			Predicate<PointOfInterestType> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.func_221045_c() == POI_TYPES.get(name).poiType.func_221045_c());
 			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, ImmutableSet.of(), ImmutableSet.of());
 		});
 	}
@@ -74,7 +74,7 @@ import net.minecraft.util.SoundEvent;
 			}
 
 			PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateContainer().getValidStates()), 1, soundEvent, 1).setRegistryName("${villagerprofession.getModElement().getRegistryName()}");
-			event.getRegistry().register(poiType.func_221052_a(poiType));
+			event.getRegistry().register(poiType);
 			entry.getValue().poiType = poiType;
 		}
 	}
