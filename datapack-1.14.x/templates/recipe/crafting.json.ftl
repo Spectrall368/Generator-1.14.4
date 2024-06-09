@@ -7,7 +7,6 @@
         "type": "minecraft:crafting_shaped",
     </#if>
     <#if data.group?has_content>"group": "${data.group}",</#if>
-    "category": "${data.craftingBookCategory?lower_case}",
     <#if data.recipeShapeless>
         "ingredients": [
           <#assign ingredients = "">
