@@ -1,0 +1,1 @@
+new ReplaceBlockConfig(Lists.newArrayList(<#list input_list$target as target>${target}.getDefaultState()<#sep>,</#list>), Lists.newArrayList(<#list input_list$target as target>${target}.getDefaultState()<#sep>,</#list>))
