@@ -80,7 +80,6 @@ package ${package}.world.features;
 	</#if>
 <#elseif configuration == "OreFeatureConfig">
 	<#assign placementconfig = "Placement.COUNT_RANGE">
-</#if>
 <#elseif configuration == "ReplaceBlockConfig">
 	<#assign placementconfig = "Placement.EMERALD_ORE">
 </#if>
