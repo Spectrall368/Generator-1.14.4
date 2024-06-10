@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-Target(${input$target}), State(<#if !(input$state?contains("blockAt"))>${mappedBlockToBlockStateCode(input$state)}</#if>)
+Target(${input$target}), State(${mappedBlockToBlockStateCode(input$state)})
