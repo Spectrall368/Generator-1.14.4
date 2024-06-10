@@ -1,1 +1,1 @@
-<#if (128 + field$value) <= 256>${128 + field$value}<#else>256</#if>
+<#if (128 + value) <= 256>${128 + value}<#else>256</#if>
