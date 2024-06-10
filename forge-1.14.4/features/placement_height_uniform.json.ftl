@@ -1,1 +1,1 @@
-new CountRangeConfig(10, ${input$min}, ${input$min}, ${input$max}),
+new CountRangeConfig(?, ${input$min}, ${input$min}, ${input$max}),
