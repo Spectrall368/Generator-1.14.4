@@ -377,4 +377,4 @@ global_templates:
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
     condition: ${w.hasBlocksMineableWith('hoe')}
 
-field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor, generationShape]
+field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor]
