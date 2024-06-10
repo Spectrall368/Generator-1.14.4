@@ -9,7 +9,6 @@ return blockCriteria;
 <#assign firstNonBlockAtTarget = "?">
 <#list input_list$target as target>
     <#if !target?contains("blockAt")>
-        <#-- Questo è il primo valore che non contiene "blockAt" -->
         <#assign firstNonBlockAtTarget = target>
         <#break>
     </#if>
