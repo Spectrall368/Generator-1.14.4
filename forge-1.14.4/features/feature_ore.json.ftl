@@ -5,4 +5,4 @@ if(${target?keep_after("Target(")?keep_before("), State")})
   blockCriteria = true;
 </#list>
 return blockCriteria;
-}), Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before_last(")")}<#sep>,</#list>), ${field$size})
+}), Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before_last(")")}<#sep>,</#list>), ${field$size}) ${field$discardOnAirChance}
