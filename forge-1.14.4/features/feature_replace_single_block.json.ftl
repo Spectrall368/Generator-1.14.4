@@ -5,4 +5,4 @@
         <#break>
     </#if>
 </#list>
-new ReplaceBlockConfig(<#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if>, <#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if>)
+new ReplaceBlockConfig(<#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.STONE.getDefaultState()</#if>, <#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if>)
