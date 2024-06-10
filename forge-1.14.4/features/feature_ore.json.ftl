@@ -1,4 +1,4 @@
-<#assign chance = (field$discardOnAirChance * 64)?round>
+<#assign chance = (field$discardOnAirChance?number * 64)?round>
 new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
 boolean blockCriteria = false;
 <#list input_list$target as target>
