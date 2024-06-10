@@ -1,4 +1,1 @@
-<#assign minValue = input$min>
-<#assign maxValue = input$max>
-<#assign difference = maxValue?number - minValue?number>
-new DepthAverageConfig(?, ${difference}, ${difference}),
+new DepthAverageConfig(?, ${input$max} - ${input$min}, ${input$max} - ${input$min}),
