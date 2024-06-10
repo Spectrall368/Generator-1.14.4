@@ -6,4 +6,4 @@ if(${target?keep_after("Target(")?keep_before("), State")})
   blockCriteria = true;
 </#list>
 return blockCriteria;
-}), Lists.newArrayList(<#list input_list$target as target>${target?keep_after("State(")?keep_before_last(")")}<#sep>,</#list>), ${field$size}) ${chance}
+}), Lists.newArrayList(<#list input_list$target as target><#if !(input$target?contains("blockAt"))>${target?keep_after("State(")?keep_before_last(")")}</#if><#sep>,</#list>), ${field$size}) ${chance}
