@@ -1,1 +1,1 @@
-new TopSolidRangeConfig(${input$min}, ${input$max}),
+new CountRangeConfig(${field$discardOnAirChance}, ${input$min}, ${input$max}, ${field$size}),
