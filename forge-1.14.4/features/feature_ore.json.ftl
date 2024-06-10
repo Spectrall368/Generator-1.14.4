@@ -6,4 +6,12 @@ if(${target?keep_after("Target(")?keep_before("), State")})
   blockCriteria = true;
 </#list>
 return blockCriteria;
-}), Lists.newArrayList(<#list input_list$target as target><#if !(target?contains("blockAt"))>${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if><#sep>,</#list>), ${field$size}) ${chance}
+<#assign firstNonBlockAtTarget = "?">
+<#list input_list$target as target>
+    <#if !target?contains("blockAt")>
+        <#-- Questo è il primo valore che non contiene "blockAt" -->
+        <#assign firstNonBlockAtTarget = target>
+        <#break>
+    </#if>
+</#list>
+}), <#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if>, ${field$size}) ${chance}
