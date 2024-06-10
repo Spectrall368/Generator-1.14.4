@@ -82,11 +82,11 @@ package ${package}.world.features;
 	<#if placementcode.contains("CountRangeConfig")>
 		<#assign placementconfig = "Placement.COUNT_RANGE">
 		<#assign isworking = true>
-		<#assign placementcode = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before("),") + ")">
+		<#assign placementcode = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before("),")>
 		<#assign configurationcode = configurationcode?keep_before_last(" ")>
 	<#elseif placementcode.contains("DepthAverageConfig")>
 		<#assign placementconfig = "Placement.COUNT_DEPTH_AVERAGE">
-		<#assign placementcode = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before("),") + ")">
+		<#assign placementcode = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before("),")>
 		<#assign configurationcode = configurationcode?keep_before_last(" ")>
 		<#assign isworking = true>
 	</#if>
