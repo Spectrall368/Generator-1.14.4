@@ -24,3 +24,7 @@ MonsterRooms: MonsterRooms
 ReedsAndPumpkins: ReedsAndPumpkins
 TaigaRocks: TaigaRocks
 TallSeagrassLush: func_222320_ai
+
+# These are now part of other default features
+Lakes: Lakes
+OceanCaves: OceanCarvers
