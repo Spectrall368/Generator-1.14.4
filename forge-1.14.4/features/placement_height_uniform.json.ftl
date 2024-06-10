@@ -1,1 +1,1 @@
-new CountRangeConfig(${field$discardOnAirChance}, ${input$min}, ${input$max}, ${field$size}),
+new CountRangeConfig(10, ${input$min}, ${input$min}, ${input$max}),
