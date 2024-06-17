@@ -9,6 +9,7 @@
 				"z": "event.getEntity().posZ",
 				"world": "event.getEntity().world",
 				"entity": "event.getEntity()",
+				"damagesource": "event.getSource()",
 				"sourceentity": "event.getSource().getTrueSource()",
 				"event": "event"
 				}/>
