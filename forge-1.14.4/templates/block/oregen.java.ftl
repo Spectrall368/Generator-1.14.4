@@ -97,8 +97,14 @@ package ${package}.world.features.ores;
 					Biome.createDecoratedFeature(feature, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
 					boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
-						if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
-							blockCriteria = true;
+							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}").contains(blockAt.getBlock())))
+							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}").contains(blockAt.getBlock())))
+							<#else>
+								if(blockAt == ${mappedBlockToBlockStateCode(replacementBlock)})
+							</#if>
+									blockCriteria = true;
 					</#list>
 					return blockCriteria;
 				}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if><#else>DepthAverageConfig(${data.frequencyPerChunks}, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if> - <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if> - <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if></#if>)));
