@@ -139,7 +139,17 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		return ${containsAnyOfBlocks(data.blocksAffected "blockstate")} ? ${data.efficiency}f : 1;
+	<#list data.blocksAffected as restrictionBlock>
+		<#if restrictionBlock.getUnmappedValue().startsWith("TAG:")>
+			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${restrictionBlock.getUnmappedValue().replace("TAG:", "")}").contains(blockstate.getBlock())))
+		<#elseif generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}").contains(blockstate.getBlock())))
+		<#else>
+			if(blockstate == ${mappedBlockToBlockStateCode(restrictionBlock)})
+		</#if>
+                 	return ${data.efficiency}f;
+	</#list>
+		return 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
