@@ -16,12 +16,12 @@
     ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if semicolon>;</#if>
 </#macro>
 
-<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={} lie=false>
     <#if hasReturnValueOf(object, type)>
-        return <@procedureCode object dependencies/>
+        return <@procedureCode object dependencies !lie/><#if lie> != ActionResultType.FAIL;</#if>
     <#else>
         <@procedureCode object dependencies/>
-        return ${defaultResult};
+        return ${defaultResult}<#if lie> != ActionResultType.FAIL</#if>;
     </#if>
 </#macro>
 
