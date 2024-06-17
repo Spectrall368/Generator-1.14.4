@@ -62,7 +62,7 @@ OptionsSounds: OptionsSoundsScreen
 Pack: ResourcePacksScreen
 ReadBook: ReadBookScreen
 ServerList: ServerListScreen
-Settings: OptionsSubScreen
+Settings: OptionsScreen
 ShareToLan: ShareToLanScreen
 SleepInMultiplayer: SleepInMultiplayerScreen
 Stats: StatsScreen
