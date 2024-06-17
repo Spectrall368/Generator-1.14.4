@@ -147,7 +147,7 @@ public class ${name}Item extends Item {
 		<#else>
 			if(blockstate == ${mappedBlockToBlockStateCode(restrictionBlock)})
 		</#if>
-                 	return ${data.efficiency}f;
+	                 	return ${data.efficiency}f;
 	</#list>
 		return 1;
 	}
