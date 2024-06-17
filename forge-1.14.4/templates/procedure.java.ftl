@@ -32,7 +32,6 @@
 package ${package}.procedures;
 
 import net.minecraftforge.eventbus.api.Event;
-
 <#assign nullableDependencies = []/>
 <#list dependencies as dependency>
 	<#if dependency.getType(generator.getWorkspace()) != "double"
@@ -42,11 +41,11 @@ import net.minecraftforge.eventbus.api.Event;
 		&& dependency.getType(generator.getWorkspace()) != "ActionResultType"
 		&& dependency.getType(generator.getWorkspace()) != "boolean"
 		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSource>"
-		&& dependency.getType(generator.getWorkspace()) != "int">
+		&& dependency.getType(generator.getWorkspace()) != "int"
+		&& dependency.getType(generator.getWorkspace()) != "DamageSource">
 		<#assign nullableDependencies += [dependency.getName()]/>
 	</#if>
 </#list>
-
 <#compress>
 
 <#if trigger_code?has_content>
@@ -54,7 +53,6 @@ ${trigger_code}
 <#else>
 public class ${name}Procedure {
 </#if>
-
 	<#if trigger_code?has_content>
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(
 		<#list dependencies as dependency>
