@@ -1,5 +1,8 @@
 _default:
-  - CoralClawFeature
+  - Feature<NoFeatureConfig>
+  - NoFeatureConfig
+feature_no_op:
+  - Feature<NoFeatureConfig>
   - NoFeatureConfig
 feature_lake:
   - LakesFeature
