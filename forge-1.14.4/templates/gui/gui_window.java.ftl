@@ -84,6 +84,16 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		super.render(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
 
+		<#list data.getComponentsOfType("Tooltip") as component>
+			<#assign x = (component.x - mx/2)?int>
+			<#assign y = (component.y - my/2)?int>
+			<#if hasProcedure(component.displayCondition)>
+				if (<@procedureOBJToConditionCode component.displayCondition/>)
+			</#if>
+				if (mouseX > guiLeft + ${x} && mouseX < guiLeft + ${x + component.width} && mouseY > guiTop + ${y} && mouseY < guiTop + ${y + component.height})
+					this.renderHoveredToolTip(<#if hasProcedure(component.text)>I18n.format(<@procedureOBJToStringCode component.text/>)<#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
+		</#list>
+
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(mouseX, mouseY, partialTicks);
 		</#list>
