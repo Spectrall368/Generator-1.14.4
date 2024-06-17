@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../mcitems.java.ftl">
 <#include "../procedures.java.ftl">
 package ${package}.item;
 
@@ -37,6 +38,8 @@ public class ${name}Item extends Item {
 	public ${name}Item() {
 		super(new Item.Properties().group(${data.igniterTab}).maxDamage(64));
 	}
+
+	<@addSpecialInformation data.specialInformation/>
 
 	@Override public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity entity = context.getPlayer();
