@@ -35,7 +35,7 @@ package ${package}.world.features.plants;
 <#assign configuration = "NoFeatureConfig">
 <#assign featurename = "Feature<NoFeatureConfig>">
 <#if data.plantType == "normal">
-	<#if data.staticPlantGenerationType != "Flower">
+	<#if data.generationType != "Flower">
 		<#assign configuration = "GrassFeatureConfig">
 		<#assign featurename = "GrassFeature">
 	<#else>
@@ -56,7 +56,7 @@ package ${package}.world.features.plants;
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${featurename}(${configuration}::deserialize) {
 			<#if data.plantType == "normal">
-				<#if data.staticPlantGenerationType == "Flower">
+				<#if data.generationType == "Flower">
 				@Override public BlockState getRandomFlower(Random random, BlockPos pos) {
       					return ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState();
    				}
@@ -149,7 +149,7 @@ package ${package}.world.features.plants;
 						continue;
 				</#if>
 
-				<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.generationType == "Grass")>
+				<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				    new <#if data.plantType == "normal">GrassFeatureConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>NoFeatureConfig()</#if>,
 						Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
