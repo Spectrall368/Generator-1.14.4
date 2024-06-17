@@ -1,6 +1,5 @@
 <#-- @formatter:off -->
 <#macro procedureDependenciesCode requiredDependencies dependencies={}>
-<#compress>
     <#assign deps_filtered = [] />
     <#list requiredDependencies as dependency>
         <#list dependencies as name, value>
@@ -11,23 +10,18 @@
     </#list>
 
     <#list deps_filtered as value>${value}<#if value?has_next>,</#if></#list>
-</#compress>
 </#macro>
 
-<#macro procedureCode object dependencies={} lie=false>
-    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if lie> != ActionResultType.FAIL</#if>;
+<#macro procedureCode object dependencies={} semicolon=true>
+    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if semicolon>;</#if>
 </#macro>
 
-<#macro procedureCodeWithOptResult object type defaultResult dependencies={} lie=false>
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
     <#if hasReturnValueOf(object, type)>
-            return <@procedureCode object dependencies lie/>
+        return <@procedureCode object dependencies/>
     <#else>
         <@procedureCode object dependencies/>
-        <#if lie>
-        return ${defaultResult} != ActionResultType.FAIL;
-        <#else>
         return ${defaultResult};
-        </#if>
     </#if>
 </#macro>
 
