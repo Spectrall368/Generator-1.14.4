@@ -70,3 +70,5 @@ VideoSettings: VideoSettingsScreen
 Working: WorkingScreen
 WorldLoadProgress: WorldLoadProgressScreen
 WorldSelection: WorldSelectionScreen
+Win: WinGameScreen
+Advancements: AdvancementsScreen
