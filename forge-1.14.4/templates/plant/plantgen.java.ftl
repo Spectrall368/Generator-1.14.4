@@ -42,7 +42,7 @@ package ${package}.world.features.plants;
 		<#assign featurename = "FlowersFeature">
 	</#if>
 <#elseif data.plantType == "double">
-	<#if data.doublePlantGenerationType == "Flower">
+	<#if data.generationType == "Flower">
 		<#assign configuration = "DoublePlantConfig">
 		<#assign featurename = "DoublePlantFeature">
 	</#if>
@@ -111,7 +111,7 @@ package ${package}.world.features.plants;
       					}
       					return generated > 0;
 					<#elseif data.plantType == "double">
-                        			<#if data.doublePlantGenerationType == "Flower">
+                        			<#if data.generationType == "Flower">
                 	    			return super.place(world, generator, random, pos, config);
                 	    			<#else>
                 	    			for (BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES)) && pos.getY() > 0; blockstate = world.getBlockState(pos)) {
@@ -149,7 +149,7 @@ package ${package}.world.features.plants;
 						continue;
 				</#if>
 
-				<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
+				<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.generationType == "Grass")>
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				    new <#if data.plantType == "normal">GrassFeatureConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>NoFeatureConfig()</#if>,
 						Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
