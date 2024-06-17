@@ -3,7 +3,7 @@
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
 	<#if procedure?has_content>
-		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> level, List<ITextComponent> list, ITooltipFlag flag) {
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
 		super.addInformation(itemstack, level, list, flag);
 		<#list procedure as entry>
 			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
@@ -437,7 +437,7 @@
 	"hitX": "hit.getHitVec().x()",
 	"hitY": "hit.getHitVec().y()",
 	"hitZ": "hit.getHitVec().z()"
-	}, true/>
+	}, true, true/>
 }
 </#if>
 </#macro>
