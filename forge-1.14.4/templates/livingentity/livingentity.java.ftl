@@ -255,8 +255,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				"y": "this.posY",
 				"z": "this.posZ",
 				"entity": "this",
-				"world": "this.world",
-				"damagesource": "this.getLastDamageSource()"
+				"world": "this.world"
 			}/>
 		</#if>
 	}
@@ -274,8 +273,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				"z": "this.posZ",
 				"entity": "this",
 				"world": "this.world",
-				"sourceentity": "source.getTrueSource()",
-				"damagesource": "source"
+				"sourceentity": "source.getTrueSource()"
 			}/>
 		</#if>
 		<#if data.immuneToArrows>
@@ -345,8 +343,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			"z": "this.posZ",
 			"sourceentity": "source.getTrueSource()",
 			"entity": "this",
-			"world": "this.world",
-			"damagesource": "source"
+			"world": "this.world"
 		}/>
 	}
     </#if>
@@ -513,8 +510,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			"z": "this.posZ",
 			"entity": "entity",
 			"sourceentity": "this",
-			"world": "this.world",
-			"damagesource": "entity.getLastDamageSource()"
+			"world": "this.world"
 		}/>
 	}
     </#if>
