@@ -54,7 +54,9 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
 	private boolean bound = false;
-	private Block ownerBlock = null;
+	private Supplier<Boolean> boundItemMatcher = null;
+	private Entity boundEntity = null;
+	private BlockEntity boundBlockEntity = null;
 
 	public ${name}Menu(int id, PlayerInventory inv, PacketBuffer extraData) {
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
@@ -77,32 +79,27 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 			if (pos != null) {
 				if (extraData.readableBytes() == 1) { // bound to item
 					byte hand = extraData.readByte();
-					ItemStack itemstack;
-					if(hand == 0)
-						itemstack = this.entity.getHeldItemMainhand();
-					else
-						itemstack = this.entity.getHeldItemOffhand();
+					ItemStack itemstack = hand == 0 ? this.entity.getHeldItemMainhand() : this.entity.getHeldItemOffhand();
+					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getHeldItemMainhand() : this.entity.getHeldItemOffhand());
 					itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
 						this.internal = capability;
 						this.bound = true;
 					});
 				} else if (extraData.readableBytes() > 1) { // bound to entity
 					extraData.readByte(); // drop padding
-					Entity entity = world.getEntityByID(extraData.readVarInt());
-					if(entity != null)
-						entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
+					boundEntity = world.getEntityByID(extraData.readVarInt());
+					if(boundEntity != null)
+						boundEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
 				} else { // might be bound to block
-					TileEntity blockEntity = this.world.getTileEntity(pos);
-					if (blockEntity != null) {
-						this.ownerBlock = this.world.getBlockState(pos).getBlock();
-						blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
+					boundBlockEntity = this.world.getTileEntity(pos);
+					if (boundBlockEntity != null)
+						boundBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
-					}
 				}
 			}
 
@@ -183,8 +180,14 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 	}
 
 	@Override public boolean canInteractWith(PlayerEntity player) {
-		if (this.bound && this.ownerBlock != null)
-			return Container.isWithinUsableDistance(this.access, player, this.ownerBlock);
+		if (this.bound) {
+			if (this.boundItemMatcher != null)
+				return this.boundItemMatcher.get();
+			else if (this.boundBlockEntity != null)
+				return Container.isWithinUsableDistance(this.access, player, this.boundBlockEntity.getBlockState().getBlock());
+			else if (this.boundEntity != null)
+				return this.boundEntity.isAlive();
+		}
 		return true;
 	}
 
