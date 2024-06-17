@@ -47,12 +47,14 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 	public final World world;
 	public final PlayerEntity entity;
 	public int x, y, z;
+	private IWorldPosCallable access = IWorldPosCallable.DUMMY;
 
 	private IItemHandler internal;
 
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
 	private boolean bound = false;
+	private Block ownerBlock = null;
 
 	public ${name}Menu(int id, PlayerInventory inv, PacketBuffer extraData) {
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
@@ -68,6 +70,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 			this.x = pos.getX();
 			this.y = pos.getY();
 			this.z = pos.getZ();
+			access = IWorldPosCallable.of(world, pos);
 		}
 
 		<#if data.type == 1>
@@ -83,7 +86,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 						this.internal = capability;
 						this.bound = true;
 					});
-				} else if (extraData.readableBytes() > 1) {
+				} else if (extraData.readableBytes() > 1) { // bound to entity
 					extraData.readByte(); // drop padding
 					Entity entity = world.getEntityByID(extraData.readVarInt());
 					if(entity != null)
@@ -92,9 +95,10 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 							this.bound = true;
 						});
 				} else { // might be bound to block
-					TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
-					if (ent != null) {
-						ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
+					TileEntity blockEntity = this.world.getTileEntity(pos);
+					if (blockEntity != null) {
+						this.ownerBlock = this.world.getBlockState(pos).getBlock();
+						blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
@@ -179,6 +183,8 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 	}
 
 	@Override public boolean canInteractWith(PlayerEntity player) {
+		if (this.bound && this.ownerBlock != null)
+			return Container.isWithinUsableDistance(this.access, player, this.ownerBlock);
 		return true;
 	}
 
