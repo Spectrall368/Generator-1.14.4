@@ -149,7 +149,7 @@ package ${package}.world.features.plants;
 						continue;
 				</#if>
 
-				<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">
+				<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass")>
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				    new <#if data.plantType == "normal">GrassFeatureConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>NoFeatureConfig()</#if>,
 						Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
