@@ -32,6 +32,23 @@
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 package ${package}.world.features.ores;
+<#if data.maxGenerateHeight > 256>
+	<#assign maxGenerateHeight = 256>
+<#elseif data.maxGenerateHeight < 0>
+	<#assign maxGenerateHeight = 0>
+<#else>
+	<#assign maxGenerateHeight = data.maxGenerateHeight>
+</#if>
+<#if data.minGenerateHeight > 256>
+	<#assign minGenerateHeight = 256>
+<#elseif data.minGenerateHeight < 0>
+	<#assign minGenerateHeight = 0>
+<#else>
+	<#assign minGenerateHeight = data.minGenerateHeight>
+</#if>
+<#if data.generationShape != "UNIFORM">
+	<#assign averageHeight = (maxGenerateHeight + minGenerateHeight) / 2>
+</#if>
 
 @Mod.EventBusSubscriber public class ${name}Feature {
 
@@ -98,16 +115,16 @@ package ${package}.world.features.ores;
 					boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}").contains(blockAt.getBlock())))
+								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}")).contains(blockAt.getBlock()))
 							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}").contains(blockAt.getBlock())))
+								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")).contains(blockAt.getBlock()))
 							<#else>
 								if(blockAt == ${mappedBlockToBlockStateCode(replacementBlock)})
 							</#if>
 									blockCriteria = true;
 					</#list>
 					return blockCriteria;
-				}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if><#else>DepthAverageConfig(${data.frequencyPerChunks}, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if> - <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if>, <#if data.maxGenerateHeight gt 256>256<#elseif data.maxGenerateHeight lt 0>0<#else>${data.maxGenerateHeight}</#if> - <#if data.minGenerateHeight gt 256>256<#elseif data.minGenerateHeight lt 0>0<#else>${data.minGenerateHeight}</#if></#if>)));
+				}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, ${minGenerateHeight}, ${minGenerateHeight}, ${maxGenerateHeight}<#else>DepthAverageConfig(${data.frequencyPerChunks}, ${averageHeight}, ${averageHeight}</#if>)));
 			}
 		}
 	}
