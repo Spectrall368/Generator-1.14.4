@@ -141,9 +141,9 @@ public class ${name}Item extends Item {
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 	<#list data.blocksAffected as restrictionBlock>
 		<#if restrictionBlock.getUnmappedValue().startsWith("TAG:")>
-			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${restrictionBlock.getUnmappedValue().replace("TAG:", "")}").contains(blockstate.getBlock())))
+			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${restrictionBlock.getUnmappedValue().replace("TAG:", "")}")).contains(blockstate.getBlock()))
 		<#elseif generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}").contains(blockstate.getBlock())))
+			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")).contains(blockstate.getBlock()))
 		<#else>
 			if(blockstate == ${mappedBlockToBlockStateCode(restrictionBlock)})
 		</#if>
