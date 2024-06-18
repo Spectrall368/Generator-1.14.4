@@ -114,9 +114,8 @@ package ${package}.world.features.plants;
                         			<#if data.generationType == "Flower">
                 	    			return super.place(world, generator, random, pos, config);
                 	    			<#else>
-                	    			for (BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES)) && pos.getY() > 0; blockstate = world.getBlockState(pos)) {
+                	    			for (BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES)) && pos.getY() > 0; blockstate = world.getBlockState(pos))
                         				pos = pos.down();
-                        			}
                         			int i = 0;
                         			for (int j = 0; j < 128; ++j) {
                         				BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4), random.nextInt(8) - random.nextInt(8));
@@ -152,12 +151,12 @@ package ${package}.world.features.plants;
 				<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass")>
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				    new <#if data.plantType == "normal">GrassFeatureConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>NoFeatureConfig()</#if>,
-						Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
+						<#if !data.generateAtAnyHeight>Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks}<#else>Placement.HELL_FIRE, new FrequencyConfig(${data.frequencyOnChunks}</#if>)
 				));
 				<#else>
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				<#if data.plantType == "double">new DoublePlantConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>IFeatureConfig.NO_FEATURE_CONFIG</#if>,
-						Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
+						<#if !data.generateAtAnyHeight>Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if><#else>Placement.HELL_FIRE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
 				));
 				</#if>
 			}
