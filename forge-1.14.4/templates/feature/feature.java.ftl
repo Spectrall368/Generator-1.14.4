@@ -35,17 +35,14 @@ package ${package}.world.features;
 <#assign configuration = generator.map(featuretype, "features", 1)>
 <#assign placementconfig = "Placement.NOPE">
 <#assign isworking = false>
-<#if placementcode.contains("LAVA") && configuration == "LakesConfig">
-	<#if placementcode.contains("ChanceConfig")>
-		<#assign placementconfig = "Placement.LAVA_LAKE">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new LakeChanceConfig")>
-		<#assign isworking = true>
-	</#if>
 <#elseif configuration == "LakesConfig">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementconfig = "Placement.WATER_LAKE">
 		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new LakeChanceConfig")>
 		<#assign isworking = true>
+	</#if>
+	<#if placementcode.contains("LAVA")>
+		<#assign placementconfig = "Placement.LAVA_LAKE">
 	</#if>
 <#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig">
 	<#if placementcode.contains("ChanceConfig")>
