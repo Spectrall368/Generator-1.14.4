@@ -48,6 +48,7 @@ package ${package}.world.features.ores;
 </#if>
 <#if data.generationShape != "UNIFORM">
 	<#assign averageHeight = (maxGenerateHeight + minGenerateHeight) / 2>
+	<#assign averageHeight = averageHeight?int>
 </#if>
 
 @Mod.EventBusSubscriber public class ${name}Feature {
