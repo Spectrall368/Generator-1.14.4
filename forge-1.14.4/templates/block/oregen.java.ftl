@@ -32,16 +32,16 @@
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 package ${package}.world.features.ores;
-<#if data.maxGenerateHeight > 256>
+<#if data.maxGenerateHeight gt 256>
 	<#assign maxGenerateHeight = 256>
-<#elseif data.maxGenerateHeight < 0>
+<#elseif data.maxGenerateHeight lt 0>
 	<#assign maxGenerateHeight = 0>
 <#else>
 	<#assign maxGenerateHeight = data.maxGenerateHeight>
 </#if>
-<#if data.minGenerateHeight > 256>
+<#if data.minGenerateHeight gt 256>
 	<#assign minGenerateHeight = 256>
-<#elseif data.minGenerateHeight < 0>
+<#elseif data.minGenerateHeight lt 0>
 	<#assign minGenerateHeight = 0>
 <#else>
 	<#assign minGenerateHeight = data.minGenerateHeight>
