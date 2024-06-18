@@ -112,7 +112,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
 				if (mouseX > guiLeft + ${x} && mouseX < guiLeft + ${x + component.width} && mouseY > guiTop + ${y} && mouseY < guiTop + ${y + component.height})
-					this.renderHoveredToolTip(<#if hasProcedure(component.text)>I18n.format(<@procedureOBJToStringCode component.text/>)<#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
+					this.renderTooltip(<#if hasProcedure(component.text)>I18n.format(<@procedureOBJToStringCode component.text/>)<#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
 		</#list>
 	}
 
