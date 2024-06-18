@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../mcitems.java.ftl">
+<#include "../triggers.java.ftl">
 <#include "../procedures.java.ftl">
 package ${package}.item;
 
