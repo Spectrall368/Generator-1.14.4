@@ -49,3 +49,6 @@ feature_replace_single_block:
 feature_simple_random_selector:
   - SingleRandomFeature
   - SingleRandomFeatureConfig
+feature_tree_simple:
+  - AbstractTreeFeature
+  - NoFeatureConfig
