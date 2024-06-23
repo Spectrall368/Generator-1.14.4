@@ -145,7 +145,10 @@ package ${package}.world.structure;
 
 		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if restrictionBiome.canProperlyMap() && !restrictionBiome.getUnmappedValue().startsWith("TAG:")>
+				<#if data.restrictionBiomes?has_content>
+					boolean biomeCriteria = false;
+					<#list data.restrictionBiomes as restrictionBiome>
+						<#if restrictionBiome.canProperlyMap() && !restrictionBiome.getUnmappedValue().startsWith("TAG:")>
 						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
 							biomeCriteria = true;
 						</#if>
