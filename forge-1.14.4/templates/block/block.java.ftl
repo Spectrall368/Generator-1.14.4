@@ -184,7 +184,7 @@ public class ${name}Block extends
    	}
 	</#if>
 
-	<@addSpecialInformation data.specialInfo, true/>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 	<#if data.transparencyType != "SOLID">
