@@ -136,4 +136,4 @@ localizationkeys:
     mapto: bootsName
     condition: enableBoots
 
-field_exclusions: [knockbackResistance, helmetImmuneToFire, bodyImmuneToFire, leggingsImmuneToFire, bootsImmuneToFire]
+field_exclusions: [knockbackResistance, helmetImmuneToFire, bodyImmuneToFire, leggingsImmuneToFire, bootsImmuneToFire, helmetPiglinNeutral, bodyPiglinNeutral, leggingsPiglinNeutral, bootsPiglinNeutral]
