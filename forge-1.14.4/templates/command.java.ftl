@@ -35,23 +35,17 @@ package ${package}.command;
 @Mod.EventBusSubscriber<#if data.type == "CLIENTSIDE">(value = Dist.CLIENT)</#if>
 public class ${name}Command {
 
-	<#if data.type == "CLIENTSIDE">
 		@SubscribeEvent public static void registerCommand(FMLServerStartingEvent event) {
-			<@commandRegistrationCode/>
-		}
-	<#else>
-		@SubscribeEvent public static void registerCommand(FMLServerStartingEvent event) { //WIP
 			<#if data.type == "MULTIPLAYER_ONLY">
-				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED)
+				if (event.getCommandManager() == Commands(true))
 					<@commandRegistrationCode/>
-			<#elseif data.type == "SINGLEPLAYER_ONLY">
-				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED)
+			<#elseif data.type == "SINGLEPLAYER_ONLY" || data.type == "CLIENTSIDE">
+				if (event.getCommandManager() == Commands(false))
 					<@commandRegistrationCode/>
 			<#else>
 				<@commandRegistrationCode/>
 			</#if>
 		}
-	</#if>
 
 }
 
