@@ -85,14 +85,6 @@ package ${package}.world.features.plants;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasProcedure(data.generateCondition)>
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					if (!<@procedureOBJToConditionCode data.generateCondition/>)
-						return false;
-					</#if>
-
 					<#if data.plantType == "growapable">
 					int generated = 0;
       					for(int j = 0; j < ${data.frequencyOnChunks}; ++j) {
