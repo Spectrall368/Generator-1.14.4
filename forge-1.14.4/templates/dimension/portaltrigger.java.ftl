@@ -29,8 +29,8 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../triggers.java.ftl">
 <#include "../procedures.java.ftl">
+<#include "../triggers.java.ftl">
 package ${package}.item;
 
 public class ${name}Item extends Item {
@@ -39,7 +39,7 @@ public class ${name}Item extends Item {
 		super(new Item.Properties().group(${data.igniterTab}).maxDamage(64));
 	}
 
-	<@addSpecialInformation data.specialInfo/>
+	<@addSpecialInformation data.specialInformation/>
 
 	@Override public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity entity = context.getPlayer();
