@@ -6,10 +6,12 @@
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
 		super.addInformation(itemstack, world, list, flag);
 		<#if hasProcedure(procedure)>
+			Entity entity = Minecraft.getInstance().player;
 			list.add(new StringTextComponent(<@procedureCode procedure, {
 				"x": "entity != null ? entity.getX() : 0.0",
 				"y": "entity != null ? entity.getY() : 0.0",
 				"z": "entity != null ? entity.getZ() : 0.0",
+				"entity": "entity",
 				"world": "world instanceof World ? (LevelAccessor) world : null",
 				"itemstack": "itemstack"
 			}, false/>));
@@ -203,6 +205,7 @@
 </#macro>
 
 <#macro hasGlow procedure="">
+<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
 		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
@@ -221,6 +224,7 @@
 		return true;
 	</#if>
 }
+</#if>
 </#macro>
 
 <#-- Armor triggers -->
