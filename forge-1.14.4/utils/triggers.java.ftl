@@ -2,6 +2,27 @@
 
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
+	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
+		super.addInformation(itemstack, world, list, flag);
+		<#if hasProcedure(procedure)>
+			list.add(new StringTextComponent(<@procedureCode procedure, {
+				"x": "entity != null ? entity.getX() : 0.0",
+				"y": "entity != null ? entity.getY() : 0.0",
+				"z": "entity != null ? entity.getZ() : 0.0",
+				"world": "world instanceof World ? (LevelAccessor) world : null",
+				"itemstack": "itemstack"
+			}, false/>));
+		<#else>
+			<#list procedure.getFixedValue() as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		</#if>
+		}
+	</#if>
+</#macro>
+
+<#macro addSpecialInformation procedure="" isBlock=false>
 	<#if procedure?has_content>
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, <#if isBlock>IBlockReader<#else>World</#if> world, List<ITextComponent> list, ITooltipFlag flag) {
 		super.addInformation(itemstack, world, list, flag);
