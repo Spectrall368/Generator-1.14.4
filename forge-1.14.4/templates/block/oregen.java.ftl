@@ -79,6 +79,7 @@ package ${package}.world.features.ores;
 								if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("is_")}")))
 									dimensionCriteria = true;
 							</#if>
+						</#if>
 					</#list>
 				</#if>
 
