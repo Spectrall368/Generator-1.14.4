@@ -28,7 +28,7 @@ description="${settings.getDescription()}"
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[${generator.getGeneratorMinecraftVersion()}]"
     ordering="AFTER"
     side="<#if settings.isServerSideOnly()>SERVER<#else>BOTH</#if>"
 
