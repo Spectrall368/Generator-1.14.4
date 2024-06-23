@@ -174,7 +174,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			<#if component.isUndecorated>
 			this.font.drawStringWithShadow(
 				<#if hasProcedure(component.displayCondition)><@procedureOBJToStringCode component.displayCondition/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, -12829636);
+				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, -1);
 			</#if>
 		</#list>
 	}
