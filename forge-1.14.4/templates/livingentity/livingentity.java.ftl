@@ -326,7 +326,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				return false;
 		</#if>
 		<#if data.immuneToAnvil>
-			if (source == DamageSource.ANVIL)
+			if (damagesource == DamageSource.ANVIL)
 				return false;
 		</#if>
 		<#if data.immuneToDragonBreath>
