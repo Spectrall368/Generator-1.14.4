@@ -314,8 +314,8 @@ public class ${name}Item extends Item {
 
 <#macro arrowShootCode>
 	<#assign projectile = data.projectile.getUnmappedValue()>
-	ItemStack stack = findAmmo(player);
-	if (player.abilities.isCreativeMode || stack != ItemStack.EMPTY) {
+	ItemStack stack = findAmmo((ServerPlayerEntity) entity);
+	if (((ServerPlayerEntity) entity).abilities.isCreativeMode || stack != ItemStack.EMPTY) {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, random);
@@ -331,20 +331,20 @@ public class ${name}Item extends Item {
 		itemstack.damageItem(1, entity, e -> e.sendBreakAnimation(entity.getActiveHand()));
 		</#if>
 
-		if (player.abilities.isCreativeMode) {
+		if (((ServerPlayerEntity) entity).abilities.isCreativeMode) {
 			projectile.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
 		} else {
 			if (stack.isDamageable()) {
-				if (stack.attemptDamageItem(1, random, player)) {
+				if (stack.attemptDamageItem(1, random, ((ServerPlayerEntity) entity))) {
 					stack.shrink(1);
 					stack.setDamage(0);
 					if (stack.isEmpty())
-						player.inventory.deleteStack(stack);
+						((ServerPlayerEntity) entity).inventory.deleteStack(stack);
 				}
 			} else {
 				stack.shrink(1);
 				if (stack.isEmpty())
-				   player.inventory.deleteStack(stack);
+				   ((ServerPlayerEntity) entity).inventory.deleteStack(stack);
 			}
 		}
 
