@@ -31,8 +31,6 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 package ${package}.client.gui;
-<#assign mx = data.W - data.width>
-<#assign my = data.H - data.height>
 
 public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
@@ -91,14 +89,14 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign followMouse = component.followMouseMovement>
-			<#assign x = (component.x - mx/2)?int>
-			<#assign y = (component.y - my/2)?int>
+			<#assign x = component.gx(data.width)>
+			<#assign y = component.gy(data.height)>
 			if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity) {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				InventoryScreen.drawEntityOnScreen(this.guiLeft + ${x + 11}, this.guiTop + ${y + 21}, ${component.scale},
-					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.guiLeft + ${x + 11} - mouseX) / 40.0)</#if>,
+				InventoryScreen.drawEntityOnScreen(this.guiLeft + ${x + 10}, this.guiTop + ${y + 20}, ${component.scale},
+					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
 					<#if followMouse>(float) Math.atan((this.guiTop + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
 					((LivingEntity) <@procedureOBJToConditionCode component.entityModel/>)
 				);
@@ -108,8 +106,8 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		this.renderHoveredToolTip(mouseX, mouseY);
 
 		<#list data.getComponentsOfType("Tooltip") as component>
-			<#assign x = (component.x - mx/2)?int>
-			<#assign y = (component.y - my/2)?int>
+			<#assign x = component.gx(data.width)>
+			<#assign y = component.gy(data.height)>
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
@@ -131,7 +129,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 				Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-				this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
+				this.blit(this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 			<#if hasProcedure(component.displayCondition)>}</#if>
@@ -168,7 +166,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			</#if>
 			this.font.drawString(
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()});
 		</#list>
 		<#list data.getComponentsOfType("Button") as component>
 			<#if component.isUndecorated>
@@ -190,17 +188,12 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		this.minecraft.keyboardListener.enableRepeatEvents(true);
 
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-			${component.width}, ${component.height}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"))
+			${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${component.gx(data.width) + 1}, this.guiTop + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"))
 			<#if component.placeholder?has_content>
 			{
-				{
-					setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
-				}
-
 				@Override public void writeText(String text) {
 					super.writeText(text);
-
 					if (getText().isEmpty())
 						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
 					else
@@ -209,7 +202,6 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 				@Override public void setCursorPosition(int pos) {
 					super.setCursorPosition(pos);
-
 					if (getText().isEmpty())
 						setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
 					else
@@ -217,6 +209,9 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				}
 			}
 			</#if>;
+			<#if component.placeholder?has_content>
+			${component.getName()}.setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
+			</#if>
 			${component.getName()}.setMaxStringLength(32767);
 
 			guistate.put("text:${component.getName()}", ${component.getName()});
