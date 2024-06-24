@@ -36,7 +36,7 @@ package ${package}.item;
 
 <#compress>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
-		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "MultiTool">
+		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
 	public ${name}Item () {
 		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword"
@@ -79,12 +79,18 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 				new Item.Properties()
 				.group(${data.creativeTab})
-		<#elseif data.toolType == "Shears">
-			new ShearsItem(new Item.Properties()
+		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
+			new Item.Properties()
 				.group(${data.creativeTab})
 				.maxDamage(${data.usageCount}))
 		</#if>);
 	}
+
+	<#if data.toolType == "Shield" && data.repairItems?has_content>
+	@Override public boolean getIsRepairable(ItemStack itemstack, ItemStack repairitem) {
+		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+	}
+	</#if>
 
 	<#if data.toolType=="Shears">
 		@Override public int getItemEnchantability() {
@@ -104,12 +110,15 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		}
 
 		@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-			Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
-				if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-		         		multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
-		         		multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-		      		}
-			return multimap;
+			if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+				ImmutableMultimap.Builder<String, AttributeModifier> builder = ImmutableMultimap.builder();
+				builder.putAll(super.getAttributeModifiers(equipmentSlot));
+				builder.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
+				builder.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+				return builder.build();
+			}
+
+			return super.getAttributeModifiers(equipmentSlot);
 		}
 	</#if>
 
@@ -126,7 +135,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	<@commonMethods/>
-
 }
 <#elseif data.toolType=="Special">
 public class ${name}Item extends Item {
@@ -163,12 +171,15 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
 		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+			ImmutableMultimap.Builder<String, AttributeModifier> builder = ImmutableMultimap.builder();
+			builder.putAll(super.getAttributeModifiers(equipmentSlot));
+			builder.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
+			builder.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+			return builder.build();
 		}
-		return multimap;
+
+		return super.getAttributeModifiers(equipmentSlot);
 	}
 
 	<@commonMethods/>
