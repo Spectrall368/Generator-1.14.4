@@ -172,7 +172,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			<#if component.isUndecorated>
 			this.font.drawStringWithShadow(
 				<#if hasProcedure(component.displayCondition)><@procedureOBJToStringCode component.displayCondition/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, -1);
+				${component.gx(data.width)}, ${component.gy(data.height)}, -1);
 			</#if>
 		</#list>
 	}
@@ -253,8 +253,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
-			${component.getName()} = new CheckboxButton(
-			this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
+			${component.getName()} = new CheckboxButton(this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 					20, 20, I18n.format("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
 				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
 
