@@ -222,7 +222,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("Button") as component>
 			<#if !component.isUndecorated>
 				${component.getName()} = new Button(
-					this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+					this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 					${component.width}, ${component.height},
 					I18n.format("gui.${modid}.${registryname}.${component.getName()}"),
 					<@buttonOnClick component/>
@@ -237,7 +237,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("ImageButton") as component>
 			${component.getName()} = new ImageButton(
-				this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+				this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 				0, 0, ${component.getHeight(w.getWorkspace())},
 				new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
@@ -253,7 +253,8 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
-			${component.getName()} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+			${component.getName()} = new CheckboxButton(
+			this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 					20, 20, I18n.format("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
 				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
 
