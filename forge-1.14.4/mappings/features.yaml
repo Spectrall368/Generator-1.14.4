@@ -52,3 +52,9 @@ feature_simple_random_selector:
 feature_tree_simple:
   - AbstractTreeFeature
   - NoFeatureConfig
+feature_tree_spruce:
+  - AbstractTreeFeature
+  - NoFeatureConfig
+feature_tree_pine:
+  - AbstractTreeFeature
+  - NoFeatureConfig
