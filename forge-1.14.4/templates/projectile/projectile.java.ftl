@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ package ${package}.entity;
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem {
 
+	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
+ 
 	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, World world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, world);
 	}
@@ -58,19 +60,11 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
-		<#if !data.bulletItemTexture.isEmpty()>
-		return ${mappedMCItemToItemStackCode(data.bulletItemTexture, 1)};
-		<#else>
-		return ItemStack.EMPTY;
-		</#if>
+		return PROJECTILE_ITEM;
 	}
 
 	@Override protected ItemStack getArrowStack() {
-		<#if !data.ammoItem.isEmpty()>
-		return ${mappedMCItemToItemStackCode(data.ammoItem, 1)};
-		<#else>
-		return ItemStack.EMPTY;
-		</#if>
+		return PROJECTILE_ITEM;
 	}
 
 	@Override protected void arrowHit(LivingEntity entity) {
@@ -78,10 +72,10 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		entity.setArrowCountInEntity(entity.getArrowCountInEntity() - 1); <#-- #53957 -->
 	}
 
-	<#if hasProcedure(data.onBulletHitsPlayer)>
+	<#if hasProcedure(data.onHitsPlayer)>
 	@Override public void onCollideWithPlayer(PlayerEntity entity) {
 		super.onCollideWithPlayer(entity);
-		<@procedureCode data.onBulletHitsPlayer, {
+		<@procedureCode data.onHitsPlayer, {
 			"x": "this.posX",
 			"y": "this.posY",
 			"z": "this.posZ",
@@ -93,10 +87,10 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	}
 	</#if>
 
-	<#if hasProcedure(data.onBulletHitsEntity)>
+	<#if hasProcedure(data.onHitsEntity)>
 	@Override public void func_213868_a(EntityRayTraceResult entityHitResult) {
 		super.func_213868_a(entityHitResult);
-		<@procedureCode data.onBulletHitsEntity, {
+		<@procedureCode data.onHitsEntity, {
 			"x": "this.posX",
 			"y": "this.posY",
 			"z": "this.posZ",
@@ -111,11 +105,11 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	@Override public void tick() {
 		super.tick();
 
-		<#if hasProcedure(data.onBulletFlyingTick)>
-			<@procedureCode data.onBulletFlyingTick, {
-			  "x": "this.posX",
-			  "y": "this.posY",
-			  "z": "this.posZ",
+		<#if hasProcedure(data.onFlyingTick)>
+			<@procedureCode data.onFlyingTick, {
+			  	"x": "this.posX",
+			  	"y": "this.posY",
+			  	"z": "this.posZ",
 				"world": "this.world",
 				"entity": "this.getShooter()",
 				"immediatesourceentity": "this"
@@ -126,20 +120,26 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 			this.remove();
 	}
 
+ 	public static ${name}Entity shoot(World world, LivingEntity entity, Random source) {
+		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
+	}
+
 	public static ${name}Entity shoot(World world, LivingEntity entity, Random random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, world);
 		entityarrow.shoot(entity.getLook(1).x, entity.getLook(1).y, entity.getLook(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
-		entityarrow.setIsCritical(${data.bulletParticles});
+		entityarrow.setIsCritical(${data.showParticles});
 		entityarrow.setDamage(damage);
 		entityarrow.setKnockbackStrength(knockback);
-		<#if data.bulletIgnitesFire>
+		<#if data.igniteFire>
 			entityarrow.setFire(100);
 		</#if>
 		world.addEntity(entityarrow);
 
+		<#if data.actionSound.toString()?has_content>
 		world.playSound(null, entity.posX, entity.posY, entity.posZ, ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+			.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+   		</#if>
 
 		return entityarrow;
 	}
@@ -149,18 +149,20 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		double dx = target.posX - entity.posX;
 		double dy = target.posY + target.getEyeHeight() - 1.1;
 		double dz = target.posZ - entity.posZ;
-		entityarrow.shoot(dx, dy - entityarrow.posY + MathHelper.sqrt(dx * dx + dz * dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
+		entityarrow.shoot(dx, dy - entityarrow.posY + MathHelper.sqrt(dx * dx + dz * dz) * 0.2F, dz, ${data.power}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
-		entityarrow.setDamage(${data.bulletDamage});
-		entityarrow.setKnockbackStrength(${data.bulletKnockback});
-		entityarrow.setIsCritical(${data.bulletParticles});
-		<#if data.bulletIgnitesFire>
+		entityarrow.setDamage(${data.damage});
+		entityarrow.setKnockbackStrength(${data.knockback});
+		entityarrow.setIsCritical(${data.showParticles});
+		<#if data.igniteFire>
 			entityarrow.setFire(100);
 		</#if>
 		entity.world.addEntity(entityarrow);
+  		<#if data.actionSound.toString()?has_content>
 		entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
+    		</#if>
 
 		return entityarrow;
 	}
