@@ -18,6 +18,7 @@
   "transform": "forge:default-tool"
   <#else>
   "transform": "forge:default-item"
+  </#if>
 <#if data.getModels?? && data.getModels()?has_content>,
     "overrides": [
         <#list data.getModels() as model>
