@@ -122,6 +122,9 @@ public class ${JavaModName}Items {
 						<#else>0</#if>
 				);
 				</#list>
+			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
+				${item.getModElement().getRegistryNameUpper()}.get().addPropertyOverride(new ResourceLocation("blocking"),
+					Items.SHIELD.getPropertyGetter(new ResourceLocation("blocking")));
 			</#if>
 		</#list>
 	}
