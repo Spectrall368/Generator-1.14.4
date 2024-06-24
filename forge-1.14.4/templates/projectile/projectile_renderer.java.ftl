@@ -33,13 +33,13 @@ package ${package}.client.renderer;
 
 public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
+	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");
 
-	private final ${data.bulletModel} model;
+	private final ${data.entityModel} model;
 
 	public ${name}Renderer(EntityRendererManager context) {
 		super(context);
-		model = new ${data.bulletModel}();
+		model = new ${data.entityModel}();
 	}
 
 	@Override public void doRender(${name}Entity entityIn, double d, double d1, double d2, float f, float f1) {
@@ -48,7 +48,7 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 		GlStateManager.translatef((float) d, (float) d1, (float) d2);
 		GlStateManager.rotatef(f, 0, 1, 0);
 		GlStateManager.rotatef(90f - entityIn.prevRotationPitch - (entityIn.rotationPitch - entityIn.prevRotationPitch) * f1, 1, 0, 0);
-		EntityModel model = new ${data.bulletModel}();
+		EntityModel model = new ${data.entityModel}();
 		model.render(entityIn, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 	}
