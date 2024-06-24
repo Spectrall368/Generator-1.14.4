@@ -1,16 +1,18 @@
 <#include "procedures.java.ftl">
 .then(Commands.argument("arguments", StringArgumentType.greedyString()).executes(arguments -> {
-	ServerWorld world = arguments.getSource().getWorld();
+	World world = arguments.getSource().getWorld().getWorld();
 
 	double x = arguments.getSource().getPos().getX();
 	double y = arguments.getSource().getPos().getY();
 	double z = arguments.getSource().getPos().getZ();
 
 	Entity entity = arguments.getSource().getEntity();
-	if (entity == null)
-		entity = FakePlayerFactory.getMinecraft(world);
+	if (entity == null && world instanceof ServerWorld)
+		entity = FakePlayerFactory.getMinecraft((ServerWorld) world);
 
-	Direction direction = entity.getHorizontalFacing();
+	Direction direction = Direction.DOWN;
+ 	if (entity != null)
+		direction = entity.getHorizontalFacing();
 
 	HashMap<String, String> cmdparams = new HashMap<>();
 	int index = -1;
@@ -23,17 +25,19 @@
     return 0;
 }))
 .executes(arguments -> {
-	ServerWorld world = arguments.getSource().getWorld();
+	World world = arguments.getSource().getWorld().getWorld();
 
 	double x = arguments.getSource().getPos().getX();
 	double y = arguments.getSource().getPos().getY();
 	double z = arguments.getSource().getPos().getZ();
 
 	Entity entity = arguments.getSource().getEntity();
-	if (entity == null)
-		entity = FakePlayerFactory.getMinecraft(world);
+    	if (entity == null && world instanceof ServerWorld)
+        	entity = FakePlayerFactory.getMinecraft((ServerWorld) world);
 
-	Direction direction = entity.getHorizontalFacing();
+   	Direction direction = Direction.DOWN;
+    	if (entity != null)
+    		direction = entity.getHorizontalFacing();
 
 	HashMap<String, String> cmdparams = new HashMap<>();
 	int index = -1;
