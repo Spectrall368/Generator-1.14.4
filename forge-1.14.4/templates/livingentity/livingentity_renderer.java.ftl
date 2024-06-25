@@ -97,9 +97,64 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5F), new BipedModel(1.0F)));
 		</#if>
 
-		<#if data.mobModelGlowTexture?has_content>
-		this.addLayer(new ${name}EyesLayer<>(this));
-		</#if>
+		<#list data.modelLayers as layer>
+		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
+			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
+
+			<#compress>
+			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+				<#if hasProcedure(layer.condition)>
+				Level world = entity.world;
+				double x = entity.posX;
+				double y = entity.posY;
+				double z = entity.posZ;
+				if (<@procedureOBJToConditionCode layer.condition/>) {
+				</#if>
+
+				<#if layer.model != "Default">
+				EntityModel model = new ${layer.model}();
+				this.getEntityModel().setModelAttributes(model);
+				model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+				model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				</#if>
+
+				<#if layer.glow>
+				this.bindTexture(LAYER_TEXTURE);
+				GlStateManager.enableBlend();
+			      	GlStateManager.disableAlphaTest();
+			      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+			      	GlStateManager.disableLighting();
+			      	GlStateManager.depthMask(!entityIn.isInvisible());
+			      	int i = 61680;
+			      	int j = 61680;
+			      	int k = 0;
+			      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+			      	GlStateManager.enableLighting();
+			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			     	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+			      	gamerenderer.setupFogColor(true);
+				<#if layer.model != "Default">
+					model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				<#else>
+					this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				</#if>
+			      	gamerenderer.setupFogColor(false);
+			      	this.func_215334_a(entityIn);
+			      	GlStateManager.depthMask(true);
+			      	GlStateManager.disableBlend();
+			      	GlStateManager.enableAlphaTest();
+				</#if>
+
+				<#if hasProcedure(layer.condition)>}</#if>
+			}
+			</#compress>
+		
+			public boolean shouldCombineTextures() {
+				return false;
+			}
+		});
+		</#list>
 	}
 
 	<#if data.mobModelName == "Villager" || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
@@ -123,43 +178,6 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	@Override public ResourceLocation getEntityTexture(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
-
-    <#if data.mobModelGlowTexture?has_content>
-    @OnlyIn(Dist.CLIENT) private static class ${name}EyesLayer<T extends LivingEntity> extends LayerRenderer<T, ${model_}<T>> {
-        private static final ResourceLocation ${data.getModElement().getRegistryNameUpper()}_EYES = new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}");
-	
-        public ${name}EyesLayer(IEntityRenderer<T, ${model_}<T>> er) {
-		super(er);
-	}
-	
-	public void render(T entityIn, float l1, float l2, float l3, float l4, float l5, float l6, float l7) {
-		this.bindTexture(${data.getModElement().getRegistryNameUpper()}_EYES);
-		GlStateManager.enableBlend();
-	      	GlStateManager.disableAlphaTest();
-	      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-	      	GlStateManager.disableLighting();
-	      	GlStateManager.depthMask(!entityIn.isInvisible());
-	      	int i = 61680;
-	      	int j = 61680;
-	      	int k = 0;
-	      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
-	      	GlStateManager.enableLighting();
-	      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-	      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
-	      	gamerenderer.setupFogColor(true);
-	      	this.getEntityModel().render(entityIn, l1, l2, l4, l5, l6, l7);
-	      	gamerenderer.setupFogColor(false);
-	      	this.func_215334_a(entityIn);
-	      	GlStateManager.depthMask(true);
-	      	GlStateManager.disableBlend();
-	      	GlStateManager.enableAlphaTest();
-	}
-	
-	public boolean shouldCombineTextures() {
-		return false;
-	}
-    }
-    </#if>
 
 	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>
         @Override protected boolean isVisible(${name}Entity entity) {
