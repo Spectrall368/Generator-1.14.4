@@ -1,0 +1,1 @@
+/*@int*/(${input$entity} instanceof LivingEntity ? ((LivingEntity) ${input$entity}).getItemInUseMaxCount() : 0)
