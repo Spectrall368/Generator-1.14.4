@@ -1,0 +1,2 @@
+(${input$entity} instanceof LivingEntity && ((LivingEntity) ${input$entity}).world.getScoreboard().getPlayersTeam(((LivingEntity) ${input$entity}).getCachedUniqueIdString()) != null ?
+	((LivingEntity) ${input$entity}).world.getScoreboard().getPlayersTeam(((LivingEntity) ${input$entity}).getCachedUniqueIdString()).getName() : "")
