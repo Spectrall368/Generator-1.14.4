@@ -1,5 +1,5 @@
 global_templates:
-  - template: elementinits/damagetype.java.ftl
+  - template: elementinits/damagetypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDamageTypes.java"
 
 localizationkeys:
