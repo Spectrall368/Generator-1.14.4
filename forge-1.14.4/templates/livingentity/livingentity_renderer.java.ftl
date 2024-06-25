@@ -102,9 +102,21 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		</#if>
 	}
 
-	<#if data.mobModelName == "Villager">
-	@Override protected void preRenderCallback(${name}Entity villager, float f) {
-		GlStateManager.scalef(0.9375f, 0.9375f, 0.9375f);
+	<#if data.mobModelName == "Villager" || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
+	@Override protected void preRenderCallback(${name}Entity entity, float f) {
+		<#if hasProcedure(data.visualScale)>
+			World world = entity.world;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
+			GlStateManager.scalef(scale, scale, scale);
+		<#elseif data.visualScale?? && data.visualScale.getFixedValue() != 1>
+			GlStateManager.scalef(${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f);
+		</#if>
+		<#if data.mobModelName == "Villager">
+			GlStateManager.scalef(0.9375f, 0.9375f, 0.9375f);
+		</#if>
 	}
 	</#if>
 
