@@ -36,11 +36,11 @@ package ${package}.init;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DamageTypes {
 
 	<#list damagetypes as damageType>
-   <#if damageType.effects == "thorns" || damageType.scaling == "when_caused_by_living_non_player">
-    <#assign DamageS = "EntityDamageSource">
-  <#else>
-    <#assign DamageS = "DamageSource">
-  </#if>
+	   <#if damageType.effects == "thorns" || damageType.scaling == "when_caused_by_living_non_player">
+	    <#assign DamageS = "EntityDamageSource">
+	  <#else>
+	    <#assign DamageS = "DamageSource">
+	  </#if>
 		public static final ${DamageS} ${damageType.getModElement().getRegistryNameUpper()} = (new ${DamageS}("${damageType.getModElement()}"<#if damageType.effects == "thorns">, Entity</#if>))<#if damageType.scaling != "false">.setDifficultyScaled()</#if><#if damageType.effects == "burning">.setFireDamage()<#elseif damageType.effects == "thorns">.setIsThornsDamage()<#elseif damageType.effects == "drowning" || damageType.effects == "hurt">.setDamageBypassesArmor()</#if>;
 	</#list>
 }
