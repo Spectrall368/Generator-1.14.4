@@ -9,3 +9,5 @@ localizationkeys:
     mapto: itemDeathMessage
   - key: death.attack.@registryname.player
     mapto: playerDeathMessage
+
+field_exclusions: [exhaustion]
