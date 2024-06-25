@@ -152,7 +152,6 @@
             <#return "minecraft:air">
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "minecraft:air">
         <#if acceptTags>
             <#return "#" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case>
         <#else>
@@ -161,9 +160,8 @@
     <#else>
         <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
         <#if mapped.startsWith("#")>
-            <#return "minecraft:air">
-            <#if customelement?has_content>
-                <#return "#" + mapped>
+            <#if acceptTags>
+                <#return mapped>
             <#else>
                 <#return "minecraft:air">
             </#if>
