@@ -1,6 +1,5 @@
 _default: Ingame
 Ingame: Ingame
-Furnace: AbstractFurnaceScreen
 Anvil: AnvilScreen
 Beacon: BeaconScreen
 BlastFurnace: BlastFurnaceScreen
