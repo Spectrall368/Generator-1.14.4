@@ -16,7 +16,6 @@ Merchant: MerchantScreen
 ShulkerBox: ShulkerBoxScreen
 Smoker: SmokerScreen
 Stonecutter: StonecutterScreen
-CommandBlock: AbstractCommandBlockScreen
 AddServer: AddServerScreen
 Alert: AlertScreen
 ChatOptions: ChatOptionsScreen
