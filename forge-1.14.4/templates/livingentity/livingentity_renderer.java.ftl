@@ -98,6 +98,11 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		</#if>
 
 		<#list data.modelLayers as layer>
+		<#if layer.model == "Default">
+			<#assign lmodel = "this." + model>
+		<#else>
+			<#assign lmodel = model>
+		</#if>
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
 
@@ -110,17 +115,16 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				double z = entity.posZ;
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
+				this.bindTexture(LAYER_TEXTURE);
 
 				<#if layer.model != "Default">
 				EntityModel model = new ${layer.model}();
-				this.getEntityModel().setModelAttributes(model);
-				model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-				model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 				</#if>
+				this.getEntityModel().setModelAttributes(${lmodel});
+				${lmodel}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+				${lmodel}.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 				<#if layer.glow>
-				this.bindTexture(LAYER_TEXTURE);
 				GlStateManager.enableBlend();
 			      	GlStateManager.disableAlphaTest();
 			      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
@@ -144,13 +148,19 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	GlStateManager.depthMask(true);
 			      	GlStateManager.disableBlend();
 			      	GlStateManager.enableAlphaTest();
+				<#else>
+				<#if layer.model != "Default">
+					model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				<#else>
+					this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				</#if>
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
 			}
 			</#compress>
 		
-			public boolean shouldCombineTextures() {
+			@Override public boolean shouldCombineTextures() {
 				return false;
 			}
 		});
