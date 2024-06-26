@@ -125,7 +125,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	GlStateManager.disableAlphaTest();
 			      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
 			      	GlStateManager.disableLighting();
-			      	GlStateManager.depthMask(!entityIn.isInvisible());
+			      	GlStateManager.depthMask(!entity.isInvisible());
 			      	int i = 61680;
 			      	int j = 61680;
 			      	int k = 0;
@@ -140,7 +140,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 					this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 				</#if>
 			      	gamerenderer.setupFogColor(false);
-			      	this.func_215334_a(entityIn);
+			      	this.func_215334_a(entity);
 			      	GlStateManager.depthMask(true);
 			      	GlStateManager.disableBlend();
 			      	GlStateManager.enableAlphaTest();
