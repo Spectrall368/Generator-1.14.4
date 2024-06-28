@@ -33,7 +33,7 @@
     "model": "${modid}:models/item/${data.blockingModelName.split(":")[0]}.obj",
     "textures": {
         <@textures data.getBlockingTextureMap()/>
-        "particle": "${modid}:item/${data.texture}"
+        "particle": "${modid}:items/${data.texture}"
     },
     "transform": "forge:default-tool"
 </#if>
@@ -41,7 +41,7 @@
 <#macro textures textureMap>
     <#if textureMap??>
         <#list textureMap.entrySet() as texture>
-            "${texture.getKey()}": "${modid}:block/${texture.getValue()}",
+            "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
         </#list>
     </#if>
 </#macro>
