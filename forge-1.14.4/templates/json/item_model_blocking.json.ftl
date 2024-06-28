@@ -2,7 +2,7 @@
 <#if data.blockingRenderType == 0>
     "parent": "item/handheld",
     "textures": {
-        "layer0": "${modid}:item/${data.texture}"
+        "layer0": "${modid}:items/${data.texture}"
     },
     "display": {
         "thirdperson_righthand": {
@@ -38,7 +38,6 @@
     "transform": "forge:default-tool"
 </#if>
 }
-
 <#macro textures textureMap>
     <#if textureMap??>
         <#list textureMap.entrySet() as texture>
