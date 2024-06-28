@@ -49,9 +49,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 	</#list>
 
 	<#list data.getComponentsOfType("Button") as component>
-	<#if !component.isUndecorated>
 		Button ${component.getName()};
-	</#if>
 	</#list>
 
 	<#list data.getComponentsOfType("ImageButton") as component>
@@ -168,13 +166,6 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()});
 		</#list>
-		<#list data.getComponentsOfType("Button") as component>
-			<#if component.isUndecorated>
-			this.font.drawStringWithShadow(
-				<#if hasProcedure(component.displayCondition)><@procedureOBJToStringCode component.displayCondition/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${component.gx(data.width)}, ${component.gy(data.height)}, -1);
-			</#if>
-		</#list>
 	}
 
 	@Override public void removed() {
@@ -220,7 +211,6 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 		<#assign btid = 0>
 		<#list data.getComponentsOfType("Button") as component>
-			<#if !component.isUndecorated>
 				${component.getName()} = new Button(
 					this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 					${component.width}, ${component.height},
@@ -232,7 +222,6 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			this.addButton(${component.getName()});
 
 			<#assign btid +=1>
-			</#if>
 		</#list>
 
 		<#list data.getComponentsOfType("ImageButton") as component>
