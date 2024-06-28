@@ -102,9 +102,9 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
 		<#if layer.model == "Default">
 			final ${model_}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
-			<#assign model_ = "this." + "model">
-		<#else>
 			<#assign model_ = "this." + "MODEL">
+		<#else>
+			<#assign model_ = "this." + "model">
 		</#if>
 
 			<#compress>
