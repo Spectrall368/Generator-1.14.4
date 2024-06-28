@@ -104,7 +104,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			final ${model_}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
 			<#assign model_ = "this." + "MODEL">
 		<#else>
-			<#assign model_ = "this." + "model">
+			<#assign model_ = "model">
 		</#if>
 
 			<#compress>
