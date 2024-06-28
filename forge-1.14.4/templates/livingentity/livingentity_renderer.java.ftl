@@ -109,23 +109,25 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			<#compress>
 			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 				<#if hasProcedure(layer.condition)>
-				Level world = entity.world;
+				World world = entity.world;
 				double x = entity.posX;
 				double y = entity.posY;
 				double z = entity.posZ;
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
-				this.bindTexture(LAYER_TEXTURE);
 
 				<#if layer.model != "Default">
 				EntityModel model = new ${layer.model}();
 				</#if>
-				this.getEntityModel().setModelAttributes(${lmodel});
-				${lmodel}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-				${lmodel}.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
-				<#if layer.glow>
-				GlStateManager.enableBlend();
+				<#if !layer.glow>
+				this.getEntityModel().setModelAttributes(${model});
+         			${lmodel}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+         			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+         			this.bindTexture(LAYER_TEXTURE);
+         			${lmodel}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+				<#else>
+				this.bindTexture(LAYER_TEXTURE);
+			      	GlStateManager.enableBlend();
 			      	GlStateManager.disableAlphaTest();
 			      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
 			      	GlStateManager.disableLighting();
@@ -133,27 +135,19 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	int i = 61680;
 			      	int j = 61680;
 			      	int k = 0;
-			      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
+			      	GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
 			      	GlStateManager.enableLighting();
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-			     	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
+				${lmodel}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+        			this.getEntityModel().setModelAttributes(${lmodel});
+			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
-				<#if layer.model != "Default">
-					model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				<#else>
-					this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				</#if>
+			      	${lmodel}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 			      	gamerenderer.setupFogColor(false);
 			      	this.func_215334_a(entity);
 			      	GlStateManager.depthMask(true);
 			      	GlStateManager.disableBlend();
 			      	GlStateManager.enableAlphaTest();
-				<#else>
-				<#if layer.model != "Default">
-					model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				<#else>
-					this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				</#if>
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
@@ -161,7 +155,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			</#compress>
 		
 			@Override public boolean shouldCombineTextures() {
-				return false;
+				return true;
 			}
 		});
 		</#list>
