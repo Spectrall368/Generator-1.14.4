@@ -99,9 +99,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 
 		<#list data.modelLayers as layer>
 		<#if layer.model == "Default">
-			<#assign lmodel = "this." + model>
-		<#else>
-			<#assign lmodel = model>
+			<#assign model_ = "this." + model_>
 		</#if>
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
