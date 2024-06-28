@@ -60,6 +60,7 @@ package ${package}.world.features.ores;
 		<@break />
 	</#list>
 </#if>
+
 @Mod.EventBusSubscriber public class ${name}Feature {
 
 	private static Feature<OreFeatureConfig> feature = null;
