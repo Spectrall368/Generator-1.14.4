@@ -55,7 +55,7 @@ package ${package}.world.features.ores;
 	<#list data.restrictionBiomes as restrictionBiome>
 		<#if restrictionBiome?contains("#")>
 			<#assign cond = true>
-			 <@break />
+			 <#break>
 		</#if>
 		<@break />
 	</#list>
