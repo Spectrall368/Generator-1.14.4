@@ -144,7 +144,7 @@ public class ${name}Item extends Item {
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 	@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 		<#if data.enableRanged>
-		ActionResult<ItemStack> ar = ActionResult(ActionResultType.FAIL, entity.getHeldItem(hand));
+		ActionResult<ItemStack> ar = new ActionResult(ActionResultType.FAIL, entity.getHeldItem(hand));
 		<#else>
 		ActionResult<ItemStack> ar = super.onItemRightClick(world, entity, hand);
 		</#if>
@@ -162,7 +162,7 @@ public class ${name}Item extends Item {
 				}, false/>)
 				</#if>
 				if (entity.abilities.isCreativeMode || findAmmo(entity) != ItemStack.EMPTY) {
-					ar = ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
+					ar = new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
 					entity.setActiveHand(hand);
 				}
 			<#else>
@@ -319,7 +319,7 @@ public class ${name}Item extends Item {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, random);
-		<#elseif projectile.endsWith("ArrowEntity")>
+		<#elseif projectile.endsWith("ARROW")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity);
 			projectile.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0, 3.15f, 1.0F);
 			world.addEntity(projectile);
