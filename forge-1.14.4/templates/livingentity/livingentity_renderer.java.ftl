@@ -99,10 +99,11 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 
 		<#list data.modelLayers as layer>
 		<#if layer.model == "Default">
-			<#assign model_ = "this." + model_>
+			<#assign model_ = "this." + "MODEL">
 		</#if>
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
+			final ${model_}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
 
 			<#compress>
 			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
