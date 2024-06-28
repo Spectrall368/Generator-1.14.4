@@ -48,25 +48,25 @@ package ${package}.world.structure;
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 
-					<#if data.restrictionBiomes?has_content>
-						<#list data.restrictionBiomes as restrictionBiome>
-							<#if restrictionBiome.getUnmappedValue().startsWith("TAG:")>
-								<#if restrictionBiome == "is_overworld">
-									if(dimensionType == DimensionType.OVERWORLD)
-										dimensionCriteria = true;
-								<#elseif restrictionBiome == "is_nether">
-									if(dimensionType == DimensionType.THE_NETHER)
-										dimensionCriteria = true;
-								<#elseif restrictionBiome == "is_end">
-									if(dimensionType == DimensionType.THE_END)
-										dimensionCriteria = true;
-								<#else>
-									if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("is_")}")))
-										dimensionCriteria = true;
-								</#if>
+				<#if data.spawnBiomes?has_content>
+					<#list data.spawnBiomes as restrictionBiome>
+						<#if restrictionBiome?contains("#")>
+							<#if restrictionBiome == "#is_overworld">
+								if(dimensionType == DimensionType.OVERWORLD)
+									dimensionCriteria = true;
+							<#elseif restrictionBiome == "#is_nether">
+								if(dimensionType == DimensionType.THE_NETHER)
+									dimensionCriteria = true;
+							<#elseif restrictionBiome == "#is_end">
+								if(dimensionType == DimensionType.THE_END)
+									dimensionCriteria = true;
+							<#else>
+								if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("#is_")}")))
+									dimensionCriteria = true;
 							</#if>
-						</#list>
-					</#if>
+						</#if>
+					</#list>
+				</#if>
 
 					if(!dimensionCriteria)
 						return false;
@@ -76,7 +76,7 @@ package ${package}.world.structure;
 						for(int a = 0; a < count; a++) {
 							int i = ci + random.nextInt(16);
 							int k = ck + random.nextInt(16);
-							int j = world.getHeight(Heightmap.Type.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#elseif data.surfaceDetectionType=="First motion blocking block">OCEAN_FLOOR_WG</#if>, i, k);
+							int j = world.getHeight(Heightmap.Type.${data.surfaceDetectionType}, i, k);
 
 							<#if data.spawnLocation=="Ground">
 								j -= 1;
@@ -105,7 +105,7 @@ package ${package}.world.structure;
 								Mirror mirror = Mirror.NONE;
 							</#if>
 
-							BlockPos spawnTo = new BlockPos(i + ${data.spawnXOffset}, j + ${data.spawnHeightOffset}, k + ${data.spawnZOffset});
+							BlockPos spawnTo = new BlockPos(i, j, k);
 
 							int x = spawnTo.getX();
 							int y = spawnTo.getY();
@@ -145,9 +145,9 @@ package ${package}.world.structure;
 
 		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if data.restrictionBiomes?has_content>
+				<#if data.spawnBiomes?has_content>
 					boolean biomeCriteria = false;
-					<#list data.restrictionBiomes as restrictionBiome>
+					<#list data.spawnBiomes as restrictionBiome>
 						<#if restrictionBiome.canProperlyMap() && !restrictionBiome.getUnmappedValue().startsWith("TAG:")>
 						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
 							biomeCriteria = true;
@@ -157,7 +157,7 @@ package ${package}.world.structure;
 						continue;
 				</#if>
 	
-				biome.addFeature(GenerationStage.Decoration.<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES<#elseif data.spawnLocation=="Air">RAW_GENERATION<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>,
+				biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
 					Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 			}
 		}
