@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-<#list field_list$block as block>${mappedBlockToBlock(toMappedMCItem(block))}<#sep>,</#list>
+ImmutableList.of(<#list field_list$block as block>${mappedBlockToBlockStateCode(toMappedMCItem(block))}<#sep>,</#list>)
