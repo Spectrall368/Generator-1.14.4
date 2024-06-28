@@ -57,7 +57,7 @@ package ${package}.world.features.ores;
 			<#assign cond = true>
 			 <#break>
 		</#if>
-		<@break />
+		<#break>
 	</#list>
 </#if>
 
