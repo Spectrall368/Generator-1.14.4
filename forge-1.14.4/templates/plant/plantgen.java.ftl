@@ -47,6 +47,17 @@ package ${package}.world.features.plants;
 		<#assign featurename = "DoublePlantFeature">
 	</#if>
 </#if>
+<#assign cond = false>
+<#if data.restrictionBiomes?has_content>
+	<#list data.restrictionBiomes as restrictionBiome>
+		<#if restrictionBiome?contains("#")>
+			<#assign cond = true>
+			 <@break />
+		</#if>
+		<@break />
+	</#list>
+</#if>
+
 @Mod.EventBusSubscriber public class ${name}Feature {
 
 	private static Feature<${configuration}> feature = null;
@@ -63,10 +74,9 @@ package ${package}.world.features.plants;
 				</#if>
 			</#if>
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
+				<#if data.restrictionBiomes?has_content && cond>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
-
-				<#if data.restrictionBiomes?has_content>
 					<#list data.restrictionBiomes as restrictionBiome>
 						<#if restrictionBiome?contains("#")>
 							<#if restrictionBiome == "#is_overworld">
@@ -84,10 +94,10 @@ package ${package}.world.features.plants;
 							</#if>
 						</#if>
 					</#list>
-				</#if>
 
 					if(!dimensionCriteria)
 						return false;
+				</#if>
 
 					<#if data.plantType == "growapable">
 					int generated = 0;
@@ -132,7 +142,7 @@ package ${package}.world.features.plants;
 
 		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if data.restrictionBiomes?has_content>
+				<#if data.restrictionBiomes?has_content && !cond>
 					boolean biomeCriteria = false;
 					<#list data.restrictionBiomes as restrictionBiome>
 						<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
