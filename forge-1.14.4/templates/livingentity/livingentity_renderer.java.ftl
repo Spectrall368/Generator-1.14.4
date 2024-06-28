@@ -103,6 +103,8 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		<#if layer.model == "Default">
 			final ${model_}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
 			<#assign model_ = "this." + "model">
+		<#else>
+			<#assign model_ = "this." + "MODEL">
 		</#if>
 
 			<#compress>
