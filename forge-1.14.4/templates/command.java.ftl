@@ -31,32 +31,25 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 package ${package}.command;
-
 @Mod.EventBusSubscriber<#if data.type == "CLIENTSIDE">(value = Dist.CLIENT)</#if>
 public class ${name}Command {
 
-	<#if data.type == "CLIENTSIDE">
-		@SubscribeEvent public static void registerCommand(FMLClientSetupEvent event) {
-			<@commandRegistrationCode/>
-		}
-	<#else>
 		@SubscribeEvent public static void registerCommand(FMLServerStartingEvent event) {
 			<#if data.type == "MULTIPLAYER_ONLY">
-				if (event.getCommandManager() == true)
+				if (event.getServer().isDedicatedServer())
 					<@commandRegistrationCode/>
 			<#elseif data.type == "SINGLEPLAYER_ONLY">
-				if (event.getCommandManager() == false)
+				if (!event.getServer().isDedicatedServer())
 					<@commandRegistrationCode/>
 			<#else>
 				<@commandRegistrationCode/>
 			</#if>
 		}
-	</#if>
 
 }
 
 <#macro commandRegistrationCode>
-	event.<#if data.type != "CLIENTSIDE">getCommandDispatcher()<#else>getCommandManager().getDispatcher()</#if>.register(Commands.literal("${data.commandName}")
+	event.getCommandDispatcher().register(Commands.literal("${data.commandName}")
 		<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 		${argscode}
 	);
