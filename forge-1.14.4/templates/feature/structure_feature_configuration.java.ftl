@@ -32,19 +32,47 @@
 package ${package}.world.features.configurations;
 
 public class StructureFeatureConfiguration implements IFeatureConfig {
-    public final BlockState state;
+   public final ResourceLocation structure;
+   public final boolean random_rotation;
+   public final boolean random_mirror;
+   public final List<BlockState> ignored_blocks;
+   public final Vec3i offset;
 
-   public StructureFeatureConfiguration(BlockState state) {
-      this.state = state;
+   public StructureFeatureConfiguration(ResourceLocation structure, boolean random_rotation, boolean random_mirror, List<BlockState> ignored_blocks, Vec3i offset) {
+      this.structure = structure;
+      this.random_rotation = random_rotation;
+      this.random_mirror = random_mirror;
+      this.ignored_blocks = ignored_blocks;
+      this.offset = offset;
    }
 
-   public <T> Dynamic<T> serialize(DynamicOps<T> ops) {
-      return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("state"), BlockState.serialize(ops, this.state).getValue())));
-   }
 
-   public static <T> StructureFeatureConfiguration deserialize(Dynamic<T> p_214712_0_) {
-      BlockState blockstate = p_214712_0_.get("state").map(BlockState::deserialize).orElse(Blocks.AIR.getDefaultState());
-      return new LakesConfig(blockstate);
-   }
+    @Override public <T> Dynamic<T> serialize(DynamicOps<T> ops) {
+        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(
+            ops.createString("structure"), ops.createString(this.structure.toString()),
+            ops.createString("random_rotation"), ops.createBoolean(this.random_rotation),
+            ops.createString("random_mirror"), ops.createBoolean(this.random_mirror),
+            ops.createString("ignored_blocks"), ops.createList(this.ignored_blocks.stream().map((ops_) -> {
+             return BlockState.serialize(ops, ops_).getValue();
+            })),
+            ops.createString("offset"), ops.createMap(ImmutableMap.of(
+                ops.createString("x"), ops.createInt(this.offset.getX()),
+                ops.createString("y"), ops.createInt(this.offset.getY()),
+                ops.createString("z"), ops.createInt(this.offset.getZ()))),
+        )));
+    }
+
+    public static <T> StructureFeatureConfiguration deserialize(Dynamic<T> dynamic) {
+        ResourceLocation structure = new ResourceLocation(dynamic.get("structure").asString(""));
+        boolean random_rotation = dynamic.get("random_rotation").asBoolean(false);
+        boolean random_mirror = dynamic.get("random_mirror").asBoolean(false);
+        List<Block> ignored_blocks = dynamic.get("ignored_blocks").asList(BlockState::deserialize);
+        Vec3i offset = new Vec3i(
+            dynamic.get("offset").get("x").asInt(0),
+            dynamic.get("offset").get("y").asInt(0),
+            dynamic.get("offset").get("z").asInt(0)
+        );
+        return new StructureFeatureConfiguration(structure, random_rotation, random_mirror, ignored_blocks, offset);
+    }
 }
 <#-- @formatter:on -->
