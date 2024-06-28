@@ -58,8 +58,7 @@ public class StructureFeatureConfiguration implements IFeatureConfig {
             ops.createString("offset"), ops.createMap(ImmutableMap.of(
                 ops.createString("x"), ops.createInt(this.offset.getX()),
                 ops.createString("y"), ops.createInt(this.offset.getY()),
-                ops.createString("z"), ops.createInt(this.offset.getZ()))),
-        )));
+                ops.createString("z"), ops.createInt(this.offset.getZ()))))));
     }
 
     public static <T> StructureFeatureConfiguration deserialize(Dynamic<T> dynamic) {
