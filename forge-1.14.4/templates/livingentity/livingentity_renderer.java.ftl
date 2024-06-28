@@ -123,7 +123,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
          			${model_}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
          			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
          			this.bindTexture(LAYER_TEXTURE);
-         			${model_}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+         			${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 				<#else>
 				this.bindTexture(LAYER_TEXTURE);
 			      	GlStateManager.enableBlend();
@@ -141,7 +141,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
         			this.getEntityModel().setModelAttributes(${model_});
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
-			      	${model_}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+			      	${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			      	gamerenderer.setupFogColor(false);
 			      	this.func_215334_a(entity);
 			      	GlStateManager.depthMask(true);
@@ -154,7 +154,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			</#compress>
 		
 			@Override public boolean shouldCombineTextures() {
-				return true;
+				return false;
 			}
 		});
 		</#list>
