@@ -91,6 +91,16 @@ package ${package}.world.features;
 <#elseif configuration == "ReplaceBlockConfig">
 	<#assign placementconfig = "Placement.EMERALD_ORE">
 </#if>
+<#assign cond = false>
+<#if data.restrictionBiomes?has_content>
+	<#list data.restrictionBiomes as restrictionBiome>
+		<#if restrictionBiome?contains("#")>
+			<#assign cond = true>
+			 <@break />
+		</#if>
+		<@break />
+	</#list>
+</#if>
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static Feature<${configuration}> feature = null;
@@ -103,10 +113,9 @@ package ${package}.world.features;
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${name}Feature() {
 			@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
-				DimensionType dimensionType = world.getDimension().getType();
-				boolean dimensionCriteria = false;
-
-				<#if data.restrictionBiomes?has_content>
+				<#if data.restrictionBiomes?has_content && cond>
+					DimensionType dimensionType = world.getDimension().getType();
+					boolean dimensionCriteria = false;
 					<#list data.restrictionBiomes as restrictionBiome>
 						<#if restrictionBiome?contains("#")>
 							<#if restrictionBiome == "#is_overworld">
@@ -124,10 +133,10 @@ package ${package}.world.features;
 							</#if>
 						</#if>
 					</#list>
-				</#if>
 
-				if(!dimensionCriteria)
-					return false;
+					if(!dimensionCriteria)
+						return false;
+				</#if>
 
 				<#if hasProcedure(data.generateCondition)>
 				int x = pos.getX();
@@ -146,17 +155,17 @@ package ${package}.world.features;
 
 		@SubscribeEvent public static void addFeatureToBiomes(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-			<#if data.restrictionBiomes?has_content>
-				boolean biomeCriteria = false;
-				<#list data.restrictionBiomes as restrictionBiome>
-					<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
-					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-						biomeCriteria = true;
-					</#if>
-				</#list>
-				if (!biomeCriteria)
-					continue;
-			</#if>
+				<#if data.restrictionBiomes?has_content && !cond>
+					boolean biomeCriteria = false;
+					<#list data.restrictionBiomes as restrictionBiome>
+						<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
+						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+							biomeCriteria = true;
+						</#if>
+					</#list>
+					if (!biomeCriteria)
+						continue;
+				</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
 				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, <#if isworking>${placementcode})<#else>IPlacementConfig.NO_PLACEMENT_CONFIG</#if>));
