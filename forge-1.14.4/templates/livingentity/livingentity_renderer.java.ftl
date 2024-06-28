@@ -118,11 +118,11 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				EntityModel model = new ${layer.model}();
 				</#if>
 				<#if !layer.glow>
-				this.getEntityModel().setModelAttributes(${model});
-         			${lmodel}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+				this.getEntityModel().setModelAttributes(${model_});
+         			${model_}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
          			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
          			this.bindTexture(LAYER_TEXTURE);
-         			${lmodel}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+         			${model_}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 				<#else>
 				this.bindTexture(LAYER_TEXTURE);
 			      	GlStateManager.enableBlend();
@@ -136,11 +136,11 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
 			      	GlStateManager.enableLighting();
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				${lmodel}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-        			this.getEntityModel().setModelAttributes(${lmodel});
+				${model_}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+        			this.getEntityModel().setModelAttributes(${model_});
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
-			      	${lmodel}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+			      	${model_}.render(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 			      	gamerenderer.setupFogColor(false);
 			      	this.func_215334_a(entity);
 			      	GlStateManager.depthMask(true);
