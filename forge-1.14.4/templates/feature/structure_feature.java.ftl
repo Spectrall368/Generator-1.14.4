@@ -44,13 +44,17 @@ package ${package}.world.features;
 		Rotation rotation = config.random_rotation ? Rotation.values()[rand.nextInt(3)] : Rotation.NONE;
 		Mirror mirror = config.random_mirror ? Mirror.values()[rand.nextInt(2)] : Mirror.NONE;
 		BlockPos placePos = pos.add(config.offset);
+		List<Block> ignoredBlocks = new ArrayList<>();
+		for(BlockState blockState : config.ignored_blocks)
+			ignoredBlocks.add(blockState.getBlock());
+
 		// Load the structure template
 		TemplateManager structureManager = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager();
 		Template template = structureManager.getTemplateDefaulted(config.structure);
     		if (template == null)
 			return false;
 		PlacementSettings placeSettings = (new PlacementSettings()).setRotation(rotation).setMirror(mirror).setRandom(rand).setIgnoreEntities(false)
-			.setChunk(null).addProcessor(new BlockIgnoreStructureProcessor((config.ignored_blocks.getBlock()).stream().map(Holder::get).toList()));
+			.setChunk(null).addProcessor(new BlockIgnoreStructureProcessor(ignoredBlocks));
 		template.addBlocksToWorld(world, placePos, placeSettings);
 		return true;
 	}
