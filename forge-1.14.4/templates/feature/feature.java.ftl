@@ -108,18 +108,18 @@ package ${package}.world.features;
 
 				<#if data.restrictionBiomes?has_content>
 					<#list data.restrictionBiomes as restrictionBiome>
-						<#if restrictionBiome.getUnmappedValue().startsWith("TAG:")>
-							<#if restrictionBiome == "is_overworld">
+						<#if restrictionBiome?contains("#")>
+							<#if restrictionBiome == "#is_overworld">
 								if(dimensionType == DimensionType.OVERWORLD)
 									dimensionCriteria = true;
-							<#elseif restrictionBiome == "is_nether">
+							<#elseif restrictionBiome == "#is_nether">
 								if(dimensionType == DimensionType.THE_NETHER)
 									dimensionCriteria = true;
-							<#elseif restrictionBiome == "is_end">
+							<#elseif restrictionBiome == "#is_end">
 								if(dimensionType == DimensionType.THE_END)
 									dimensionCriteria = true;
 							<#else>
-								if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("is_")}")))
+								if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("#is_")}")))
 									dimensionCriteria = true;
 							</#if>
 						</#if>
@@ -149,7 +149,7 @@ package ${package}.world.features;
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
 				<#list data.restrictionBiomes as restrictionBiome>
-					<#if restrictionBiome.canProperlyMap() && !restrictionBiome.getUnmappedValue().startsWith("TAG:")>
+					<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
 					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
 						biomeCriteria = true;
 					</#if>
