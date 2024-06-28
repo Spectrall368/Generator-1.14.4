@@ -37,20 +37,20 @@ package ${package}.world.features;
 	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration::deserialize));
 
 	public StructureFeature(Function<Dynamic<?>, ? extends StructureFeatureConfiguration> configFactory) {
-    super(configFactory);
-  }
+    		super(configFactory);
+  	}
 
 	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, StructureFeatureConfiguration config) {
 		Rotation rotation = config.random_rotation ? Rotation.values()[rand.nextInt(3)] : Rotation.NONE;
 		Mirror mirror = config.random_mirror ? Mirror.values()[rand.nextInt(2)] : Mirror.NONE;
-		BlockPos placePos = new BlockPos(i + config.offset.x, j + config.offset.y, k + config.offset.z);
+		BlockPos placePos = pos.add(config.offset);
 		// Load the structure template
 		TemplateManager structureManager = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager();
 		Template template = structureManager.getTemplateDefaulted(config.structure);
-    if (template == null)
-		  return false;
+    		if (template == null)
+			return false;
 		PlacementSettings placeSettings = (new PlacementSettings()).setRotation(rotation).setMirror(mirror).setRandom(rand).setIgnoreEntities(false)
-				.setChunk(null).addProcessor(new BlockIgnoreStructureProcessor(config.ignored_blocks.stream().map(Holder::get).toList()));
+			.setChunk(null).addProcessor(new BlockIgnoreStructureProcessor(config.ignored_blocks.stream().map(Holder::get).toList()));
 		template.addBlocksToWorld(world, placePos, placeSettings);
 		return true;
 	}
