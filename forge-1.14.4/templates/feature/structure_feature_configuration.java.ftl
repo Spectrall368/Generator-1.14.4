@@ -65,7 +65,7 @@ public class StructureFeatureConfiguration implements IFeatureConfig {
         ResourceLocation structure = new ResourceLocation(dynamic.get("structure").asString(""));
         boolean random_rotation = dynamic.get("random_rotation").asBoolean(false);
         boolean random_mirror = dynamic.get("random_mirror").asBoolean(false);
-        List<Block> ignored_blocks = dynamic.get("ignored_blocks").asList(BlockState::deserialize);
+        List<BlockState> ignored_blocks = dynamic.get("ignored_blocks").asList(BlockState::deserialize);
         Vec3i offset = new Vec3i(
             dynamic.get("offset").get("x").asInt(0),
             dynamic.get("offset").get("y").asInt(0),
