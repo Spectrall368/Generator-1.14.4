@@ -287,7 +287,7 @@ public class ${name}Item extends Item {
 	</#if>
 
 	<#if data.enableRanged && data.shootConstantly>
-		@Override public void onUsingTick(LivingEntity entity, ItemStack itemstack, int count) {
+		@Override public void onUsingTick(ItemStack itemstack, LivingEntity entity, int count) {
 			if (!entity.world.isRemote && entity instanceof ServerPlayerEntity) {
 				<@arrowShootCode/>
 				entity.stopActiveHand();
@@ -319,7 +319,7 @@ public class ${name}Item extends Item {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, random);
-		<#elseif projectile.endsWith("ARROW")>
+		<#else>
 			${projectileClass} projectile = new ${projectileClass}(world, entity);
 			projectile.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0, 3.15f, 1.0F);
 			world.addEntity(projectile);
