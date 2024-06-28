@@ -85,7 +85,6 @@ package ${package}.client.renderer;
 	<#assign model = "PlayerModel">
 	<#assign humanoid = true>
 </#if>
-<#assign model_ = model>
 <#assign model = model + "<" + name + "Entity>">
 
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
@@ -101,7 +100,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
 		<#if layer.model == "Default">
-			final ${model_}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
+			final ${model?keep_before("<")}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
 			<#assign model_ = "this." + "MODEL">
 		<#else>
 			<#assign model_ = "model">
