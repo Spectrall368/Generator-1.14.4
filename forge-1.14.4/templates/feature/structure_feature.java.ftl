@@ -40,7 +40,7 @@ package ${package}.world.features;
     		super(configFactory);
   	}
 
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, StructureFeatureConfiguration config) {
+	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, StructureFeatureConfiguration config) {
 		Rotation rotation = config.random_rotation ? Rotation.values()[rand.nextInt(3)] : Rotation.NONE;
 		Mirror mirror = config.random_mirror ? Mirror.values()[rand.nextInt(2)] : Mirror.NONE;
 		BlockPos placePos = pos.add(config.offset);
