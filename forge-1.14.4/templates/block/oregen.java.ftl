@@ -50,7 +50,16 @@ package ${package}.world.features.ores;
 	<#assign averageHeight = (maxGenerateHeight + minGenerateHeight) / 2>
 	<#assign averageHeight = averageHeight?int>
 </#if>
-
+<#assign cond = false>
+<#if data.restrictionBiomes?has_content>
+	<#list data.restrictionBiomes as restrictionBiome>
+		<#if restrictionBiome?contains("#")>
+			<#assign cond = true>
+			 <@break />
+		</#if>
+		<@break />
+	</#list>
+</#if>
 @Mod.EventBusSubscriber public class ${name}Feature {
 
 	private static Feature<OreFeatureConfig> feature = null;
@@ -60,10 +69,9 @@ package ${package}.world.features.ores;
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new OreFeature(OreFeatureConfig::deserialize) {
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
+				<#if data.restrictionBiomes?has_content && cond>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
-
-				<#if data.restrictionBiomes?has_content>
 					<#list data.restrictionBiomes as restrictionBiome>
 						<#if restrictionBiome?contains("#")>
 							<#if restrictionBiome == "#is_overworld">
@@ -81,10 +89,10 @@ package ${package}.world.features.ores;
 							</#if>
 						</#if>
 					</#list>
-				</#if>
 
 					if(!dimensionCriteria)
 						return false;
+				</#if>
 
 					return super.place(world, generator, random, pos, config);
 				}
@@ -95,7 +103,7 @@ package ${package}.world.features.ores;
 
 		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if data.restrictionBiomes?has_content>
+				<#if data.restrictionBiomes?has_content && !cond>
 					boolean biomeCriteria = false;
 					<#list data.restrictionBiomes as restrictionBiome>
 						<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
