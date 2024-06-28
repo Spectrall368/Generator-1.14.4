@@ -82,7 +82,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
 			new Item.Properties()
 				.group(${data.creativeTab})
-				.maxDamage(${data.usageCount}))
+				.maxDamage(${data.usageCount})
 		</#if>);
 	}
 
