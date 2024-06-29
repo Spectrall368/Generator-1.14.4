@@ -1,1 +1,1 @@
-PlacementBlockSurvivalFilter(${input$block}),
+PlacementBlockSurvivalFilter(${input$block});
