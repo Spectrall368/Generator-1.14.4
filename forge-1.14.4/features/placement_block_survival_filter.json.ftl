@@ -1,1 +1,2 @@
-PlacementBlockSurvivalFilter(${input$block});
+if (blockAt.getBlock() == ${input$block})
+  condition = true;
