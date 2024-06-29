@@ -78,11 +78,11 @@ package ${package}.world.structure;
 							int k = ck + random.nextInt(16);
 							int j = world.getHeight(Heightmap.Type.${data.surfaceDetectionType}, i, k);
 
-							<#if data.spawnLocation=="Ground">
+							<#if generator.map(data.generationStep, "generationsteps") == "SURFACE_STRUCTURES" || generator.map(data.generationStep, "generationsteps") == "VEGETAL_DECORATION">
 								j -= 1;
-							<#elseif data.spawnLocation=="Air">
+							<#elseif generator.map(data.generationStep, "generationsteps") == "RAW_GENERATION">
 								j += random.nextInt(64) + 16;
-							<#elseif data.spawnLocation=="Underground">
+							<#elseif generator.map(data.generationStep, "generationsteps") == "UNDERGROUND_STRUCTURES" || generator.map(data.generationStep, "generationsteps") == "UNDERGROUND_ORES" || generator.map(data.generationStep, "generationsteps") == "UNDERGROUND_DECORATION">
 								j = MathHelper.nextInt(random, 8, Math.max(j, 9));
 							</#if>
 
@@ -97,13 +97,8 @@ package ${package}.world.structure;
 									continue;
 							</#if>
 
-							<#if data.randomlyRotateStructure>
 								Rotation rotation = Rotation.values()[random.nextInt(3)];
 								Mirror mirror = Mirror.values()[random.nextInt(2)];
-							<#else>
-								Rotation rotation = Rotation.NONE;
-								Mirror mirror = Mirror.NONE;
-							</#if>
 
 							BlockPos spawnTo = new BlockPos(i, j, k);
 
