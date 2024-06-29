@@ -1,1 +1,1 @@
-(${input$toClamp} < ${field$max} && ${input$toClamp} > ${field$min})
+MathHelper.clamp(${input$toClamp}, ${field$min}, ${field$max})
