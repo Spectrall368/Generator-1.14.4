@@ -114,6 +114,7 @@ package ${package}.world.features;
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${name}Feature() {
 			@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
+				boolean condition = false;
 				<#if data.restrictionBiomes?has_content && cond>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
