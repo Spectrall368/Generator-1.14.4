@@ -72,7 +72,7 @@ package ${package}.world.structure;
 						return false;
 
 					if ((random.nextInt(1000000) + 1) <= ${data.spawnProbability}) {
-						int count = random.nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
+						int count = random.nextInt(${data.spacing - data.separation + 1}) + ${data.separation};
 						for(int a = 0; a < count; a++) {
 							int i = ci + random.nextInt(16);
 							int k = ck + random.nextInt(16);
