@@ -100,7 +100,7 @@ package ${package}.world.structure;
 								Rotation rotation = Rotation.values()[random.nextInt(3)];
 								Mirror mirror = Mirror.values()[random.nextInt(2)];
 
-							BlockPos spawnTo = new BlockPos(i, j, k);
+							BlockPos spawnTo = new BlockPos(i, j + ${data.spawnHeightOffset}, k);
 
 							int x = spawnTo.getX();
 							int y = spawnTo.getY();
