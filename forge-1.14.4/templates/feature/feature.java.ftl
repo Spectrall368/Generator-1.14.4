@@ -148,12 +148,12 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
-				<#if featuretype == "placement_block_survival_filter" || featuretype == "placement_surface_water_depth" || featuretype == "placement_environment_scan" || featuretype == "placement_environment_scan_advanced" || featuretype == "placement_surface_relative_threshold">
+				<#if featuretype == "placement_block_survival_filter" || featuretype == "placement_surface_water_depth" || featuretype == "placement_environment_scan" || featuretype == "placement_environment_scan_advanced" || featuretype == "placement_surface_relative_threshold" || featuretype == "placement_block_predicate_filter">
 				if (!condition)
 					continue;
 				</#if>
 
-				<@removePlacementsWithPrefixAndSuffix placementcodeoriginal/>
+				${placementcodeoriginal}
 
 				return super.place(world, generator, random, pos, config);
 			}
@@ -183,8 +183,3 @@ package ${package}.world.features;
 	}
 }</#compress>
 <#-- @formatter:on -->
-<#macro removePlacementsWithPrefixAndSuffix input>
-    <#local pattern = "(?<!\\w)(new\\w*|Placement\\w*);">
-    <#local result = input?replace(pattern, "", "r")>
-    ${result}
-</#macro>
