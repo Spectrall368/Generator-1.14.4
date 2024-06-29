@@ -1,1 +1,1 @@
-(${input$min} + new Random.nextInt(${input$max} - ${input$min}))
+(${input$min} + random.nextInt(${input$max} - ${input$min}))
