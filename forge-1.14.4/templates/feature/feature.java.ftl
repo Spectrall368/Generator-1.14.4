@@ -34,6 +34,7 @@ package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
 <#assign placementconfig = "Placement.NOPE">
+<#assign placementcodeoriginal = placementcode>
 <#assign isworking = false>
 <#if configuration == "LakesConfig">
 	<#if placementcode.contains("ChanceConfig")>
@@ -42,13 +43,13 @@ package ${package}.world.features;
 		<#else>
 			<#assign placementconfig = "Placement.WATER_LAKE">
 		</#if>
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new LakeChanceConfig")>
+		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new LakeChanceConfig")>
 		<#assign isworking = true>
 	</#if>
 <#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementconfig = "Placement.FOREST_ROCK">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new FrequencyConfig")>
+		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
 		<#assign isworking = true>
 	</#if>
 <#elseif generator.map(featuretype, "features") == "CoralClawFeature" || generator.map(featuretype, "features") == "CoralMushroomFeature" || generator.map(featuretype, "features") == "CoralTreeFeature">
@@ -56,35 +57,35 @@ package ${package}.world.features;
 <#elseif configuration == "BigMushroomFeatureConfig">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementconfig = "Placement.COUNT_HEIGHTMAP">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new FrequencyConfig")>
+		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
 		<#assign isworking = true>
 	</#if>
 <#elseif configuration == "SphereReplaceConfig">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementconfig = "Placement.COUNT_TOP_SOLID">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new FrequencyConfig")>
+		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
 		<#assign isworking = true>
 	</#if>
 <#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP") || configuration == "SeaGrassConfig">
 	<#if configuration != "SeaGrassConfig">
 		<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
-		<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP,", "")>
+		<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP;", "")>
 	</#if>
 <#elseif configuration == "ProbabilityConfig">
 	<#if placementcode.contains("ChanceConfig")>
 		<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_DOUBLE">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before("),")?replace("anceConfig", "new FrequencyConfig")>
+		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
 		<#assign isworking = true>
 	</#if>
 <#elseif configuration == "OreFeatureConfig">
 	<#if placementcode.contains("CountRangeConfig")>
 		<#assign placementconfig = "Placement.COUNT_RANGE">
 		<#assign isworking = true>
-		<#assign placementcode = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before("),")>
+		<#assign placementcode = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before(");")>
 		<#assign configurationcode = configurationcode?keep_before_last(" ")>
 	<#elseif placementcode.contains("DepthAverageConfig")>
 		<#assign placementconfig = "Placement.COUNT_DEPTH_AVERAGE">
-		<#assign placementcode = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before("),")>
+		<#assign placementcode = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before(");")>
 		<#assign configurationcode = configurationcode?keep_before_last(" ")>
 		<#assign isworking = true>
 	</#if>
@@ -146,6 +147,13 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
+				<#if featuretype == "placement_block_survival_filter" || featuretype == "placement_surface_water_depth" || featuretype == "placement_environment_scan" || featuretype == "placement_environment_scan_advanced" || featuretype == "placement_surface_relative_threshold">
+				if (!condition)
+					continue;
+				</#if>
+
+				<@removePlacementsWithPrefixAndSuffix placementcodeoriginal/>
+
 				return super.place(world, generator, random, pos, config);
 			}
 			};
@@ -174,3 +182,8 @@ package ${package}.world.features;
 	}
 }</#compress>
 <#-- @formatter:on -->
+<#macro removePlacementsWithPrefixAndSuffix input>
+    <#local pattern = "(?<!\\w)(new\\w*|Placement\\w*);">
+    <#local result = input?replace(pattern, "", "r")>
+    ${result}
+</#macro>
