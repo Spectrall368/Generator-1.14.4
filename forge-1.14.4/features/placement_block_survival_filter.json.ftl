@@ -1,2 +1,2 @@
-if (blockAt.getBlock() == ${input$block})
+if (world.getBlockState(pos).getBlock() == ${input$block})
   condition = true;
