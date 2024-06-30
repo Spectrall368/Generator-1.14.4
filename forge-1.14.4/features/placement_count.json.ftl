@@ -1,1 +1,1 @@
-new CountConfig(${input$count});
+count = ${input$count};
