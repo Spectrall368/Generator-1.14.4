@@ -1,2 +1,1 @@
-if(placePos.getY() != ${input$height})
-  return false;
+placePos = placePos.add(placePos.getX(), ${input$height}, placePos.getZ());
