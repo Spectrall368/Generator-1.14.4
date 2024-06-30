@@ -1,1 +1,1 @@
-placePos = placePos.add(placePos.getX(), ${input$height}, placePos.getZ());
+placePos = new BlockPos(placePos.getX(), ${input$height}, placePos.getZ());
