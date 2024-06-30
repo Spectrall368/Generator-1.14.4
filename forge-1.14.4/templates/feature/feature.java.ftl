@@ -144,9 +144,18 @@ package ${package}.world.features;
 <#-- @formatter:on -->
 <#function removeStrings str>
 <#assign result = str>
-<#list 1..5 as i>
+<#list 1..countOccurrencesOfSlash(result) input as i>
 <#assign result_str = "/" + result?keep_after("/")?keep_before("/") + "/">
 <#assign result = result?replace(result_str, "")>
 </#list>
 <#return result>
+</#function>
+<#function countOccurrencesOfSlash input>
+  <#local count = 0>
+  <#list 0..(input?length - 1) as i>
+    <#if input[i] == "/">
+      <#assign count = count + 1>
+    </#if>
+  </#list>
+  <#return count/2>
 </#function>
