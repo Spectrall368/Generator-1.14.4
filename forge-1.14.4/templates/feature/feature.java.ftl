@@ -143,6 +143,10 @@ package ${package}.world.features;
 }</#compress>
 <#-- @formatter:on -->
 <#function removeStrings str>
-<#local result = str?replace("/(?:/Count|/new|/Rarity)/.*?/", "", "r")>
+<#assign result = str>
+<#list 1..4 as i>
+<#assign result_str = "/" + result?keep_after("/")?keep_before("/") + "/">
+<#assign result = result?replace(result_str, "")>
+</#list>
 <#return result>
 </#function>
