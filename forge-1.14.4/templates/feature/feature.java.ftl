@@ -102,10 +102,10 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
-				<#if featuretype == "placement_rarity">
+				<#if placementcode.contains("Rarity")>
 				if(random.nextFloat() < 1.0F / (float) ${placementcode?keep_after("Rarity(")?keep_before(")")}) {
 				</#if>
-				<#if featuretype == "placement_count">
+				<#if placementcode.contains("Count")>
 				int count = ${placementcode?keep_after("Count(")?keep_before(")")};
 				for(int a = 0; a < count; a++) {
 				</#if>
@@ -114,8 +114,8 @@ package ${package}.world.features;
 
 				return super.place(world, generator, random, pos, config);
 
-				<#if featuretype == "placement_count">}</#if>
-				<#if featuretype == "placement_rarity">}</#if>
+				<#if placementcode.contains("Count")>}</#if>
+				<#if placementcode.contains("Rarity")>}</#if>
 			}};
 
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
