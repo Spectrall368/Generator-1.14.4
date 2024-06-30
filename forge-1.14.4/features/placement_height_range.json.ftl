@@ -1,1 +1,2 @@
-new HeightWithChanceConfig(${input$height}, 0.2f);
+if(placePos.getY() != ${input$height})
+  return false;
