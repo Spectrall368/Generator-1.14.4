@@ -1,1 +1,1 @@
-new DepthAverageConfig(?, ${input$max} - ${input$min}, ${input$max} - ${input$min});
+/new DepthAverageConfig(?, ${input$max} - ${input$min}, ${input$max} - ${input$min});/
