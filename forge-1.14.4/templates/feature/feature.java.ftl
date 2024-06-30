@@ -33,64 +33,18 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
+<#assign placement = "IPlacementConfig.NO_PLACEMENT_CONFIG">
 <#assign placementconfig = "Placement.NOPE">
-<#assign placementcodeoriginal = placementcode>
-<#assign isworking = false>
-<#if configuration == "LakesConfig">
-	<#if placementcode.contains("ChanceConfig")>
-		<#if placementcode.contains("LAVA")>
-			<#assign placementconfig = "Placement.LAVA_LAKE">
-		<#else>
-			<#assign placementconfig = "Placement.WATER_LAKE">
-		</#if>
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new LakeChanceConfig")>
-		<#assign isworking = true>
-	</#if>
-<#elseif generator.map(featuretype, "features") == "BlockPileFeature" || configuration == "BlockBlobConfig">
-	<#if placementcode.contains("ChanceConfig")>
-		<#assign placementconfig = "Placement.FOREST_ROCK">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
-		<#assign isworking = true>
-	</#if>
-<#elseif generator.map(featuretype, "features") == "CoralClawFeature" || generator.map(featuretype, "features") == "CoralMushroomFeature" || generator.map(featuretype, "features") == "CoralTreeFeature">
-	<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_32">
-<#elseif configuration == "BigMushroomFeatureConfig">
-	<#if placementcode.contains("ChanceConfig")>
-		<#assign placementconfig = "Placement.COUNT_HEIGHTMAP">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
-		<#assign isworking = true>
-	</#if>
-<#elseif configuration == "SphereReplaceConfig">
-	<#if placementcode.contains("ChanceConfig")>
-		<#assign placementconfig = "Placement.COUNT_TOP_SOLID">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
-		<#assign isworking = true>
-	</#if>
-<#elseif placementcode.contains("TOP_SOLID_HEIGHTMAP") || configuration == "SeaGrassConfig">
-	<#if configuration != "SeaGrassConfig">
-		<#assign placementconfig = "Placement.TOP_SOLID_HEIGHTMAP">
-		<#assign placementcode = placementcode?replace("Placement.TOP_SOLID_HEIGHTMAP;", "")>
-	</#if>
-<#elseif configuration == "ProbabilityConfig">
-	<#if placementcode.contains("ChanceConfig")>
-		<#assign placementconfig = "Placement.COUNT_HEIGHTMAP_DOUBLE">
-		<#assign placementcode = placementcode?keep_after("new Ch")?keep_before(");")?replace("anceConfig", "new FrequencyConfig")>
-		<#assign isworking = true>
-	</#if>
-<#elseif configuration == "OreFeatureConfig">
+<#if configuration == "OreFeatureConfig">
 	<#if placementcode.contains("CountRangeConfig")>
 		<#assign placementconfig = "Placement.COUNT_RANGE">
-		<#assign isworking = true>
-		<#assign placementcode = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before(");")>
+		<#assign placement = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before(");")>
 		<#assign configurationcode = configurationcode?keep_before_last(" ")>
 	<#elseif placementcode.contains("DepthAverageConfig")>
 		<#assign placementconfig = "Placement.COUNT_DEPTH_AVERAGE">
-		<#assign placementcode = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before(");")>
+		<#assign placement = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before(");")>
 		<#assign configurationcode = configurationcode?keep_before_last(" ")>
-		<#assign isworking = true>
 	</#if>
-<#elseif configuration == "ReplaceBlockConfig">
-	<#assign placementconfig = "Placement.EMERALD_ORE">
 </#if>
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
@@ -114,7 +68,9 @@ package ${package}.world.features;
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${name}Feature() {
 			@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
-				boolean condition = false;
+				int ci = (pos.getX() >> 4) << 4;
+				int ck = (pos.getZ() >> 4) << 4;
+				BlockPos placePos = pos;
 				<#if data.restrictionBiomes?has_content && cond>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
@@ -148,16 +104,21 @@ package ${package}.world.features;
 					return false;
 				</#if>
 
-				<#if featuretype == "placement_block_survival_filter" || featuretype == "placement_surface_water_depth" || featuretype == "placement_environment_scan" || featuretype == "placement_environment_scan_advanced" || featuretype == "placement_surface_relative_threshold" || featuretype == "placement_block_predicate_filter">
-				if (!condition)
-					continue;
+				<#if featuretype == "placement_rarity">
+				if(random.nextFloat() < 1.0F / (float) ${placementcode?keep_after("Rarity(")?keep_before(")")}) {
+				</#if>
+				<#if featuretype == "placement_count">
+				int count = ${placementcode?keep_after("Count(")?keep_before(")")};
+				for(int a = 0; a < count; a++) {
 				</#if>
 
-				${placementcodeoriginal}
+				${removeStrings(placementcode)}
 
 				return super.place(world, generator, random, pos, config);
-			}
-			};
+
+				<#if featuretype == "placement_count">}</#if>
+				<#if featuretype == "placement_rarity">}</#if>
+			}};
 
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 		}
@@ -177,9 +138,13 @@ package ${package}.world.features;
 				</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, <#if isworking>${placementcode})<#else>IPlacementConfig.NO_PLACEMENT_CONFIG</#if>));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, ${placement}));
 			}
 		}
 	}
 }</#compress>
 <#-- @formatter:on -->
+<#function removeStrings str>
+<#local result = str?replace("/(?:/Count|/new|/Rarity)/.*?/", "", "r")>
+<#return result>
+</#function>
