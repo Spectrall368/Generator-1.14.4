@@ -1,1 +1,1 @@
-/new CountRangeConfig(?, ${input$min}, ${input$min}, ${input$max});/
+placePos = placePos.add(random.nextInt(16), random.nextInt(${input$max}) + ${input$min}, random.nextInt(16));
