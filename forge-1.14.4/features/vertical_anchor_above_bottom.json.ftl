@@ -1,1 +1,1 @@
-<#if (field$value?number + 128) <= 256>${field$value?number + 128}<#else>256</#if>
+((128 + ${field$value} < 256) ? (128 + ${field$value}) : 0)
