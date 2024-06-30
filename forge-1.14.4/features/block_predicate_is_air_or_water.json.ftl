@@ -1,1 +1,1 @@
-(world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() == Blocks.WATER)
+(world.getBlockState(placePos).getBlock() == Blocks.AIR || world.getBlockState(placePos).getBlock() == Blocks.WATER)
