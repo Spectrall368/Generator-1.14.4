@@ -33,19 +33,6 @@
 package ${package}.world.features;
 
 <#assign configuration = generator.map(featuretype, "features", 1)>
-<#assign placement = "IPlacementConfig.NO_PLACEMENT_CONFIG">
-<#assign placementconfig = "Placement.NOPE">
-<#if configuration == "OreFeatureConfig">
-	<#if placementcode.contains("CountRangeConfig")>
-		<#assign placementconfig = "Placement.COUNT_RANGE">
-		<#assign placement = "new CountR" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new CountR")?keep_before(");")>
-		<#assign configurationcode = configurationcode?keep_before_last(" ")>
-	<#elseif placementcode.contains("DepthAverageConfig")>
-		<#assign placementconfig = "Placement.COUNT_DEPTH_AVERAGE">
-		<#assign placement = "new DepthA" + placementcode?replace("?", configurationcode?keep_after_last(") "))?keep_after("new DepthA")?keep_before(");")>
-		<#assign configurationcode = configurationcode?keep_before_last(" ")>
-	</#if>
-</#if>
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list data.restrictionBiomes as restrictionBiome>
@@ -137,7 +124,7 @@ package ${package}.world.features;
 				</#if>
 	
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(feature, ${configurationcode}, ${placementconfig}, ${placement}));
+				Biome.createDecoratedFeature(feature, ${configurationcode}, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 			}
 		}
 	}
