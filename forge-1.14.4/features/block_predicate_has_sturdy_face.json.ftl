@@ -10,4 +10,4 @@
 					return Direction.NORTH;
 				}
 			}
-		}.getDirection(pos.add(${field$x}, ${field$y}, ${field$z}))) == ${generator.map(field$direction, "directions")})
+		}.getDirection(placePos.add(${field$x}, ${field$y}, ${field$z}))) == ${generator.map(field$direction, "directions")})
