@@ -144,7 +144,7 @@ package ${package}.world.features;
 <#-- @formatter:on -->
 <#function removeStrings str>
 <#assign result = str>
-<#list 1..countOccurrencesOfSlash(result) input as i>
+<#list 1..countOccurrencesOfSlash(result) as i>
 <#assign result_str = "/" + result?keep_after("/")?keep_before("/") + "/">
 <#assign result = result?replace(result_str, "")>
 </#list>
@@ -157,5 +157,5 @@ package ${package}.world.features;
       <#assign count = count + 1>
     </#if>
   </#list>
-  <#return count/2>
+  <#return count>
 </#function>
