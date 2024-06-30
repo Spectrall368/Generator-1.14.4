@@ -1,1 +1,1 @@
-world.getBlockState(pos.add(${field$x}, ${field$y}, ${field$z})).getMaterial().isReplaceable()
+world.getBlockState(placePos.add(${field$x}, ${field$y}, ${field$z})).getMaterial().isReplaceable()
