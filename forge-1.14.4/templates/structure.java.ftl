@@ -121,7 +121,7 @@ package ${package}.world.structure;
 											.setRotation(rotation)
 											.setRandom(random)
 											.setMirror(mirror)
-											 <#if part.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list part.ignoredBlocks as block>${mappedBlockToBlockStateCode(block)}<#sep>,</#list>)))</#if>
+											 <#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlockStateCode(block)}<#sep>,</#list>)))</#if>
 											.setChunk(null)
 											.setIgnoreEntities(false));
 
