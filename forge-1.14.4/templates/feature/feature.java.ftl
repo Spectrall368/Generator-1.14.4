@@ -144,7 +144,7 @@ package ${package}.world.features;
 <#-- @formatter:on -->
 <#function removeStrings str>
 <#assign result = str>
-<#list 1..4 as i>
+<#list 1..5 as i>
 <#assign result_str = "/" + result?keep_after("/")?keep_before("/") + "/">
 <#assign result = result?replace(result_str, "")>
 </#list>
