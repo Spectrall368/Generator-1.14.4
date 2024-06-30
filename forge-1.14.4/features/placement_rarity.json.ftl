@@ -1,1 +1,1 @@
-new ChanceConfig(${field$rarity});
+if(random.nextFloat() < 1.0F / (float) ${field$rarity}) {
