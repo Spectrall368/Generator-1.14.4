@@ -112,7 +112,7 @@ package ${package}.world.features;
 
 				${removeStrings(placementcode)}
 
-				return super.place(world, generator, random, pos, config);
+				return super.place(world, generator, random, placePos, config);
 
 				<#if placementcode.contains("Count")>}</#if>
 				<#if placementcode.contains("Rarity")>}</#if>
