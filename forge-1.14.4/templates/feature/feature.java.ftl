@@ -116,6 +116,7 @@ package ${package}.world.features;
 
 				<#if placementcode.contains("Count")>}</#if>
 				<#if placementcode.contains("Rarity")>}</#if>
+				<#if placementcode.contains("Rarity") || placementcode.contains("Count")>return false;</#if>
 			}};
 
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
