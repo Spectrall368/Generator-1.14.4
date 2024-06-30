@@ -1,1 +1,1 @@
-count = ${input$count};
+/count = ${input$count};/
