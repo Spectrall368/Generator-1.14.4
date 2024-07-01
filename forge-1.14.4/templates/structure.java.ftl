@@ -33,129 +33,35 @@
 <#include "procedures.java.ftl">
 package ${package}.world.structure;
 
-@Mod.EventBusSubscriber public class ${name}Structure {
-
-	private static Feature<NoFeatureConfig> feature = null;
-
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
-
-		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
-				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-					int ci = (pos.getX() >> 4) << 4;
-					int ck = (pos.getZ() >> 4) << 4;
-
-					DimensionType dimensionType = world.getDimension().getType();
-					boolean dimensionCriteria = false;
-
-				<#if data.spawnBiomes?has_content>
-					<#list data.spawnBiomes as restrictionBiome>
-						<#if restrictionBiome?contains("#")>
-							<#if restrictionBiome == "#is_overworld">
-								if(dimensionType == DimensionType.OVERWORLD)
-									dimensionCriteria = true;
-							<#elseif restrictionBiome == "#is_nether">
-								if(dimensionType == DimensionType.THE_NETHER)
-									dimensionCriteria = true;
-							<#elseif restrictionBiome == "#is_end">
-								if(dimensionType == DimensionType.THE_END)
-									dimensionCriteria = true;
-							<#else>
-								if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("#is_")}")))
-									dimensionCriteria = true;
-							</#if>
-						</#if>
-					</#list>
-				</#if>
-
-					if(!dimensionCriteria)
-						return false;
-
-					if ((random.nextInt(1000000) + 1) <= ${data.spawnProbability}) {
-						int count = random.nextInt(${data.spacing - data.separation + 1}) + ${data.separation};
-						for(int a = 0; a < count; a++) {
-							int i = ci + random.nextInt(16);
-							int k = ck + random.nextInt(16);
-							int j = world.getHeight(Heightmap.Type.${data.surfaceDetectionType}, i, k);
-
-							<#if generator.map(data.generationStep, "generationsteps") == "SURFACE_STRUCTURES" || generator.map(data.generationStep, "generationsteps") == "VEGETAL_DECORATION">
-								j -= 1;
-							<#elseif generator.map(data.generationStep, "generationsteps") == "RAW_GENERATION">
-								j += random.nextInt(64) + 16;
-							<#elseif generator.map(data.generationStep, "generationsteps") == "UNDERGROUND_STRUCTURES" || generator.map(data.generationStep, "generationsteps") == "UNDERGROUND_ORES" || generator.map(data.generationStep, "generationsteps") == "UNDERGROUND_DECORATION">
-								j = MathHelper.nextInt(random, 8, Math.max(j, 9));
-							</#if>
-
-							<#if data.restrictionBlocks?has_content>
-								BlockState blockAt = world.getBlockState(new BlockPos(i, j, k));
-								boolean blockCriteria = false;
-								<#list data.restrictionBlocks as restrictionBlock>
-									if (blockAt.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
-										blockCriteria = true;
-								</#list>
-								if (!blockCriteria)
-									continue;
-							</#if>
-
-								Rotation rotation = Rotation.values()[random.nextInt(3)];
-								Mirror mirror = Mirror.values()[random.nextInt(2)];
-
-							BlockPos spawnTo = new BlockPos(i, j + ${data.spawnHeightOffset}, k);
-
-							int x = spawnTo.getX();
-							int y = spawnTo.getY();
-							int z = spawnTo.getZ();
-
-							<#if hasProcedure(data.generateCondition)>
-							if (!<@procedureOBJToConditionCode data.generateCondition/>)
-								continue;
-							</#if>
-
-							Template template = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager().getTemplateDefaulted(new ResourceLocation("${modid}" ,"${data.structure}"));
-
-							if (template == null)
-								return false;
-
-							template.addBlocksToWorld(world, spawnTo,
-									new PlacementSettings()
-											.setRotation(rotation)
-											.setRandom(random)
-											.setMirror(mirror)
-											 <#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>
-											.setChunk(null)
-											.setIgnoreEntities(false));
-
-							<#if hasProcedure(data.onStructureGenerated)>
-								<@procedureOBJToCode data.onStructureGenerated/>
-							</#if>
-						}
-					}
-
-					return true;
-				}
-			};
-
-			event.getRegistry().register(feature.setRegistryName("${registryname}"));
-		}
-
-		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if data.spawnBiomes?has_content>
-					boolean biomeCriteria = false;
-					<#list data.spawnBiomes as restrictionBiome>
-						<#if restrictionBiome.canProperlyMap() && !restrictionBiome.getUnmappedValue().startsWith("TAG:")>
-						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-							biomeCriteria = true;
-						</#if>
-					</#list>
-					if (!biomeCriteria)
-						continue;
-				</#if>
-	
-				biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-					Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
-			}
-		}
+@Mod.EventBusSubscriber public class ${name}Structure extends Structure<NoFeatureConfig> {
+	public ${name}Structure(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory) {
+		super(configFactory);
 	}
+
+	@Override public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkPosX, int chunkPosZ) {
+	}
+
+   	@Override public Structure.IStartFactory getStartFactory() {
+		return ${name}Structure.Start::new;
+	}
+
+   	@Override public String getStructureName() {
+		return "${modid}:${registryname}";
+	}
+
+   	public int getSize() {
+		return 1;
+	}
+
+   	public static class Start extends StructureStart {
+      		public Start(Structure<?> structure, int chunkX, int chunkZ, Biome biome, MutableBoundingBox mutableBoundingBox, int reference, long seed) {
+         		super(structure, chunkX, chunkZ, biome, mutableBoundingBox, reference, seed);
+      		}
+
+      		public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
+			this.recalculateStructureSize();
+         	}
+      }
+   }
 }
 <#-- @formatter:on -->
