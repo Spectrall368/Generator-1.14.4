@@ -1,1 +1,1 @@
-${input$blockSet}.contains(world.getBlockState(placePos.add(${field$x}, ${field$y}, ${field$z})))
+${input$blockSet}.contains(world.getBlockState(new BlockPos(placePos.getX() + (${field$x}), placePos.getY() + (${field$y}), placePos.getZ() + (${field$z}))))
