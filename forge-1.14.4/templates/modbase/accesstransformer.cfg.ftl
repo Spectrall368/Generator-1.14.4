@@ -1,7 +1,7 @@
-<#if w.getGElementsOfType("gamerule")?filter(e -> e.Number)?size != 0>
+<#if w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number'))?size != 0>
 public net.minecraft.world.GameRules$IntegerValue func_223559_b(I)Lnet/minecraft/world/GameRules$RuleType; #create
 </#if>
-<#if w.getGElementsOfType("gamerule")?filter(e -> e.Logic)?size != 0>
+<#if w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Logic'))?size != 0>
 public net.minecraft.world.GameRules$BooleanValue func_223568_b(Z)Lnet/minecraft/world/GameRules$RuleType; #create
 </#if>
 <#if w.hasElementsOfType("villagerprofession")>
