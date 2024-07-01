@@ -1,1 +1,1 @@
-${input$value}
+(5 + ${input$value})
