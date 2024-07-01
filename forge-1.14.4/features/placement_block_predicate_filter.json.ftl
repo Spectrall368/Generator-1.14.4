@@ -1,2 +1,2 @@
-if(!${input$condition})
+if(!(${input$condition}))
   return false;
