@@ -10,4 +10,4 @@
 					return Direction.NORTH;
 				}
 			}
-		}.getDirection(placePos.add(${field$x}, ${field$y}, ${field$z}))) == ${generator.map(field$direction, "directions")})
+		}.getDirection(new BlockPos(placePos.getX(), placePos.getY(), placePos.getZ()))) == ${generator.map(field$direction, "directions")})
