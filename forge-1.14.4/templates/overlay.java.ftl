@@ -37,8 +37,9 @@ package ${package}.client.screens;
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
         public static void eventHandler(RenderGameOverlayEvent.Post event) {
-            int w = event.getWindow().getScaledWidth();
-            int h = event.getWindow().getScaledHeight();
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
+                int w = event.getWindow().getScaledWidth();
+                int h = event.getWindow().getScaledHeight();
 	<#else>
         public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
             if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
@@ -111,9 +112,7 @@ package ${package}.client.screens;
             GlStateManager.enableAlphaTest();
             GlStateManager.color4f(1, 1, 1, 1);
         </#if>
-    <#if generator.map(data.overlayTarget, "screens") != "Ingame">
         }
-    </#if>
 	}
 }
 <#macro calculatePosition component x_offset=0 y_offset=0>
