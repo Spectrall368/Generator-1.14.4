@@ -62,10 +62,10 @@ package ${package}.client.screens;
         <#if data.hasTextures()>
             GlStateManager.disableDepthTest();
             GlStateManager.depthMask(false);
-            GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
                 GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.color4f(1, 1, 1, 1);
+            GlStateManager.disableAlphaTest();
         </#if>
 
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
@@ -107,9 +107,8 @@ package ${package}.client.screens;
 
         <#if data.hasTextures()>
             GlStateManager.depthMask(true);
-            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.enableDepthTest();
-            GlStateManager.disableBlend();
+            GlStateManager.enableAlphaTest();
             GlStateManager.color4f(1, 1, 1, 1);
         </#if>
     <#if generator.map(data.overlayTarget, "screens") != "Ingame">
