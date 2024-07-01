@@ -1,1 +1,1 @@
-(!world.isOutsideBuildHeight(placePos.add(${field$x}, ${field$y}, ${field$z})))
+(!world.isOutsideBuildHeight(new BlockPos(placePos.getX() + (${field$x}), placePos.getY() + (${field$y}), placePos.getZ() + (${field$z}))))
