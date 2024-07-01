@@ -1,4 +1,3 @@
-<#assign chance = (field$discardOnAirChance?number * 64)?round>
 new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
 boolean blockCriteria = false;
 <#list input_list$target as target>
@@ -13,4 +12,4 @@ return blockCriteria;
         <#break>
     </#if>
 </#list>
-}), <#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if>, ${field$size}) ${chance}
+}), <#if firstNonBlockAtTarget != "?">${target?keep_after("State(")?keep_before_last(")")}<#else>Blocks.AIR.getDefaultState()</#if>, ${field$size})
