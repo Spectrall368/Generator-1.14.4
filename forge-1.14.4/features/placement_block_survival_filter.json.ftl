@@ -1,2 +1,2 @@
-if (!(world.getBlockState(placePos).getBlock() == ${input$block}))
+if (!world.getBlockState(placePos).isValidPosition(world, placePos))
   return false;
