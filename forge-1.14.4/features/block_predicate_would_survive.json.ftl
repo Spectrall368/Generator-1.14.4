@@ -1,1 +1,1 @@
-(world.getBlockState(placePos.add(${field$x}, ${field$y}, ${field$z})).getBlock() == ${input$block})
+(world.getBlockState(new BlockPos(placePos.getX() + (${field$x}), placePos.getY() + (${field$y}), placePos.getZ() + (${field$z}))).getBlock() == ${input$block})
