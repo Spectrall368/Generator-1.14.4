@@ -108,7 +108,7 @@ package ${package}.world.structure;
       		}
 
       		@Override public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
-			BlockPos pos = new BlockPos(chunkX * 16, generator.func_222532_b(chunkX * 16, chunkZ * 16, Heightmap.Type.${data.surfaceDetectionType}), chunkZ * 16);
+			BlockPos pos = new BlockPos(chunkX * 16, 0, chunkZ * 16);
 			this.components.add(new ${name}StructurePiece(templateManager, pos));
 	            	this.recalculateStructureSize();
          	}
@@ -129,8 +129,6 @@ package ${package}.world.structure;
 		</#if>
 	
 			biome.addStructure(${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG);
-			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")}, 
-				Biome.createDecoratedFeature(${JavaModName}Features.${data.getModElement().getRegistryNameUpper()}, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
    }
 }
 <#-- @formatter:on -->
