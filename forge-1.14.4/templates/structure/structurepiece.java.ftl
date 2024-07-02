@@ -47,9 +47,5 @@ public class ${name}StructurePiece extends TemplateStructurePiece {
         this.mirror = Mirror.values()[random.nextInt(2)];
         this.placeSettings = new PlacementSettings().setRotation(this.rotation).setRandom(random).setMirror(this.mirror).setIgnoreEntities(false).setChunk(null)<#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>;
   }
-  
-  @Override public boolean func_225577_a_(IWorld worldIn, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_) {
-  //WIP
-  }
 }
 <#-- @formatter:on -->
