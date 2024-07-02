@@ -36,10 +36,10 @@ package ${package}.init;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}StructurePieceTypes {
 
 	<#list damagetypes as structurepiece>
-  public static final IStructurePieceType ${structurepiece.getModElement().getRegistryNameUpper()} = register(${structurepiece.getModElement().getName()}StructurePiece::new, new ResourceLocation("${modid}", "${structurepiece.getModElement()}"));
+  	public static final IStructurePieceType ${structurepiece.getModElement().getRegistryNameUpper()} = register(${structurepiece.getModElement().getName()}StructurePiece::new, new ResourceLocation("${modid}", "${structurepiece.getModElement()}"));
 	</#list>
     
-  private static IStructurePieceType register(IStructurePieceType structurePieceType, ResourceLocation resourceLocation) {
-        return Registry.register(Registry.STRUCTURE_PIECE, resourceLocation, structurePieceType);
-    }
+  	private static IStructurePieceType register(IStructurePieceType structurePieceType, ResourceLocation resourceLocation) {
+        	return Registry.register(Registry.STRUCTURE_PIECE, resourceLocation, structurePieceType);
+    	}
 }
