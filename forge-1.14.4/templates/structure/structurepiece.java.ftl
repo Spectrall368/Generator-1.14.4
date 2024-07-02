@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-<#include "procedures.java.ftl">
 package ${package}.world.structure.piece;
 
 public class ${name}StructurePiece extends TemplateStructurePiece {
