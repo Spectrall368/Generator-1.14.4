@@ -1,5 +1,11 @@
 templates:
   - template: structure.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/@NAMEStructure.java"
-    
-field_exclusions: [projection]
+  - template: structurepiece.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/piece/@NAMEStructurePiece.java"
+
+global_templates:
+  - template: elementinits/structure_piece_types.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameStructurePieceTypes.java"
+
+field_exclusions: [terrainAdaptation]
