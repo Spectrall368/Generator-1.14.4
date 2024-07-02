@@ -33,7 +33,10 @@
 package ${package}.world.structure.piece;
 
 public class ${name}StructurePiece extends TemplateStructurePiece {
-  JigsawManager.field_214891_a.register(new JigsawPattern(new ResourceLocation(""), new ResourceLocation("empty"), ImmutableList.of(new Pair<>(new SingleJigsawPiece(""), 1)), JigsawPattern.PlacementBehaviour.${data.projection}));
+
+    public static void register() {
+        JigsawManager.field_214891_a.register(new JigsawPattern(new ResourceLocation("${modid}", ""), new ResourceLocation("empty"), ImmutableList.of(Pair.of(new SingleJigsawPiece("${modid}", "${registryname}"), 1)), JigsawPattern.PlacementBehaviour.${data.projection}));
+    }
 
   public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos) {
         super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 0);
