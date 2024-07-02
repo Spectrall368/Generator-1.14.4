@@ -38,7 +38,37 @@ package ${package}.world.structure;
 		super(configFactory);
 	}
 
-	@Override public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkPosX, int chunkPosZ) {
+
+	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	<#if data.restrictionBiomes?has_content && cond>
+		DimensionType dimensionType = world.getDimension().getType();
+		boolean dimensionCriteria = false;
+		<#list data.restrictionBiomes as restrictionBiome>
+			<#if restrictionBiome?contains("#")>
+				<#if restrictionBiome == "#is_overworld">
+				if(dimensionType == DimensionType.OVERWORLD)
+					dimensionCriteria = true;
+				<#elseif restrictionBiome == "#is_nether">
+				if(dimensionType == DimensionType.THE_NETHER)
+					dimensionCriteria = true;
+				<#elseif restrictionBiome == "#is_end">
+				if(dimensionType == DimensionType.THE_END)
+					dimensionCriteria = true;
+				<#else>
+				if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("#is_")}")))
+					dimensionCriteria = true;
+				</#if>
+			</#if>
+		</#list>
+
+		if(!dimensionCriteria)
+			return false;
+	</#if>
+
+	return super.place(world, generator, random, pos, config);
+	}
+
+	@Override public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random random, int chunkPosX, int chunkPosZ) {
 	}
 
    	@Override public Structure.IStartFactory getStartFactory() {
@@ -59,7 +89,8 @@ package ${package}.world.structure;
       		}
 
       		public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
-			this.recalculateStructureSize();
+	            this.components.add(new ${name}StructurePiece(templateManager, pos));
+	            this.recalculateStructureSize();
          	}
       }
    }
