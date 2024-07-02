@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,17 @@
 <#include "procedures.java.ftl">
 package ${package}.world.structure;
 
-@Mod.EventBusSubscriber public class ${name}Structure extends Structure<NoFeatureConfig> {
+<#assign cond = false>
+<#if data.restrictionBiomes?has_content>
+	<#list data.restrictionBiomes as restrictionBiome>
+		<#if restrictionBiome?contains("#")>
+			<#assign cond = true>
+			 <#break>
+		</#if>
+		<#break>
+	</#list>
+</#if>
+@Mod.EventBusSubscriber public class ${name}Structure extends ScatteredStructure<NoFeatureConfig> {
 	public ${name}Structure(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory) {
 		super(configFactory);
 	}
@@ -68,9 +78,6 @@ package ${package}.world.structure;
 	return super.place(world, generator, random, pos, config);
 	}
 
-	@Override public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random random, int chunkPosX, int chunkPosZ) {
-	}
-
    	@Override public Structure.IStartFactory getStartFactory() {
 		return ${name}Structure.Start::new;
 	}
@@ -79,8 +86,20 @@ package ${package}.world.structure;
 		return "${modid}:${registryname}";
 	}
 
-   	public int getSize() {
+   	@Override public int getSize() {
 		return 1;
+	}
+
+   	@Override protected int getBiomeFeatureDistance(ChunkGenerator<?> chunkGenerator) {
+		return ${data.spacing};
+	}
+
+   	@Override protected int getBiomeFeatureSeparation(ChunkGenerator<?> chunkGenerator) {
+      		return ${data.separation};
+   	}
+
+   	@Override protected int getSeedModifier() {
+		return ${thelper.randompositiveint(registryname)};
 	}
 
    	public static class Start extends StructureStart {
@@ -88,11 +107,28 @@ package ${package}.world.structure;
          		super(structure, chunkX, chunkZ, biome, mutableBoundingBox, reference, seed);
       		}
 
-      		public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
-	            this.components.add(new ${name}StructurePiece(templateManager, pos));
-	            this.recalculateStructureSize();
+      		@Override public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
+			BlockPos pos = new BlockPos(chunkX * 16, generator.func_222532_b(chunkX * 16, chunkZ * 16, Heightmap.Type.${data.surfaceDetectionType}), chunkZ * 16);
+			this.components.add(new ${name}StructurePiece(templateManager, pos));
+	            	this.recalculateStructureSize();
          	}
       }
+
+	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+		<#if data.restrictionBiomes?has_content && !cond>
+			boolean biomeCriteria = false;
+			<#list data.restrictionBiomes as restrictionBiome>
+				<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
+				if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+					biomeCriteria = true;
+				</#if>
+			</#list>
+			if (!biomeCriteria)
+				continue;
+		</#if>
+	
+			biome.addStructure(${name}Structure, NoFeatureConfig);
    }
 }
 <#-- @formatter:on -->
