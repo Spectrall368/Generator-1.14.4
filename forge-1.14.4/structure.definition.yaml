@@ -1,7 +1,7 @@
 templates:
-  - template: structure.java.ftl
+  - template: structure/structure.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/@NAMEStructure.java"
-  - template: structurepiece.java.ftl
+  - template: structure/structurepiece.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/piece/@NAMEStructurePiece.java"
 
 global_templates:
