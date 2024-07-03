@@ -32,20 +32,21 @@
 <#include "../mcitems.ftl">
 package ${package}.world.structure.piece;
 
-public class ${name}StructurePiece extends TemplateStructurePiece {
+public class ${name}StructurePieces {
 
     public static void register() {
-        JigsawManager.field_214891_a.register(new JigsawPattern(new ResourceLocation("${modid}", ""), new ResourceLocation("empty"), ImmutableList.of(Pair.of(new SingleJigsawPiece("${modid}", "${registryname}"), 1)), JigsawPattern.PlacementBehaviour.${data.projection?upper_case}));
+        JigsawManager.field_214891_a.register(new JigsawPattern(new ResourceLocation("${modid}", ""), new ResourceLocation("empty"), ImmutableList.of(com.mojang.datafixers.util.Pair.of(new SingleJigsawPiece("${modid}:${registryname}"), 1)), JigsawPattern.PlacementBehaviour.${data.projection?upper_case}));
     }
 
-  public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos) {
-        super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 0);
-        this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}" ,"${registryname}"));
-        this.templatePosition = pos;
-        Random random = new Random();
-        this.rotation = Rotation.values()[random.nextInt(3)];
-        this.mirror = Mirror.values()[random.nextInt(2)];
-        this.placeSettings = new PlacementSettings().setRotation(this.rotation).setRandom(random).setMirror(this.mirror).setIgnoreEntities(false).setChunk(null)<#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>;
-  }
+    public static class ${name}StructurePiece extends TemplateStructurePiece {
+     public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos) {
+           super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 0);
+           this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
+           this.templatePosition = pos;
+           Random random = new Random();
+           this.placeSettings = new PlacementSettings().setRotation(this.rotation).setRandom(Rotation.values()[random.nextInt(3)]).setMirror(Mirror.values()[random.nextInt(2)]).setIgnoreEntities(false).setChunk(null)<#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>;
+     }
+
+     	@Override protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {}
 }
 <#-- @formatter:on -->
