@@ -54,9 +54,9 @@ package ${package}.world.dimension;
 
 	public static class ${name}ModDimension extends ModDimension {
 	
-			@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-				return ${name}World::new;
-			}
+		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+			return ${name}World::new;
+		}
 	}
 
 	public static class ${name}World extends Dimension {
@@ -116,7 +116,7 @@ package ${package}.world.dimension;
 		}
 
 		@Override public SleepResult canSleepAt(PlayerEntity player, BlockPos pos){
-        	return SleepResult.${data.sleepResult};
+        		return SleepResult.${data.sleepResult};
 		}
 
 		@Nullable public BlockPos findSpawn(ChunkPos chunkPos, boolean checkValid) {
@@ -170,7 +170,7 @@ package ${package}.world.dimension;
 	        <#include "cp_normal.java.ftl">
     	<#elseif data.worldGenType == "Nether like gen">
 	        <#include "cp_nether.java.ftl">
-    	<#elseif data.worldGenType == "End like gen">
+    	<#else>
 	        <#include "cp_end.java.ftl">
     	</#if>
 
