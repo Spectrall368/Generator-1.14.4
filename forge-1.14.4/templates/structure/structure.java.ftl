@@ -130,6 +130,7 @@ package ${package}.world.structure;
 			biome.addStructure(${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG);
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
 				Biome.createDecoratedFeature(${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
-   }
+	   }
+	}
 }
 <#-- @formatter:on -->
