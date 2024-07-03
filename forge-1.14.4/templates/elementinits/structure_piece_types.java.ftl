@@ -35,7 +35,7 @@
 package ${package}.init;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}StructurePieceTypes {
 
-	<#list structure as structurepiece>
+	<#list structures as structurepiece>
   	public static final IStructurePieceType ${structurepiece.getModElement().getRegistryNameUpper()} = register(${structurepiece.getModElement().getName()}StructurePiece::new, new ResourceLocation("${modid}", "${structurepiece.getModElement()}"));
 	</#list>
     
