@@ -29,8 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
+<#include "../mcitems.ftl">
 package ${package}.world.structure;
 
 <#assign cond = false>
