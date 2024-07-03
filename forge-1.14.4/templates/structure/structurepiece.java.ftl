@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 package ${package}.world.structure.piece;
 
 public class ${name}StructurePiece extends TemplateStructurePiece {
