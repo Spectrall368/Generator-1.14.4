@@ -34,25 +34,22 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber public class ${name}Dimension {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Dimension {
 	private static Biome[] dimension${name}Biomes;
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
-		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
-			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${data.getModElement().getRegistryNameUpper()}.get(), null, ${data.hasSkyLight});
-			}
+	@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
+		if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
+			DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${data.getModElement().getRegistryNameUpper()}.get(), null, ${data.hasSkyLight});
 		}
+	}
 	
-		@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
-			dimension${name}Biomes = new Biome[] {
-	    		<#list data.biomesInDimension as biome>
-					<#if biome.canProperlyMap()>
-					ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}")),
-					</#if>
-				</#list>
-			};
-		}
+	@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
+		dimension${name}Biomes = new Biome[] {
+	    	<#list data.biomesInDimension as biome>
+			<#if biome.canProperlyMap()>
+			ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))<#sep>,
+			</#if>
+		</#list>};
 	}
 
 	public static class ${name}ModDimension extends ModDimension {
