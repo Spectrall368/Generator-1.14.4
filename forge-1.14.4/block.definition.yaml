@@ -380,5 +380,7 @@ tags:
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
+  - tag: BLOCKS:minecraft:replaceable
+    condition: isReplaceable
 
 field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor]
