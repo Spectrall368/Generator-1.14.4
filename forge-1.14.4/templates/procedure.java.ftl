@@ -32,6 +32,7 @@
 package ${package}.procedures;
 
 import net.minecraftforge.eventbus.api.Event;
+
 <#assign nullableDependencies = []/>
 <#list dependencies as dependency>
 	<#if dependency.getType(generator.getWorkspace()) != "double"
@@ -47,7 +48,6 @@ import net.minecraftforge.eventbus.api.Event;
 	</#if>
 </#list>
 <#compress>
-
 <#if trigger_code?has_content>
 ${trigger_code}
 <#else>
