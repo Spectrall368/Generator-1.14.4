@@ -156,7 +156,7 @@ public class ${name}Biome extends Biome {
 		</#if>
 
 		<#list data.spawnEntries as spawnEntry>
-			<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
+			<#assign entity = entry.entity.getMappedValue(1)!"null">
 			<#if entity != "null">
 			this.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new Biome.SpawnListEntry(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 			</#if>
