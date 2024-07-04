@@ -50,7 +50,7 @@ public abstract class ${name}Item extends ArmorItem {
 				return ${data.enchantability};
 			}
 
-			@Override public net.minecraft.util.SoundEvent getSoundEvent() {
+			@Override public SoundEvent getSoundEvent() {
 				<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
 				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
