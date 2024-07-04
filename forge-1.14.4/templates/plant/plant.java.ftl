@@ -35,8 +35,8 @@
 <#include "../mcitems.ftl">
 package ${package}.block;
 
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.property.Properties;
+
 <#compress>
 <#assign interfaces = []>
 <#if data.isBonemealable>
