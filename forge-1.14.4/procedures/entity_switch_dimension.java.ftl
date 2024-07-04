@@ -1,14 +1,7 @@
 <#if field$dimension??><#--Here for legacy reasons as field$dimension does not exist in older workspaces-->
 if (${input$entity} instanceof ServerPlayerEntity && !((ServerPlayerEntity) ${input$entity}).world.isRemote) {
-	<#if field$dimension=="Surface">
-		DimensionType destinationType = DimensionType.OVERWORLD;
-	<#elseif field$dimension=="Nether">
-		DimensionType destinationType = DimensionType.THE_NETHER;
-	<#elseif field$dimension=="End">
-		DimensionType destinationType = DimensionType.THE_END;
-	<#else>
-		DimensionType destinationType = DimensionType.byName(new ResourceLocation("${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))}"));
-	</#if>
+	DimensionType destinationType = ${generator.map(field$dimension, "dimensions")};
+
 	if (((ServerPlayerEntity) ${input$entity}).dimension == destinationType) return;
 
 	ServerWorld nextWorld = ((ServerPlayerEntity) ${input$entity}).getServer().getWorld(destinationType);
