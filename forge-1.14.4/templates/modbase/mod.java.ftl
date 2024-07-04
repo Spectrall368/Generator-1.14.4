@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 	public static final String MODID = "${modid}";
 
 	public ${JavaModName}() {
+		// Start of user code block mod constructor
+		// End of user code block mod constructor
 		MinecraftForge.EVENT_BUS.register(this);
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -31,11 +33,11 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("dimension")>${JavaModName}Dimensions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
 
-		bus.addListener(this::clientSetup);
-		bus.register(this);
-
 		// Start of user code block mod init
 		// End of user code block mod init
+
+		bus.addListener(this::clientSetup);
+		bus.register(this);
 	}
 
 	// Start of user code block mod methods
