@@ -46,6 +46,10 @@ FlatPresets: FlatPresetsScreen
 Grindstone: GrindstoneScreen
 Hopper: HopperScreen
 IngameMenu: IngameMenuScreen
+AbstractCommandBlock: AbstractCommandBlockScreen
+AbstractContainer: ContainerScreen
+AbstractEditSign: EditSignScreen
+AbstractFurnace: AbstractFurnaceScreen
 Jigsaw: JigsawScreen
 Language: LanguageScreen
 Lectern: LecternScreen
@@ -70,3 +74,5 @@ WorldLoadProgress: WorldLoadProgressScreen
 WorldSelection: WorldSelectionScreen
 Win: WinGameScreen
 Advancements: AdvancementsScreen
+Realms: RealmsScreen
+DisconnectedRealms: DisconnectedRealmsScreen
