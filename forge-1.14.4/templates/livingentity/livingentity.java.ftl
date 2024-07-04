@@ -34,8 +34,6 @@
 package ${package}.entity;
 
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.util.SoundEvent;
-
 <#assign extendsClass = "Creature">
 <#if data.aiBase != "(none)" >
 	<#assign extendsClass = data.aiBase>
