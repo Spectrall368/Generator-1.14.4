@@ -122,8 +122,8 @@ package ${package}.world.features.ores;
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
 								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}")).contains(blockAt.getBlock()))
-							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")).contains(blockAt.getBlock()))
+							<#elseif replacementBlock.getMappedValue(1).startsWith("#")>
+								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getMappedValue(1).replace("#", "")}")).contains(blockAt.getBlock()))
 							<#else>
 								if(blockAt == ${mappedBlockToBlockStateCode(replacementBlock)})
 							</#if>
