@@ -1,0 +1,16 @@
+_default:
+  - DimensionType.OVERWORLD
+  - "minecraft:overworld"
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "DimensionType.byName(new ResourceLocation(\"@modid:@registryname\"))"
+  - "@modid:@registryname"
+Surface:
+  - DimensionType.OVERWORLD
+  - "minecraft:overworld"
+Nether:
+  - DimensionType.THE_NETHER
+  - "minecraft:the_nether"
+End:
+  - DimensionType.THE_END
+  - "minecraft:the_end"
