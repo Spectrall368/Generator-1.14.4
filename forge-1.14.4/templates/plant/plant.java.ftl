@@ -77,9 +77,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if data.luminance != 0>
 		.lightValue(${data.luminance})
 		</#if>
-		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-		.noDrops()
-		</#if>
 		<#if data.isSolid>
 			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
 			.variableOpacity()
@@ -163,46 +160,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
-	</#if>
-
-	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
-		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
-		}
-		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
-		}
-		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, 1));
-		}
-		</#if>
 	</#if>
 
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
