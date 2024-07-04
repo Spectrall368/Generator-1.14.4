@@ -121,7 +121,7 @@ package ${package}.world.features.ores;
 					boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}")).contains(blockAt.getBlock()))
+								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")).contains(blockAt.getBlock()))
 							<#elseif replacementBlock.getMappedValue(1).startsWith("#")>
 								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getMappedValue(1).replace("#", "")}")).contains(blockAt.getBlock()))
 							<#else>
