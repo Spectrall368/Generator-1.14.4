@@ -8,11 +8,11 @@
 		<#if hasProcedure(procedure)>
 			Entity entity = Minecraft.getInstance().player;
 			list.add(new StringTextComponent(<@procedureCode procedure, {
-				"x": "entity != null ? entity.getX() : 0.0",
-				"y": "entity != null ? entity.getY() : 0.0",
-				"z": "entity != null ? entity.getZ() : 0.0",
+				"x": "entity != null ? entity.posX : 0.0",
+				"y": "entity != null ? entity.posY : 0.0",
+				"z": "entity != null ? entity.posZ : 0.0",
 				"entity": "entity",
-				"world": "world instanceof World ? (LevelAccessor) world : null",
+				"world": "world instanceof World ? (IWorld) world : null",
 				"itemstack": "itemstack"
 			}, false/>));
 		<#else>
