@@ -33,27 +33,22 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
-<#assign spawn_overworld = []>
-<#list biomes as biome>
-	<#if biome.spawnBiome>
-		<#assign spawn_overworld += [biome]>
-	</#if>
-</#list>
+<#assign spawn_overworld = biomes?filter(biome -> biome.spawnBiome)>
 <#if spawn_overworld?has_content>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if> public class ${JavaModName}Biomes {
 
-	public static final DeferredRegister<Biome> REGISTRY = new DeferredRegister<>(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
+    public static final DeferredRegister<Biome> REGISTRY = new DeferredRegister<>(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
 
     <#list biomes as biome>
     public static final RegistryObject<Biome> ${biome.getModElement().getRegistryNameUpper()}
         = REGISTRY.register("${biome.getModElement().getRegistryName()}", () -> new ${biome.getModElement().getName()}Biome());
     </#list>
 
-	<#if spawn_overworld?has_content>
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-	    <#list spawn_overworld as biome>
-            ${biome.getModElement().getName()}Biome.init();
-            </#list>
-	}
-	</#if>
+    <#if spawn_overworld?has_content>
+    @SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+    	<#list spawn_overworld as biome>
+    		${biome.getModElement().getName()}Biome.init();
+    	</#list>
+    }
+    </#if>
 }
 <#-- @formatter:on -->
