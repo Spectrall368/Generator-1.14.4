@@ -5,5 +5,5 @@
 <#elseif field$dimension=="End">
 	1
 <#else>
-	(DimensionType.byName(new ResourceLocation("${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))}")).getId())
+	(${generator.map(field$dimension, "dimensions")}.getId())
 </#if>
