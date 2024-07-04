@@ -29,6 +29,7 @@ tags:
     condition: "${data.type == 'WATER'}"
   - tag: FLUIDS:minecraft:lava
     condition: "${data.type == 'LAVA'}"
+  - tag: BLOCKS:minecraft:replaceable
 
 localizationkeys:
   - key: fluid.@modid.@registryname
