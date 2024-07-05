@@ -31,11 +31,10 @@ public static class ChunkProvider${name} extends OverworldChunkGenerator {
 
 	public ChunkProvider${name}(IWorld world, BiomeProvider provider) {
 		super(world, provider, new OverworldGenSettings() {
-			public BlockState getDefaultBlock() {
+			@Override public BlockState getDefaultBlock() {
 				return ${mappedBlockToBlockStateCode(data.mainFillerBlock)};
 			}
-
-			public BlockState getDefaultFluid() {
+			@Override public BlockState getDefaultFluid() {
 				return ${mappedBlockToBlockStateCode(data.fluidBlock)};
 			}
 		});
