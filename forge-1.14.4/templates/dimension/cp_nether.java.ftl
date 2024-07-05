@@ -31,11 +31,10 @@ public static class ChunkProvider${name} extends NetherChunkGenerator {
 
 	public ChunkProvider${name}(World world, BiomeProvider provider) {
 		super(world, provider, new NetherGenSettings() {
-			public BlockState getDefaultBlock() {
+			@Override public BlockState getDefaultBlock() {
 				return ${mappedBlockToBlockStateCode(data.mainFillerBlock)};
 			}
-
-			public BlockState getDefaultFluid() {
+			@Override public BlockState getDefaultFluid() {
 				return ${mappedBlockToBlockStateCode(data.fluidBlock)};
 			}
 		});
