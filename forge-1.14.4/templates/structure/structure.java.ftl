@@ -32,6 +32,8 @@
 <#include "../mcitems.ftl">
 package ${package}.world.structure;
 
+com.mojang.datafixers.util.Pair;
+
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list data.restrictionBiomes as restrictionBiome>
