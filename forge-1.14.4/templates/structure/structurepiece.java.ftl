@@ -44,5 +44,6 @@ public class ${name}StructurePieces {
      }
 
      	@Override protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {}
+ }
 }
 <#-- @formatter:on -->
