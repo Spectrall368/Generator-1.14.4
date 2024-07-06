@@ -688,7 +688,7 @@ Blocks.CAKE:
   - "cake"
 Blocks.STONEBRICK:
   - Blocks.STONE_BRICKS
-  - "#minecraft:stone_bricks" # HERE
+  - "#minecraft:stone_bricks"
 Blocks.STONEBRICK#0:
   - Blocks.STONE_BRICKS
   - "stone_bricks"
@@ -1162,7 +1162,7 @@ Blocks.CONCRETE#15:
   - "black_concrete"
 Blocks.CARPET:
   - Blocks.WHITE_CARPET
-  - "#minecraft:wool_carpets"
+  - "#minecraft:carpets"
 Blocks.CARPET#0:
   - Blocks.WHITE_CARPET
   - "white_carpet"
