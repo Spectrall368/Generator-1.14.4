@@ -35,7 +35,16 @@ package ${package}.world.structure.piece;
 public class ${name}StructurePieces {
 
     public static class ${name}StructurePiece extends TemplateStructurePiece {
+
      public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos) {
+           super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
+           this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
+           this.templatePosition = pos;
+           Random random = new Random();
+           this.placeSettings = new PlacementSettings().setRotation(Rotation.values()[random.nextInt(3)]).setRandom(random).setMirror(Mirror.values()[random.nextInt(2)]).setIgnoreEntities(false)<#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>;
+     }
+
+     public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos, CompoundNBT nbt) {
            super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
            this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
            this.templatePosition = pos;
