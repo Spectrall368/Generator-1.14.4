@@ -1,3 +1,9 @@
 templates:
-  - template: structure.java.ftl
+  - template: structure/structure.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/@NAMEStructure.java"
+  - template: structure/structurepiece.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/piece/@NAMEStructurePiece.java"
+
+global_templates:
+  - template: elementinits/structure_piece_types.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameIStructurePieceTypes.java"
