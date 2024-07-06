@@ -35,7 +35,7 @@ package ${package}.world.structure;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list data.restrictionBiomes as restrictionBiome>
-		<#if restrictionBiome?contains("#")>
+		<#if restrictionBiome?contains(":is_")>
 			<#assign cond = true>
 			 <#break>
 		</#if>
@@ -49,30 +49,28 @@ package ${package}.world.structure;
 
 
 	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
-	<#if data.restrictionBiomes?has_content && cond>
-		DimensionType dimensionType = world.getDimension().getType();
-		boolean dimensionCriteria = false;
-		<#list data.restrictionBiomes as restrictionBiome>
-			<#if restrictionBiome?contains("#")>
-				<#if restrictionBiome == "#is_overworld">
-				if(dimensionType == DimensionType.OVERWORLD)
-					dimensionCriteria = true;
-				<#elseif restrictionBiome == "#is_nether">
-				if(dimensionType == DimensionType.THE_NETHER)
-					dimensionCriteria = true;
-				<#elseif restrictionBiome == "#is_end">
-				if(dimensionType == DimensionType.THE_END)
-					dimensionCriteria = true;
-				<#else>
-				if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("#is_")}")))
-					dimensionCriteria = true;
-				</#if>
-			</#if>
-		</#list>
+				<#if data.restrictionBiomes?has_content && cond>
+					DimensionType dimensionType = world.getDimension().getType();
+					boolean dimensionCriteria = false;
+					<#list data.restrictionBiomes as restrictionBiome>
+							<#if restrictionBiome == "#minecraft:is_overworld">
+								if(dimensionType == DimensionType.OVERWORLD)
+									dimensionCriteria = true;
+							<#elseif restrictionBiome == "#minecraft:is_nether">
+								if(dimensionType == DimensionType.THE_NETHER)
+									dimensionCriteria = true;
+							<#elseif restrictionBiome == "#minecraft:is_end">
+								if(dimensionType == DimensionType.THE_END)
+									dimensionCriteria = true;
+							<#else>
+								if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}")))
+									dimensionCriteria = true;
+							</#if>
+					</#list>
 
-		if(!dimensionCriteria)
-			return false;
-	</#if>
+					if(!dimensionCriteria)
+						return false;
+				</#if>
 
 	return super.place(world, generator, random, pos, config);
 	}
@@ -107,29 +105,29 @@ package ${package}.world.structure;
       		}
 
       		@Override public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
-			BlockPos pos = new BlockPos(chunkX * 16, generator.func_222532_b(chunkX * 16, chunkZ * 16, Heightmap.Type.${data.surfaceDetectionType}), chunkZ * 16);
-			this.components.add(new ${name}StructurePiece(templateManager, pos));
+			BlockPos pos = new BlockPos(chunkX * 16, generator.func_222531_c(chunkX * 16, chunkZ * 16, Heightmap.Type.${data.surfaceDetectionType}), chunkZ * 16);
+			${name}StructurePieces.start(templateManager, pos));
 	            	this.recalculateStructureSize();
          	}
       }
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-		<#if data.restrictionBiomes?has_content && !cond>
-			boolean biomeCriteria = false;
-			<#list data.restrictionBiomes as restrictionBiome>
-				<#if restrictionBiome.canProperlyMap() && !restrictionBiome?contains("#")>
-				if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-					biomeCriteria = true;
+				<#if data.restrictionBiomes?has_content && !cond>
+					boolean biomeCriteria = false;
+					<#list data.restrictionBiomes as restrictionBiome>
+						<#if restrictionBiome.canProperlyMap()>
+						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+							biomeCriteria = true;
+						</#if>
+					</#list>
+					if (!biomeCriteria)
+						continue;
 				</#if>
-			</#list>
-			if (!biomeCriteria)
-				continue;
-		</#if>
 	
-			biome.addStructure(${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG);
+			biome.addStructure(${JavaModName}Structures.${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG);
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+				Biome.createDecoratedFeature(${JavaModName}Structures.${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 	   }
 	}
 }
