@@ -111,6 +111,38 @@ package ${package}.world.structure;
          	}
       }
 
+	    static {
+	        JigsawManager.field_214891_a.register(new JigsawPattern(
+	                        new ResourceLocation("${modid}:${registryname}"),
+	                        new ResourceLocation("minecraft:empty"),
+	                        ImmutableList.of(
+	                                new Pair<>(new SingleJigsawPiece("${modid}:${registryname}"), 1)
+	                        ),
+	                        JigsawPattern.PlacementBehaviour.${data.projection?upper_case}
+	                )
+		);
+
+		<#list data.jigsawPools as main>
+	        JigsawManager.field_214891_a.register(new JigsawPattern(
+				<#if data.poolName??>
+	                        new ResourceLocation("${modid}:${registryname}_${main.poolName}"),
+	                        new ResourceLocation("${main.fallbackPool?has_content?then(data.fallbackPool, "minecraft:empty")}")
+				<#else>
+	                        new ResourceLocation("${modid}:${registryname}"),
+	                        new ResourceLocation("minecraft:empty")
+				</#if>,
+	                        ImmutableList.of(
+					new Pair<>(new SingleJigsawPiece("${modid}:${main.structure}"), ${main.weight})
+				<#list data.getPoolParts() as part>
+	                                , new Pair<>(new SingleJigsawPiece("${modid}:${part.structure}"), ${part.weight})
+				</#list>
+	                        ),
+	                        JigsawPattern.PlacementBehaviour.${main.projection?upper_case}
+	                )
+	        );
+		</#list>
+	    }
+
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 				<#if data.restrictionBiomes?has_content && !cond>
