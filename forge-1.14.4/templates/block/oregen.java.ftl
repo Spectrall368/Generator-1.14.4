@@ -74,17 +74,17 @@ package ${package}.world.features.ores;
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 					<#list data.restrictionBiomes as restrictionBiome>
-							<#if restrictionBiome == "minecraft:is_overworld">
+							<#if restrictionBiome == "#minecraft:is_overworld">
 								if(dimensionType == DimensionType.OVERWORLD)
 									dimensionCriteria = true;
-							<#elseif restrictionBiome == "minecraft:is_nether">
+							<#elseif restrictionBiome == "#minecraft:is_nether">
 								if(dimensionType == DimensionType.THE_NETHER)
 									dimensionCriteria = true;
-							<#elseif restrictionBiome == "minecraft:is_end">
+							<#elseif restrictionBiome == "#minecraft:is_end">
 								if(dimensionType == DimensionType.THE_END)
 									dimensionCriteria = true;
 							<#else>
-								if(dimensionType == DimensionType.byName(new ResourceLocation(${JavaModName}.MODID, "${restrictionBiome?keep_after("is_")}")))
+								if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}")))
 									dimensionCriteria = true;
 							</#if>
 					</#list>
