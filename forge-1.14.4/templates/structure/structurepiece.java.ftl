@@ -37,7 +37,7 @@ public class ${name}StructurePieces {
     public static class ${name}StructurePiece extends TemplateStructurePiece {
 
      public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos) {
-           super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
+           super(${JavaModName}IStructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
            this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
            this.templatePosition = pos;
            Random random = new Random();
@@ -45,7 +45,7 @@ public class ${name}StructurePieces {
      }
 
      public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos, CompoundNBT nbt) {
-           super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
+           super(${JavaModName}IStructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
            this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
            this.templatePosition = pos;
            Random random = new Random();
