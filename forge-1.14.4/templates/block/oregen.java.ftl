@@ -74,7 +74,7 @@ package ${package}.world.features.ores;
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
 					<#list data.restrictionBiomes as restrictionBiome>
-							<#if restrictionBiome == minecraft:is_overworld">
+							<#if restrictionBiome == "minecraft:is_overworld">
 								if(dimensionType == DimensionType.OVERWORLD)
 									dimensionCriteria = true;
 							<#elseif restrictionBiome == "minecraft:is_nether">
