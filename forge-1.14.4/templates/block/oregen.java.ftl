@@ -53,7 +53,7 @@ package ${package}.world.features.ores;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list data.restrictionBiomes as restrictionBiome>
-		<#if restrictionBiome?contains("#")>
+		<#if restrictionBiome?contains("#is_")>
 			<#assign cond = true>
 			 <#break>
 		</#if>
