@@ -32,7 +32,7 @@
 <#include "../mcitems.ftl">
 package ${package}.world.structure;
 
-com.mojang.datafixers.util.Pair;
+import com.mojang.datafixers.util.Pair;
 
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
@@ -109,7 +109,7 @@ com.mojang.datafixers.util.Pair;
 
       		@Override public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
 			BlockPos pos = new BlockPos(chunkX * 16, generator.func_222531_c(chunkX * 16, chunkZ * 16, Heightmap.Type.${data.surfaceDetectionType}), chunkZ * 16);
-			${name}StructurePieces.start(templateManager, pos));
+			${name}StructurePieces.start(templateManager, pos);
 	            	this.recalculateStructureSize();
          	}
       }
