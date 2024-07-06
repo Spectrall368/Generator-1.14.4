@@ -49,6 +49,7 @@ com.mojang.datafixers.util.Pair;
 		super(configFactory);
 	}
 
+	public static final ${name}Structure structure = null;
 
 	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 				<#if data.restrictionBiomes?has_content && cond>
@@ -159,9 +160,9 @@ com.mojang.datafixers.util.Pair;
 						continue;
 				</#if>
 	
-			biome.addStructure(${JavaModName}Structures.${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG);
+			biome.addStructure(structure, IFeatureConfig.NO_FEATURE_CONFIG);
 			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(${JavaModName}Structures.${name}Structure, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+				Biome.createDecoratedFeature(structure, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 	   }
 	}
 }
