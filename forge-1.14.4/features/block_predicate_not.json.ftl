@@ -1,1 +1,1 @@
-!
+!(${input$condition})
