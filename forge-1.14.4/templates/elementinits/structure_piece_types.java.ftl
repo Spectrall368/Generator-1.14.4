@@ -33,7 +33,7 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}StructurePieceTypes {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}IStructurePieceTypes {
 
 	<#list structures as structurepiece>
   	public static final IStructurePieceType ${structurepiece.getModElement().getRegistryNameUpper()} = register(${structurepiece.getModElement().getName()}StructurePieces.${structurepiece.getModElement().getName()}StructurePiece::new, new ResourceLocation("${modid}", "${structurepiece.getModElement()}"));
