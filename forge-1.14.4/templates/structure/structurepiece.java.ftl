@@ -40,7 +40,7 @@ public class ${name}StructurePieces {
            this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
            this.templatePosition = pos;
            Random random = new Random();
-           this.placeSettings = new PlacementSettings().setRotation(this.rotation).setRandom(Rotation.values()[random.nextInt(3)]).setMirror(Mirror.values()[random.nextInt(2)]).setIgnoreEntities(false).setChunk(null)<#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>;
+           this.placeSettings = new PlacementSettings().setRotation(Rotation.values()[random.nextInt(3)]).setRandom(random).setMirror(Mirror.values()[random.nextInt(2)]).setIgnoreEntities(false)<#if data.ignoredBlocks?has_content>.addProcessor(new BlockIgnoreStructureProcessor(ImmutableList.of(<#list data.ignoredBlocks as block>${mappedBlockToBlock(block)}<#sep>,</#list>)))</#if>;
      }
 
      	@Override protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {}
