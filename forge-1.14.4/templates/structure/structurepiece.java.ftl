@@ -34,13 +34,9 @@ package ${package}.world.structure.piece;
 
 public class ${name}StructurePieces {
 
-    public static void register() {
-        JigsawManager.field_214891_a.register(new JigsawPattern(new ResourceLocation("${modid}", ""), new ResourceLocation("empty"), ImmutableList.of(com.mojang.datafixers.util.Pair.of(new SingleJigsawPiece("${modid}:${registryname}"), 1)), JigsawPattern.PlacementBehaviour.${data.projection?upper_case}));
-    }
-
     public static class ${name}StructurePiece extends TemplateStructurePiece {
      public ${name}StructurePiece(TemplateManager templateManager, BlockPos pos) {
-           super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 0);
+           super(${JavaModName}StructurePieceTypes.${data.getModElement().getRegistryNameUpper()}, 1);
            this.template = templateManager.getTemplateDefaulted(new ResourceLocation("${modid}", "${registryname}"));
            this.templatePosition = pos;
            Random random = new Random();
