@@ -54,7 +54,7 @@ package ${package}.world.features;
     		if (template == null)
 			return false;
 		PlacementSettings placeSettings = (new PlacementSettings()).setRotation(rotation).setMirror(mirror).setRandom(rand).setIgnoreEntities(false)
-			.setChunk(null).addProcessor(new BlockIgnoreStructureProcessor(ignoredBlocks));
+			.addProcessor(new BlockIgnoreStructureProcessor(ignoredBlocks));
 		template.addBlocksToWorld(world, placePos, placeSettings);
 		return true;
 	}
