@@ -119,7 +119,7 @@ import com.mojang.datafixers.util.Pair;
 	                        new ResourceLocation("${modid}:${registryname}"),
 	                        new ResourceLocation("minecraft:empty"),
 	                        ImmutableList.of(
-	                                new Pair<>(new SingleJigsawPiece("${modid}:${registryname}"), 1)
+	                                new Pair<>(new SingleJigsawPiece("${modid}:${data.structure}"), 1)
 	                        ),
 	                        JigsawPattern.PlacementBehaviour.${data.projection?upper_case}
 	                )
