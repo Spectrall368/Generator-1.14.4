@@ -79,14 +79,6 @@ package ${package}.world.features;
 						return false;
 				</#if>
 
-				<#if hasProcedure(data.generateCondition)>
-				int x = pos.getX();
-				int y = pos.getY();
-				int z = pos.getZ();
-				if (!<@procedureOBJToConditionCode data.generateCondition/>)
-					return false;
-				</#if>
-
 				<#if placementcode.contains("Rarity")>
 				if(random.nextFloat() < 1.0F / (float) ${placementcode?keep_after("Rarity(")?keep_before(")")}) {
 				</#if>
@@ -96,6 +88,14 @@ package ${package}.world.features;
 				</#if>
 
 				${removeStrings(placementcode)}
+
+				<#if hasProcedure(data.generateCondition)>
+				int x = placePos.getX();
+				int y = placePos.getY();
+				int z = placePos.getZ();
+				if (!<@procedureOBJToConditionCode data.generateCondition/>)
+					return false;
+				</#if>
 
 				return super.place(world, generator, random, placePos, config);
 
