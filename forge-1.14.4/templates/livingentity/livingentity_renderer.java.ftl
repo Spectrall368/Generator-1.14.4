@@ -100,8 +100,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
 		<#if layer.model == "Default">
-			final ${model?keep_before("<")}<${name}Entity> MODEL = ${super?keep_after("context, ")?keep_before("),")});
-			<#assign model_ = "this." + "MODEL">
+			<#assign model_ = "((" + model + ") this.getEntityModel())">
 		<#else>
 			<#assign model_ = "model">
 		</#if>
@@ -130,16 +129,16 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	GlStateManager.enableBlend();
 			      	GlStateManager.disableAlphaTest();
 			      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-			      	GlStateManager.disableLighting();
 			      	GlStateManager.depthMask(!entity.isInvisible());
 			      	int i = 61680;
-			      	int j = 61680;
-			      	int k = 0;
-			      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, 61680.0F, 0.0F);
-			      	GlStateManager.enableLighting();
+				int j = i % 65536;
+				int k = i / 65536;
+			      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float) j, (float) k);
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				<#if layer.model != "Default">
 				${model_}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
         			this.getEntityModel().setModelAttributes(${model_});
+				</#if>
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
 			      	${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
