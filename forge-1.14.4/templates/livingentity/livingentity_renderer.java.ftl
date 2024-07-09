@@ -88,6 +88,7 @@ package ${package}.client.renderer;
 <#assign model_ = model>
 <#assign model = model + "<" + name + "Entity>">
 
+@OnlyIn(Dist.CLIENT)
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererManager context) {
@@ -136,12 +137,12 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				int k = i / 65536;
 			      	com.mojang.blaze3d.platform.GLX.glMultiTexCoord2f(com.mojang.blaze3d.platform.GLX.GL_TEXTURE1, (float) j, (float) k);
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				<#if layer.model != "Default">
-				${model_}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-        			this.getEntityModel().setModelAttributes(${model_});
-				</#if>
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
+				<#if layer.model != "Default">
+        			this.getEntityModel().setModelAttributes(${model_});
+				${model_}.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+				</#if>
 			      	${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			      	gamerenderer.setupFogColor(false);
 			      	this.func_215334_a(entity);
