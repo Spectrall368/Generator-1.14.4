@@ -1,2 +1,3 @@
-if (!world.getBlockState(placePos).isValidPosition(world, placePos))
+<#include "mcitems.ftl">
+if (!${mappedBlockToBlockStateCode(input$block)}.isValidPosition(world, placePos))
   return false;
