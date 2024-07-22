@@ -41,7 +41,7 @@ package ${package}.world.features;
   	}
 
 	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, StructureFeatureConfiguration config) {
-		Rotation rotation = config.random_rotation ? Rotation.values()[rand.nextInt(3)] : Rotation.NONE;
+		Rotation rotation = config.random_rotation ? Rotation.func_222466_a(rand) : Rotation.NONE;
 		Mirror mirror = config.random_mirror ? Mirror.values()[rand.nextInt(2)] : Mirror.NONE;
 		BlockPos placePos = pos.add(config.offset);
 		List<Block> ignoredBlocks = new ArrayList<>();
