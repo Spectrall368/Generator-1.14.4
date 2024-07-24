@@ -34,10 +34,10 @@
     "textures": {
         <@textures data.getBlockingTextureMap()/>
         "particle": "${data.texture.format("%s:item/%s")}"
-    }
+    },
+    "transform": "forge:default-tool"
 </#if>
 }
-
 <#macro textures textureMap>
     <#if textureMap??>
         <#list textureMap.entrySet() as texture>
