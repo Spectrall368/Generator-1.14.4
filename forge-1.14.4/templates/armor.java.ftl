@@ -101,6 +101,8 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
+		<@hasGlow data.helmetGlowCondition/>
+
 		<@onArmorTick data.onHelmetTick/>
 	}
 	</#if>
@@ -140,6 +142,8 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<@hasGlow data.bodyGlowCondition/>
 
 		<@onArmorTick data.onBodyTick/>
 	}
@@ -181,6 +185,8 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
+		<@hasGlow data.leggingsGlowCondition/>
+
 		<@onArmorTick data.onLeggingsTick/>
 	}
 	</#if>
@@ -219,6 +225,8 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<@hasGlow data.bootsGlowCondition/>
 
 		<@onArmorTick data.onBootsTick/>
 	}
