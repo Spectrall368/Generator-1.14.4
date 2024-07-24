@@ -76,7 +76,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlotType.HEAD, new Item.Properties()<#if data.enableHelmet>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.HEAD, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -111,7 +111,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlotType.CHEST, new Item.Properties()<#if data.enableBody>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.CHEST, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -153,7 +153,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlotType.LEGS, new Item.Properties()<#if data.enableLeggings>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.LEGS, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -195,7 +195,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlotType.FEET, new Item.Properties()<#if data.enableBoots>.group(${data.creativeTab})</#if>);
+			super(EquipmentSlotType.FEET, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
