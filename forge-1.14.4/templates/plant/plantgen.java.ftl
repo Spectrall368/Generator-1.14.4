@@ -62,8 +62,7 @@ package ${package}.world.features.plants;
 
 	private static Feature<${configuration}> feature = null;
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
-
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRegisterHandler {
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${featurename}(${configuration}::deserialize) {
 			<#if data.plantType == "normal">
