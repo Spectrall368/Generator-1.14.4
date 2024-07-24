@@ -38,7 +38,7 @@ import net.minecraft.network.datasync.DataParameter;
 <#if data.aiBase != "(none)" >
 	<#assign extendsClass = data.aiBase>
 <#else>
-	<#assign extendsClass = data.mobBehaviourType.replace("Mob", "Monster")>
+	<#assign extendsClass = data.mobBehaviourType.replace("Mob", "Monster").replace("Raider", "AbstractRaider")>
 </#if>
 <#if data.breedable>
 	<#assign extendsClass = "Animal">
