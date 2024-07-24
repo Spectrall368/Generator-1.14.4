@@ -35,12 +35,12 @@ package ${package}.item;
 public class ${name}Item extends MusicDiscItem {
 
 	public ${name}Item() {
+		super(${data.analogOutput},
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		super(${data.analogOutput}, new net.minecraft.util.SoundEvent(new ResourceLocation("${data.music}")),
+		new net.minecraft.util.SoundEvent
 		<#else>
-		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
-		</#if>
-				new Item.Properties().group(${data.creativeTab}).maxStackSize(1).rarity(Rarity.${data.rarity}));
+		ForgeRegistries.SOUND_EVENTS.getValue
+		</#if>(new ResourceLocation("${data.music}")), new Item.Properties().group(<@CreativeTabs data.creativeTabs/>).maxStackSize(1).rarity(Rarity.${data.rarity}));
 	}
 
 	<@addSpecialInformation data.specialInformation/>
