@@ -232,7 +232,6 @@ entity.evocation_illager.prepare_summon: entity.evoker.prepare_summon
 entity.evocation_illager.prepare_wololo: entity.evoker.prepare_wololo
 entity.experience_bottle.throw: entity.experience_bottle.throw
 entity.experience_orb.pickup: entity.experience_orb.pickup
-entity.experience_orb.touch: entity.experience_orb.pickup #LEGACY
 entity.firework.blast: entity.firework_rocket.blast
 entity.firework.blast_far: entity.firework_rocket.blast_far
 entity.firework.large_blast: entity.firework_rocket.large_blast
