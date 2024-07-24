@@ -28,7 +28,6 @@
     ]
     </#if>
 }
-
 <#macro textures textureMap>
     <#if textureMap??>
         <#list textureMap.entrySet() as texture>
