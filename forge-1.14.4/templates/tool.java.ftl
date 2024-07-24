@@ -88,11 +88,13 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			</#if>
 
 				new Item.Properties()
-				.group(${data.creativeTab})
+			 	.group(<@CreativeTabs data.creativeTabs/>)
 		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
 			new Item.Properties()
-				.group(${data.creativeTab})
+			 	.group(<@CreativeTabs data.creativeTabs/>)
+				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
 				.maxDamage(${data.usageCount})
+				</#if>
 		</#if>);
 	}
 
@@ -170,8 +172,10 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-			.group(${data.creativeTab})
+			.group(<@CreativeTabs data.creativeTabs/>)
+			<#if data.usageCount != 0>
 			.maxDamage(${data.usageCount})
+			</#if>
 		);
 	}
 
@@ -218,8 +222,10 @@ public class ${name}Item extends FishingRodItem {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-			.group(${data.creativeTab})
+			.group(<@CreativeTabs data.creativeTabs/>)
+			<#if data.usageCount != 0>
 			.maxDamage(${data.usageCount})
+			</#if>
 		);
 	}
 
