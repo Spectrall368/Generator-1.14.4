@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -55,8 +55,7 @@ public class ${name} {
 		new ${name}();
 	}
 
-    @Mod.EventBusSubscriber private static class ForgeBusEvents {
-
+    @Mod.EventBusSubscriber private static class ${name}ForgeBusEvents {
 		@SubscribeEvent public static void serverLoad(FMLServerStartingEvent event) {
 		}
 
