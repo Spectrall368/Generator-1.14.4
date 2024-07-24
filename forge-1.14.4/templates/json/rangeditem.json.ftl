@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-      "layer0": "${modid}:items/${data.texture}"
+      "layer0": "${data.texture.format("%s:item/%s")}"
     },
     <#if data.getModels?? && data.getModels()?has_content>
     "overrides": [
@@ -13,7 +13,7 @@
                     "${generator.map(property.getPrefixedName(registryname + "_"), "itemproperties")}": ${value?is_boolean?then(value?then("1", "0"), value)}<#sep>,
                 </#list>
             },
-            "model": "${modid}:items/${registryname}_${model?index}"
+            "model": "${modid}:item/${registryname}_${model?index}"
         }<#sep>,
         </#list>
     ],
