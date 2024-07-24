@@ -13,7 +13,12 @@
     <@textures data.getTextureMap()/>
     "particle": "${data.texture.format("%s:item/%s")}"
 </#if>
-  }
+  },
+ <#if var_type?? && var_type == "tool">
+  "transform": "forge:default-tool"
+  <#else>
+  "transform": "forge:default-item"
+  </#if>
 <#if data.getModels?? && data.getModels()?has_content>,
     "overrides": [
         <#list data.getModels() as model>
@@ -30,7 +35,6 @@
     ]
 </#if>
 }
-
 <#macro textures textureMap>
     <#if textureMap??>
         <#list textureMap.entrySet() as texture>
