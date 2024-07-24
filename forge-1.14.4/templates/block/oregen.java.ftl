@@ -65,8 +65,7 @@ package ${package}.world.features.ores;
 
 	private static Feature<OreFeatureConfig> feature = null;
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
-
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRegisterHandler {
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new OreFeature(OreFeatureConfig::deserialize) {
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
