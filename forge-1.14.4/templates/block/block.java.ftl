@@ -114,7 +114,7 @@ public class ${name}Block extends
 			.tickRandomly()
 		</#if>
 		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
-				|| (data.blockBase?has_content && data.blockBase == "Stairs")>
+				|| (data.blockBase?has_content && !data.isFullCube() && data.offsetType != "NONE")>
 			.variableOpacity()
 		</#if>
 	</#macro>
