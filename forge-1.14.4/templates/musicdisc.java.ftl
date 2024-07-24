@@ -37,7 +37,7 @@ public class ${name}Item extends MusicDiscItem {
 	public ${name}Item() {
 		super(${data.analogOutput},
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		new net.minecraft.util.SoundEvent
+		new SoundEvent
 		<#else>
 		ForgeRegistries.SOUND_EVENTS.getValue
 		</#if>(new ResourceLocation("${data.music}")), new Item.Properties().group(<@CreativeTabs data.creativeTabs/>).maxStackSize(1).rarity(Rarity.${data.rarity}));
