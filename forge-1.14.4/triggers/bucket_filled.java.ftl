@@ -8,7 +8,6 @@
 			"z": "event.getPlayer().posZ",
 			"world": "event.getWorld()",
 			"itemstack": "event.getFilledBucket()",
-			"originalitemstack": "event.getEmptyBucket()",
 			"entity": "event.getPlayer()",
 			"event": "event"
 			}/>
