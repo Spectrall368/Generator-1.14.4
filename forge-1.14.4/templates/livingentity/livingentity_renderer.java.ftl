@@ -116,9 +116,9 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 					this.getEntityModel().copyModelAttributesTo(model);
 					model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
 					model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-					<assign model_ = "model">
+					<#assign model_ = "model">
 				<#else>
-					<assign model_ = "this.getEntityModel()">
+					<#assign model_ = "this.getEntityModel()">
 				</#if>
 
 				this.bindTexture(LAYER_TEXTURE);
