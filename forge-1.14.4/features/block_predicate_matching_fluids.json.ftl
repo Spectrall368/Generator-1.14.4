@@ -1,0 +1,1 @@
+(world.getBlockState(placePos<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>.add(${field$x}, ${field$y}, ${field$z})</#if>).getBlock() instanceof FlowingFluidBlock && world.getBlockState(placePos<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>.add(${field$x}, ${field$y}, ${field$z})</#if>).getBlock() == ${generator.map(field$fluid, "fluids")})
