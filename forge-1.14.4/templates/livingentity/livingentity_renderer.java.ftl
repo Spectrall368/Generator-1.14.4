@@ -33,7 +33,6 @@
 package ${package}.client.renderer;
 <#assign humanoid = false>
 <#assign model = "PlayerModel">
-
 <#if data.mobModelName == "Chicken">
 	<#assign super = "super(context, new ChickenModel(), " + data.modelShadowSize + "f);">
 	<#assign model = "ChickenModel">
@@ -85,7 +84,6 @@ package ${package}.client.renderer;
 	<#assign model = "PlayerModel">
 	<#assign humanoid = true>
 </#if>
-<#assign model_ = model>
 <#assign model = model + "<" + name + "Entity>">
 
 import com.mojang.blaze3d.platform.GLX;
@@ -103,11 +101,6 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		<#list data.modelLayers as layer>
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
-		<#if layer.model == "Default">
-			<#assign model_ = "((" + model_ + ") this.getEntityModel())">
-		<#else>
-			<#assign model_ = "model">
-		</#if>
 
 			<#compress>
 			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
@@ -118,9 +111,21 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				double z = entity.posZ;
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
+				<#if layer.model != "Default">
+					EntityModel model = new ${layer.model}();
+					this.getEntityModel().copyModelAttributesTo(model);
+					model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+					model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+					<assign model_ = "model">
+				<#else>
+					<assign model_ = "this.getEntityModel()">
+				</#if>
 
 				this.bindTexture(LAYER_TEXTURE);
-				<#if layer.glow>
+				<#if !layer.glow>
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				<#else>
 				GlStateManager.enableBlend();
 				GlStateManager.disableAlphaTest();
 			      	GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
@@ -132,17 +137,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
-				</#if>
-				<#if layer.model != "Default">
-					EntityModel model = new ${layer.model}();
-					this.getEntityModel().copyModelAttributesTo(model);
-					model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-					model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-					model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				<#else>
-				      	this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-				</#if>
-				<#if layer.glow>
+				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			      	gamerenderer.setupFogColor(false);
 			      	i = entityIn.getBrightnessForRender();
 			      	j = i % 65536;
