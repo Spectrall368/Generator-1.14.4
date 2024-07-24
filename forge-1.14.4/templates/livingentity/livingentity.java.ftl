@@ -258,6 +258,16 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
 	</#if>
 
+	<#if data.mobBehaviourType == "Raider">
+	@Override public SoundEvent getRaidLossSound() {
+		<#if data.raidCelebrationSound?has_content && data.raidCelebrationSound.getMappedValue()?has_content>
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.raidCelebrationSound}"));
+		<#else>
+		return SoundEvents.EMPTY;
+		</#if>
+	}
+	</#if>
+
 	<#if hasProcedure(data.onStruckByLightning)>
 	@Override public void onStruckByLightning(LightningBoltEntity lightningBolt) {
 		super.onStruckByLightning(lightningBolt);
@@ -877,6 +887,11 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, 180);
 		</#if>
 	}
+
+	<#if data.mobBehaviourType == "Raider">
+   	@Override public void func_213660_a(int num, boolean logic) {}
+	func_213644_t(true);
+   	</#if>
 
 	@Override protected void registerAttributes() {
 		super.registerAttributes();
