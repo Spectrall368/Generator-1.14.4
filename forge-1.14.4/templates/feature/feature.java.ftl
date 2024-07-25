@@ -87,7 +87,7 @@ package ${package}.world.features;
 				for(int a = 0; a < count; a++) {
 				</#if>
 
-				<#if placementcode != "" || !placementcode.contains("/")>
+				<#if !(placementcode.contains("/") || placementcode == "")>
 				${removeStrings(placementcode)}
 				</#if>
 
