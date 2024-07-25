@@ -40,7 +40,7 @@ public class ${name}MobEffect extends Effect {
 		super(EffectType.${data.mobEffectCategory}, ${data.color.getRGB()});
 		}
 
-	<#if data.isBenefitical>
+	<#if data.mobEffectCategory == "BENEFICIAL">
 		@Override public boolean isBeneficial() {
 			return true;
 		}
