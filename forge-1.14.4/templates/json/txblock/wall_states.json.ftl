@@ -10,7 +10,7 @@
     },
     {
       "when": {
-        "north": "low"
+        "north": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -19,7 +19,7 @@
     },
     {
       "when": {
-        "east": "low"
+        "east": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -29,7 +29,7 @@
     },
     {
       "when": {
-        "south": "low"
+        "south": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -39,7 +39,7 @@
     },
     {
       "when": {
-        "west": "low"
+        "west": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}",
@@ -49,7 +49,7 @@
     },
     {
       "when": {
-        "north": "tall"
+        "north": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}_side_tall",
@@ -58,7 +58,7 @@
     },
     {
       "when": {
-        "east": "tall"
+        "east": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}_side_tall",
@@ -68,7 +68,7 @@
     },
     {
       "when": {
-        "south": "tall"
+        "south": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}_side_tall",
@@ -78,7 +78,7 @@
     },
     {
       "when": {
-        "west": "tall"
+        "west": "true"
       },
       "apply": {
         "model": "${modid}:block/${registryname}_side_tall",
