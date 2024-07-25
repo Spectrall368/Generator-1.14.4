@@ -8,21 +8,24 @@
       "y": 90
     },
     "facing=east,half=lower,hinge=right,open=false": {
-      "model": "${modid}:block/${registryname}_bottom"
+      "model": "${modid}:block/${registryname}_bottom",
+        "y": 180
     },
     "facing=east,half=lower,hinge=right,open=true": {
       "model": "${modid}:block/${registryname}_bottom",
       "y": 270
     },
     "facing=east,half=upper,hinge=left,open=false": {
-      "model": "${modid}:block/${registryname}_bottom_hinge"
+      "model": "${modid}:block/${registryname}_bottom_hinge",
+        "y": 180
     },
     "facing=east,half=upper,hinge=left,open=true": {
       "model": "${modid}:block/${registryname}_bottom_hinge",
       "y": 90
     },
     "facing=east,half=upper,hinge=right,open=false": {
-      "model": "${modid}:block/${registryname}_bottom_hinge"
+      "model": "${modid}:block/${registryname}_bottom_hinge",
+        "y": 180
     },
     "facing=east,half=upper,hinge=right,open=true": {
       "model": "${modid}:block/${registryname}_bottom_hinge",
@@ -33,7 +36,8 @@
       "y": 270
     },
     "facing=north,half=lower,hinge=left,open=true": {
-      "model": "${modid}:block/${registryname}_bottom_hinge"
+      "model": "${modid}:block/${registryname}_bottom_hinge",
+        "y": 180
     },
     "facing=north,half=lower,hinge=right,open=false": {
       "model": "${modid}:block/${registryname}_bottom_hinge",
@@ -48,7 +52,8 @@
       "y": 270
     },
     "facing=north,half=upper,hinge=left,open=true": {
-      "model": "${modid}:block/${registryname}_bottom"
+      "model": "${modid}:block/${registryname}_bottom",
+        "y": 180
     },
     "facing=north,half=upper,hinge=right,open=false": {
       "model": "${modid}:block/${registryname}_bottom",
@@ -71,7 +76,8 @@
       "y": 90
     },
     "facing=south,half=lower,hinge=right,open=true": {
-      "model": "${modid}:block/${registryname}_top"
+      "model": "${modid}:block/${registryname}_top",
+        "y": 180
     },
     "facing=south,half=upper,hinge=left,open=false": {
       "model": "${modid}:block/${registryname}_top_hinge",
@@ -86,7 +92,8 @@
       "y": 90
     },
     "facing=south,half=upper,hinge=right,open=true": {
-      "model": "${modid}:block/${registryname}_top_hinge"
+      "model": "${modid}:block/${registryname}_top_hinge",
+        "y": 180
     },
     "facing=west,half=lower,hinge=left,open=false": {
       "model": "${modid}:block/${registryname}_top_hinge",
