@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${mappedBlockToBlock(w.itemBlock(block))}
+${mappedBlockToBlock(w.itemBlock(field$block))}
