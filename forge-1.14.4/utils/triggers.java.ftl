@@ -4,6 +4,8 @@
 <#macro CreativeTabs tabs="">
 	<#if tabs == "[]">
 	null
+	<#elseif tabs.contains(JavaModName + "Tabs")>
+	${JavaModName}Tabs${tabs?keep_after_last(JavaModName + "Tabs")?replace("]", "")}
 	<#else>
 	ItemGroup${tabs?keep_after_last("ItemGroup")?replace("]", "")}
 	</#if>
