@@ -133,7 +133,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	int i = 61680;
 			      	int j = i % 65536;
 			      	int k = i / 65536;
-			      	GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j, (float)k);
+			      	GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
