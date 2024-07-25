@@ -251,9 +251,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 								if(j == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.dropItem(internal.getStackInSlot(j), false);
-						if (internal instanceof IItemHandlerModifiable)
-							((internal) IItemHandlerModifiable).setStackInSlot(j, ItemStack.EMPTY);
+						playerIn.dropItem(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
 					}
 				} else {
 					for(int i = 0; i < internal.getSlots(); ++i) {
@@ -262,9 +260,7 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
 								if(i == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.inventory.placeItemBackInInventory(internal.getStackInSlot(i));
-						if (internal instanceof IItemHandlerModifiable)
-							((internal) IItemHandlerModifiable).setStackInSlot(i, ItemStack.EMPTY);
+						playerIn.inventory.placeItemBackInInventory(playerIn.world, internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
 					}
 				}
 			}
