@@ -890,7 +890,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 
 	<#if data.mobBehaviourType == "Raider">
    	@Override public void func_213660_a(int num, boolean logic) {}
-	func_213644_t(true);
    	</#if>
 
 	@Override protected void registerAttributes() {
