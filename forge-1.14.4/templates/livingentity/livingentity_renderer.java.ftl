@@ -139,7 +139,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	gamerenderer.setupFogColor(true);
 				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			      	gamerenderer.setupFogColor(false);
-			      	i = entityIn.getBrightnessForRender();
+			      	i = entity.getBrightnessForRender();
 			      	j = i % 65536;
 			      	k = i / 65536;
 			      	GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
