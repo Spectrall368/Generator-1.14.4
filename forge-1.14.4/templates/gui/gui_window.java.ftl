@@ -160,11 +160,11 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 
 	@Override public void resize(Minecraft minecraft, int width, int height) {
 		<#list data.getComponentsOfType("TextField") as component>
-		String ${component.getName()}Value = ${component.getName()}.getValue();
+		String ${component.getName()}Value = ${component.getName()}.getText();
 		</#list>
 		super.resize(minecraft, width, height);
 		<#list data.getComponentsOfType("TextField") as component>
-		${component.getName()}.setValue(${component.getName()}Value);
+		${component.getName()}.setText(${component.getName()}Value);
 		</#list>
 	}
 	</#if>
