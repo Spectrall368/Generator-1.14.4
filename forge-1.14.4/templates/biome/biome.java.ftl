@@ -66,9 +66,6 @@ public class ${name}Biome extends Biome {
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         		<#if mfeat != "null">
 			DefaultBiomeFeatures.<#if !mfeat.contains("func")>add</#if>${mfeat}(this);
-	        	<#if mfeat == "Carvers">
-	           	DefaultBiomeFeatures.addDesertLakes(this);
-	        	</#if>
 			</#if>
 		</#list>
 
