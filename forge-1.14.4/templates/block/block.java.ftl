@@ -101,7 +101,15 @@ public class ${name}Block extends
 			.lightValue(${data.luminance})
 		</#if>
 		<#if data.destroyTool != "Not specified">
-			.harvestLevel(${data.breakHarvestLevel})
+			.harvestLevel(<#if data.vanillaToolTier == "NONE">
+			 0
+			<#elseif data.vanillaToolTier == "STONE">
+			1
+			<#elseif data.vanillaToolTier == "IRON">
+			2
+			<#else>
+			3
+			</#if>)
 			.harvestTool(ToolType.${data.destroyTool?upper_case})
 		</#if>
 		<#if data.isNotColidable>
