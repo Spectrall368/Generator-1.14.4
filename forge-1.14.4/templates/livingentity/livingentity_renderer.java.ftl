@@ -103,7 +103,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
 
 			<#compress>
-			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 				<#if hasProcedure(layer.condition)>
 				World world = entity.world;
 				double x = entity.posX;
@@ -113,9 +113,9 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				</#if>
 				<#if layer.model != "Default">
 					EntityModel model = new ${layer.model}();
-					this.getEntityModel().copyModelAttributesTo(model);
+					this.getEntityModel().setModelAttributes(model);
 					model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-					model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+					model.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 					<#assign model_ = "model">
 				<#else>
 					<#assign model_ = "this.getEntityModel()">
@@ -124,7 +124,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				this.bindTexture(LAYER_TEXTURE);
 				<#if !layer.glow>
 				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 				<#else>
 				GlStateManager.enableBlend();
 				GlStateManager.disableAlphaTest();
@@ -137,7 +137,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			      	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			      	GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 			      	gamerenderer.setupFogColor(true);
-				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				${model_}.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 			      	gamerenderer.setupFogColor(false);
 			      	i = entity.getBrightnessForRender();
 			      	j = i % 65536;
