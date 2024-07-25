@@ -253,12 +253,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-		<#if data.tickRate != 10>
-		@Override public int tickRate(IWorldReader world) {
-			return ${data.tickRate};
-		}
-    </#if>
-
 	<#if data.rotationMode != 0 || data.isWaterloggable>
 	@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		<#assign props = []>
