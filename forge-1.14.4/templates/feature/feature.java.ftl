@@ -87,7 +87,9 @@ package ${package}.world.features;
 				for(int a = 0; a < count; a++) {
 				</#if>
 
+				<#if placementcode != "" || !placementcode.contains("/")>
 				${removeStrings(placementcode)}
+				</#if>
 
 				<#if hasProcedure(data.generateCondition)>
 				int x = placePos.getX();
