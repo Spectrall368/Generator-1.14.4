@@ -5,7 +5,7 @@
 <#assign CustomTabs = JavaModName + "Tabs">
 	<#if tabs == "[]">
 	null
-	<#elseif tabs.contains(CustomTabs)>
+	<#elseif tabs?contains(CustomTabs)>
 	${CustomTabs}${tabs?keep_after_last(CustomTabs)?replace("]", "")}
 	<#else>
 	ItemGroup${tabs?keep_after_last("ItemGroup")?replace("]", "")}
