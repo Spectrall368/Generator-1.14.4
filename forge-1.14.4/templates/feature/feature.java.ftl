@@ -88,9 +88,7 @@ package ${package}.world.features;
 					for(int a = 0; a < count; a++) {
 					</#if>
 	
-					<#if placementcode?contains("/")>
 					${removeStrings(placementcode)}
-					</#if>
 	
 					<#if hasProcedure(data.generateCondition)>
 					int x = placePos.getX();
@@ -105,6 +103,8 @@ package ${package}.world.features;
 					<#if placementcode.contains("Count")>}</#if>
 					<#if placementcode.contains("Rarity")>}</#if>
 					<#if placementcode.contains("Rarity") || placementcode.contains("Count")>return false;</#if>
+				<#else>
+					return super.place(world, generator, random, placePos, config);
 				</#if>
 			}};
 
