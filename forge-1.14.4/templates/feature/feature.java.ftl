@@ -79,31 +79,33 @@ package ${package}.world.features;
 						return false;
 				</#if>
 
-				<#if placementcode.contains("Rarity")>
-				if(random.nextFloat() < 1.0F / (float) ${placementcode?keep_after("Rarity(")?keep_before(")")}) {
+				<#if data.hasPlacedFeature()>
+					<#if placementcode.contains("Rarity")>
+					if(random.nextFloat() < 1.0F / (float) ${placementcode?keep_after("Rarity(")?keep_before(")")}) {
+					</#if>
+					<#if placementcode.contains("Count")>
+					int count = ${placementcode?keep_after("Count(")?keep_before(")")};
+					for(int a = 0; a < count; a++) {
+					</#if>
+	
+					<#if placementcode?contains("/")>
+					${removeStrings(placementcode)}
+					</#if>
+	
+					<#if hasProcedure(data.generateCondition)>
+					int x = placePos.getX();
+					int y = placePos.getY();
+					int z = placePos.getZ();
+					if (!<@procedureOBJToConditionCode data.generateCondition/>)
+						return false;
+					</#if>
+	
+					return super.place(world, generator, random, placePos, config);
+	
+					<#if placementcode.contains("Count")>}</#if>
+					<#if placementcode.contains("Rarity")>}</#if>
+					<#if placementcode.contains("Rarity") || placementcode.contains("Count")>return false;</#if>
 				</#if>
-				<#if placementcode.contains("Count")>
-				int count = ${placementcode?keep_after("Count(")?keep_before(")")};
-				for(int a = 0; a < count; a++) {
-				</#if>
-
-				<#if placementcode?contains("/")>
-				${removeStrings(placementcode)}
-				</#if>
-
-				<#if hasProcedure(data.generateCondition)>
-				int x = placePos.getX();
-				int y = placePos.getY();
-				int z = placePos.getZ();
-				if (!<@procedureOBJToConditionCode data.generateCondition/>)
-					return false;
-				</#if>
-
-				return super.place(world, generator, random, placePos, config);
-
-				<#if placementcode.contains("Count")>}</#if>
-				<#if placementcode.contains("Rarity")>}</#if>
-				<#if placementcode.contains("Rarity") || placementcode.contains("Count")>return false;</#if>
 			}};
 
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
