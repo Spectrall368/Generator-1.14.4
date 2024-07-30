@@ -154,7 +154,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			</#compress>
 		
 			@Override public boolean shouldCombineTextures() {
-				return <#if layer.disableHurtOverlay>false<#else>true</#if>;
+				return <#if layer.disableHurtOverlay>true<#else>false</#if>;
 			}
 		});
 		</#list>
