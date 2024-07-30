@@ -87,8 +87,10 @@ package ${package}.world.features;
 					int count = ${placementcode?keep_after("Count(")?keep_before(")")};
 					for(int a = 0; a < count; a++) {
 					</#if>
-	
+
+					<#if placementcode != "">
 					${removeStrings(placementcode)}
+					</#if>
 	
 					<#if hasProcedure(data.generateCondition)>
 					int x = placePos.getX();
@@ -111,6 +113,7 @@ package ${package}.world.features;
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 		}
 
+		<#if data.hasPlacedFeature()>
 		@SubscribeEvent public static void addFeatureToBiomes(FMLCommonSetupEvent event) {
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 				<#if data.restrictionBiomes?has_content && !cond>
@@ -129,6 +132,7 @@ package ${package}.world.features;
 				Biome.createDecoratedFeature(feature, ${configurationcode}, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 			}
 		}
+		</#if>
 	}
 }</#compress>
 <#-- @formatter:on -->
