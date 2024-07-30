@@ -54,7 +54,7 @@ base_templates:
     usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
-  - template: modbase/pack.mcmeta.ftl
+  - template: pack.mcmeta.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/pack.mcmeta"
   - template: modbase/sounds.json.ftl
@@ -71,7 +71,7 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-      - ${w.hasElementsOfType("villagerprofession")}
+      - ${w.hasElementsOfType('villagerprofession')}
       - "${w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number') || e.type.equals('Logic'))?size != 0}"
 
 sources_setup_tasks:
@@ -96,7 +96,7 @@ resources_setup_tasks:
     to: "@RESROOT/logo.png"
   - task: copy_models
     type: OBJ_inlinetextures
-    prefix: "@modid:blocks/"
+    prefix: "@modid:block/"
     to: "@MODASSETSROOT/models/item"
   - task: copy_models
     type: JSON_noinlinetextures
