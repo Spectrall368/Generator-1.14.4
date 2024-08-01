@@ -18,7 +18,6 @@ minecraft {
 
     runs {
         configureEach {
-            workingDirectory project.file('run')
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             systemProperty 'forge.logging.console.level', 'debug'
             modSource project.sourceSets.main
@@ -27,7 +26,6 @@ minecraft {
         client {}
         server {}
     }
-}
 
 dependencies {
     minecraft 'net.minecraftforge:forge:${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}'
