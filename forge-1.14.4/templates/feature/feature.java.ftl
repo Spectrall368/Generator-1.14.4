@@ -84,7 +84,7 @@ package ${package}.world.features;
 					if(random.nextFloat() < 1.0F / (float) ${placementcode?keep_after("Rarity(")?keep_before(")")}) {
 					</#if>
 					<#if placementcode.contains("Count")>
-					int count = ${placementcode?keep_after("Count(")?keep_before_last(")")};
+					int count = ${placementcode?keep_after("Count(")?keep_before_last("^")};
 					for(int a = 0; a < count; a++) {
 					</#if>
 
