@@ -1,1 +1,1 @@
-/Count(${input$count})/
+/Count(${input$count}^)/
