@@ -4,5 +4,3 @@ templates:
   - template: projectile/projectile_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
     condition: isCustomModel()
-
-field_exclusions: [onHitsBlock]
