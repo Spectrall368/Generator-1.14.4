@@ -117,6 +117,16 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		</#if>
 
 		if (this.inGround)
+			<#if hasProcedure(data.onHitsBlock)>
+				<@procedureCode data.onHitsBlock, {
+				  	"x": "this.posX",
+				  	"y": "this.posY",
+				  	"z": "this.posZ",
+					"entity": "this.getShooter()",
+					"immediatesourceentity": "this",
+					"world": "this.world"
+				}/>
+			</#if>
 			this.remove();
 	}
 
