@@ -116,7 +116,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 			}/>
 		</#if>
 
-		if (this.inGround)
+		if (this.inGround) {
 			<#if hasProcedure(data.onHitsBlock)>
 				<@procedureCode data.onHitsBlock, {
 				  	"x": "this.posX",
@@ -128,6 +128,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 				}/>
 			</#if>
 			this.remove();
+		}
 	}
 
  	public static ${name}Entity shoot(World world, LivingEntity entity, Random source) {
