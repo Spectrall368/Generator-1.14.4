@@ -120,7 +120,7 @@ import net.minecraft.nbt.INBT;
 			</#list>
 		}
 
-		@Override public CompoundNBT write(CompoundTag nbt) {
+		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
@@ -133,7 +133,7 @@ import net.minecraft.nbt.INBT;
 			this.markDirty();
 
 			if (world.getWorld() instanceof World && !((World) world.getWorld()).isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world.getWorld())::getType), new SavedDataSyncMessage(1, this));
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world.getWorld()).dimension::getType), new SavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
@@ -347,7 +347,6 @@ import net.minecraft.nbt.INBT;
 			context.setPacketHandled(true);
 		}
 	}
-
 	</#if>
 }
 <#-- @formatter:on -->
