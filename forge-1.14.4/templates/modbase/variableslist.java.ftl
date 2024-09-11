@@ -21,15 +21,10 @@ import net.minecraft.nbt.INBT;
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
+                        CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 		</#if>
 	}
-
-	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
-	}
-	</#if>
 
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT") || w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 	@Mod.EventBusSubscriber public static class EventBusVariableHandlers {
@@ -275,21 +270,7 @@ import net.minecraft.nbt.INBT;
 
 	}
 
-	public static class PlayerVariables implements Capability.IStorage<PlayerVariables> {
-
-		<#list variables as var>
-			<#if var.getScope().name() == "PLAYER_LIFETIME">
-				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['init']?interpret/>
-			<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
-				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['init']?interpret/>
-			</#if>
-		</#list>
-
-		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayerEntity)
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayerEntity) entity)), new PlayerVariablesSyncMessage(this));
-		}
-
+	private static class PlayerVariablesStorage implements Capability.IStorage<PlayerVariables> {
 		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
 			CompoundNBT nbt = new CompoundNBT();
 			<#list variables as var>
@@ -312,7 +293,22 @@ import net.minecraft.nbt.INBT;
 				</#if>
 			</#list>
 		}
+	}
 
+	public static class PlayerVariables {
+
+		<#list variables as var>
+			<#if var.getScope().name() == "PLAYER_LIFETIME">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['init']?interpret/>
+			<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['init']?interpret/>
+			</#if>
+		</#list>
+
+		public void syncPlayerVariables(Entity entity) {
+			if (entity instanceof ServerPlayerEntity)
+			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayerEntity) entity)), new PlayerVariablesSyncMessage(this));
+		}
 	}
 
 	public static class PlayerVariablesSyncMessage {
@@ -321,7 +317,7 @@ import net.minecraft.nbt.INBT;
 
 		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
-			this.data.readNBT(null, this.data, null, buffer.readCompoundTag());
+			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
@@ -329,7 +325,7 @@ import net.minecraft.nbt.INBT;
 		}
 
 		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
-			buffer.writeCompoundTag((CompoundNBT) message.data.writeNBT(null, message.data, null));
+			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
 		}
 
 		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
