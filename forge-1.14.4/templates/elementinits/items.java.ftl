@@ -35,11 +35,11 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
+
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
-
 <#if hasItemsWithProperties>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 </#if>
