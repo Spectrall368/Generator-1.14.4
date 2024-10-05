@@ -1,0 +1,12 @@
+_default: SharedMonsterAttributes.MAX_HEALTH
+MAX_HEALTH: SharedMonsterAttributes.MAX_HEALTH
+FOLLOW_RANGE: SharedMonsterAttributes.FOLLOW_RANGE
+KNOCKBACK_RESISTANCE: SharedMonsterAttributes.KNOCKBACK_RESISTANCE
+MOVEMENT_SPEED: SharedMonsterAttributes.MOVEMENT_SPEED
+FLYING_SPEED: SharedMonsterAttributes.FLYING_SPEED
+ATTACK_DAMAGE: SharedMonsterAttributes.ATTACK_DAMAGE
+ATTACK_KNOCKBACK: SharedMonsterAttributes.ATTACK_KNOCKBACK
+ATTACK_SPEED: SharedMonsterAttributes.ATTACK_SPEED
+ARMOR: SharedMonsterAttributes.ARMOR
+ARMOR_TOUGHNESS: SharedMonsterAttributes.ARMOR_TOUGHNESS
+LUCK: SharedMonsterAttributes.LUCK
