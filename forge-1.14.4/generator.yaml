@@ -9,6 +9,7 @@ import:
 java_models:
   key: legacy
   requested_key_words: [ModelRenderer, ~ModelPart, ~texHeight]
+  requested_key_words: [ModelRenderer, ~ModelPart, ~texHeight, ~(ResourceLocation.]
 
 # gradle task definitions
 gradle:
