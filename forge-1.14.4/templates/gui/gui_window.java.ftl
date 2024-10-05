@@ -271,8 +271,8 @@ e -> {
 <#if hasProcedure(component.displayCondition)>
 {
 	@Override public void renderButton(int gx, int gy, float ticks) {
-		if (<@procedureOBJToConditionCode component.displayCondition/>)
-			super.renderButton(gx, gy, ticks);
+		this.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+		super.renderButton(gx, gy, ticks);
 	}
 }
 </#if>
