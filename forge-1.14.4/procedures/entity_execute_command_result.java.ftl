@@ -20,7 +20,7 @@
 					return false;
 				}
 			};
-			_ent.getServer().getCommandManager().performPrefixedCommand(new CommandSource(
+			_ent.getServer().getCommandManager().handleCommand(new CommandSource(
 					_dataConsumer, _ent.getPositionVector(), _ent.getPitchYaw(),
 					_ent.world instanceof ServerWorld ? (ServerWorld) _ent.world : null, 4,
 					_ent.getName().getString(), _ent.getDisplayName(), _ent.world.getServer(), _ent
