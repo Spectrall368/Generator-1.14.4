@@ -24,6 +24,12 @@ import_formatter:
   priority_imports:
     Nullable: javax.annotation
     SoundEvent: net.minecraft.util
+    Blocks: net.minecraft.block
+    Items: net.minecraft.item
+    Multimap: com.google.common.collect
+    ImmutableSet: com.google.common.collect
+    Iterables: com.google.common.collect
+    Attributes: net.minecraft.entity
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
