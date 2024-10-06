@@ -141,7 +141,7 @@ public class ${name}Item extends Item {
 
 	<@addSpecialInformation data.specialInformation/>
 
-	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
+	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || hasProcedure(data.onStoppedUsing) || (data.useDuration > 0) || data.enableRanged>
 	@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 		<#if data.enableRanged>
 		ActionResult<ItemStack> ar = new ActionResult(ActionResultType.FAIL, entity.getHeldItem(hand));
@@ -149,7 +149,7 @@ public class ${name}Item extends Item {
 		ActionResult<ItemStack> ar = super.onItemRightClick(world, entity, hand);
 		</#if>
 
-		<#if (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
+		<#if hasProcedure(data.onStoppedUsing) || (data.useDuration > 0) || data.enableRanged>
 			<#if data.enableRanged>
 				<#if hasProcedure(data.rangedUseCondition)>
 				if (<@procedureCode data.rangedUseCondition, {
