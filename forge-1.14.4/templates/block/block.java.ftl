@@ -40,7 +40,7 @@ public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
 	<#elseif data.blockBase?has_content && data.blockBase == "Button">
-		<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
+		<#if data.material.getUnmappedValue() == "WOOD">Wood<#else>Stone</#if>ButtonBlock
 	<#elseif data.blockBase?has_content>
 		${data.blockBase}Block
 	<#else>
@@ -146,12 +146,6 @@ public class ${name}Block extends
 		    <#else>
 		        super(Sensitivity.MOBS, <@blockProperties/>);
 		    </#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "Button">
-			<#if data.material.getUnmappedValue() == "WOOD">
-		        super(true, <@blockProperties/>);
-			<#else>
-		        super(false, <@blockProperties/>);
-			</#if>
 		<#else>
 			super(<@blockProperties/>);
 		</#if>
