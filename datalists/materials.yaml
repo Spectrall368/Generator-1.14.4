@@ -1,40 +1,53 @@
+- NONE:
+  readable_name: No legacy material
 - ROCK:
+  readable_name: Basedrum noteblock instrument
   texture: STONE
 - EARTH:
   texture: DIRT
 - GRASS:
   texture: GRASS
 - WOOD:
+  readable_name: Base noteblock instrument, ignited by lava
   texture: PLANKS#0
 - IRON:
   texture: IRON_BLOCK
 - ANVIL:
   texture: ANVIL
 - WATER:
+  readable_name: Liquid (water)
   texture: WATER
 - LAVA:
+  readable_name: Liquid (lava)
   texture: LAVA
 - LEAVES:
+  readable_name: Ignited by lava (leaves)
   texture: LEAVES
 - PLANTS:
   texture: RED_FLOWER#0
 - TALL_PLANTS:
+  readable_name: Ignited by lava (plants)
   texture: DOUBLE_PLANT#0
 - SPONGE:
   texture: SPONGE
 - CLOTH:
+  readable_name: Ignited by lava (cloth)
   texture: WOOL#0
 - FIRE:
   texture: FIRE
 - SAND:
+  readable_name: Snare noteblock instrument
   texture: SAND#0
 - MISCELLANEOUS:
   texture: END_GATEWAY
 - CARPET:
+  readable_name: Ignited by lava (carpet)
   texture: CARPET#3
 - GLASS:
+  readable_name: Hat noteblock instrument
   texture: GLASS
 - TNT:
+  readable_name: Ignited by lava (TNT)
   texture: TNT
 - ICE:
   texture: ICE
@@ -59,20 +72,26 @@
 - WEB:
   texture: WEB
 - AIR:
+  readable_name: Air
   texture: AIR
 - STRUCTURE_VOID:
+  readable_name: Air (structure void)
   texture: STRUCTURE_VOID
 - OCEAN_PLANT:
+  readable_name: Basedrum noteblock instrument
   texture: KELP_PLANT
 - SEA_GRASS:
   texture: SEAGRASS
 - BUBBLE_COLUMN:
+  readable_name: Liquid (bubble column)
   texture: BUBBLE_COLUMN
 - SHULKER:
   texture: PURPLE_SHULKER_BOX
 - BAMBOO_SAPLING:
+  readable_name: Ignited by lava (bamboo sapling)
   texture: BAMBOO_SAPLING
 - BAMBOO:
+  readable_name: Ignited by lava (bamboo)
   texture: BAMBOO
 - BARRIER:
   texture: BARRIER
