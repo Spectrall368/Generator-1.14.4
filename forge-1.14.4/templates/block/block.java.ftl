@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -137,18 +137,22 @@ public class ${name}Block extends
 
 	public ${name}Block() {
 		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-		super(() -> Blocks.AIR.getDefaultState(),
+			super(() -> Blocks.AIR.getDefaultState(), <@blockProperties/>);
 		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
-		        super(Sensitivity.EVERYTHING,
+		    <#if data.material.getUnmappedValue() == "WOOD">
+		        super(Sensitivity.EVERYTHING, <@blockProperties/>);
 		    <#else>
-		        super(Sensitivity.MOBS,
+		        super(Sensitivity.MOBS, <@blockProperties/>);
 		    </#if>
+		<#elseif data.blockBase?has_content && data.blockBase == "Button">
+			<#if data.material.getUnmappedValue() == "WOOD">
+		        super(true, <@blockProperties/>);
+			<#else>
+		        super(false, <@blockProperties/>);
+			</#if>
 		<#else>
-		super(
+			super(<@blockProperties/>);
 		</#if>
-			<@blockProperties/>
-		);
 
 	    <#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
 	    this.setDefaultState(this.stateContainer.getBaseState()
