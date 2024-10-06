@@ -3194,3 +3194,9 @@ Items.GLOBE_BANNER_PATTERN:
 Items.SWEET_BERRIES:
   - Items.SWEET_BERRIES
   - "sweet_berries"
+Items.TORCH:
+  - Items.TORCH
+  - "torch"
+Items.REDSTONE_TORCH:
+  - Items.REDSTONE_TORCH
+  - "redstone_torch"
