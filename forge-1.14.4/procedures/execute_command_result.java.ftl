@@ -20,7 +20,7 @@
 					return false;
 				}
 			};
-			((ServerWorld) world.getWorld()).getServer().getCommandManager().handleCommand(new CommandSource(_dataConsumer, pos, Vec2f.ZERO, (ServerWorld) world.getWorld(), 4, "", ITextComponent.appendText(""), ((ServerWorld) world.getWorld()).getServer(), null), _command);
+			((ServerWorld) world.getWorld()).getServer().getCommandManager().handleCommand(new CommandSource(_dataConsumer, pos, Vec2f.ZERO, (ServerWorld) world.getWorld(), 4, "", new StringTextComponent(""), ((ServerWorld) world.getWorld()).getServer(), null), _command);
 		}
 		return _result.toString();
 	}
