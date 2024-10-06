@@ -59,7 +59,10 @@ package ${package}.init;
 							.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).size(0.5f, 0.5f));
 			</#if>
 		</#if>
-    </#list>
+    	</#list>
+
+	// Start of user code block custom entities
+	// End of user code block custom entities
 
 	private static <T extends Entity> EntityType<T> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		EntityType<T> entityType = (EntityType<T>) entityTypeBuilder.build(registryname).setRegistryName(registryname);
