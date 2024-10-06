@@ -97,6 +97,8 @@
   texture: BARRIER
 - PISTON:
   texture: PISTON
+- CORAL:
+  texture: WATERLILY
 - NETHER_WOOD:
   texture: CRIMSON_STEM
 - NETHER_PLANTS:
