@@ -28,7 +28,7 @@ import_formatter:
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
     Iterables: com.google.common.collect
-    Attributes: net.minecraft.entity
+    Attributes: net.minecraft.entity.ai.attributes
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
