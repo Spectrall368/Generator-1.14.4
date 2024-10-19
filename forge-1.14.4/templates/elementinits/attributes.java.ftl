@@ -50,7 +50,7 @@ package ${package}.init;
                 <#else>
                     <#if attribute.entities?has_content || attribute.addToPlayers>
                         if (
-                            <#if attribute.addToPlayers>entity instanceof net.minecraft.entity.player.PlayerEntity ||</#if>
+                            <#if attribute.addToPlayers>entity instanceof PlayerEntity ||</#if>
                             <#list attribute.entities as entityType>
                                 entity.getType() == ${generator.map(entityType.getUnmappedValue(), "entities", 1)}<#sep> ||
                             </#list>
