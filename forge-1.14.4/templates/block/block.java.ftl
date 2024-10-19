@@ -696,7 +696,7 @@ public class ${name}Block extends
 	<#list data.customProperties as prop>
 		<#if prop.property().getClass().getSimpleName().equals("StringType")>
 		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
-		private enum ${propClassName}Property implements IStringSerializable {
+		public enum ${propClassName}Property implements IStringSerializable {
 			<#list prop.property.getArrayData() as value>
 			${value?upper_case}("${value}")<#sep>,
 			</#list>;
