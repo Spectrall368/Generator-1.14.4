@@ -34,38 +34,28 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ${JavaModName}Attributes {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Attributes {
 
-	<#list attributes as attribute>
-    public static final IAttribute ${attribute.getModElement().getRegistryNameUpper()} = new RangedAttribute(null, 
-        "attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setShouldWatch(true);
-	</#list>
+    <#list attributes as attribute>
+    public static final IAttribute ${attribute.getModElement().getRegistryNameUpper()} = new RangedAttribute(null, "${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setShouldWatch(true);
+    </#list>
 
-    @SubscribeEvent public static void addAttributes(EntityEvent.EntityConstructing event) {
+    @SubscribeEvent public static void onEntityConstruction(EntityEvent.EntityConstructing event) {
         if (event.getEntity() instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) event.getEntity();
-            AbstractAttributeMap attributes = entity.getAttributes();
 
             <#list attributes as attribute>
                 <#if attribute.addToAllEntities>
-                    attributes.registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                    entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
                 <#else>
                     <#if attribute.entities?has_content || attribute.addToPlayers>
                         if (
-                            <#if attribute.addToPlayers>
-                                entity instanceof PlayerEntity
-                                <#if attribute.entities?has_content> || </#if>
-                            </#if>
-                            <#if attribute.entities?has_content>
-                                Arrays.asList(
-                                <#list attribute.entities as entity>
-                                    ${generator.map(entity.getUnmappedValue(), "entities", 1)}<#sep>,
-                                </#list>
-                                ).contains(entity.getType())
-                            </#if>
+                            <#if attribute.addToPlayers>entity instanceof net.minecraft.entity.player.PlayerEntity ||</#if>
+                            <#list attribute.entities as entityType>
+                                entity.getType() == ${generator.map(entityType.getUnmappedValue(), "entities", 1)}<#sep> ||
+                            </#list>
                         ) {
-                            attributes.registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                            entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
                         }
                     </#if>
                 </#if>
@@ -73,18 +63,16 @@ public class ${JavaModName}Attributes {
         }
     }
 
-	<#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
-	<#if playerAttributes?size != 0>
-	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
-		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
-			PlayerEntity oldPlayer = event.getOriginal();
-			PlayerEntity newPlayer = event.getPlayer();
-			<#list playerAttributes as attribute>
-                newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(
-                    oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).getBaseValue());
-			</#list>
-		}
-	}
-	</#if>
+    <#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
+    <#if playerAttributes?size != 0>
+    @Mod.EventBusSubscriber public static class PlayerAttributesSync {
+        @SubscribeEvent public static void onPlayerClone(PlayerEvent.Clone event) {
+            PlayerEntity oldPlayer = event.getOriginal();
+            PlayerEntity newPlayer = event.getEntityPlayer();
+            <#list playerAttributes as attribute>
+                newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).getBaseValue());
+            </#list>
+        }
+    }
+    </#if>
 }
-<#-- @formatter:on -->
