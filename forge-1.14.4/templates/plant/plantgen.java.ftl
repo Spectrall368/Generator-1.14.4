@@ -76,7 +76,7 @@ package ${package}.world.features.plants;
 				<#if data.restrictionBiomes?has_content && cond>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
-					<#list data.restrictionBiomes as restrictionBiome>
+					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 							<#if restrictionBiome == "#minecraft:is_overworld">
 								if(dimensionType == DimensionType.OVERWORLD)
 									dimensionCriteria = true;
@@ -141,11 +141,9 @@ package ${package}.world.features.plants;
 			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
 				<#if data.restrictionBiomes?has_content && !cond>
 					boolean biomeCriteria = false;
-					<#list data.restrictionBiomes as restrictionBiome>
-						<#if restrictionBiome.canProperlyMap()>
+					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
 							biomeCriteria = true;
-						</#if>
 					</#list>
 					if (!biomeCriteria)
 						continue;
