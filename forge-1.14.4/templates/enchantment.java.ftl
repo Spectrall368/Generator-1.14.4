@@ -40,7 +40,7 @@
 	</#if>
 </#macro>
 <#macro slotsCode slots>
-	<#if slots == "any">new EquipmentSlotType.Group[] { HAND, ARMOR }
+	<#if slots == "any">new EquipmentSlotType[] { EquipmentSlotType.HAND, EquipmentSlotType.ARMOR }
 	<#elseif slots == "hand">new EquipmentSlotType[] { EquipmentSlotType.MAINHAND, EquipmentSlotType.OFFHAND }
 	<#elseif slots == "armor">new EquipmentSlotType[] { EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET }
 	<#elseif slots == "body">new EquipmentSlotType[] { EquipmentSlotType.CHEST }
