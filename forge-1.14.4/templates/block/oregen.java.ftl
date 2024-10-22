@@ -72,7 +72,7 @@ package ${package}.world.features.ores;
 				<#if data.restrictionBiomes?has_content && cond>
 					DimensionType dimensionType = world.getDimension().getType();
 					boolean dimensionCriteria = false;
-					<#list w.filterBrokenReferences(data.restrictionBiomes) as biome>
+					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 							<#if restrictionBiome == "#minecraft:is_overworld">
 								if(dimensionType == DimensionType.OVERWORLD)
 									dimensionCriteria = true;
