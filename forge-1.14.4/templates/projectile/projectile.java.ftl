@@ -73,6 +73,11 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	}
 
 	<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
+	private boolean canHitEntity(Entity entity) {
+	    if (entity == null || !entity.canBeCollidedWith() || entity.isSpectator()) return false;
+	    return !(this.getShooter() != null && entity.isRidingSameEntity(this.getShooter()));
+	}
+
 	@Nullable @Override protected EntityRayTraceResult func_213866_a(Vec3d projectilePosition, Vec3d deltaPosition) {
 		double d0 = Double.MAX_VALUE;
 		Entity entity = null;
