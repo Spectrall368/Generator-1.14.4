@@ -39,27 +39,25 @@ package ${package}.init;
     public static final IAttribute ${attribute.getModElement().getRegistryNameUpper()} = new RangedAttribute(null, "${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setShouldWatch(true);
     </#list>
 
-    @SubscribeEvent public static void registerAttributes(EntityAttributeCreationEvent event) {
-        <#list attributes as attribute>
-            <#if attribute.addToAllEntities>
-                for (EntityType<? extends LivingEntity> entityType : ForgeRegistries.ENTITIES.getValues()) {
-                    if (entityType.create(null) instanceof LivingEntity) {
-                        event.put(entityType, GlobalEntityTypeAttributes.createMobAttributes()
-                            .createMutableAttribute(${attribute.getModElement().getRegistryNameUpper()}, ${attribute.defaultValue}).create());
-                    }
-                }
-            <#else>
-                <#if attribute.entities?has_content>
-                    <#list attribute.entities as entityType>
-                    event.put(${generator.map(entityType.getUnmappedValue(), "entities", 1)}, 
-                        GlobalEntityTypeAttributes.createMobAttributes().createMutableAttribute(${attribute.getModElement().getRegistryNameUpper()}, ${attribute.defaultValue}).create());
-                    </#list>
+    @SubscribeEvent public static void onEntityConstruction(EntityEvent.EntityConstructing event) {
+        if (event.getEntity() instanceof LivingEntity) {
+            LivingEntity entity = (LivingEntity) event.getEntity();
+            <#list attributes as attribute>
+                <#if attribute.addToAllEntities>
+                    entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                <#else>
+                    <#if attribute.entities?has_content || attribute.addToPlayers>
+                        if (<#if attribute.addToPlayers>entity instanceof PlayerEntity ||</#if>
+                            <#list attribute.entities as entityType>
+                                entity.getType() == ${generator.map(entityType.getUnmappedValue(), "entities", 1)}<#sep> ||
+                            </#list>
+                        ) {
+                            entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                        }
+                    </#if>
                 </#if>
-                <#if attribute.addToPlayers>
-                event.put(EntityType.PLAYER, GlobalEntityTypeAttributes.createMobAttributes().createMutableAttribute(${attribute.getModElement().getRegistryNameUpper()}, ${attribute.defaultValue}).create());
-                </#if>
-            </#if>
-        </#list>
+            </#list>
+        }
     }
 
     <#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
