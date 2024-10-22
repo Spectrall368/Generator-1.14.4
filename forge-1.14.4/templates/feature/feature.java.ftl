@@ -35,7 +35,7 @@ package ${package}.world.features;
 <#assign configuration = generator.map(featuretype, "features", 1)>
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
-	<#list data.restrictionBiomes as restrictionBiome>
+	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 		<#if restrictionBiome?contains(":is_")>
 			<#assign cond = true>
 			 <#break>
