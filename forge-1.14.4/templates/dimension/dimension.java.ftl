@@ -47,10 +47,8 @@ package ${package}.world.dimension;
 	
 	@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
 		dimension${name}Biomes = new Biome[] {
-	    	<#list data.biomesInDimension as biome>
-			<#if biome.canProperlyMap()>
+	    	<#list w.filterBrokenReferences(data.biomesInDimension) as biome>
 			ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))<#sep>,
-			</#if>
 		</#list>};
 	}
 
