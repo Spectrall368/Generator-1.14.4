@@ -812,7 +812,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
 						biomeCriteria = true;
-					</#if>
 				</#list>
 				if (!biomeCriteria)
 					continue;
