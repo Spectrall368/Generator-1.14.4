@@ -407,7 +407,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
     </#if>
 
-	<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+	<#if data.guiBoundTo?has_content>
 	private final ItemStackHandler inventory = new ItemStackHandler(${data.inventorySize}) {
 		@Override public int getSlotLimit(int slot) {
 			return ${data.inventoryStackSize};
@@ -434,7 +434,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 	}
     </#if>
 
-	<#if data.entityDataEntries?has_content || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if data.entityDataEntries?has_content || data.guiBoundTo?has_content>
 	@Override public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
 		<#list data.entityDataEntries as entry>
@@ -446,7 +446,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			compound.putString("Data${entry.property().getName()}", this.dataManager.get(DATA_${entry.property().getName()}));
 			</#if>
 		</#list>
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if data.guiBoundTo?has_content>
 		compound.put("InventoryCustom", inventory.serializeNBT());
 		</#if>
 	}
@@ -463,19 +463,19 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 				this.dataManager.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
 			</#if>
 		</#list>
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if data.guiBoundTo?has_content>
 		if (compound.get("InventoryCustom") instanceof CompoundNBT)
 			inventory.deserializeNBT((CompoundNBT) compound.get("InventoryCustom"));
 		</#if>
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || data.guiBoundTo?has_content>
 	@Override public boolean processInteract(PlayerEntity sourceentity, Hand hand) {
 		ItemStack itemstack = sourceentity.getHeldItem(hand);
 		boolean retval = this.world.isRemote;
 
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if data.guiBoundTo?has_content>
 			<#if data.ridable>
 				if (sourceentity.isSneaking()) {
 			</#if>
