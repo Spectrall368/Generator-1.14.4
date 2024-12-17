@@ -133,6 +133,20 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
+		<#list data.getComponentsOfType("Sprite") as component>
+			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+				Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.sprite}"));
+				this.blit(this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
+					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
+						<@getSpriteByIndex component "width"/>, 0
+					<#else>
+						0, <@getSpriteByIndex component "height"/>
+					</#if>,
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+					${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+			<#if hasProcedure(component.displayCondition)>}</#if>
+		</#list>
+
 		GlStateManager.disableBlend();
 	}
 
