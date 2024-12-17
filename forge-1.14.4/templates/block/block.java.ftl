@@ -131,8 +131,7 @@ public class ${name}Block extends
 		<#if data.tickRandomly>
 			.tickRandomly()
 		</#if>
-		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
-				|| (data.blockBase?has_content && !data.isFullCube() && data.offsetType != "NONE")>
+		<#if (!data.isNotColidable && data.offsetType != "NONE")>
 			.variableOpacity()
 		</#if>
 	</#macro>
@@ -197,7 +196,7 @@ public class ${name}Block extends
    	}
 	</#if>
 
-	<@addSpecialInformation data.specialInformation, true/>
+	<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
 
 	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 	<#if data.transparencyType != "SOLID">
