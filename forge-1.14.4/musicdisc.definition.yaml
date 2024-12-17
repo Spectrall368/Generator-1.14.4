@@ -13,5 +13,7 @@ localizationkeys:
     mapto: name
   - key: item.@modid.@registryname.desc
     mapto: description
+  - fromlist: data.getFixedSpecialInformation()
+    key: item.@modid.@registryname.description_@item_index
 
 field_exclusions: [lengthInTicks]
