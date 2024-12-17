@@ -293,7 +293,7 @@ e -> {
 </#macro>
 <#macro getSpriteByIndex component dim>
 	<#if hasProcedure(component.spriteIndex)>
-		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> *
+		MathHelper.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> *
 			<#if dim == "width">
 				${component.getWidth(w.getWorkspace())}
 			<#else>
