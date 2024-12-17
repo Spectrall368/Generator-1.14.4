@@ -16,4 +16,4 @@ localizationkeys:
   - key: biome.@modid.@registryname
     mapto: name
 
-field_exclusions: [spawnInCaves, spawnBiomeNether, spawnNetherFossil, spawnBastionRemnant, spawnRuinedPortal, ambientSound, moodSound, moodSoundDelay, additionsSound, music, spawnParticle, particleToSpawn, particlesProbability]
+field_exclusions: [spawnInCaves, spawnBiomeNether, spawnNetherFossil, spawnBastionRemnant, spawnRuinedPortal, ambientSound, moodSound, moodSoundDelay, additionsSound, music, spawnParticle, particleToSpawn, particlesProbability, fogColor]
