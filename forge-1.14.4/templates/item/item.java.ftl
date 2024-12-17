@@ -35,10 +35,17 @@
 package ${package}.item;
 
 <#compress>
-public class ${name}Item extends Item {
+public class ${name}Item extends <#if data.isMusicDisc>MusicDisc</#if>Item {
 
 	public ${name}Item() {
-		super(new Item.Properties()
+		super(
+		<#if data.isMusicDisc>
+		${data.musicDiscAnalogOutput}, 
+			<#if data.musicDiscMusic.getUnmappedValue().startsWith("CUSTOM:")>
+			new SoundEvent<#else>ForgeRegistries.SOUND_EVENTS.getValue
+			</#if>(new ResourceLocation("${data.musicDiscMusic}")),
+		</#if>
+			new Item.Properties()
 				.group(<@CreativeTabs data.creativeTabs/>)
 				<#if data.hasInventory()>
 				.maxStackSize(1)
@@ -56,7 +63,9 @@ public class ${name}Item extends Item {
 					<#if data.isMeat>.meat()</#if>
 					.build())
 				</#if>
-		);
+		<#if data.isMusicDisc>
+		,${data.musicDiscLengthInTicks}
+		</#if>);
 	}
 
 	<#if data.hasNonDefaultAnimation()>
