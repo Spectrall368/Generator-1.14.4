@@ -43,7 +43,7 @@ public class ${name}Item extends MusicDiscItem {
 		</#if>(new ResourceLocation("${data.music}")), new Item.Properties().group(<@CreativeTabs data.creativeTabs/>).maxStackSize(1).rarity(Rarity.${data.rarity}));
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
