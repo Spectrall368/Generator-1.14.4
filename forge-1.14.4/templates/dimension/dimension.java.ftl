@@ -68,6 +68,10 @@ package ${package}.world.dimension;
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
 
+		@Override public double getMovementFactor() {
+			return ${data.coordinateScale}F;
+		}
+
 		<#if !data.imitateOverworldBehaviour>
 		@Override public void calculateInitialWeather() {}
 	
@@ -141,7 +145,14 @@ package ${package}.world.dimension;
       			return ${data.doesWaterVaporize};
    		}
 
-		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
+		@Override
+		<#if !data.hasFixedTime>
+		${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
+		<#else>
+		public float calculateCelestialAngle(long worldTime, float partialTicks) {
+			return ${data.fixedTimeValue}F;
+		}
+		</#if>
 	}
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
