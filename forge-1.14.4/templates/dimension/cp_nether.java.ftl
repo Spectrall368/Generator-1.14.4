@@ -44,4 +44,8 @@ public static class ChunkProvider${name} extends NetherChunkGenerator {
 	@Override public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
 		return this.world.getBiome(pos).getSpawns(creatureType);
 	}
+
+   @Override public int getSeaLevel() {
+      return ${data.seaLevel};
+   }
 }
