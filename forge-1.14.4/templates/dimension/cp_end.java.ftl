@@ -41,7 +41,9 @@ public static class ChunkProvider${name} extends EndChunkGenerator {
 		this.randomSeed.skip(3946);
 	}
 
+   <#if data.seaLevel != 0>
    @Override public int getSeaLevel() {
       return ${data.seaLevel};
    }
+   </#if>
 }
