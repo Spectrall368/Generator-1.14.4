@@ -87,7 +87,7 @@ package ${package}.client.renderer;
 <#assign model = model + "<" + name + "Entity>">
 
 import com.mojang.blaze3d.platform.GLX;
-
+<#compress>
 @OnlyIn(Dist.CLIENT)
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
 
@@ -232,3 +232,4 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	}
 	</#if>
 }
+</#compress>
