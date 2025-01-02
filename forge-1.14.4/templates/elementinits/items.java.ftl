@@ -35,7 +35,9 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
-
+<#assign tabMap = w.getCreativeTabMap()>
+<#assign vanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))>
+<#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
@@ -47,47 +49,28 @@ public class ${JavaModName}Items {
 
 	public static final DeferredRegister<Item> REGISTRY = new DeferredRegister<>(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
-	<#list items as item>
-		<#if item.getModElement().getTypeString() == "armor">
-			<#if item.enableHelmet>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
-			</#if>
-			<#if item.enableBody>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
-			</#if>
-			<#if item.enableLeggings>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
-			</#if>
-			<#if item.enableBoots>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
-			</#if>
-		<#elseif item.getModElement().getTypeString() == "livingentity">
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties().group(<@CreativeTabs item.creativeTabs/>)));
-		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
-		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
-		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
-			<#if item.isDoubleBlock()>
-				<#assign hasDoubleBlocks = true>
-				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTabs/>);
-			<#else>
-				<#assign hasBlocks = true>
-				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTabs/>);
-			</#if>
-		<#else>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
-		</#if>
-	</#list>
+    <#list customTabs as customTab>
+        <#assign tabName = customTab.replace("CUSTOM:", "")>
+        <#list tabMap.get("CUSTOM:" + tabName) as tabElement>
+            <#if tabElement.getModElement()??>
+		<@setItems tabElement/>
+            </#if>
+        </#list>
+    </#list>
+
+    <#list vanillaTabs as tabName>
+        <#list tabMap.get(tabName) as tabElement>
+            <#if tabElement.getModElement()??>
+		<@setItems tabElement/>
+            </#if>
+        </#list>
+    </#list>
+
+    <#list items as item>
+        <#if !tabMap.values()?flatten()?seq_contains(item)>
+		<@setItems tabElement/>
+        </#if>
+    </#list>
 
 	// Start of user code block custom items
 	// End of user code block custom items
@@ -135,3 +118,44 @@ public class ${JavaModName}Items {
 	</#if>
 }
 <#-- @formatter:on -->
+<#macro setItems item>
+		<#if item.getModElement().getTypeString() == "armor">
+			<#if item.enableHelmet>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
+			</#if>
+			<#if item.enableBody>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
+			</#if>
+			<#if item.enableLeggings>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
+			</#if>
+			<#if item.enableBoots>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
+			</#if>
+		<#elseif item.getModElement().getTypeString() == "livingentity">
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties().group(<@CreativeTabs item.creativeTabs/>)));
+		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
+		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
+			<#if item.isDoubleBlock()>
+				<#assign hasDoubleBlocks = true>
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTabs/>);
+			<#else>
+				<#assign hasBlocks = true>
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTabs/>);
+			</#if>
+		<#else>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+		</#if>
+</#macro>
