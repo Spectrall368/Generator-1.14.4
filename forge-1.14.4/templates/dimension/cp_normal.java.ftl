@@ -41,9 +41,11 @@ public static class ChunkProvider${name} extends OverworldChunkGenerator {
 		this.randomSeed.skip(5349);
 	}
 
+   <#if data.seaLevel != 63>
    @Override public int getSeaLevel() {
       return ${data.seaLevel};
    }
+   </#if>
 
 	@Override public void spawnMobs(ServerWorld worldIn, boolean spawnHostileMobs, boolean spawnPeacefulMobs) {}
 }
