@@ -68,9 +68,11 @@ package ${package}.world.dimension;
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
 
+		<#if data.coordinateScale != 1>
 		@Override public double getMovementFactor() {
-			return ${data.coordinateScale}F;
+			return ${data.coordinateScale}f;
 		}
+		</#if>
 
 		<#if !data.imitateOverworldBehaviour>
 		@Override public void calculateInitialWeather() {}
