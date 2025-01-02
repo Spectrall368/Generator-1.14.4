@@ -33,7 +33,7 @@
 			}
 		<#elseif translationKeyHeader?has_content>
 			<#list procedure.getFixedValue() as entry>
-				list.add(I18n.format("${translationKeyHeader}.description_${entry?index}"));
+				list.add(new TranslationTextComponent("${translationKeyHeader}.description_${entry?index}"));
 			</#list>
 		<#else>
 			<#list procedure.getFixedValue() as entry>
