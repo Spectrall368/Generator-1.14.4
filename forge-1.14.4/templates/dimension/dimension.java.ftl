@@ -101,7 +101,8 @@ package ${package}.world.dimension;
 				return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
 			</#if><#if data.sunHeightAffectsFog>.mul(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09)</#if>;
 			}
-	
+
+			<#if data.ambientLight != 0>
 			@Override protected void generateLightBrightnessTable() {
 				float f = ${data.ambientLight}f;
 				for (int i = 0; i <= 15; ++i) {
@@ -109,6 +110,7 @@ package ${package}.world.dimension;
 					this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
 				}
 			}
+			</#if>
 	
 			@OnlyIn(Dist.CLIENT) @Override public boolean doesXZShowFog(int x, int z) {
 				return ${data.hasFog};
@@ -128,10 +130,12 @@ package ${package}.world.dimension;
 				return ${data.fixedTimeValue}f;
 			}
 			</#if>
-	
+
+			<#if data.hasClouds && data.cloudHeight != 192>
 			@Override @OnlyIn(Dist.CLIENT) public float getCloudHeight() {
 				return <#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>;
 			}
+			</#if>
 	
 			<#if data.skyType == "END">
 			@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
