@@ -139,7 +139,7 @@ package ${package}.world.dimension;
 			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
 			</#if>
 	
-			<#if data.defaultEffects == "overworld">
+			<#elseif data.defaultEffects == "overworld">
 	   		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
 	
 			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")}
@@ -166,7 +166,6 @@ package ${package}.world.dimension;
 	
 			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "doesXZShowFog", "int", "int")}
 			</#if>
-		</#if>
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
 			if(this.biomeProvider${name} == null)
