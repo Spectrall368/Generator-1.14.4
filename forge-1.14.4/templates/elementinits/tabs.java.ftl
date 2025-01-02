@@ -55,5 +55,5 @@ public class ${JavaModName}Tabs {
         </#list>
     }
 }
-<#compress>
+</#compress>
 <#-- @formatter:on -->
