@@ -92,7 +92,7 @@ public class ${JavaModName}Items {
 	    </#list>
         </#if>
 
-        <#if !(inCustomTab && inVanillaTab)>
+        <#if !(inCustomTab || inVanillaTab)>
 		<@setItems item/>
         </#if>
     </#list>
