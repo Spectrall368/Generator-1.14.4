@@ -137,7 +137,7 @@ package ${package}.world.dimension;
 		@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
 
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
-		<#/if>
+		</#if>
 
 		<#elseif data.defaultEffects == "overworld">
    		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
