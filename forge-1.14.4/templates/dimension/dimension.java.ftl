@@ -120,7 +120,7 @@ package ${package}.world.dimension;
 		}
 
 		@Override public SleepResult canSleepAt(PlayerEntity player, BlockPos pos){
-        		return SleepResult.${data.sleepResult};
+        		return SleepResult.<#if data.bedWorks>ALLOW<#else>BED_EXPLODES</#if>;
 		}
 
 		@Nullable public BlockPos findSpawn(ChunkPos chunkPos, boolean checkValid) {
