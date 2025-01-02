@@ -206,7 +206,15 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 				<#list data.animations as animation>
 					<#if !animation.walking>
 						${animation.animation}.execute(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-					<#else>
+					</#if>
+				</#list>
+			}
+		};
+
+		@Override public void setLivingAnimations(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+			super.setLivingAnimations(entity, limbSwing, limbSwingAmount, ageInTicks);
+			<#list data.animations as animation>
+				<#if animation.walking>
 						<#if hasProcedure(animation.condition)>
 						if (<@procedureCode animation.condition, {
 							"x": "entity.posX",
@@ -216,14 +224,10 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 							"world": "entity.world"
 						}, false/>)
 						</#if>
-						${animation.animation}.execute(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-					</#if>
-				</#list>
-			}
-		};
 
-		@Override public void setLivingAnimations(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
-			super.setLivingAnimations(entity, limbSwing, limbSwingAmount, ageInTicks);
+					${animation.animation}.execute(entity, limbSwing, limbSwingAmount, ageInTicks);
+				</#if>
+			</#list>
 		}
 	}
 	</#if>
