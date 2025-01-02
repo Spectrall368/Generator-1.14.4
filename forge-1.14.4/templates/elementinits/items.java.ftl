@@ -50,8 +50,8 @@ public class ${JavaModName}Items {
 	public static final DeferredRegister<Item> REGISTRY = new DeferredRegister<>(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
     <#list customTabs as customTab>
-        <#assign tabName = customTab.replace("CUSTOM:", "")>
-        <#list tabMap.get("CUSTOM:" + tabName) as tabElement>
+	<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
+        <#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
             <#if tabElement.getModElement()??>
 		<@setItems tabElement/>
             </#if>
@@ -67,7 +67,30 @@ public class ${JavaModName}Items {
     </#list>
 
     <#list items as item>
-        <#if !tabMap.values()?flatten()?seq_contains(item)>
+        <#assign inCustomTab = false>
+    	<#list customTabs as customTab>
+		<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
+        	<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
+			<#if tabMap.get(customTab)?seq_contains(item)>
+                	<#assign inCustomTab = true>
+                	<#break>
+			 </#if>
+		</#list>
+	</#list>
+
+        <#assign inVanillaTab = false>
+        <#if !inCustomTab>
+	    <#list vanillaTabs as tabName>
+	        <#list tabMap.get(tabName) as tabElement>
+	                <#if tabMap.get(vanillaTab)?seq_contains(item)>
+	                    <#assign inVanillaTab = true>
+	                    <#break>
+	                </#if>
+	        </#list>
+	    </#list>
+        </#if>
+
+        <#if inCustomTab || inVanillaTab>
 		<@setItems tabElement/>
         </#if>
     </#list>
