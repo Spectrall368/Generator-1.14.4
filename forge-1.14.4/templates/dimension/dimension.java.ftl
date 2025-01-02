@@ -87,84 +87,85 @@ package ${package}.world.dimension;
 		</#if>
 
 		<#if data.useCustomEffects>
-		@Override @OnlyIn(Dist.CLIENT)
-		<#if !data.airColor?has_content>
-			<#if data.skyType == "NONE">
-				${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")?keep_before_last(";")}
-			<#elseif data.skyType == "NORMAL">
-				${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")?keep_before_last(";")}
+			@Override @OnlyIn(Dist.CLIENT)
+			<#if !data.airColor?has_content>
+				<#if data.skyType == "NONE">
+					${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")?keep_before_last(";")}
+				<#elseif data.skyType == "NORMAL">
+					${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")?keep_before_last(";")}
+				<#else>
+					${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")?keep_before_last(";")}
+				</#if>
 			<#else>
-				${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")?keep_before_last(";")}
-			</#if>
-		<#else>
-		public Vec3d getFogColor(float celestialAngle, float partialTicks) {
-			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
-		</#if><#if data.sunHeightAffectsFog>.mul(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09)</#if>;
-		}
-
-		@Override protected void generateLightBrightnessTable() {
-			float f = ${data.ambientLight}f;
-			for (int i = 0; i <= 15; ++i) {
-				float f1 = 1 - (float) i / 15f;
-				this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
+			public Vec3d getFogColor(float celestialAngle, float partialTicks) {
+				return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
+			</#if><#if data.sunHeightAffectsFog>.mul(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09)</#if>;
 			}
-		}
-
-		@OnlyIn(Dist.CLIENT) @Override public boolean doesXZShowFog(int x, int z) {
-			return ${data.hasFog};
-		}
-
-		@Override
-		<#if !data.hasFixedTime>
-			<#if data.skyType == "NONE">
-				${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
-			<#elseif data.skyType == "NORMAL">
-				${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
+	
+			@Override protected void generateLightBrightnessTable() {
+				float f = ${data.ambientLight}f;
+				for (int i = 0; i <= 15; ++i) {
+					float f1 = 1 - (float) i / 15f;
+					this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
+				}
+			}
+	
+			@OnlyIn(Dist.CLIENT) @Override public boolean doesXZShowFog(int x, int z) {
+				return ${data.hasFog};
+			}
+	
+			@Override
+			<#if !data.hasFixedTime>
+				<#if data.skyType == "NONE">
+					${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
+				<#elseif data.skyType == "NORMAL">
+					${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
+				<#else>
+					${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
+				</#if>
 			<#else>
-				${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
+			public float calculateCelestialAngle(long worldTime, float partialTicks) {
+				return ${data.fixedTimeValue}f;
+			}
 			</#if>
-		<#else>
-		public float calculateCelestialAngle(long worldTime, float partialTicks) {
-			return ${data.fixedTimeValue}f;
-		}
-		</#if>
-
-		@Override @OnlyIn(Dist.CLIENT) public float getCloudHeight() {
-			return <#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>;
-		}
-
-		<#if data.skyType == "END">
-		@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
-		</#if>
-
-		<#if data.defaultEffects == "overworld">
-   		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "doesXZShowFog", "int", "int")}
-		<#elseif data.defaultEffects == "the_nether">
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")}
-
-		@Override ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "generateLightBrightnessTable")}
-
-   		@Override ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "doesXZShowFog", "int", "int")}
-		<#else>
-		@Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
-
-		@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getCloudHeight")}
-
-		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "doesXZShowFog", "int", "int")}
+	
+			@Override @OnlyIn(Dist.CLIENT) public float getCloudHeight() {
+				return <#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>;
+			}
+	
+			<#if data.skyType == "END">
+			@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
+			</#if>
+	
+			<#if data.defaultEffects == "overworld">
+	   		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "doesXZShowFog", "int", "int")}
+			<#elseif data.defaultEffects == "the_nether">
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")}
+	
+			@Override ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "generateLightBrightnessTable")}
+	
+	   		@Override ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "doesXZShowFog", "int", "int")}
+			<#else>
+			@Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
+	
+			@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getCloudHeight")}
+	
+			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "doesXZShowFog", "int", "int")}
+			</#if>
 		</#if>
 
 		@Override public ChunkGenerator<?> createChunkGenerator() {
