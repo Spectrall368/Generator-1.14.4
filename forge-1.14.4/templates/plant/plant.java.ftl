@@ -42,10 +42,16 @@ import net.minecraftforge.common.property.Properties;
 <#if data.isBonemealable && data.plantType != "sapling">
 	<#assign interfaces += ["IGrowable"]>
 </#if>
+<#if data.isWaterloggable()>
+	<#assign interfaces += ["IWaterLoggable"]>
+</#if>
 public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if interfaces?size gt 0>
 		implements ${interfaces?join(",")}
 	</#if>{
+	<#if data.isWaterloggable()>
+		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	</#if>
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">
 		() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
@@ -89,7 +95,31 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		.doesNotBlockMovement()
 		</#if>
 		);
+		<#if data.isWaterloggable()>
+		<@initStateProperties/>
+		</#if>
 	}
+	<#if data.isWaterloggable()>
+	@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
+		builder.add(WATERLOGGED);
+	}
+
+	@Override public BlockState getStateForPlacement(BlockItemUseContext context) {
+		return super.getStateForPlacement(context).with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
+	}
+
+	@Override public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		if (state.get(WATERLOGGED)) {
+			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+	}
+	</#if>
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
@@ -232,14 +262,17 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if data.plantType == "growapable" || hasProcedure(data.onTickUpdate)>
 	@Override public void randomTick(BlockState blockstate, World world, BlockPos pos, Random random) {
 		<#if data.plantType == "growapable">
-		if (world.isAirBlock(pos.up())) {
+		<#if data.isWaterloggable()>
+		boolean flag = world.getBlockState(pos.up()).is(Blocks.WATER);
+		</#if>
+		if (world.isAirBlock(pos.up()) <#if data.isWaterloggable()>|| flag</#if>) {
 			int i = 1;
 			for(;world.getBlockState(pos.down(i)).getBlock() == this; ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.get(AGE);
 				if (ForgeHooks.onCropsGrowPre(world, pos, blockstate, true)) {
 					if (j == 15) {
-						world.setBlockState(pos.up(), getDefaultState());
+						world.setBlockState(pos.up(), getDefaultState()<#if data.isWaterloggable()>.with(WATERLOGGED, flag)</#if>);
 						world.setBlockState(pos, blockstate.with(AGE, 0), 4);
 					} else {
 						world.setBlockState(pos, blockstate.with(AGE, j + 1), 4);
@@ -366,4 +399,18 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#list blockList as canBePlacedOn>
 	groundState.getBlock() == ${mappedBlockToBlock(canBePlacedOn)}<#sep>||
 	</#list><#if (blockList?size > 1) && condition>)</#if>
+</#macro>
+<#macro initStateProperties>
+this.setDefaultState(this.stateContainer.getBaseState()
+	<#if data.plantType == "double">
+	.with(HALF, DoubleBlockHalf.LOWER)
+	<#elseif data.plantType == "growapable">
+	.with(AGE, 0)
+	<#elseif data.plantType == "sapling">
+	.with(STAGE, 0)
+	</#if>
+	<#if data.isWaterloggable()>
+	.with(WATERLOGGED, false)
+	</#if>
+);
 </#macro>
