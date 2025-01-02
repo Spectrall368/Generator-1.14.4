@@ -41,5 +41,9 @@ public static class ChunkProvider${name} extends OverworldChunkGenerator {
 		this.randomSeed.skip(5349);
 	}
 
+   @Override public int getSeaLevel() {
+      return ${data.seaLevel};
+   }
+
 	@Override public void spawnMobs(ServerWorld worldIn, boolean spawnHostileMobs, boolean spawnPeacefulMobs) {}
 }
