@@ -58,7 +58,7 @@ public class ${JavaModName}Items {
 
     <#list vanillaTabs as tabName>
         <#list tabMap.get(tabName) as tabElement>
-		<@setItems tab/>
+		<@setItems tabElement/>
         </#list>
     </#list>
 
@@ -67,22 +67,28 @@ public class ${JavaModName}Items {
     	<#list customTabs as customTab>
 		<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
         	<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
-			<#if tabMap.get(customTab)?seq_contains(item)>
+			<#if tabElement?seq_contains(item)>
                 	<#assign inCustomTab = true>
                 	<#break>
 			 </#if>
 		</#list>
+		<#if inCustomTab>
+			<#break>
+		</#if>
 	</#list>
 
         <#assign inVanillaTab = false>
         <#if !inCustomTab>
 	    <#list vanillaTabs as tabName>
 	        <#list tabMap.get(tabName) as tabElement>
-	                <#if tabMap.get(vanillaTab)?seq_contains(item)>
+	                <#if tabElement?seq_contains(item)>
 	                    <#assign inVanillaTab = true>
 	                    <#break>
 	                </#if>
 	        </#list>
+		<#if inVanillaTab>
+			<#break>
+		</#if>
 	    </#list>
         </#if>
 
