@@ -45,7 +45,9 @@ public static class ChunkProvider${name} extends NetherChunkGenerator {
 		return this.world.getBiome(pos).getSpawns(creatureType);
 	}
 
+   <#if data.seaLevel != 32>
    @Override public int getSeaLevel() {
       return ${data.seaLevel};
    }
+   </#if>
 }
