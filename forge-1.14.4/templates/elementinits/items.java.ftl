@@ -52,7 +52,12 @@ public class ${JavaModName}Items {
     <#list customTabs as customTab>
 	<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
         <#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
-		<@setItems tabElement/>
+		<#list items as item>
+			<#if tabElement == item>
+			<@setItems item/>
+			<#break>
+			</#if>
+		</#list>
         </#list>
     </#list>
 
