@@ -107,7 +107,9 @@ public class ${name}Menu extends Container implements Supplier<Map<Integer, Slot
         	    this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
 						${component.gx(data.width) + 1},
 						${component.gy(data.height) + 1}) {
-					private final int slot = ${component.id};
+						private final int slot = ${component.id};
+						private int x = ${name}Menu.this.x; <#-- #5239 - x and y provided by slot are in-GUI, not in-world coordinates -->
+						private int y = ${name}Menu.this.y;
 
 				<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 					@Override public boolean canTakeStack(PlayerEntity entity) {
