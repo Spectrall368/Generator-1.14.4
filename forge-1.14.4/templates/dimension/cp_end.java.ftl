@@ -40,4 +40,8 @@ public static class ChunkProvider${name} extends EndChunkGenerator {
 		});
 		this.randomSeed.skip(3946);
 	}
+
+   @Override public int getSeaLevel() {
+      return ${data.seaLevel};
+   }
 }
