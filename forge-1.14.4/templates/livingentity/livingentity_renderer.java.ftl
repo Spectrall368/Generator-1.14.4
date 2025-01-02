@@ -205,7 +205,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 			@Override public void setRotationAngles(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 				<#list data.animations as animation>
 					<#if !animation.walking>
-						${animation.animation}.execute();
+						${animation.animation}.execute(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 					<#else>
 						<#if hasProcedure(animation.condition)>
 						if (<@procedureCode animation.condition, {
@@ -216,7 +216,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 							"world": "entity.world"
 						}, false/>)
 						</#if>
-						${animation.animation}.execute();
+						${animation.animation}.execute(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 					</#if>
 				</#list>
 			}
