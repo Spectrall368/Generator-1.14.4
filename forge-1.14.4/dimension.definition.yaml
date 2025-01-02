@@ -42,3 +42,5 @@ localizationkeys:
     condition: hasIgniter()
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index
+
+field_exclusions: [horizontalNoiseSize, verticalNoiseSize, hasRaids, infiniburnTag, generateOreVeins, piglinSafe, minMonsterSpawnLightLimit, maxMonsterSpawnLightLimit, monsterSpawnBlockLightLimit, generateAquifers]
