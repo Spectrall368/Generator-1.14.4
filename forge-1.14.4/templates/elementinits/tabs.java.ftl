@@ -34,7 +34,7 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
-
+<#compress>
 public class ${JavaModName}Tabs {
 
     <#list tabs as tab>
@@ -55,4 +55,5 @@ public class ${JavaModName}Tabs {
         </#list>
     }
 }
+<#compress>
 <#-- @formatter:on -->
