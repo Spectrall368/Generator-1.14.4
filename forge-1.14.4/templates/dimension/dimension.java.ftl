@@ -91,7 +91,7 @@ package ${package}.world.dimension;
 		<#if !data.airColor?has_content>
 			<#if data.skyType == "NONE">
 				${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")?keep_before_last(";")}
-			<#elseif == "NORMAL">
+			<#elseif data.skyType == "NORMAL">
 				${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")?keep_before_last(";")}
 			<#else>
 				${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")?keep_before_last(";")}
@@ -118,7 +118,7 @@ package ${package}.world.dimension;
 		<#if !data.hasFixedTime>
 			<#if data.skyType == "NONE">
 				${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
-			<#elseif == "NORMAL">
+			<#elseif data.skyType == "NORMAL">
 				${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
 			<#else>
 				${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
@@ -139,7 +139,7 @@ package ${package}.world.dimension;
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
 		</#if>
 
-		<#elseif data.defaultEffects == "overworld">
+		<#if data.defaultEffects == "overworld">
    		@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
 
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")}
