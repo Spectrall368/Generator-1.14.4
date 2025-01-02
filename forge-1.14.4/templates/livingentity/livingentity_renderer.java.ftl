@@ -80,7 +80,7 @@ package ${package}.client.renderer;
 	<#assign rootPart = "">
 	<#assign model = data.mobModelName>
 <#else>
-	<#assign super = "0.0F, false">
+	<#assign rootPart = "0.0F, false">
 	<#assign model = "PlayerModel">
 	<#assign humanoid = true>
 </#if>
