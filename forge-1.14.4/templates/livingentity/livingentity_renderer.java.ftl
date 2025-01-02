@@ -34,53 +34,53 @@ package ${package}.client.renderer;
 <#assign humanoid = false>
 <#assign model = "PlayerModel">
 <#if data.mobModelName == "Chicken">
-	<#assign super = "super(context, new ChickenModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "ChickenModel">
 <#elseif data.mobModelName == "Cod">
-	<#assign super = "super(context, new CodModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "CodModel">
 <#elseif data.mobModelName == "Cow">
-	<#assign super = "super(context, new CowModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "CowModel">
 <#elseif data.mobModelName == "Creeper">
-	<#assign super = "super(context, new CreeperModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "CreeperModel">
 <#elseif data.mobModelName == "Ghast">
-	<#assign super = "super(context, new GhastModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "GhastModel">
 <#elseif data.mobModelName == "Ocelot">
-	<#assign super = "super(context, new OcelotModel(0.0F), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "0.0F">
 	<#assign model = "OcelotModel">
 <#elseif data.mobModelName == "Pig">
-	<#assign super = "super(context, new PigModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
-	<#assign super = "super(context, new PlayerModel(0.0F, false), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "0.0F, false">
 	<#assign model = "BipedModel">
 	<#assign humanoid = true>
 <#elseif data.mobModelName == "Slime">
-	<#assign super = "super(context, new SlimeModel(16), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "16">
 	<#assign model = "SlimeModel">
 <#elseif data.mobModelName == "Salmon">
-	<#assign super = "super(context, new SalmonModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "SalmonModel">
 <#elseif data.mobModelName == "Spider">
-	<#assign super = "super(context, new SpiderModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "SpiderModel">
 <#elseif data.mobModelName == "Villager">
-	<#assign super = "super(context, new VillagerModel(0.0F), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "0.0F">
 	<#assign model = "VillagerModel">
 <#elseif data.mobModelName == "Silverfish">
-	<#assign super = "super(context, new SilverfishModel(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = "SilverfishModel">
 <#elseif data.mobModelName == "Witch">
-	<#assign super = "super(context, new WitchModel(0.0F), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "0.0F">
 	<#assign model = "WitchModel">
 <#elseif !data.isBuiltInModel()>
-	<#assign super = "super(context, new ${data.mobModelName}(), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "">
 	<#assign model = data.mobModelName>
 <#else>
-	<#assign super = "super(context, new PlayerModel(0.0F, false), " + data.modelShadowSize + "f);">
+	<#assign super = "0.0F, false">
 	<#assign model = "PlayerModel">
 	<#assign humanoid = true>
 </#if>
@@ -92,7 +92,11 @@ import com.mojang.blaze3d.platform.GLX;
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererManager context) {
-		${super}
+		<#if data.animations?has_content>
+		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
+		<#else>
+		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
+		</#if>
 
 		<#if humanoid>
 		this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5F), new BipedModel(1.0F)));
@@ -193,4 +197,34 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		return <@procedureOBJToConditionCode data.transparentModelCondition false true/>;
 	    }
     </#if>
+
+	<#if data.animations?has_content>
+	private static final class AnimatedModel extends ${model} {
+		private final EntityModel animator = new EntityModel<${name}Entity>() {
+
+			@Override public void setRotationAngles(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+				<#list data.animations as animation>
+					<#if !animation.walking>
+						${animation.animation};
+					<#else>
+						<#if hasProcedure(animation.condition)>
+						if (<@procedureCode animation.condition, {
+							"x": "entity.posX",
+							"y": "entity.posY",
+							"z": "entity.posZ",
+							"entity": "entity",
+							"world": "entity.world"
+						}, false/>)
+						</#if>
+						${animation.animation};
+					</#if>
+				</#list>
+			}
+		};
+
+		@Override public void setLivingAnimations(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
+			super.setLivingAnimations(entity, limbSwing, limbSwingAmount, ageInTicks);
+		}
+	}
+	</#if>
 }
