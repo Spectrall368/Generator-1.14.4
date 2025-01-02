@@ -62,10 +62,7 @@ public class ${name}Item extends <#if data.isMusicDisc>MusicDisc</#if>Item {
 					<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 					<#if data.isMeat>.meat()</#if>
 					.build())
-				</#if>
-		<#if data.isMusicDisc>
-		,${data.musicDiscLengthInTicks}
-		</#if>);
+				</#if>);
 	}
 
 	<#if data.hasNonDefaultAnimation()>
