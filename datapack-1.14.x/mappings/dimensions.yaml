@@ -1,7 +1,6 @@
 _default:
   - DimensionType.OVERWORLD
   - "minecraft:overworld"
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "DimensionType.byName(new ResourceLocation(\"@modid:@registryname\"))"
   - "@modid:@registryname"
