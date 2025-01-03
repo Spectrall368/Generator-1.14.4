@@ -30,10 +30,13 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#assign tabMap = w.getCreativeTabMap()>
+<#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
+
 <#compress>
 public class ${JavaModName}Tabs {
 
