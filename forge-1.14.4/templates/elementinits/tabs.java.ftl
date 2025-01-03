@@ -37,12 +37,14 @@ package ${package}.init;
 <#compress>
 public class ${JavaModName}Tabs {
 
-    <#list tabs as tab>
+    <#list customTabs as customTab>
+    <#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
     public static ItemGroup TAB_${tab.getModElement().getRegistryNameUpper()};
     </#list>
 
 	public static void load() {
-        <#list tabs as tab>
+    	<#list customTabs as customTab>
+    	<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
         TAB_${tab.getModElement().getRegistryNameUpper()} = new ItemGroup("${modid}.${tab.getModElement().getRegistryName()}") {
 			@Override @OnlyIn(Dist.CLIENT) public ItemStack createIcon() {
 				return ${mappedMCItemToItemStackCode(tab.icon, 1)};
