@@ -64,14 +64,14 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 				<#else>
 				-16448205
 				</#if>)
-			</#if>
+			</#if>)
 		.explosionResistance(${data.resistance}f)
 		<#if data.canMultiply>.canMultiply()</#if>
 		<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
 		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
 		<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
 		<#if data.generateBucket>.bucket(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET)</#if>
-		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()));
+		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 
 	private ${name}Fluid(Properties properties) {
 		super(properties);
