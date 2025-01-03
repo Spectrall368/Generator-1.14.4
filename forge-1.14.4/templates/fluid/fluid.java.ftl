@@ -41,17 +41,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			<#if data.extendsFluidAttributes()>${name}</#if>FluidAttributes
 			.builder(new ResourceLocation("${data.textureStill.format("%s:block/%s")}"), new ResourceLocation("${data.textureFlowing.format("%s:block/%s")}"))
 			<#if data.textureRenderOverlay?has_content>.overlay(new ResourceLocation("${data.textureRenderOverlay.format("%s:textures/%s")}.png"))</#if>
-			<#if data.hasFog>
-			<#if data.fogColor?has_content>.color(new Object() {
-		            int getColor(float red, float green, float blue) {
-		                int r = ((red >> 16) & 0xFF) / 255f;
-		                int g = ((green >> 8) & 0xFF) / 255f;
-		                int b = ((blue >> 0) & 0xFF) / 255f;
-		                
-		                return (r + g + b);
-		            }
-		        }.getColor(${data.fogColor.getRed()/255}f, ${data.fogColor.getGreen()/255}f, ${data.fogColor.getBlue()/255}f)</#if>
-			</#if>
 			<#if data.luminosity != 0>.luminosity(${data.luminosity})</#if>
 			<#if data.density != 1000>.density(${data.density})</#if>
 			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
@@ -75,14 +64,14 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 				<#else>
 				-16448205
 				</#if>)
-			</#if>)
+			</#if>
 		.explosionResistance(${data.resistance}f)
 		<#if data.canMultiply>.canMultiply()</#if>
 		<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
 		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
 		<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
 		<#if data.generateBucket>.bucket(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET)</#if>
-		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()));
 
 	private ${name}Fluid(Properties properties) {
 		super(properties);
