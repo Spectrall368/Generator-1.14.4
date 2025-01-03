@@ -77,15 +77,10 @@ public class ${JavaModName}Items {
     	<#list customTabs as customTab>
 		<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
         	<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()).toString().replace("CUSTOM:", "")?keep_before(".") as tabElement>
-			<#list items as item>
-				<#if tabElement == item.getModElement().getRegistryName()>
-	                	<#assign inCustomTab = true>
-	                	<#break>
-				 </#if>
-			</#list>
-			<#if inCustomTab>
-				<#break>
-			</#if>
+			<#if tabElement == item.getModElement().getRegistryName()>
+	                <#assign inCustomTab = true>
+	                <#break>
+			 </#if>
 		</#list>
 			<#if inCustomTab>
 				<#break>
@@ -96,15 +91,10 @@ public class ${JavaModName}Items {
         <#if !inCustomTab>
 	    <#list vanillaTabs as tabName>
 	        <#list tabMap.get(tabName).toString().replace("CUSTOM:", "")?keep_before(".") as tabElement>
-			<#list items as item>
 				<#if tabElement == item.getModElement().getRegistryName()>
 	                	<#assign inVanillaTab = true>
 	                	<#break>
 				 </#if>
-			</#list>
-		<#if inVanillaTab>
-			<#break>
-		</#if>
 	        </#list>
 		<#if inVanillaTab>
 			<#break>
