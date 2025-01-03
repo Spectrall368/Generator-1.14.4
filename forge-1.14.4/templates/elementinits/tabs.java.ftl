@@ -43,15 +43,6 @@ public class ${JavaModName}Tabs {
 
 	public static void load() {
         <#list tabs as tab>
-	<#if prevTab??><@setTabs prevTab/></#if>
-	<@setTabs tab/>
-	<#assign prevTab = tab>
-        </#list>
-    }
-}
-</#compress>
-<#-- @formatter:on -->
-<#macro setTabs tab>
         TAB_${tab.getModElement().getRegistryNameUpper()} = new ItemGroup("${modid}.${tab.getModElement().getRegistryName()}") {
 			@Override @OnlyIn(Dist.CLIENT) public ItemStack createIcon() {
 				return ${mappedMCItemToItemStackCode(tab.icon, 1)};
@@ -61,4 +52,8 @@ public class ${JavaModName}Tabs {
 				return ${tab.showSearch};
 			}
         }<#if tab.showSearch>.setBackgroundImageName("item_search.png")</#if>;
-</#macro>
+        </#list>
+    }
+}
+</#compress>
+<#-- @formatter:on -->
