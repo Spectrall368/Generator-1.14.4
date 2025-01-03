@@ -49,73 +49,15 @@ public class ${JavaModName}Items {
 
 	public static final DeferredRegister<Item> REGISTRY = new DeferredRegister<>(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
-    <#list customTabs as customTab>
-	<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
-	<#assign prevElement = "">
-        <#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
-		<#assign element = tabElement.toString().replace("CUSTOM:", "")?keep_before(".")>
-		<#list items as item>
-			<#if element == item.getModElement().getName()?string && prevElement != element>
-			<@setItems item/>
-			<#break>
-			</#if>
-			
-		</#list>
-			<#assign prevElement = element>
-        </#list>
-    </#list>
-
-    <#list vanillaTabs as tabName>
-	<#assign prevElement = "">
-        <#list tabMap.get(tabName) as tabElement>
-		<#assign element = tabElement.toString().replace("CUSTOM:", "")?keep_before(".")>
-		<#list items as item>
-			<#if element == item.getModElement().getName()?string && prevElement != element>
-			<@setItems item/>
-			<#break>
-			</#if>
-			
-		</#list>
-			<#assign prevElement = element>
-        </#list>
-    </#list>
-
-    <#list items as item>
-        <#assign inCustomTab = false>
-    	<#list customTabs as customTab>
-		<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
-        	<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
-			<#assign element = tabElement.toString().replace("CUSTOM:", "")?keep_before(".")>
-			<#if element == item.getModElement().getName()?string>
-			<#assign inCustomTab = true>
-			<#break>
-			</#if>
-		</#list>
-			<#if inCustomTab>
-				<#break>
-			</#if>
-	</#list>
-
-        <#assign inVanillaTab = false>
-        <#if !inCustomTab>
-	    <#list vanillaTabs as tabName>
-	        <#list tabMap.get(tabName) as tabElement>
-			<#assign element = tabElement.toString().replace("CUSTOM:", "")?keep_before(".")>
-			<#if element == item.getModElement().getName()?string>
-			<#assign inVanillaTab = true>
-			<#break>
-			</#if>
-	        </#list>
-		<#if inVanillaTab>
-			<#break>
-		</#if>
+	    <@processTabElements true customTabs/>
+	
+	    <@processTabElements false vanillaTabs/>
+	
+	    <#list items as item>
+	        <#if !isElementInAnyTab(item.getModElement().getName()?string, customTabs, vanillaTabs)>
+	            <@setItems item/>
+	        </#if>
 	    </#list>
-        </#if>
-
-        <#if !(inCustomTab || inVanillaTab)>
-		<@setItems item/>
-        </#if>
-    </#list>
 
 	// Start of user code block custom items
 	// End of user code block custom items
@@ -204,3 +146,39 @@ public class ${JavaModName}Items {
 				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
 		</#if>
 </#macro>
+<#macro processTabElements tabType tabList>
+    <#list tabList as currentTab>
+        <#assign tabElements = tabMap.get(currentTab)>
+        <#if tabType>
+            <#assign tab = w.getWorkspace().getModElementByName(currentTab?replace("CUSTOM:", "")).getGeneratableElement()>
+            <#assign tabElements = tabMap.get("CUSTOM:" + tab.getModElement().getName())>
+        </#if>
+        <#assign prevElement = "">
+        <#list tabElements as tabElement>
+            <#assign element = tabElement.toString()?replace("CUSTOM:", "")?keep_before(".")>
+            <#list items as item>
+                <#if element == item.getModElement().getName()?string && prevElement != element>
+                    <@setItems item/>
+                    <#break>
+                </#if>
+            </#list>
+            <#assign prevElement = element>
+        </#list>
+    </#list>
+</#macro>
+
+<#function isElementInAnyTab element customTabs vanillaTabs>
+    <#list customTabs + vanillaTabs as tab>
+        <#assign tabElements = tabMap.get(tab)>
+        <#if tab?starts_with("CUSTOM:")>
+            <#assign customTab = w.getWorkspace().getModElementByName(tab?replace("CUSTOM:", "")).getGeneratableElement()>
+            <#assign tabElements = tabMap.get("CUSTOM:" + customTab.getModElement().getName())>
+        </#if>
+        <#list tabElements as tabElement>
+            <#if tabElement.toString()?replace("CUSTOM:", "")?keep_before(".") == element>
+                <#return true>
+            </#if>
+        </#list>
+    </#list>
+    <#return false>
+</#function>
