@@ -35,6 +35,7 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
+<#compress>
 <#assign tabMap = w.getCreativeTabMap()>
 <#assign vanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))>
 <#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
@@ -104,6 +105,7 @@ public class ${JavaModName}Items {
 	</#compress>
 	</#if>
 }
+</#compress>
 <#-- @formatter:on -->
 <#macro setItems item>
 		<#if item.getModElement().getTypeString() == "armor">
@@ -166,7 +168,6 @@ public class ${JavaModName}Items {
         </#list>
     </#list>
 </#macro>
-
 <#function isElementInAnyTab element customTabs vanillaTabs>
     <#list customTabs + vanillaTabs as tab>
         <#assign tabElements = tabMap.get(tab)>
