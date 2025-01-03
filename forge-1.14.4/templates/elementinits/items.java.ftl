@@ -51,9 +51,9 @@ public class ${JavaModName}Items {
 
     <#list customTabs as customTab>
 	<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
-        <#list tabMap.get("CUSTOM:" + tab.getModElement().getName()).toString().replace("CUSTOM:", "")?keep_before(".") as tabElement>
+        <#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
 		<#list items as item>
-			<#if tabElement == item.getModElement().getRegistryName()>
+			<#if tabElement.toString().replace("CUSTOM:", "")?keep_before(".") == item.getModElement().getRegistryName()>
 			<@setItems item/>
 			<#break>
 			</#if>
@@ -62,9 +62,9 @@ public class ${JavaModName}Items {
     </#list>
 
     <#list vanillaTabs as tabName>
-        <#list tabMap.get(tabName).toString().replace("CUSTOM:", "")?keep_before(".") as tabElement>
+        <#list tabMap.get(tabName) as tabElement>
 		<#list items as item>
-			<#if tabElement == item.getModElement().getRegistryName()>
+			<#if tabElement.toString().replace("CUSTOM:", "")?keep_before(".") == item.getModElement().getRegistryName()>
 			<@setItems item/>
 			<#break>
 			</#if>
@@ -76,8 +76,8 @@ public class ${JavaModName}Items {
         <#assign inCustomTab = false>
     	<#list customTabs as customTab>
 		<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
-        	<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()).toString().replace("CUSTOM:", "")?keep_before(".") as tabElement>
-			<#if tabElement == item.getModElement().getRegistryName()>
+        	<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
+			<#if tabElement.toString().replace("CUSTOM:", "")?keep_before(".")  == item.getModElement().getRegistryName()>
 	                <#assign inCustomTab = true>
 	                <#break>
 			 </#if>
@@ -90,8 +90,8 @@ public class ${JavaModName}Items {
         <#assign inVanillaTab = false>
         <#if !inCustomTab>
 	    <#list vanillaTabs as tabName>
-	        <#list tabMap.get(tabName).toString().replace("CUSTOM:", "")?keep_before(".") as tabElement>
-				<#if tabElement == item.getModElement().getRegistryName()>
+	        <#list tabMap.get(tabName) as tabElement>
+				<#if tabElement.toString().replace("CUSTOM:", "")?keep_before(".") == item.getModElement().getRegistryName()>
 	                	<#assign inVanillaTab = true>
 	                	<#break>
 				 </#if>
