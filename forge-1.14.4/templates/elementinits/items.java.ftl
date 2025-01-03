@@ -63,11 +63,10 @@ public class ${JavaModName}Items {
 
     <#list vanillaTabs as tabName>
         <#list tabMap.get(tabName) as tabElement>
+		// ${tabElement}
 		<@setItems tabElement/>
         </#list>
     </#list>
-
-	// end
 
     <#list items as item>
         <#assign inCustomTab = false>
