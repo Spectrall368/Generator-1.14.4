@@ -68,6 +68,8 @@ public class ${JavaModName}Items {
         </#list>
     </#list>
 
+	// end
+
     <#list items as item>
         <#assign inCustomTab = false>
     	<#list customTabs as customTab>
