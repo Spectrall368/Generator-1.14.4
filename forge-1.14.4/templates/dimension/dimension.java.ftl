@@ -133,7 +133,7 @@ package ${package}.world.dimension;
 			}
 			</#if>
 
-			<#if data.hasClouds && data.cloudHeight != 192>
+			<#if !data.hasClouds || data.cloudHeight != 192>
 			@Override @OnlyIn(Dist.CLIENT) public float getCloudHeight() {
 				return <#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>;
 			}
