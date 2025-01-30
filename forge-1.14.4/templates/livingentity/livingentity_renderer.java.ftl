@@ -213,6 +213,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 
 		@Override public void setLivingAnimations(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
 			super.setLivingAnimations(entity, limbSwing, limbSwingAmount, ageInTicks);
+			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, 1.0F);
 			<#list data.animations as animation>
 				<#if animation.walking>
 						<#if hasProcedure(animation.condition)>
