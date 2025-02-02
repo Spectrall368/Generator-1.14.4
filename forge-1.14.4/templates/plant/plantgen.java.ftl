@@ -152,12 +152,12 @@ package ${package}.world.features.plants;
     	    			<#if data.generationType == "Grass">
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				    new <#if data.plantType == "normal">GrassFeatureConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>NoFeatureConfig()</#if>,
-						<#if !data.generateAtAnyHeight>Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks}<#else>Placement.HELL_FIRE, new FrequencyConfig(${data.frequencyOnChunks}</#if>)
+						Placement.<#if !data.generateAtAnyHeight>NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, <#else>HELL_FIRE, new FrequencyConfig(</#if>${data.frequencyOnChunks})
 				));
 				<#else>
 				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 				<#if data.plantType == "double">new DoublePlantConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>IFeatureConfig.NO_FEATURE_CONFIG</#if>,
-						<#if !data.generateAtAnyHeight>Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if><#else>Placement.HELL_FIRE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
+						Placement.<#if !data.generateAtAnyHeight><#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if><#else>HELL_FIRE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
 				));
 				</#if>
 			}
