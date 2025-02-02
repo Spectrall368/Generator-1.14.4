@@ -81,7 +81,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 			if (entity1 == this.getShooter()) continue;
 			AxisAlignedBB aabb = entity1.getBoundingBox();
 			if (aabb.intersects(lookupBox)) {
-				double d1 = projectilePosition.getDistanceSq(projectilePosition);
+				double d1 = projectilePosition.squareDistanceTo(projectilePosition);
 				if (d1 < d0) {
 					entity = entity1;
 					d0 = d1;
