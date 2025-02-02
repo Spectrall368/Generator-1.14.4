@@ -92,11 +92,7 @@ import com.mojang.blaze3d.platform.GLX;
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererManager context) {
-		<#if data.animations?has_content>
-		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
-		<#else>
-		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
-		</#if>
+		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
 
 		<#if humanoid>
 		this.addLayer(new BipedArmorLayer(this, new BipedModel(0.5F), new BipedModel(1.0F)));
