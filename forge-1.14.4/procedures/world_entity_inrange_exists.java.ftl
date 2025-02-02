@@ -1,3 +1,3 @@
 (!world.func_225316_b(${generator.map(field$entity, "entities", 0)}.class,
-	new AxisAlignedBB(${input$x} - ${input$range} / 2.0D, ${input$y} - ${input$range} / 2.0D, ${input$z} - ${input$range} / 2.0D, ${input$x} + ${input$range} / 2.0D, ${input$y} + ${input$range} / 2.0D, ${input$z} + ${input$range} / 2.0D), e -> true)
+	new AxisAlignedBB(Vec3d.ZERO, Vec3d.ZERO).offset(new Vec3d(${input$x}, ${input$y}, ${input$z})).grow(${input$range} / 2d), e -> true)
 	.isEmpty())
