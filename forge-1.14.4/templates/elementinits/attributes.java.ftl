@@ -65,7 +65,7 @@ package ${package}.init;
 	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
 		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
 			PlayerEntity oldPlayer = event.getOriginal();
-			PlayerEntity newPlayer = event.getPlayer();
+			PlayerEntity newPlayer = event.getEntityPlayer();
 			<#list playerAttributes as attribute>
 				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
 			</#list>
