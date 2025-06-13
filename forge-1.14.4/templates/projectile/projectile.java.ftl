@@ -140,18 +140,19 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 
 	<#if hasProcedure(data.onHitsBlock)>
 	@Override public void onHit(RayTraceResult rayTraceResult) {
-		super.onHit(blockHitResult);
+		super.onHit(rayTraceResult);
 
 		if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
-            <@procedureCode data.onHitsBlock, {
-                "x": "rayTraceResult.getPos().getX()",
-                "y": "rayTraceResult.getPos().getY()",
-                "z": "rayTraceResult.getPos().getZ()",
-                "entity": "this.getShooter()",
-                "immediatesourceentity": "this",
-                "world": "this.world"
-            }/>
-        }
+			BlockRayTraceResult blockHitResult = (BlockRayTraceResult) rayTraceResult;
+	            	<@procedureCode data.onHitsBlock, {
+		                "x": "blockHitResult.getPos().getX()",
+		                "y": "blockHitResult.getPos().getY()",
+		                "z": "blockHitResult.getPos().getZ()",
+		                "entity": "this.getShooter()",
+		                "immediatesourceentity": "this",
+		                "world": "this.world"
+	            	}/>
+        	}
 	}
 	</#if>
 
