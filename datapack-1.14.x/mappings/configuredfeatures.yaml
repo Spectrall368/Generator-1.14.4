@@ -82,7 +82,7 @@ patch_melon: "MelonFeature(NoFeatureConfig::deserialize)"
 patch_pumpkin: "ScatteredPlantFeature(NoFeatureConfig::deserialize, Blocks.PUMPKIN.getDefaultState())"
 patch_red_mushroom: "BushFeature(new BushConfig(Blocks.RED_MUSHROOM.getDefaultState()))"
 patch_sugar_cane: "ReedFeature(NoFeatureConfig::deserialize)"
-patch_sunflower: Features.PATCH_SUNFLOWER
+patch_sunflower: "DoublePlantFeature(new DoublePlantConfig(Blocks.SUNFLOWER.getDefaultState()))"
 patch_taiga_grass: "TaigaGrassFeature(NoFeatureConfig::deserialize)"
 patch_tall_grass: "DoublePlantFeature(new DoublePlantConfig(Blocks.TALL_GRASS.getDefaultState()))"
 patch_waterlily: "WaterlilyFeature(NoFeatureConfig::deserialize)"
