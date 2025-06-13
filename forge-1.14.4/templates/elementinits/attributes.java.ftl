@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -60,16 +60,17 @@ package ${package}.init;
         }
     }
 
-    <#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
-    <#if playerAttributes?size != 0>
-    @Mod.EventBusSubscriber public static class PlayerAttributesSync {
-        @SubscribeEvent public static void onPlayerClone(PlayerEvent.Clone event) {
-            PlayerEntity oldPlayer = event.getOriginal();
-            PlayerEntity newPlayer = event.getEntityPlayer();
-            <#list playerAttributes as attribute>
-                newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).getBaseValue());
-            </#list>
-        }
-    }
-    </#if>
+	<#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
+	<#if playerAttributes?size != 0>
+	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
+		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
+			PlayerEntity oldPlayer = event.getOriginal();
+			PlayerEntity newPlayer = event.getPlayer();
+			<#list playerAttributes as attribute>
+				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
+			</#list>
+		}
+	}
+	</#if>
 }
+<#-- @formatter:on -->
