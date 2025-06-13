@@ -78,7 +78,6 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 	</#if>
 
 	@Override public void render(int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
 
 		<#list data.getComponentsOfType("TextField") as component>
@@ -113,7 +112,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> {
 					<#if hasProcedure(component.text)>
 					String hoverText = <@procedureOBJToStringCode component.text/>;
 					if (hoverText != null) {
-						this.renderTooltip(Arrays.stream(hoverText.split("\n")).map(StringTextComponent::new).collect(Collectors.toList()), mouseX, mouseY);
+						this.renderTooltip(Arrays.stream(hoverText.split("\n")).collect(Collectors.toList()), mouseX, mouseY);
 					}
 					<#else>
 						this.renderTooltip(I18n.format("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);

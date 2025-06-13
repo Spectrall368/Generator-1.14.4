@@ -45,7 +45,7 @@ public class ${name}TreeGrower extends <#if (data.megaTrees[0]?has_content) || (
 			</#if>
 		}
 		</#if>
-		return <#if data.flowerTrees[0]?has_content>hasFlower ? <@toTreeKey data.flowerTrees[0]/> :</#if> <@toTreeKey data.trees[0]/>;
+		return <#if data.flowerTrees[0]?has_content>randomSource.nextBoolean() ? <@toTreeKey data.flowerTrees[0]/> :</#if> <@toTreeKey data.trees[0]/>;
 	}
 
 	<#if (data.megaTrees[0]?has_content) || (data.megaTrees[1]?has_content)>
@@ -62,7 +62,7 @@ public class ${name}TreeGrower extends <#if (data.megaTrees[0]?has_content) || (
 <#-- @formatter:on -->
 <#macro toTreeKey tree="">
 <#if tree?has_content>
-null
+new ${generator.map(tree, "configuredfeatures")}
 <#else>
 null
 </#if>

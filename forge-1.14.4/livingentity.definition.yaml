@@ -25,4 +25,4 @@ localizationkeys:
   - key: entity.@modid.@registryname
     mapto: mobName
 
-field_exclusions: [isShakingCondition, raidSpawnsCount]
+field_exclusions: [isShakingCondition, raidSpawnsCount, animations]

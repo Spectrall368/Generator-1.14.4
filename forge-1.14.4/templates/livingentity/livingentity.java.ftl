@@ -205,6 +205,8 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 		return CreatureAttribute.${data.mobCreatureType};
 	}
 
+	${extra_templates_code}
+
 	<#if !data.doesDespawnWhenIdle>
 	@Override public boolean canDespawn(double distanceToClosestPlayer) {
 		return false;
@@ -810,7 +812,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
 			<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
 				<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome?replace("#", "")}")))
 						biomeCriteria = true;
 				</#list>
 				if (!biomeCriteria)

@@ -78,7 +78,6 @@ CreditsAndAttribution: WinGameScreen
 GenericWaiting: ConnectingScreen
 Win: WinGameScreen
 Advancements: AdvancementsScreen
-EffectRenderingInventory: DisplayEffectsScreen
 ItemCombiner: ContainerScreen<RepairContainer>
 Realms: RealmsScreen
 DisconnectedRealms: DisconnectedRealmsScreen

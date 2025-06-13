@@ -77,7 +77,7 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 		double d0 = Double.MAX_VALUE;
 		Entity entity = null;
 		AxisAlignedBB lookupBox = this.getBoundingBox();
-		for (Entity entity1 : this.world.getEntitiesInAABBexcluding(this, lookupBox, (entityIn) -> entityIn != null && !entityIn.isSpectator() && entityIn.canBeCollidedWith())) {
+		for (Entity entity1 : this.world.getEntitiesInAABBexcluding(this, lookupBox, (entityIn) -> !entityIn.isSpectator() && entityIn.isAlive() && entityIn.canBeCollidedWith() && (entityIn != this.getShooter() || this.ticksInAir >= 5) && (this.field_213878_az == null || !this.field_213878_az.contains(entityIn.getEntityId())))) {
 			if (entity1 == this.getShooter()) continue;
 			AxisAlignedBB aabb = entity1.getBoundingBox();
 			if (aabb.intersects(lookupBox)) {
@@ -89,6 +89,22 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 			}
 		}
 		return entity == null ? null : new EntityRayTraceResult(entity);
+	}
+
+	private Direction determineHitDirection(AxisAlignedBB entityBox, AxisAlignedBB blockBox) {
+		double dx = entityBox.getCenter().x - blockBox.getCenter().x;
+		double dy = entityBox.getCenter().y - blockBox.getCenter().y;
+		double dz = entityBox.getCenter().z - blockBox.getCenter().z;
+		double absDx = Math.abs(dx);
+		double absDy = Math.abs(dy);
+		double absDz = Math.abs(dz);
+		if (absDy > absDx && absDy > absDz) {
+			return dy > 0 ? Direction.DOWN : Direction.UP;
+		} else if (absDx > absDz) {
+			return dx > 0 ? Direction.WEST : Direction.EAST;
+		} else {
+			return dz > 0 ? Direction.NORTH : Direction.SOUTH;
+		}
 	}
 	</#if>
 
@@ -122,8 +138,40 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 	}
 	</#if>
 
+	<#if hasProcedure(data.onHitsBlock)>
+	@Override public void onHit(RayTraceResult rayTraceResult) {
+		super.onHit(blockHitResult);
+
+		if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+            <@procedureCode data.onHitsBlock, {
+                "x": "rayTraceResult.getPos().getX()",
+                "y": "rayTraceResult.getPos().getY()",
+                "z": "rayTraceResult.getPos().getZ()",
+                "entity": "this.getShooter()",
+                "immediatesourceentity": "this",
+                "world": "this.world"
+            }/>
+        }
+	}
+	</#if>
+
 	@Override public void tick() {
 		super.tick();
+
+		<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
+		if (!this.func_203047_q()) {
+		    this.world.getCollisionShapes(this, this.getBoundingBox()).forEach(collision -> {
+				for (AxisAlignedBB blockAABB : collision.toBoundingBoxList()) {
+					if (this.getBoundingBox().intersects(blockAABB)) {
+						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
+						Vec3d intersectionPoint = new Vec3d((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
+						Direction hitDirection = determineHitDirection(this.getBoundingBox(), blockAABB);
+						this.onHit(new BlockRayTraceResult(intersectionPoint, hitDirection, blockPos, false));
+					}
+				}
+			});
+		}
+		</#if>
 
 		<#if hasProcedure(data.onFlyingTick)>
 			<@procedureCode data.onFlyingTick, {
@@ -136,19 +184,8 @@ public class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem
 			}/>
 		</#if>
 
-		if (this.inGround) {
-			<#if hasProcedure(data.onHitsBlock)>
-				<@procedureCode data.onHitsBlock, {
-				  	"x": "this.posX",
-				  	"y": "this.posY",
-				  	"z": "this.posZ",
-					"entity": "this.getShooter()",
-					"immediatesourceentity": "this",
-					"world": "this.world"
-				}/>
-			</#if>
+		if (this.inGround)
 			this.remove();
-		}
 	}
 
  	public static ${name}Entity shoot(World world, LivingEntity entity, Random source) {

@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
 buildfileversion: 28.2.26
-subversion: 1.2 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
+subversion: 1.5 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
   - datapack-1.14.x
@@ -72,11 +72,13 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: hasItemsInTabs()
   - template: modbase/accesstransformer.cfg.ftl
+    usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-      - ${w.hasElementsOfType('villagerprofession')}
       - "${w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number') || e.type.equals('Logic'))?size != 0}"
+      - "${w.getGElementsOfType('projectile')?filter(e -> (e.modelWidth > 0.5) || (e.modelHeight > 0.5))?size != 0}"
+      - ${w.hasElementsOfType('villagerprofession')}
 
 sources_setup_tasks:
   - task: copy_models
@@ -84,11 +86,6 @@ sources_setup_tasks:
     cleanupBeforeCopy: true
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
-  - task: copy_model_animations
-    type: JAVA_viatemplate
-    cleanupBeforeCopy: true
-    template: javaanimation.java.ftl
-    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
 
 tags:
   template: tags.json.ftl # loaded from datapack generator
