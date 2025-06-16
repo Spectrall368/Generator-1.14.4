@@ -387,10 +387,16 @@
 </#if>
 </#macro>
 
-<#macro onEntityWalksOn procedure="">
-<#if hasProcedure(procedure)>
+<#macro onEntityWalksOn procedure="" speedF=1.0>
+<#if hasProcedure(procedure) || speedF != 1.0>
 @Override public void onEntityWalk(World world, BlockPos pos, Entity entity) {
 	super.onEntityWalk(world, pos, entity);
+
+    <#if speedF != 1.0>
+	entity.setMotion(entity.getMotion().mul(${speedF}D, 1.0D, ${speedF}D));
+    </#if>
+
+    <#if hasProcedure(procedure)>
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
 	"y": "pos.getY()",
@@ -399,6 +405,7 @@
 	"entity": "entity",
 	"blockstate": "world.getBlockState(pos)"
 	}/>
+	</#if>
 }
 </#if>
 </#macro>

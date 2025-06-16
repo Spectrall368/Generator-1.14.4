@@ -568,7 +568,7 @@ public class ${name}Block extends
 
 	<@onEntityCollides data.onEntityCollides/>
 
-	<@onEntityWalksOn data.onEntityWalksOn/>
+	<@onEntityWalksOn data.onEntityWalksOn data.speedFactor/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
 

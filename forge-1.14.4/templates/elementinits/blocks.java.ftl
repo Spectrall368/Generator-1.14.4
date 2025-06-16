@@ -53,7 +53,8 @@ package ${package}.init;
 	</#if>
 </#list>
 
-public class ${JavaModName}Blocks {
+<#assign jumpF = blocks?filter(block -> block.jumpFactor?? && block.jumpFactor != 1.0)>
+<#if jumpF?size != 0>@Mod.EventBusSubscriber </#if>public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister<Block> REGISTRY = new DeferredRegister<>(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
 
@@ -96,6 +97,20 @@ public class ${JavaModName}Blocks {
 		}
 		</#if>
 	}
+	</#if>
+
+	<#if jumpF?size != 0>
+	@SubscribeEvent public static void onMobJump(LivingEvent.LivingJumpEvent event) {
+        <#compress>
+		LivingEntity entity = event.getEntityLiving();
+        BlockState state = entity.world.getBlockState(entity.getPosition().down());
+        BlockState stateUp = entity.world.getBlockState(entity.getPosition());
+		if<#list jumpF as block>
+        (state<#if block.getModElement().getTypeString() == "plant">Up</#if>.getBlock() instanceof ${block.getModElement().getName()}Block)
+            entity.setMotion(entity.getMotion().mul(1.0D, ${block.jumpFactor}D, 1.0D));<#sep>else if
+        </#list>
+        </#compress>
+    }
 	</#if>
 }
 <#-- @formatter:on -->

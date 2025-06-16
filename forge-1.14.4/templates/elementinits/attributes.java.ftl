@@ -45,6 +45,7 @@ package ${package}.init;
             <#list attributes as attribute>
                 <#if attribute.addToAllEntities>
                     entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                    entity.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(${attribute.getModElement().getRegistryNameUpper()}.getDefaultValue());
                 <#else>
                     <#if attribute.entities?has_content || attribute.addToPlayers>
                         if (<#if attribute.addToPlayers>entity instanceof PlayerEntity ||</#if>
@@ -53,6 +54,7 @@ package ${package}.init;
                             </#list>
                         ) {
                             entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                            entity.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(${attribute.getModElement().getRegistryNameUpper()}.getDefaultValue());
                         }
                     </#if>
                 </#if>

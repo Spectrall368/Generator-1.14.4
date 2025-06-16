@@ -56,29 +56,15 @@ public class ${name}MobEffect extends Effect {
 		}
 	</#if>
 
-	<#if hasProcedure(data.onStarted)>
+	<#if hasProcedure(data.onStarted) || (data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content)>
 		<#if data.isInstant>
 			@Override public void affectEntity(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
-			<@procedureCode data.onStarted, {
-				"x": "entity.posX",
-				"y": "entity.posY",
-				"z": "entity.posZ",
-				"world": "entity.world",
-				"entity": "entity",
-				"amplifier": "amplifier"
-			}/>
+                <@startedContext/>
 			}
 		<#else>
 			@Override public void applyAttributesModifiersToEntity(LivingEntity entity, AbstractAttributeMap attributeMap, int amplifier) {
 				super.applyAttributesModifiersToEntity(entity, attributeMap, amplifier);
-			<@procedureCode data.onStarted, {
-				"x": "entity.posX",
-				"y": "entity.posY",
-				"z": "entity.posZ",
-				"world": "entity.world",
-				"entity": "entity",
-				"amplifier": "amplifier"
-			}/>
+                <@startedContext/>
 			}
 		</#if>
 	</#if>
@@ -147,3 +133,18 @@ public class ${name}MobEffect extends Effect {
 		<#return "MULTIPLY_TOTAL">
 	</#if>
 </#function>
+<#macro startedContext>
+<#if data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content>
+    entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.onAddedSound}")), entity.getSoundCategory(), 1.0F, 1.0F);
+</#if>
+<#if hasProcedure(data.onStarted)>
+    <@procedureCode data.onStarted, {
+        "x": "entity.posX",
+        "y": "entity.posY",
+        "z": "entity.posZ",
+        "world": "entity.world",
+        "entity": "entity",
+        "amplifier": "amplifier"
+    }/>
+</#if>
+</#macro>

@@ -29,12 +29,15 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 /*
  *	MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
 
-public class ${JavaModName}MobEffects {
+<#assign mobHurt = potioneffects?filter(effect -> hasProcedure(effect.onMobHurt))>
+<#assign mobRemoved = potioneffects?filter(effect -> hasProcedure(effect.onMobRemoved))>
+<#if mobHurt?size != 0 || mobRemoved?size != 0>@Mod.EventBusSubscriber </#if>public class ${JavaModName}MobEffects {
 
 	public static final DeferredRegister<Effect> REGISTRY = new DeferredRegister<>(ForgeRegistries.POTIONS, ${JavaModName}.MODID);
 
@@ -42,5 +45,47 @@ public class ${JavaModName}MobEffects {
 	public static final RegistryObject<Effect> ${effect.getModElement().getRegistryNameUpper()} =
 			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}MobEffect());
 	</#list>
+
+	<#if mobHurt?size != 0>
+	@SubscribeEvent public static void onMobHurt(LivingHurtEvent event) {
+        <#compress>
+        LivingEntity entity = event.getEntityLiving();
+		<#list mobHurt as effect>
+		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+			<@procedureCode effect.onMobHurt, {
+				"x": "entity.posX",
+				"y": "entity.posY",
+				"z": "entity.posZ",
+				"world": "entity.world",
+				"entity": "entity",
+				"amplifier": "entity.getActivePotionEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()",
+				"damagesource": "event.getSource()",
+				"damage": "event.getAmount()"
+			}/>
+        }
+        </#list>
+        </#compress>
+    }
+	</#if>
+
+	<#if mobRemoved?size != 0>
+	@SubscribeEvent public static void onMobRemoved(LivingDeathEvent event) {
+        <#compress>
+        LivingEntity entity = event.getEntityLiving();
+		<#list mobRemoved as effect>
+		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+	        <@procedureCode effect.onMobRemoved, {
+		        "x": "entity.posX",
+				"y": "entity.posY",
+				"z": "entity.posZ",
+				"world": "entity.world",
+				"entity": "entity",
+				"amplifier": "entity.getActivePotionEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()"
+			}/>
+        }
+        </#list>
+        </#compress>
+    }
+	</#if>
 }
 <#-- @formatter:on -->

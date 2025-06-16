@@ -32,136 +32,165 @@
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 package ${package}.world.features.plants;
-<#assign configuration = "NoFeatureConfig">
-<#assign featurename = "Feature<NoFeatureConfig>">
-<#if data.plantType == "normal">
-	<#if data.generationType != "Flower">
-		<#assign configuration = "GrassFeatureConfig">
-		<#assign featurename = "GrassFeature">
-	<#else>
-		<#assign featurename = "FlowersFeature">
-	</#if>
-<#elseif data.plantType == "double">
-	<#if data.generationType == "Flower">
-		<#assign configuration = "DoublePlantConfig">
-		<#assign featurename = "DoublePlantFeature">
-	</#if>
-</#if>
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		<#if restrictionBiome?contains(":is_")>
+	    <#assign biomeName = fixNamespace(restrictionBiome)>
+        <#if biomeName == "#minecraft:is_overworld" || biomeName == "#minecraft:is_nether" || biomeName == "#minecraft:is_end">
 			<#assign cond = true>
 			 <#break>
 		</#if>
-		<#break>
 	</#list>
 </#if>
 
-@Mod.EventBusSubscriber public class ${name}Feature {
+public class ${name}Feature extends Feature<NoFeatureConfig> {
+    private static final ${name}Feature INSTANCE = new ${name}Feature();
 
-	private static Feature<${configuration}> feature = null;
+	public ${name}Feature() {
+		super(NoFeatureConfig::deserialize);
+	}
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRegisterHandler {
-		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			feature = new ${featurename}(${configuration}::deserialize) {
-			<#if data.plantType == "normal">
-				<#if data.generationType == "Flower">
-				@Override public BlockState getRandomFlower(Random random, BlockPos pos) {
-      					return ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState();
-   				}
-				</#if>
-			</#if>
-				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
-				<#if data.restrictionBiomes?has_content && cond>
-					DimensionType dimensionType = world.getDimension().getType();
-					boolean dimensionCriteria = false;
-					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-							<#if restrictionBiome == "#minecraft:is_overworld">
-								if(dimensionType == DimensionType.OVERWORLD)
-									dimensionCriteria = true;
-							<#elseif restrictionBiome == "#minecraft:is_nether">
-								if(dimensionType == DimensionType.THE_NETHER)
-									dimensionCriteria = true;
-							<#elseif restrictionBiome == "#minecraft:is_end">
-								if(dimensionType == DimensionType.THE_END)
-									dimensionCriteria = true;
-							<#else>
-								if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}")))
-									dimensionCriteria = true;
-							</#if>
-					</#list>
-
-					if(!dimensionCriteria)
-						return false;
-				</#if>
-
-					<#if data.plantType == "growapable">
-					int generated = 0;
-      					for(int j = 0; j < ${data.frequencyOnChunks}; ++j) {
-						BlockPos blockpos = pos.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4));
-						if (world.isAirBlock(blockpos)) {
-							BlockPos blockpos1 = blockpos.down();
-							int k = 1 + random.nextInt(random.nextInt(${data.growapableMaxHeight}) + 1);
-							k = Math.min(${data.growapableMaxHeight}, k);
-							for(int l = 0; l < k; ++l) {
-								if (${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
-									world.setBlockState(blockpos.up(l), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), 2);
-									generated++;
-								}
-							}
-						}
-      					}
-      					return generated > 0;
-					<#elseif data.plantType == "double">
-                        			<#if data.generationType == "Flower">
-                	    			return super.place(world, generator, random, pos, config);
-                	    			<#else>
-                	    			for (BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES)) && pos.getY() > 0; blockstate = world.getBlockState(pos))
-                        				pos = pos.down();
-                        			int i = 0;
-                        			for (int j = 0; j < 128; ++j) {
-                        				BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4), random.nextInt(8) - random.nextInt(8));
-                        				if (world.isAirBlock(blockpos) && ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
-                        					((DoublePlantBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()).placeAt(world, blockpos, 2);
-                        					++i;
-                        				}
-                        			}
-                        			return i > 0;
-                	    			</#if>
-					<#else>
-					return super.place(world, generator, random, pos, config);
-					</#if>
-				}
-			};
-			event.getRegistry().register(feature.setRegistryName("${registryname}"));
-		}
-
-		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if data.restrictionBiomes?has_content && !cond>
-					boolean biomeCriteria = false;
-					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-							biomeCriteria = true;
-					</#list>
-					if (!biomeCriteria)
-						continue;
-				</#if>
-
-    	    			<#if data.generationType == "Grass">
-				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
-				    new <#if data.plantType == "normal">GrassFeatureConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>NoFeatureConfig()</#if>,
-						Placement.<#if !data.generateAtAnyHeight>NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, <#else>HELL_FIRE, new FrequencyConfig(</#if>${data.frequencyOnChunks})
-				));
+	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	    <#if data.restrictionBiomes?has_content && cond>
+		    DimensionType dimensionType = world.getDimension().getType();
+			boolean dimensionCriteria = false;
+			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	            <#assign biomeName = fixNamespace(restrictionBiome)>
+				<#if biomeName == "#minecraft:is_overworld">
+				    if(dimensionType == DimensionType.OVERWORLD)
+					    dimensionCriteria = true;
+				<#elseif biomeName == "#minecraft:is_nether">
+				    if(dimensionType == DimensionType.THE_NETHER)
+						dimensionCriteria = true;
 				<#else>
-				biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
-				<#if data.plantType == "double">new DoublePlantConfig(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState())<#else>IFeatureConfig.NO_FEATURE_CONFIG</#if>,
-						Placement.<#if !data.generateAtAnyHeight><#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if><#else>HELL_FIRE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
-				));
+					if(dimensionType == DimensionType.THE_END)
+			    		dimensionCriteria = true;
 				</#if>
-			}
+	    	</#list>
+
+			if(!dimensionCriteria)
+			    return false;
+	    </#if>
+
+	    <#if data.plantType == "growapable">
+            int generated = 0;
+
+            for(int j = 0; j < ${data.patchSize}; ++j) {
+                BlockPos blockpos = pos.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4));
+                if (world.isAirBlock(blockpos)) {
+                    int k = 1 + random.nextInt(random.nextInt(${data.growapableMaxHeight}) + 1);
+                    k = Math.min(${data.growapableMaxHeight}, k);
+                    for(int l = 0; l < k; ++l) {
+                        if (${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
+                            world.setBlockState(blockpos.up(l), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), 2);
+                            ++generated;
+                        }
+                    }
+                }
+            }
+
+            return generated > 0;
+        <#else>
+            <#if data.generationType == "Grass">
+            for(BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES)) && pos.getY() > 0; blockstate = world.getBlockState(pos)) {
+                pos = pos.down();
+            }
+            </#if>
+
+            int i = 0;
+            for (int j = 0; j < ${data.patchSize}; ++j) {
+                BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4), random.nextInt(8) - random.nextInt(8));
+                if(world.isAirBlock(blockpos) &&<#if data.generationType != "Grass">
+                <#if data.plantType == "double">
+                blockpos.getY() < world.getWorld().getDimension().getHeight() - 2 &&
+                <#else>
+                blockpos.getY() < 255 &&
+                </#if>
+                </#if>${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
+                    <#if data.plantType == "double">
+                    ((DoublePlantBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()).placeAt(world, blockpos
+                    <#else>
+                    world.setBlockState(blockpos, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState()
+                    </#if>, 2);
+                    ++i;
+                }
+            }
+
+            return i > 0;
+        </#if>
+	}
+
+	public static void init() {
+	    for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+            <#if data.restrictionBiomes?has_content && !cond>
+                boolean biomeCriteria = false;
+                <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+                    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+                    <#list expandedBiomes as expandedBiome>
+                        if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${expandedBiome}")))
+                            biomeCriteria = true;
+                    </#list>
+                </#list>
+
+                if (!biomeCriteria)
+                    continue;
+            </#if>
+
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(${name}Feature.INSTANCE, IFeatureConfig.NO_FEATURE_CONFIG,
+			<#if data.generateAtAnyHeight>
+                Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyOnChunks}, 0, 0, 128)
+			<#elseif data.generationType == "Grass" && data.plantType != "growapable">
+		        Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
+			<#else>
+                Placement.COUNT_HEIGHTMAP_<#if data.plantType != "growapable">32<#else>DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
+			</#if>
+		    ));
 		}
 	}
 }
 <#-- @formatter:on -->
+<#function expandBiomeTag biomeTag>
+    <#local result = []>
+
+    <#if biomeTag?contains("#")>
+        <#local biomeName = fixNamespace(biomeTag)>
+        <#local tagKey = "BIOMES:" + biomeName?substring(1)>
+
+        <#local tagFound = false>
+        <#list w.getWorkspace().getTagElements()?keys as tagElement>
+            <#if tagElement.toString().replace("mod:", modid + ":") == tagKey>
+                <#local tagFound = true>
+                <#local biomeValues = w.getWorkspace().getTagElements().get(tagElement)>
+                <#list biomeValues as biomeValue>
+                    <#if biomeValue?starts_with("#")>
+                        <#local expandedSubValues = expandBiomeTag(biomeValue?replace("mod:", modid + ":"))>
+                        <#list expandedSubValues as expandedSubValue>
+                            <#local result = result + [expandedSubValue]>
+                        </#list>
+                    <#else>
+                        <#local result = result + [generator.map(biomeValue, "biomes")]>
+                    </#if>
+                </#list>
+                <#break>
+            </#if>
+        </#list>
+
+        <#if !tagFound>
+            <#local result = result + [biomeName?substring(1)]>
+        </#if>
+    <#else>
+        <#local result = result + [biomeTag]>
+    </#if>
+
+    <#return result>
+</#function>
+<#function fixNamespace input>
+    <#assign noHash = input?starts_with("#")?then(input?substring(1), input)/>
+
+    <#if noHash?contains(":")>
+        <#return input>
+    <#else>
+        <#assign result = "minecraft:" + noHash />
+        <#return input?starts_with("#")?then("#" + result, result)/>
+    </#if>
+</#function>

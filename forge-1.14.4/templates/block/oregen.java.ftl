@@ -53,81 +53,129 @@ package ${package}.world.features.ores;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		<#if restrictionBiome?contains(":is_")>
+	    <#assign biomeName = fixNamespace(restrictionBiome)>
+        <#if biomeName == "#minecraft:is_overworld" || biomeName == "#minecraft:is_nether" || biomeName == "#minecraft:is_end">
 			<#assign cond = true>
 			 <#break>
 		</#if>
-		<#break>
 	</#list>
 </#if>
 
-@Mod.EventBusSubscriber public class ${name}Feature {
+public class ${name}Feature extends OreFeature {
+    private static final ${name}Feature INSTANCE = new ${name}Feature();
 
-	private static Feature<OreFeatureConfig> feature = null;
+	public ${name}Feature() {
+		super(OreFeatureConfig::deserialize);
+	}
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRegisterHandler {
-		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			feature = new OreFeature(OreFeatureConfig::deserialize) {
-				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
-				<#if data.restrictionBiomes?has_content && cond>
-					DimensionType dimensionType = world.getDimension().getType();
-					boolean dimensionCriteria = false;
-					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-							<#if restrictionBiome == "#minecraft:is_overworld">
-								if(dimensionType == DimensionType.OVERWORLD)
-									dimensionCriteria = true;
-							<#elseif restrictionBiome == "#minecraft:is_nether">
-								if(dimensionType == DimensionType.THE_NETHER)
-									dimensionCriteria = true;
-							<#elseif restrictionBiome == "#minecraft:is_end">
-								if(dimensionType == DimensionType.THE_END)
-									dimensionCriteria = true;
-							<#else>
-								if(dimensionType == DimensionType.byName(new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}")))
-									dimensionCriteria = true;
-							</#if>
-					</#list>
-
-					if(!dimensionCriteria)
-						return false;
+    <#if data.restrictionBiomes?has_content && cond>
+	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
+	    <#if data.restrictionBiomes?has_content && cond>
+		    DimensionType dimensionType = world.getDimension().getType();
+			boolean dimensionCriteria = false;
+			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	            <#assign biomeName = fixNamespace(restrictionBiome)>
+				<#if biomeName == "#minecraft:is_overworld">
+				    if(dimensionType == DimensionType.OVERWORLD)
+					    dimensionCriteria = true;
+				<#elseif biomeName == "#minecraft:is_nether">
+				    if(dimensionType == DimensionType.THE_NETHER)
+						dimensionCriteria = true;
+				<#else>
+					if(dimensionType == DimensionType.THE_END)
+			    		dimensionCriteria = true;
 				</#if>
+	    	</#list>
 
-					return super.place(world, generator, random, pos, config);
-				}
-			};
+			if(!dimensionCriteria)
+			    return false;
 
-			event.getRegistry().register(feature.setRegistryName("${registryname}"));
-		}
 
-		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-			for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-				<#if data.restrictionBiomes?has_content && !cond>
-					boolean biomeCriteria = false;
-					<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-						if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
-							biomeCriteria = true;
-					</#list>
-					if (!biomeCriteria)
-						continue;
-				</#if>
+	    return super.place(world, generator, random, pos, config);
+	}
+    </#if>
+
+	public static void init() {
+	    for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+            <#if data.restrictionBiomes?has_content && !cond>
+                boolean biomeCriteria = false;
+                <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+                    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+                    <#list expandedBiomes as expandedBiome>
+                        if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${expandedBiome}")))
+                            biomeCriteria = true;
+                    </#list>
+                </#list>
+
+                if (!biomeCriteria)
+                    continue;
+            </#if>
 	
-				biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-					Biome.createDecoratedFeature(feature, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
-					boolean blockCriteria = false;
-					<#list data.blocksToReplace as replacementBlock>
-							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":").replace("stone_ore_replaceables", "minecraft:overworld_carver_replaceables")}")).contains(blockAt.getBlock()))
-							<#elseif replacementBlock.getMappedValue(1).startsWith("#")>
-								if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getMappedValue(1).replace("#", "")}")).contains(blockAt.getBlock()))
-							<#else>
-								if(blockAt == ${mappedBlockToBlockStateCode(replacementBlock)})
-							</#if>
-									blockCriteria = true;
-					</#list>
-					return blockCriteria;
-				}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, ${minGenerateHeight}, 0, ${maxGenerateHeight}<#else>DepthAverageConfig(${data.frequencyPerChunks}, ${averageHeight}, ${averageHeight}</#if>)));
-			}
+			biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
+			    Biome.createDecoratedFeature(${name}Feature.INSTANCE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
+				boolean blockCriteria = false;
+				<#list data.blocksToReplace as replacementBlock>
+			        <#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+				    	if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":").replace("stone_ore_replaceables", "minecraft:overworld_carver_replaceables")}")).contains(blockAt.getBlock()))
+				    	<#if replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") == "stone_ore_replaceables">
+				    	    blockCriteria = true;
+				    	if (blockAt.getBlock() == Blocks.STONE || blockAt.getBlock() == Blocks.GRANITE || blockAt.getBlock() == Blocks.DIORITE || blockAt.getBlock() == Blocks.ANDESITE || blockAt.getBlock() == Blocks.NETHERRACK)
+                        </#if>
+					<#elseif replacementBlock.getMappedValue(1).startsWith("#")>
+					    if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getMappedValue(1).replace("#", "")}")).contains(blockAt.getBlock()))
+					<#else>
+						if(blockAt == ${mappedBlockToBlockStateCode(replacementBlock)})
+					</#if>
+						blockCriteria = true;
+				</#list>
+				return blockCriteria;
+			}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, ${minGenerateHeight}, 0, ${maxGenerateHeight}<#else>DepthAverageConfig(${data.frequencyPerChunks}, ${averageHeight}, ${averageHeight}</#if>)));
 		}
 	}
 }
 <#-- @formatter:on -->
+<#function expandBiomeTag biomeTag>
+    <#local result = []>
+
+    <#if biomeTag?contains("#")>
+        <#local biomeName = fixNamespace(biomeTag)>
+        <#local tagKey = "BIOMES:" + biomeName?substring(1)>
+
+        <#local tagFound = false>
+        <#list w.getWorkspace().getTagElements()?keys as tagElement>
+            <#if tagElement.toString().replace("mod:", modid + ":") == tagKey>
+                <#local tagFound = true>
+                <#local biomeValues = w.getWorkspace().getTagElements().get(tagElement)>
+                <#list biomeValues as biomeValue>
+                    <#if biomeValue?starts_with("#")>
+                        <#local expandedSubValues = expandBiomeTag(biomeValue?replace("mod:", modid + ":"))>
+                        <#list expandedSubValues as expandedSubValue>
+                            <#local result = result + [expandedSubValue]>
+                        </#list>
+                    <#else>
+                        <#local result = result + [generator.map(biomeValue, "biomes")]>
+                    </#if>
+                </#list>
+                <#break>
+            </#if>
+        </#list>
+
+        <#if !tagFound>
+            <#local result = result + [biomeName?substring(1)]>
+        </#if>
+    <#else>
+        <#local result = result + [biomeTag]>
+    </#if>
+
+    <#return result>
+</#function>
+<#function fixNamespace input>
+    <#assign noHash = input?starts_with("#")?then(input?substring(1), input)/>
+
+    <#if noHash?contains(":")>
+        <#return input>
+    <#else>
+        <#assign result = "minecraft:" + noHash />
+        <#return input?starts_with("#")?then("#" + result, result)/>
+    </#if>
+</#function>

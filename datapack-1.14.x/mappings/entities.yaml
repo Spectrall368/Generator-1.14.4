@@ -4,7 +4,7 @@ _default:
   - zombie
 _mcreator_map_template:
   - "@NAMEEntity"
-  - "@JavaModNameEntities.@REGISTRYNAME"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
   - "@modid:@registryname"
 _bypass_prefix: "#"
 EntityAgeable: AgeableEntity

@@ -377,6 +377,12 @@ localizationkeys:
   - fromlist: data.getFixedSpecialInformation()
     key: block.@modid.@registryname.description_@item_index
 
+global_templates:
+  - template: elementinits/features.java.ftl
+    writer: java
+    condition: '${w.getGElementsOfType("block")?filter(e -> e.generateFeature )?size != 0}'
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
+
 tags:
   - tag: BLOCKS:minecraft:stairs
     condition: "${data.blockBase! == 'Stairs'}"
@@ -389,4 +395,4 @@ tags:
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
 
-field_exclusions: [displayFluidOverlay, speedFactor, jumpFactor]
+field_exclusions: [displayFluidOverlay]
