@@ -51,6 +51,10 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		super(${configuration}::deserialize);
 	}
 
+	public static Feature feature() {
+	    return INSTANCE;
+	}
+
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
 	    BlockPos placePos = pos;
 	    <#if data.restrictionBiomes?has_content && cond>

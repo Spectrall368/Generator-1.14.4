@@ -50,6 +50,10 @@ public class ${name}Feature extends Feature<NoFeatureConfig> {
 		super(NoFeatureConfig::deserialize);
 	}
 
+	public static Feature feature() {
+	    return INSTANCE;
+	}
+
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 	    <#if data.restrictionBiomes?has_content && cond>
 		    DimensionType dimensionType = world.getDimension().getType();

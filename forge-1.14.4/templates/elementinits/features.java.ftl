@@ -41,7 +41,7 @@ package ${package}.init;
 
     <#list featuresList as feature>
 	public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${feature.getModElement().getRegistryName()}", () -> new ${feature.getModElement().getName()}Feature());
+		REGISTRY.register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature);
 	</#list>
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {

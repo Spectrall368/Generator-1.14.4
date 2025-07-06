@@ -176,17 +176,9 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-	<#list data.blocksAffected as restrictionBlock>
-		<#if restrictionBlock.getUnmappedValue().startsWith("TAG:")>
-			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${restrictionBlock.getUnmappedValue().replace("TAG:", "")}")).contains(blockstate.getBlock()))
-		<#elseif generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-			if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${generator.map(restrictionBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")).contains(blockstate.getBlock()))
-		<#else>
-			if(blockstate == ${mappedBlockToBlockStateCode(restrictionBlock)})
-		</#if>
-	                 	return ${data.efficiency}f;
-	</#list>
-		return 1;
+	    <#assign hasDefaultTag = data.blocksAffected?has_content && replaceInList(data.blocksAffected, "minecraft:stone_ore_replaceables", "stone_ore_replaceables")?seq_contains("TAG:stone_ore_replaceables")>
+	    <#if hasDefaultTag>Block blockAt = blockstate.getBlock();</#if>
+		return <#if data.blocksAffected?has_content><#if hasDefaultTag>blockAt == Blocks.STONE || blockAt == Blocks.GRANITE || blockAt == Blocks.DIORITE || blockAt == Blocks.ANDESITE <#if (data.blocksAffected?size > 1)>|| </#if></#if><#if !hasDefaultTag || (data.blocksAffected?size > 1)>${containsAnyOfBlocks(removeFromList(removeFromList(data.blocksAffected, "TAG:stone_ore_replaceables"), "TAG:minecraft:stone_ore_replaceables"), "blockstate")}</#if> ? ${data.efficiency}f : </#if>1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
@@ -303,3 +295,19 @@ public class ${name}Item extends FishingRodItem {
 	<@hasGlow data.glowCondition/>
 </#macro>
 <#-- @formatter:on -->
+<#function removeFromList list value>
+    <#local filteredList = []>
+    <#list list as item>
+        <#if item != value>
+            <#local filteredList = filteredList + [item]>
+        </#if>
+    </#list>
+    <#return filteredList>
+</#function>
+<#function replaceInList list oldValue newValue>
+    <#local replacedList = []>
+    <#list list as item>
+        <#local replacedList = replacedList + [item?replace(oldValue, newValue)]>
+    </#list>
+    <#return replacedList>
+</#function>

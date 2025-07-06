@@ -68,9 +68,12 @@ public class ${name}Feature extends OreFeature {
 		super(OreFeatureConfig::deserialize);
 	}
 
+	public static Feature feature() {
+	    return INSTANCE;
+	}
+
     <#if data.restrictionBiomes?has_content && cond>
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
-	    <#if data.restrictionBiomes?has_content && cond>
 		    DimensionType dimensionType = world.getDimension().getType();
 			boolean dimensionCriteria = false;
 			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
@@ -112,23 +115,10 @@ public class ${name}Feature extends OreFeature {
             </#if>
 	
 			biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-			    Biome.createDecoratedFeature(${name}Feature.INSTANCE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
-				boolean blockCriteria = false;
-				<#list data.blocksToReplace as replacementBlock>
-			        <#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-				    	if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":").replace("stone_ore_replaceables", "minecraft:overworld_carver_replaceables")}")).contains(blockAt.getBlock()))
-				    	<#if replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") == "stone_ore_replaceables">
-				    	    blockCriteria = true;
-				    	if (blockAt.getBlock() == Blocks.STONE || blockAt.getBlock() == Blocks.GRANITE || blockAt.getBlock() == Blocks.DIORITE || blockAt.getBlock() == Blocks.ANDESITE || blockAt.getBlock() == Blocks.NETHERRACK)
-                        </#if>
-					<#elseif replacementBlock.getMappedValue(1).startsWith("#")>
-					    if (BlockTags.getCollection().getOrCreate(new ResourceLocation("${replacementBlock.getMappedValue(1).replace("#", "")}")).contains(blockAt.getBlock()))
-					<#else>
-						if(blockAt == ${mappedBlockToBlockStateCode(replacementBlock)})
-					</#if>
-						blockCriteria = true;
-				</#list>
-				return blockCriteria;
+			    Biome.createDecoratedFeature(${name}Feature.INSTANCE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockstate -> {
+                <#assign hasDefaultTag = replaceInList(data.blocksToReplace, "minecraft:stone_ore_replaceables", "stone_ore_replaceables")?seq_contains("TAG:stone_ore_replaceables")>
+                <#if hasDefaultTag>Block blockAt = blockstate.getBlock();</#if>
+                return <#if hasDefaultTag>blockAt == Blocks.STONE || blockAt == Blocks.GRANITE || blockAt == Blocks.DIORITE || blockAt == Blocks.ANDESITE <#if (data.blocksToReplace?size > 1)>|| </#if></#if><#if !hasDefaultTag || (data.blocksToReplace?size > 1)>${containsAnyOfBlocks(removeFromList(removeFromList(data.blocksToReplace, "TAG:stone_ore_replaceables"), "TAG:minecraft:stone_ore_replaceables"), "blockstate")}</#if>;
 			}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, ${minGenerateHeight}, 0, ${maxGenerateHeight}<#else>DepthAverageConfig(${data.frequencyPerChunks}, ${averageHeight}, ${averageHeight}</#if>)));
 		}
 	}
@@ -178,4 +168,20 @@ public class ${name}Feature extends OreFeature {
         <#assign result = "minecraft:" + noHash />
         <#return input?starts_with("#")?then("#" + result, result)/>
     </#if>
+</#function>
+<#function removeFromList list value>
+    <#local filteredList = []>
+    <#list list as item>
+        <#if item != value>
+            <#local filteredList = filteredList + [item]>
+        </#if>
+    </#list>
+    <#return filteredList>
+</#function>
+<#function replaceInList list oldValue newValue>
+    <#local replacedList = []>
+    <#list list as item>
+        <#local replacedList = replacedList + [item?replace(oldValue, newValue)]>
+    </#list>
+    <#return replacedList>
 </#function>
