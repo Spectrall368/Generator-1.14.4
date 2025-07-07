@@ -62,14 +62,29 @@ package ${package}.world.features.ores;
 </#if>
 
 public class ${name}Feature extends OreFeature {
-    private static final ${name}Feature INSTANCE = new ${name}Feature();
+  	private static ${name}Feature INSTANCE = null;
+  	private static ConfiguredFeature<?> CONFIGURED_FEATURE = null;
 
 	public ${name}Feature() {
 		super(OreFeatureConfig::deserialize);
 	}
 
-	public static Feature feature() {
-	    return INSTANCE;
+	public static Feature<?> feature() {
+		INSTANCE = new ${name}Feature();
+		CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.DECORATED, new DecoratedFeatureConfig(INSTANCE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockstate -> {
+                <#assign hasDefaultTag = replaceInList(data.blocksToReplace, "minecraft:stone_ore_replaceables", "stone_ore_replaceables")?seq_contains("TAG:stone_ore_replaceables")>
+                <#if hasDefaultTag>Block blockAt = blockstate.getBlock();</#if>
+                return <#if hasDefaultTag>blockAt == Blocks.STONE || blockAt == Blocks.GRANITE || blockAt == Blocks.DIORITE || blockAt == Blocks.ANDESITE <#if (data.blocksToReplace?size > 1)>|| </#if></#if><#if !hasDefaultTag || (data.blocksToReplace?size > 1)>${containsAnyOfBlocks(removeFromList(removeFromList(data.blocksToReplace, "TAG:stone_ore_replaceables"), "TAG:minecraft:stone_ore_replaceables"), "blockstate")}</#if>;
+			}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, ${minGenerateHeight}, 0, ${maxGenerateHeight}<#else>DepthAverageConfig(${data.frequencyPerChunks}, ${averageHeight}, ${averageHeight}</#if>)));
+
+		return INSTANCE;
+	}
+
+	public static ConfiguredFeature<?> configuredFeature() {
+	    if (CONFIGURED_FEATURE == null)
+	        feature();
+
+		return CONFIGURED_FEATURE;
 	}
 
     <#if data.restrictionBiomes?has_content && cond>
@@ -98,30 +113,19 @@ public class ${name}Feature extends OreFeature {
 	}
     </#if>
 
-	public static void init() {
-	    for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-            <#if data.restrictionBiomes?has_content && !cond>
-                boolean biomeCriteria = false;
-                <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-                    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
-                    <#list expandedBiomes as expandedBiome>
-                        if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${expandedBiome}")))
-                            biomeCriteria = true;
-                    </#list>
-                </#list>
-
-                if (!biomeCriteria)
-                    continue;
-            </#if>
-	
-			biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-			    Biome.createDecoratedFeature(${name}Feature.INSTANCE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockstate -> {
-                <#assign hasDefaultTag = replaceInList(data.blocksToReplace, "minecraft:stone_ore_replaceables", "stone_ore_replaceables")?seq_contains("TAG:stone_ore_replaceables")>
-                <#if hasDefaultTag>Block blockAt = blockstate.getBlock();</#if>
-                return <#if hasDefaultTag>blockAt == Blocks.STONE || blockAt == Blocks.GRANITE || blockAt == Blocks.DIORITE || blockAt == Blocks.ANDESITE <#if (data.blocksToReplace?size > 1)>|| </#if></#if><#if !hasDefaultTag || (data.blocksToReplace?size > 1)>${containsAnyOfBlocks(removeFromList(removeFromList(data.blocksToReplace, "TAG:stone_ore_replaceables"), "TAG:minecraft:stone_ore_replaceables"), "blockstate")}</#if>;
-			}), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), ${data.frequencyOnChunk}), <#if data.generationShape == "UNIFORM">Placement.COUNT_RANGE<#else>Placement.COUNT_DEPTH_AVERAGE</#if>, new <#if data.generationShape == "UNIFORM">CountRangeConfig(${data.frequencyPerChunks}, ${minGenerateHeight}, 0, ${maxGenerateHeight}<#else>DepthAverageConfig(${data.frequencyPerChunks}, ${averageHeight}, ${averageHeight}</#if>)));
-		}
-	}
+	public static final Set<ResourceLocation> GENERATE_BIOMES =
+	<#if data.restrictionBiomes?has_content && !cond>
+	ImmutableSet.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
+            </#list>
+        </#list>
+	);
+	<#else>
+	null;
+	</#if>
 }
 <#-- @formatter:on -->
 <#function expandBiomeTag biomeTag>

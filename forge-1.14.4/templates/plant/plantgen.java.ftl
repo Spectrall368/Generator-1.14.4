@@ -44,14 +44,32 @@ package ${package}.world.features.plants;
 </#if>
 
 public class ${name}Feature extends Feature<NoFeatureConfig> {
-    private static final ${name}Feature INSTANCE = new ${name}Feature();
+  	private static ${name}Feature INSTANCE = null;
+  	private static ConfiguredFeature<?> CONFIGURED_FEATURE = null;
 
 	public ${name}Feature() {
 		super(NoFeatureConfig::deserialize);
 	}
 
-	public static Feature feature() {
-	    return INSTANCE;
+	public static Feature<?> feature() {
+		INSTANCE = new ${name}Feature();
+		CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.DECORATED, new DecoratedFeatureConfig(INSTANCE, IFeatureConfig.NO_FEATURE_CONFIG,
+			<#if data.generateAtAnyHeight>
+                Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyOnChunks}, 0, 0, 128)
+			<#elseif data.generationType == "Grass" && data.plantType != "growapable">
+		        Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
+			<#else>
+                Placement.COUNT_HEIGHTMAP_<#if data.plantType != "growapable">32<#else>DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
+			</#if>));
+
+		return INSTANCE;
+	}
+
+	public static ConfiguredFeature<?> configuredFeature() {
+	    if (CONFIGURED_FEATURE == null)
+	        feature();
+
+		return CONFIGURED_FEATURE;
 	}
 
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
@@ -124,33 +142,19 @@ public class ${name}Feature extends Feature<NoFeatureConfig> {
         </#if>
 	}
 
-	public static void init() {
-	    for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-            <#if data.restrictionBiomes?has_content && !cond>
-                boolean biomeCriteria = false;
-                <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-                    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
-                    <#list expandedBiomes as expandedBiome>
-                        if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${expandedBiome}")))
-                            biomeCriteria = true;
-                    </#list>
-                </#list>
-
-                if (!biomeCriteria)
-                    continue;
-            </#if>
-
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(${name}Feature.INSTANCE, IFeatureConfig.NO_FEATURE_CONFIG,
-			<#if data.generateAtAnyHeight>
-                Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyOnChunks}, 0, 0, 128)
-			<#elseif data.generationType == "Grass" && data.plantType != "growapable">
-		        Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
-			<#else>
-                Placement.COUNT_HEIGHTMAP_<#if data.plantType != "growapable">32<#else>DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
-			</#if>
-		    ));
-		}
-	}
+	public static final Set<ResourceLocation> GENERATE_BIOMES =
+	<#if data.restrictionBiomes?has_content && !cond>
+	ImmutableSet.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
+            </#list>
+        </#list>
+	);
+	<#else>
+	null;
+	</#if>
 }
 <#-- @formatter:on -->
 <#function expandBiomeTag biomeTag>

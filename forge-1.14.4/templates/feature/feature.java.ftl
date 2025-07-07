@@ -45,14 +45,25 @@ package ${package}.world.features;
 </#if>
 <#compress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
-    private static final ${name}Feature INSTANCE = new ${name}Feature();
+  	private static ${name}Feature INSTANCE = null;
+  	private static ConfiguredFeature<?> CONFIGURED_FEATURE = null;
 
 	public ${name}Feature() {
 		super(${configuration}::deserialize);
 	}
 
-	public static Feature feature() {
-	    return INSTANCE;
+	public static Feature<?> feature() {
+		INSTANCE = new ${name}Feature();
+		CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.DECORATED, new DecoratedFeatureConfig(INSTANCE, ${configurationcode}, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+
+		return INSTANCE;
+	}
+
+	public static ConfiguredFeature<?> configuredFeature() {
+	    if (CONFIGURED_FEATURE == null)
+	        feature();
+
+		return CONFIGURED_FEATURE;
 	}
 
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
@@ -109,28 +120,19 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		</#if>
 	}
 
-	public static void init() {
-	    <#if data.hasPlacedFeature()>
-	    for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-            <#if data.restrictionBiomes?has_content && !cond>
-                boolean biomeCriteria = false;
-                <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-                    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
-                    <#list expandedBiomes as expandedBiome>
-                        if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${expandedBiome}")))
-                            biomeCriteria = true;
-                    </#list>
-                </#list>
-
-                if (!biomeCriteria)
-                    continue;
-            </#if>
-
-			biome.addFeature(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")},
-				Biome.createDecoratedFeature(${name}Feature.INSTANCE, ${configurationcode}, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
-		}
-		</#if>
-	}
+	public static final Set<ResourceLocation> GENERATE_BIOMES =
+	<#if data.restrictionBiomes?has_content && !cond>
+	ImmutableSet.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
+            </#list>
+        </#list>
+	);
+	<#else>
+	null;
+	</#if>
 }</#compress>
 <#-- @formatter:on -->
 <#function removeStrings str>
