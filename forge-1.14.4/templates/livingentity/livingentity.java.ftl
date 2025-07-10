@@ -807,15 +807,15 @@ public class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implem
     </#if>
 
     <#if data.spawnThisMob>
-        public static final Set<ResourceLocation> GENERATE_BIOMES =
+        private static final Set<ResourceLocation> GENERATE_BIOMES =
         <#if data.spawnBiomes?has_content>
         ImmutableSet.of(
-            <#list w.filterBrokenReferences(data.spawnBiomes) as restrictionBiome>
-                <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
-                <#list expandedBiomes as expandedBiome>
-                new ResourceLocation("${expandedBiome}")<#sep>,
-                </#list>
-            </#list>
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
+		    </#list><#sep>,
+        </#list>
         );
         <#else>
         null;
