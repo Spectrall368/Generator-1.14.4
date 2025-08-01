@@ -106,7 +106,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
         		"z": "pos.getPosZ()",
         		"entity": "entity",
         		"world": "world"
-        		}, false/> && </#if>!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss() && !entity.world.isRemote) {
+        		}, false/> && </#if>!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss() && entity instanceof ServerPlayerEntity && !world.isRemote) {
 			if (((ServerPlayerEntity) entity).timeUntilPortal > 0) {
 				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
 			} else if (((ServerPlayerEntity) entity).dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {

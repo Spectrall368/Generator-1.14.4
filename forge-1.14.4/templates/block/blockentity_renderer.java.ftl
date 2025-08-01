@@ -43,11 +43,11 @@ package ${package}.client.renderer.block;
 		this.texture = new ResourceLocation("${data.texture.format("%s:textures/block/%s")}.png");
 	}
 
-	@Override public void render(${name}BlockEntity blockEntity, float partialTick, MatrixStack poseStack, IRenderTypeBuffer renderer, int light, int overlayLight) {
+	@Override public void render(${name}BlockEntity blockEntity, double x, double y, double z, float partialTicks, int destroyStage) {
 		<#compress>
-		poseStack.push();
-		poseStack.scale(-1, -1, 1);
-		poseStack.translate(-0.5, -0.5, 0.5);
+		GlStateManager.pushMatrix();
+		GlStateManager.scalef(-1, -1, 1);
+		GlStateManager.translatef(-0.5, -0.5, 0.5);
 		<#if data.rotationMode != 0>
 			BlockState state = blockEntity.getBlockState();
         	<#if data.rotationMode != 5>
@@ -79,11 +79,11 @@ package ${package}.client.renderer.block;
 				}
 			</#if>
 		</#if>
-		poseStack.translate(0, -1, 0);
+		GlStateManager.translatef(0, -1, 0);
 		IVertexBuilder builder = renderer.getBuffer(RenderType.getEntityCutout(texture));
 		model.setupBlockEntityAnim(blockEntity, blockEntity.getWorld().getGameTime() + partialTick);
-		model.render(poseStack, builder, light, overlayLight, 1, 1, 1, 1);
-		poseStack.pop();
+		model.render(entityIn, 0, 0, 0, 0, 0, 1);
+		GlStateManager.popMatrix();
 		</#compress>
 	}
 
@@ -105,7 +105,7 @@ package ${package}.client.renderer.block;
 		}
 
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
-			super.setRotationAngles(null, 0, 0, ageInTicks, 0, 0);
+			super.setRotationAngles(null, 0, 0, ageInTicks, 0, 0, 1);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 <#include "mcelements.ftl">
 <#assign entity = generator.map(field$entity, "entities", 1)!"null">
 <#if entity != "null">
-(world instanceof ServerWorld ? spawnEntity(new ${generator.map(field$entity, "entities", 0)}(${entity}, (ServerWorld) world), ${toBlockPos(input$x,input$y,input$z)}, world) : null)
+(world.getWorld() instanceof ServerWorld ? spawnEntity(new ${generator.map(field$entity, "entities", 0)}(${entity}, (ServerWorld) world.getWorld()), ${toBlockPos(input$x,input$y,input$z)}, world) : null)
 <#else>
 null
 </#if>

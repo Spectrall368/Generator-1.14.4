@@ -42,7 +42,7 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		this.transformSource = () -> new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
 	}
 
-	@Override public void func_239207_a_(ItemStack itemstack, ItemCameraTransforms.TransformType displayContext, MatrixStack poseStack, IRenderTypeBuffer bufferSource, int packedLight, int packedOverlay) {
+	@Override public void renderByItem(ItemStack itemstack) {
 		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}()<#else>null</#if>;
 		ResourceLocation texture = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
@@ -58,13 +58,13 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		</#list>
 		if (model == null) return;
 
-		poseStack.push();
+		GlStateManager.pushMatrix();
 		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null).handlePerspective(displayContext, poseStack);
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
-		poseStack.scale(1, -1, displayContext == ItemCameraTransforms.TransformType.GUI ? -1 : 1);
+		GlStateManager.scalef(1, -1, displayContext == ItemCameraTransforms.TransformType.GUI ? -1 : 1);
 		IVertexBuilder vertexConsumer = ItemRenderer.getEntityGlintVertexBuilder(bufferSource, model.getRenderType(texture), false, itemstack.hasEffect());
 		model.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		poseStack.pop();
+		GlStateManager.popMatrix();
 	}
 
 	private static boolean isInventory(ItemCameraTransforms.TransformType type) {

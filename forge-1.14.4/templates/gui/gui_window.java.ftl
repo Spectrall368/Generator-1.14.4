@@ -150,7 +150,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 		<#if tooltips?has_content>
 		if (!customTooltipShown)
 		</#if>
-		this.renderHoveredTooltip(ms, mouseX, mouseY);
+		this.renderHoveredTooltip(mouseX, mouseY);
 	}
 
 	@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
@@ -286,7 +286,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 				    @Override public void onPress() {
 				        super.onPress();
 				        if (!menuStateUpdateActive)
-				            container.sendMenuStateUpdate(entity, 1, "${component.getName()}", this.isChecked(), false);
+				            container.sendMenuStateUpdate(entity, 1, "${component.getName()}", this.func_212942_a(), false);
 				    }
 			};
 			<#if hasProcedure(component.isCheckedProcedure)>
