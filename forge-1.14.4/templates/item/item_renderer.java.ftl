@@ -43,12 +43,12 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 	}
 
 	@Override public void renderByItem(ItemStack itemstack) {
-		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}()<#else>null</#if>;
+		EntityModel model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}()<#else>null</#if>;
 		ResourceLocation texture = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>
-					ItemModelsProperties.func_239417_a_(itemstack, new ResourceLocation("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
+					itemstack.getPropertyGetter(new ResourceLocation("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
 						.call(itemstack, Minecraft.getInstance().world, Minecraft.getInstance().player) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
 				model = new ${model.customModelName.split(":")[0]}();
@@ -59,16 +59,24 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		if (model == null) return;
 
 		GlStateManager.pushMatrix();
-		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null).handlePerspective(displayContext, poseStack);
-		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
+		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null).handlePerspective(displayContext);
+		GlStateManager.translatef(0.5f, isInventory(displayContext) ? 1.5f : 2f, 0.5f);
 		GlStateManager.scalef(1, -1, displayContext == ItemCameraTransforms.TransformType.GUI ? -1 : 1);
-		IVertexBuilder vertexConsumer = ItemRenderer.getEntityGlintVertexBuilder(bufferSource, model.getRenderType(texture), false, itemstack.hasEffect());
-		model.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+		model.render(null, 0, 0, 0, 0, 0, 1);
+        if (itemstack.hasEffect())
+            renderEffect(() -> model.render(null, 0, 0, 0, 0, 0, 1));
+
 		GlStateManager.popMatrix();
 	}
 
 	private static boolean isInventory(ItemCameraTransforms.TransformType type) {
 		return type == ItemCameraTransforms.TransformType.GUI || type == ItemCameraTransforms.TransformType.FIXED;
+	}
+
+	private void renderEffect(Runnable renderModelFunction) {
+		GlStateManager.color3f(0.5019608F, 0.2509804F, 0.8F);
+		Minecraft.getInstance().getTextureManager().bindTexture(ItemRenderer.RES_ITEM_GLINT);
+		ItemRenderer.renderEffect(Minecraft.getInstance().getTextureManager(), renderModelFunction, 1);
 	}
 }
 </#compress>

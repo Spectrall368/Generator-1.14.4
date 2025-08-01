@@ -41,6 +41,7 @@
         <#assign blockSetType = data.blockSetType>
     <#elseif data.blockBase == "Leaves">
         <#assign blockSetType = "LEAVES">
+    </#if>
 </#if>
 package ${package}.block;
 

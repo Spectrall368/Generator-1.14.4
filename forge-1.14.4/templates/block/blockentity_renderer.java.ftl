@@ -37,8 +37,7 @@ package ${package}.client.renderer.block;
 	private final CustomHierarchicalModel model;
 	private final ResourceLocation texture;
 
-	${name}Renderer(TileEntityRendererDispatcher context) {
-	    super(context);
+	${name}Renderer() {
 		this.model = new CustomHierarchicalModel();
 		this.texture = new ResourceLocation("${data.texture.format("%s:textures/block/%s")}.png");
 	}
@@ -47,7 +46,7 @@ package ${package}.client.renderer.block;
 		<#compress>
 		GlStateManager.pushMatrix();
 		GlStateManager.scalef(-1, -1, 1);
-		GlStateManager.translatef(-0.5, -0.5, 0.5);
+		GlStateManager.translatef(-0.5f, -0.5f, 0.5f);
 		<#if data.rotationMode != 0>
 			BlockState state = blockEntity.getBlockState();
         	<#if data.rotationMode != 5>
@@ -80,9 +79,8 @@ package ${package}.client.renderer.block;
 			</#if>
 		</#if>
 		GlStateManager.translatef(0, -1, 0);
-		IVertexBuilder builder = renderer.getBuffer(RenderType.getEntityCutout(texture));
-		model.setupBlockEntityAnim(blockEntity, blockEntity.getWorld().getGameTime() + partialTick);
-		model.render(entityIn, 0, 0, 0, 0, 0, 1);
+		model.setupBlockEntityAnim(blockEntity, blockEntity.getWorld().getGameTime() + partialTicks);
+		model.render(null, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 		</#compress>
 	}
@@ -96,7 +94,7 @@ package ${package}.client.renderer.block;
 	}
 
 	private static void renders() {
-		ClientRegistry.bindTileEntityRenderer(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), ${name}Renderer::new);
+		ClientRegistry.bindTileEntitySpecialRenderer(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), ${name}Renderer::new);
 	}
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {
