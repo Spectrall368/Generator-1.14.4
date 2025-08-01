@@ -10,4 +10,4 @@ localizationkeys:
   - key: enchantment.@modid.@registryname
     mapto: name
 
-field_exclusions: [canGenerateInLootTables, canVillagerTrade]
+field_exclusions: [canGenerateInLootTables, canVillagerTrade, anvilCost]

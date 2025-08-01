@@ -32,15 +32,15 @@
 package ${package}.world.features;
 
 <#compress>
-@Mod.EventBusSubscriber public class StructureFeature extends Feature<StructureFeatureConfiguration> {
+@Mod.EventBusSubscriber public class StructureModFeature extends Feature<StructureModFeatureConfiguration> {
 	public static final DeferredRegister<Feature<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
-	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration::deserialize));
+	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureModFeature(StructureModFeatureConfiguration::deserialize));
 
-	public StructureFeature(Function<Dynamic<?>, ? extends StructureFeatureConfiguration> configFactory) {
+	public StructureModFeature(Function<Dynamic<?>, ? extends StructureModFeatureConfiguration> configFactory) {
     		super(configFactory);
   	}
 
-	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, StructureFeatureConfiguration config) {
+	@Override public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, StructureModFeatureConfiguration config) {
 		Rotation rotation = config.random_rotation ? Rotation.func_222466_a(rand) : Rotation.NONE;
 		Mirror mirror = config.random_mirror ? Mirror.values()[rand.nextInt(2)] : Mirror.NONE;
 		List<Block> ignoredBlocks = new ArrayList<>();

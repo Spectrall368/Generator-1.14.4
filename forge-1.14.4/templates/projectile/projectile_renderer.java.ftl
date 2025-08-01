@@ -49,6 +49,7 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 		GlStateManager.rotatef(f, 0, 1, 0);
 		GlStateManager.rotatef(90f - entityIn.prevRotationPitch - (entityIn.rotationPitch - entityIn.prevRotationPitch) * f1, 1, 0, 0);
 		EntityModel model = new ${data.entityModel}();
+		model.setRotationAngles(entityIn, 0, 0, entityIn.ticksExisted + partialTicks, entityIn.rotationYaw, entityIn.rotationPitch);
 		model.render(entityIn, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 	}

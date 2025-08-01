@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,9 +29,11 @@
 -->
 
 <#-- @formatter:off -->
+
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
+
 package ${package}.init;
 
 public class ${JavaModName}BlockEntities {
@@ -39,15 +41,15 @@ public class ${JavaModName}BlockEntities {
 	public static final DeferredRegister<TileEntityType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ${JavaModName}.MODID);
 
 	<#list blockentities as blockentity>
-	public static final RegistryObject<TileEntityType<?>> ${blockentity.getModElement().getRegistryNameUpper()} =
+	public static final RegistryObject<TileEntityType<${blockentity.getModElement().getName()}BlockEntity>> ${blockentity.getModElement().getRegistryNameUpper()} =
 		register("${blockentity.getModElement().getRegistryName()}", ${JavaModName}Blocks.${blockentity.getModElement().getRegistryNameUpper()},
 			${blockentity.getModElement().getName()}BlockEntity::new);
-    	</#list>
+	</#list>
 
 	// Start of user code block custom block entities
 	// End of user code block custom block entities
 
-	private static RegistryObject<TileEntityType<?>> register(String registryname, RegistryObject<Block> block, Supplier<? extends TileEntity> supplier) {
+	private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String registryname, RegistryObject<Block> block, Supplier<? extends T> supplier) {
 		return REGISTRY.register(registryname, () -> TileEntityType.Builder.create(supplier, block.get()).build(null));
 	}
 }

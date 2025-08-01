@@ -34,12 +34,11 @@ package ${package}.block;
 
 public class ${name}Block extends FlowingFluidBlock {
 	public ${name}Block() {
-		super(() -> (FlowingFluid) ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		super(() -> (FlowingFluid) ${JavaModName}Fluids.${REGISTRYNAME}.get(),
+			Block.Properties.create(Material.${data.type}
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			Block.Properties.create(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
-			<#else>
-			Block.Properties.create(Material.${data.type})
-			</#if>
+			, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
+			</#if>)
 			.hardnessAndResistance(${data.resistance}f)
 			<#if data.luminance != 0>.lightValue(${data.luminance})</#if>
 		);
@@ -48,6 +47,20 @@ public class ${name}Block extends FlowingFluidBlock {
 	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
+
+	<#if data.hasFog>
+	    <#if data.fogColor?has_content>
+		@Override @OnlyIn(Dist.CLIENT) public Vec3d getFogColor(BlockState state, IWorldReader world, BlockPos pos, Entity entity, Vec3d originalColor, float partialTicks) {
+		    return new Vec3d(${data.fogColor.getRed()/255}f, ${data.fogColor.getGreen()/255}f, ${data.fogColor.getBlue()/255}f);
+		}
+		</#if>
+	</#if>
+
+	<#if data.ignitedByLava>
+	@Override public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+	    return true;
+	}
+	</#if>
 
 	<#if data.flammability != 0>
 	@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {

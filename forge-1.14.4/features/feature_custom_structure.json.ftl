@@ -1,4 +1,4 @@
-new StructureFeatureConfiguration(new ResourceLocation("${modid}:${field$structure}"),
+new StructureModFeatureConfiguration(new ResourceLocation("${modid}:${field$structure}"),
   ${field$random_rotation?lower_case},
   ${field$random_mirror?lower_case},
   ${input$ignored_blocks},

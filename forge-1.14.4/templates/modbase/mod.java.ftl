@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
+		<#if w.getGElementsOfType("block")?filter(e -> e.generateFeature )?size != 0 || w.getGElementsOfType("plant")?filter(e -> e.generateFeature )?size != 0 || w.hasElementsOfType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(bus);</#if>

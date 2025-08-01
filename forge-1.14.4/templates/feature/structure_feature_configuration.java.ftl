@@ -31,14 +31,14 @@
 <#-- @formatter:off -->
 package ${package}.world.features.configurations;
 
-public class StructureFeatureConfiguration implements IFeatureConfig {
+public class StructureModFeatureConfiguration implements IFeatureConfig {
    public final ResourceLocation structure;
    public final boolean random_rotation;
    public final boolean random_mirror;
    public final List<BlockState> ignored_blocks;
    public final Vec3i offset;
 
-   public StructureFeatureConfiguration(ResourceLocation structure, boolean random_rotation, boolean random_mirror, List<BlockState> ignored_blocks, Vec3i offset) {
+   public StructureModFeatureConfiguration(ResourceLocation structure, boolean random_rotation, boolean random_mirror, List<BlockState> ignored_blocks, Vec3i offset) {
       this.structure = structure;
       this.random_rotation = random_rotation;
       this.random_mirror = random_mirror;
@@ -61,7 +61,7 @@ public class StructureFeatureConfiguration implements IFeatureConfig {
                 ops.createString("z"), ops.createInt(this.offset.getZ()))))));
     }
 
-    public static <T> StructureFeatureConfiguration deserialize(Dynamic<T> dynamic) {
+    public static <T> StructureModFeatureConfiguration deserialize(Dynamic<T> dynamic) {
         ResourceLocation structure = new ResourceLocation(dynamic.get("structure").asString(""));
         boolean random_rotation = dynamic.get("random_rotation").asBoolean(false);
         boolean random_mirror = dynamic.get("random_mirror").asBoolean(false);
@@ -71,7 +71,7 @@ public class StructureFeatureConfiguration implements IFeatureConfig {
             dynamic.get("offset").get("y").asInt(0),
             dynamic.get("offset").get("z").asInt(0)
         );
-        return new StructureFeatureConfiguration(structure, random_rotation, random_mirror, ignored_blocks, offset);
+        return new StructureModFeatureConfiguration(structure, random_rotation, random_mirror, ignored_blocks, offset);
     }
 }
 <#-- @formatter:on -->

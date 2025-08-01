@@ -36,7 +36,10 @@ package ${package}.item;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().group(<@CreativeTabs data.creativeTabs/>).rarity(Rarity.${data.igniterRarity}).maxDamage(64));
+		super(new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)
+			<#if data.igniterRarity != "COMMON">.rarity(Rarity.${data.igniterRarity})</#if>
+			.maxDamage(64)
+		);
 	}
 
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
@@ -55,7 +58,7 @@ public class ${name}Item extends Item {
 			boolean success = false;
 
 			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
-				${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}_PORTAL.get().portalSpawn(world, pos);
+				${JavaModName}Blocks.${REGISTRYNAME}_PORTAL.get().portalSpawn(world, pos);
 				itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
 				success = true;
 			}

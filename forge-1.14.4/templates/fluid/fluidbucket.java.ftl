@@ -35,9 +35,10 @@ package ${package}.item;
 public class ${name}Item extends BucketItem {
 
 	public ${name}Item() {
-		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
-			new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).rarity(Rarity.${data.rarity})
-			.group(<@CreativeTabs data.creativeTabs/>));
+		super(${JavaModName}Fluids.${REGISTRYNAME},
+			new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(<@CreativeTabs data.creativeTabs/>)
+			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+		);
 	}
 
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname + "_bucket"/>

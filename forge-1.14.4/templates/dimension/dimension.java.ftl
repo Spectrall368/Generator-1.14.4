@@ -40,7 +40,7 @@ package ${package}.world.dimension;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public static class ${name}SpecialEffectsHandler {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
 			if (DimensionType.byName(new ResourceLocation("${modid}:${registryname}")) == null) {
-				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${data.getModElement().getRegistryNameUpper()}.get(), null, ${data.hasSkyLight});
+				DimensionManager.registerDimension(new ResourceLocation("${modid}:${registryname}"), ${JavaModName}Dimensions.${REGISTRYNAME}.get(), null, ${data.hasSkyLight});
 			}
 		}
 	}

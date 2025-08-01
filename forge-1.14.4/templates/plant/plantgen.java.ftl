@@ -103,8 +103,8 @@ public class ${name}Feature extends Feature<NoFeatureConfig> {
                     int k = 1 + random.nextInt(random.nextInt(${data.growapableMaxHeight}) + 1);
                     k = Math.min(${data.growapableMaxHeight}, k);
                     for(int l = 0; l < k; ++l) {
-                        if (${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
-                            world.setBlockState(blockpos.up(l), ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState(), 2);
+                        if (${JavaModName}Blocks.${REGISTRYNAME}.get().getDefaultState().isValidPosition(world, blockpos)) {
+                            world.setBlockState(blockpos.up(l), ${JavaModName}Blocks.${REGISTRYNAME}.get().getDefaultState(), 2);
                             ++generated;
                         }
                     }
@@ -128,11 +128,11 @@ public class ${name}Feature extends Feature<NoFeatureConfig> {
                 <#else>
                 blockpos.getY() < 255 &&
                 </#if>
-                </#if>${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState().isValidPosition(world, blockpos)) {
+                </#if>${JavaModName}Blocks.${REGISTRYNAME}.get().getDefaultState().isValidPosition(world, blockpos)) {
                     <#if data.plantType == "double">
-                    ((DoublePlantBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()).placeAt(world, blockpos
+                    ((DoublePlantBlock) ${JavaModName}Blocks.${REGISTRYNAME}.get()).placeAt(world, blockpos
                     <#else>
-                    world.setBlockState(blockpos, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().getDefaultState()
+                    world.setBlockState(blockpos, ${JavaModName}Blocks.${REGISTRYNAME}.get().getDefaultState()
                     </#if>, 2);
                     ++i;
                 }

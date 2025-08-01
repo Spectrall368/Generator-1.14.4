@@ -58,11 +58,10 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		<#elseif data.plantType == "sapling">
 		new ${name}TreeGrower(),
 		</#if>
+		Block.Properties.create(Material.PLANTS
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
-		<#else>
-		Block.Properties.create(Material.PLANTS)
-		</#if>
+		, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
+		</#if>)
 		<#if data.plantType == "growapable" || data.plantType == "sapling" || data.forceTicking>
 		.tickRandomly()
 		</#if>
@@ -74,7 +73,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				@Override public SoundEvent getHitSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.hitSound?has_content && data.hitSound.getMappedValue()?has_content)?then(data.hitSound, "intentionally_empty")}")); }
 				@Override public SoundEvent getFallSound() { return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${(data.fallSound?has_content && data.fallSound.getMappedValue()?has_content)?then(data.fallSound, "intentionally_empty")}")); }
 			})
-		<#else>
+		<#elseif data.soundOnStep != "STONE">
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
 		<#if data.unbreakable>
@@ -106,7 +105,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 
 	@Override public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return super.getStateForPlacement(context).with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
+		BlockState state = super.getStateForPlacement(context);
+		return state == null ? null : state.with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override public IFluidState getFluidState(BlockState state) {
@@ -152,6 +152,12 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
+	<#if data.ignitedByLava>
+	@Override public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+	    return true;
+	}
+	</#if>
+
 	<#if data.flammability != 0>
 	@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 		return ${data.flammability};
@@ -193,6 +199,10 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 	@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
+	}
+	<#elseif !data.hasBlockItem>
+	@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		return ItemStack.EMPTY;
 	}
 	</#if>
 
@@ -332,7 +342,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	@Override public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 		super.eventReceived(state, world, pos, eventID, eventParam);
 		TileEntity blockEntity = world.getTileEntity(pos);
-		return blockEntity == null ? false : blockEntity.receiveClientEvent(eventID, eventParam);
+		return blockEntity != null && blockEntity.receiveClientEvent(eventID, eventParam);
 	}
 	</#if>
 
@@ -361,10 +371,10 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 						Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 					</#if>
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 
-		<#if data.isItemTinted>
+		<#if data.isItemTinted && data.hasBlockItem>
 		@OnlyIn(Dist.CLIENT) public static void itemColorLoad(ColorHandlerEvent.Item event) {
 			event.getItemColors().register((stack, index) -> {
 				<#if data.tintType == "Grass">
@@ -380,7 +390,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				<#else>
 					return 329011;
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 		</#if>
 	</#if>
@@ -397,7 +407,13 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#macro canPlaceOnList blockList condition>
 	<#if (blockList?size > 1) && condition>(</#if>
 	<#list blockList as canBePlacedOn>
-	groundState.getBlock() == ${mappedBlockToBlock(canBePlacedOn)}<#sep>||
+	<#if canBePlacedOn.getUnmappedValue().startsWith("TAG:")>
+	groundState.isIn(BlockTags.makeWrapperTag(new ResourceLocation("${canBePlacedOn.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")))
+	<#elseif canBePlacedOn.getMappedValue(1).startsWith("#")>
+	groundState.isIn(BlockTags.makeWrapperTag(new ResourceLocation("${canBePlacedOn.getMappedValue(1)?remove_beginning("#")}")))
+	<#else>
+	groundState.getBlock() == ${mappedBlockToBlock(canBePlacedOn)}
+	</#if><#sep>||
 	</#list><#if (blockList?size > 1) && condition>)</#if>
 </#macro>
 <#macro initStateProperties>

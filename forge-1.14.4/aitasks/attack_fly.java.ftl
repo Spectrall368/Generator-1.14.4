@@ -13,7 +13,7 @@ this.goalSelector.addGoal(${cbi+1}, new Goal() {
 	public boolean shouldExecute() {
 		if (${name}Entity.this.getAttackTarget() != null && !${name}Entity.this.getMoveHelper().isUpdating()) {
 			<#if hasProcedure(conditions[0])>
-                        double x = ${name}Entity.this.posX;
+            double x = ${name}Entity.this.posX;
 			double y = ${name}Entity.this.posY;
 			double z = ${name}Entity.this.posZ;
 			Entity entity = ${name}Entity.this;

@@ -37,6 +37,8 @@ global_templates:
 localizationkeys:
   - key: fluid.@modid.@registryname
     mapto: name
+  - key: fluid_type.@modid.@registryname
+    mapto: name
   - key: block.@modid.@registryname
     mapto: name
   - key: item.@modid.@registryname_bucket
@@ -45,4 +47,4 @@ localizationkeys:
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname_bucket.description_@item_index
 
-field_exclusions: [hasFog, fogColor, fogStartDistance, fogEndDistance]
+field_exclusions: [fogStartDistance, fogEndDistance]
