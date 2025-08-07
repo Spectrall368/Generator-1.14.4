@@ -51,7 +51,6 @@ import net.minecraft.network.datasync.DataParameter;
 	<#assign interfaces += ["IRangedAttackMob"]>
 </#if>
 
-<#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt 0>implements ${interfaces?join(",")}</#if> {
 
 	<#list data.entityDataEntries as entry>
@@ -992,4 +991,5 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
         <#return input?starts_with("#")?then("#" + result, result)/>
     </#if>
 </#function>
+
 
