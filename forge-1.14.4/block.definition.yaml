@@ -433,4 +433,5 @@ tags:
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
 
-field_exclusions: [displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
+
+field_exclusions: [immuneToFire, displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
