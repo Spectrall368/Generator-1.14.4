@@ -485,7 +485,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 
 		<#if data.guiBoundTo?has_content>
 			<#if data.ridable>
-				if (sourceentity.isSneaking()) {
+				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
 				if(sourceentity instanceof ServerPlayerEntity) {
 					NetworkHooks.openGui((ServerPlayerEntity) sourceentity, new INamedContainerProvider() {
@@ -992,3 +992,4 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
         <#return input?starts_with("#")?then("#" + result, result)/>
     </#if>
 </#function>
+
