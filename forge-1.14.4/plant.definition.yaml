@@ -87,4 +87,5 @@ tags:
   - tag: BLOCKS:minecraft:saplings
     condition: "plantType %= sapling"
 
-field_exclusions: [speedFactor]
+
+field_exclusions: [immuneToFire, speedFactor]
