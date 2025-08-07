@@ -89,7 +89,7 @@ public static class CustomPortalBlock extends NetherPortalBlock {
         </#if>
 	}
 
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!world.isRemote && !entity.isPassenger() && !entity.isBeingRidden()
 				&& entity instanceof ServerPlayerEntity && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
@@ -146,5 +146,6 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock())")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
 						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock())")}
+
 
 }
