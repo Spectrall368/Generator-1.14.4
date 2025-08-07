@@ -99,7 +99,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
         	</#if>
 	}
 
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (<#if hasProcedure(data.portalUseCondition)><@procedureCode data.portalUseCondition, {
         		"x": "pos.getPosX()",
         		"y": "pos.getPosY()",
