@@ -3,7 +3,7 @@ private static boolean hasEntityRecipe(Entity entity, ResourceLocation recipe) {
 	    ServerPlayerEntity player = ((ServerPlayerEntity) entity);
 	    Optional<? extends IRecipe<?>> recipeOpt = player.world.getRecipeManager().getRecipe(recipe);
 		return player.getRecipeBook().isUnlocked(recipeOpt.get());
-    } else if (entity instanceof ClientPlayerEntity && ((ClientPlayerEntity) entity).world.isRemote) {
+    } else if (entity instanceof ClientPlayerEntity && ((ClientPlayerEntity) entity).world.isRemote()) {
 	    ClientPlayerEntity player = ((ClientPlayerEntity) entity);
 	    Optional<? extends IRecipe<?>> recipeOpt = player.world.getRecipeManager().getRecipe(recipe);
 		return player.getRecipeBook().isUnlocked(recipeOpt.get());

@@ -1,6 +1,6 @@
 private static String executeCommandGetResult(Entity entity, String command) {
 	StringBuilder result = new StringBuilder();
-	if(!entity.world.isRemote && entity.getServer() != null) {
+	if(!entity.world.isRemote() && entity.getServer() != null) {
 		ICommandSource dataConsumer = new ICommandSource() {
 			@Override public void sendMessage(ITextComponent message) {
 				result.append(message.getString());

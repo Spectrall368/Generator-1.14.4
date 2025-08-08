@@ -34,10 +34,8 @@ package ${package}.world.teleporter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.Supplier;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter extends Teleporter {
-
+public class ${name}Teleporter extends Teleporter {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private Vec3d lastPortalVec;
 	private Direction teleportDirection;

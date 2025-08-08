@@ -1,5 +1,5 @@
 <#if field$dimension??><#--Here for legacy reasons as field$dimension does not exist in older workspaces-->
-if (${input$entity} instanceof ServerPlayerEntity && !((ServerPlayerEntity) ${input$entity}).world.isRemote) {
+if (${input$entity} instanceof ServerPlayerEntity && !((ServerPlayerEntity) ${input$entity}).world.isRemote()) {
 	DimensionType destinationType = ${generator.map(field$dimension, "dimensions")};
 
 	if (((ServerPlayerEntity) ${input$entity}).dimension == destinationType) return;

@@ -1,6 +1,6 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
-if (${input$entity} instanceof LivingEntity && !((LivingEntity) ${input$entity}).world.isRemote && ((LivingEntity) ${input$entity}).getServer() != null) {
+if (${input$entity} instanceof LivingEntity && !((LivingEntity) ${input$entity}).world.isRemote() && ((LivingEntity) ${input$entity}).getServer() != null) {
 	DamageSource _dsLootTbl = ((LivingEntity) ${input$entity}).getLastDamageSource();
 	if (_dsLootTbl == null) _dsLootTbl = DamageSource.GENERIC;
 	for (ItemStack itemstackiterator : ((LivingEntity) ${input$entity}).getServer().getLootTableManager().getLootTableFromLocation(${toResourceLocation(input$location)})

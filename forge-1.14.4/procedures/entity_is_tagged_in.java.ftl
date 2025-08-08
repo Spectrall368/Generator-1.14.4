@@ -1,2 +1,2 @@
 <#include "mcelements.ftl">
-(EntityTypeTags.getCollection().getOrCreate(${toResourceLocation(input$tag)}).contains(${input$entity}.getType()))
+(${input$entity}.getType().isContained(EntityTypeTags.func_219763_a(${toResourceLocation(input$tag)})))

@@ -31,11 +31,11 @@
 public static class ${name}BiomeLayer implements IC0Transformer {
 
 	@Override public int apply(INoiseRandom context, int value) {
-		return Registry.BIOME.getId(dimension${name}Biomes[context.random(dimension${name}Biomes.length)]);
+		return Registry.BIOME.getId(dimensionBiomes[context.random(dimensionBiomes.length)]);
 	}
 }
 
-public static class BiomeProvider${name} extends BiomeProvider {
+public static class ${name}BiomeProvider extends BiomeProvider {
 
 	private final Layer genBiomes;
 	private final Layer biomeFactoryLayer;
@@ -48,11 +48,11 @@ public static class BiomeProvider${name} extends BiomeProvider {
 	private static boolean biomesPatched = false;
 	</#if>
 
-	public BiomeProvider${name}(World world) {
+	public ${name}BiomeProvider(World world) {
 		Layer[] aLayer = makeTheWorld(world.getSeed());
 		this.genBiomes = aLayer[0];
 		this.biomeFactoryLayer = aLayer[1];
-		this.biomes = dimension${name}Biomes;
+		this.biomes = dimensionBiomes;
 
 		<#if data.worldGenType == "End like gen">
 		this.generator = new SimplexNoiseGenerator(new SharedSeedRandom(world.getSeed()));

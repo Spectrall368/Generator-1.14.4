@@ -34,8 +34,14 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Dimension {
-	private static Biome[] dimension${name}Biomes;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Dimension extends Dimension {
+	private static Biome[] dimensionBiomes;
+	private ${name}BiomeProvider biomeProvider${name} = null;
+
+	public ${name}Dimension(World world, DimensionType type) {
+	    super(world, type);
+	    this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
+	}
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public static class ${name}SpecialEffectsHandler {
 		@SubscribeEvent public static void onRegisterDimensionsEvent(RegisterDimensionsEvent event) {
@@ -46,118 +52,108 @@ package ${package}.world.dimension;
 	}
 	
 	@SubscribeEvent public static void registerDimensionGen(FMLCommonSetupEvent event) {
-		dimension${name}Biomes = new Biome[] {
+		dimensionBiomes = new Biome[] {
 	    	<#list w.filterBrokenReferences(data.biomesInDimension) as biome>
 			ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))<#sep>,
 		</#list>};
 	}
 
 	public static class ${name}ModDimension extends ModDimension {
-	
 		@Override public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-			return ${name}World::new;
+			return ${name}Dimension::new;
 		}
 	}
 
-	public static class ${name}World extends Dimension {
+	<#if data.coordinateScale != 1>
+	@Override public double getMovementFactor() {
+		return ${data.coordinateScale}f;
+	}
+	</#if>
 
-		private BiomeProvider${name} biomeProvider${name} = null;
-
-		public ${name}World(World world, DimensionType type) {
-			super(world, type);
-			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
-		}
-
-		<#if data.coordinateScale != 1>
-		@Override public double getMovementFactor() {
-			return ${data.coordinateScale}f;
-		}
-		</#if>
-
-		<#if !data.imitateOverworldBehaviour>
-		@Override public void calculateInitialWeather() {}
+	<#if !data.imitateOverworldBehaviour>
+	@Override public void calculateInitialWeather() {}
 	
-	    	@Override public void updateWeather(Runnable defaultWeather) {}
+	@Override public void updateWeather(Runnable defaultWeather) {}
 	
-		@Override public boolean canDoLightning(Chunk chunk) {
-			return false;
-		}
+    @Override public boolean canDoLightning(Chunk chunk) {
+		return false;
+	}
 	
-		@Override public boolean canDoRainSnowIce(Chunk chunk) {
-			return false;
-		}
-		</#if>
+	@Override public boolean canDoRainSnowIce(Chunk chunk) {
+		return false;
+	}
+	</#if>
 
-		<#if data.ambientLight != 0>
-		@Override protected void generateLightBrightnessTable() {
-			float f = ${data.ambientLight}f;
-			for (int i = 0; i <= 15; ++i) {
-				float f1 = 1 - (float) i / 15f;
-				this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
-			}
+	<#if data.ambientLight != 0>
+	@Override protected void generateLightBrightnessTable() {
+		float f = ${data.ambientLight}f;
+		for (int i = 0; i <= 15; ++i) {
+			float f1 = 1 - (float) i / 15f;
+			this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
 		}
-		</#if>
+	}
+	</#if>
 
-		<#if data.useCustomEffects>
-			@Override @OnlyIn(Dist.CLIENT)
-			<#if !data.airColor?has_content>
-				<#if data.skyType == "NONE">
-					${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")?keep_before_last(";")}
-				<#elseif data.skyType == "NORMAL">
-					${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")?keep_before_last(";")}
-				<#else>
-					${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")?keep_before_last(";")}
-				</#if>
+	<#if data.useCustomEffects>
+		@Override @OnlyIn(Dist.CLIENT)
+		<#if !data.airColor?has_content>
+			<#if data.skyType == "NONE">
+				${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")?keep_before_last(";")}
+			<#elseif data.skyType == "NORMAL">
+				${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")?keep_before_last(";")}
 			<#else>
-			public Vec3d getFogColor(float celestialAngle, float partialTicks) {
-				return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
-			</#if><#if data.sunHeightAffectsFog>.mul(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09)</#if>;
-			}
-	
-			@OnlyIn(Dist.CLIENT) @Override public boolean doesXZShowFog(int x, int z) {
-				return ${data.hasFog};
-			}
-	
-			@Override
-			<#if !data.hasFixedTime>
-				<#if data.skyType == "NONE">
-					${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
-				<#elseif data.skyType == "NORMAL">
-					${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
-				<#else>
-					${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
-				</#if>
-			<#else>
-			public float calculateCelestialAngle(long worldTime, float partialTicks) {
-				return ${data.fixedTimeValue}f;
-			}
+				${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getFogColor", "float", "float")?keep_before_last(";")}
 			</#if>
+		<#else>
+		public Vec3d getFogColor(float celestialAngle, float partialTicks) {
+			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
+		</#if><#if data.sunHeightAffectsFog>.mul(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09)</#if>;
+		}
 
-			<#if !data.hasClouds || data.cloudHeight != 192>
-			@Override @OnlyIn(Dist.CLIENT) public float getCloudHeight() {
-				return <#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>;
-			}
+		@OnlyIn(Dist.CLIENT) @Override public boolean doesXZShowFog(int x, int z) {
+			return ${data.hasFog};
+		}
+
+		@Override
+		<#if !data.hasFixedTime>
+			<#if data.skyType == "NONE">
+				${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
+			<#elseif data.skyType == "NORMAL">
+				${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
+			<#else>
+				${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
 			</#if>
+		<#else>
+		public float calculateCelestialAngle(long worldTime, float partialTicks) {
+			return ${data.fixedTimeValue}f;
+		}
+		</#if>
+
+		<#if !data.hasClouds || data.cloudHeight != 192>
+		@Override @OnlyIn(Dist.CLIENT) public float getCloudHeight() {
+			return <#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>;
+		}
+		</#if>
 	
-			<#if data.skyType == "END">
-			@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
+		<#if data.skyType == "END">
+		@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
 	
-			@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
-			</#if>
+		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "isSkyColored")}
+		</#if>
 	
-		<#elseif data.defaultEffects == "overworld">
+	<#elseif data.defaultEffects == "overworld">
 	   	@Override ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "calculateCelestialAngle", "long", "float")}
 	
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "getFogColor", "float", "float")}
 	
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.OverworldDimension", "doesXZShowFog", "int", "int")}
-		<#elseif data.defaultEffects == "the_nether">
+	<#elseif data.defaultEffects == "the_nether">
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "getFogColor", "float", "float")}
 	
 	   	@Override ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "calculateCelestialAngle", "long", "float")}
 	
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.NetherDimension", "doesXZShowFog", "int", "int")}
-		<#else>
+	<#else>
 		@Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calculateCelestialAngle", "long", "float")}
 	
 		@Nullable @OnlyIn(Dist.CLIENT) @Override ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "calcSunriseSunsetColors", "float", "float")}
@@ -169,38 +165,37 @@ package ${package}.world.dimension;
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "getCloudHeight")}
 	
 		@Override @OnlyIn(Dist.CLIENT) ${mcc.getMethod("net.minecraft.world.dimension.EndDimension", "doesXZShowFog", "int", "int")}
-		</#if>
+	</#if>
 
-		@Override public ChunkGenerator<?> createChunkGenerator() {
-			if(this.biomeProvider${name} == null)
-				this.biomeProvider${name} = new BiomeProvider${name}(this.world);
-			return new ChunkProvider${name}(this.world, this.biomeProvider${name});
-		}
-
-		@Override public boolean isSurfaceWorld() {
-			return ${data.imitateOverworldBehaviour};
-		}
-
-		@Override public boolean canRespawnHere() {
-			return ${data.canRespawnHere};
-		}
-
-		@Override public SleepResult canSleepAt(PlayerEntity player, BlockPos pos){
-        		return SleepResult.<#if data.bedWorks>ALLOW<#else>BED_EXPLODES</#if>;
-		}
-
-		@Nullable public BlockPos findSpawn(ChunkPos chunkPos, boolean checkValid) {
-   		   return null;
-   		}
-
-   		@Nullable public BlockPos findSpawn(int x, int z, boolean checkValid) {
-   		   return null;
-   		}
-
-		@Override public boolean doesWaterVaporize() {
-      			return ${data.doesWaterVaporize};
-   		}
+	@Override public ChunkGenerator<?> createChunkGenerator() {
+		if(this.biomeProvider${name} == null)
+			this.biomeProvider${name} = new ${name}BiomeProvider(this.world);
+		return new ChunkProvider${name}(this.world, this.biomeProvider${name});
 	}
+
+	@Override public boolean isSurfaceWorld() {
+		return ${data.imitateOverworldBehaviour};
+	}
+
+	@Override public boolean canRespawnHere() {
+		return ${data.canRespawnHere};
+	}
+
+	@Override public SleepResult canSleepAt(PlayerEntity player, BlockPos pos){
+       	return SleepResult.<#if data.bedWorks>ALLOW<#else>BED_EXPLODES</#if>;
+	}
+
+	@Nullable public BlockPos findSpawn(ChunkPos chunkPos, boolean checkValid) {
+   	    return null;
+   	}
+
+   	@Nullable public BlockPos findSpawn(int x, int z, boolean checkValid) {
+   	    return null;
+   	}
+
+	@Override public boolean doesWaterVaporize() {
+        return ${data.doesWaterVaporize};
+   	}
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {

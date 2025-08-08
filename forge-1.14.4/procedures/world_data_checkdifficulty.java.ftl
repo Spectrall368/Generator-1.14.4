@@ -1,1 +1,1 @@
-(world.getDifficulty()==Difficulty.${field$difficulty})
+(world.getDifficulty() == Difficulty.${field$difficulty})

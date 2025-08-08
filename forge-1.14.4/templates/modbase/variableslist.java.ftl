@@ -21,7 +21,7 @@ import net.minecraft.nbt.INBT;
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-                        CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
+			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
 			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
 		</#if>
 	}
@@ -31,17 +31,17 @@ import net.minecraft.nbt.INBT;
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 		@SubscribeEvent public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().world.isRemote)
+			if (!event.getPlayer().world.isRemote())
 				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 		}
 
 		@SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
-			if (!event.getPlayer().world.isRemote)
+			if (!event.getPlayer().world.isRemote())
 				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 		}
 
 		@SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
-			if (!event.getPlayer().world.isRemote)
+			if (!event.getPlayer().world.isRemote())
 				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 		}
 
@@ -67,7 +67,7 @@ import net.minecraft.nbt.INBT;
 
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 		@SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().world.isRemote) {
+			if (!event.getPlayer().world.isRemote()) {
 				WorldSavedData mapdata = MapVariables.get(event.getPlayer().world);
 				WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 				if(mapdata != null)
@@ -78,7 +78,7 @@ import net.minecraft.nbt.INBT;
 		}
 
 		@SubscribeEvent public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-			if (!event.getPlayer().world.isRemote) {
+			if (!event.getPlayer().world.isRemote()) {
 				WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 				if(worlddata != null)
 					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SavedDataSyncMessage(1, worlddata));
@@ -127,8 +127,8 @@ import net.minecraft.nbt.INBT;
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (world.getWorld() instanceof World && !((World) world.getWorld()).isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world.getWorld()).dimension::getType), new SavedDataSyncMessage(1, this));
+			if (!world.getWorld().isRemote())
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld().dimension::getType), new SavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
@@ -181,7 +181,7 @@ import net.minecraft.nbt.INBT;
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (world.getWorld() instanceof World && !((World) world.getWorld()).isRemote)
+			if (!world.getWorld().isRemote())
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
 		}
 
@@ -189,8 +189,7 @@ import net.minecraft.nbt.INBT;
 
 		public static MapVariables get(IWorld world) {
 			if (world.getWorld() instanceof ServerWorld) {
-				return ((ServerWorld) world.getWorld()).getServer().getWorld(DimensionType.OVERWORLD).getSavedData()
-						.getOrCreate(MapVariables::new, DATA_NAME);
+				return world.getWorld().getServer().getWorld(DimensionType.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -239,6 +238,7 @@ import net.minecraft.nbt.INBT;
 			});
 			context.setPacketHandled(true);
 		}
+
 	}
 	</#if>
 
@@ -271,6 +271,7 @@ import net.minecraft.nbt.INBT;
 	}
 
 	private static class PlayerVariablesStorage implements Capability.IStorage<PlayerVariables> {
+
 		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
 			CompoundNBT nbt = new CompoundNBT();
 			<#list variables as var>
@@ -293,6 +294,7 @@ import net.minecraft.nbt.INBT;
 				</#if>
 			</#list>
 		}
+
 	}
 
 	public static class PlayerVariables {
@@ -307,8 +309,9 @@ import net.minecraft.nbt.INBT;
 
 		public void syncPlayerVariables(Entity entity) {
 			if (entity instanceof ServerPlayerEntity)
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayerEntity) entity)), new PlayerVariablesSyncMessage(this));
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
 		}
+
 	}
 
 	public static class PlayerVariablesSyncMessage {

@@ -1,2 +1,2 @@
-(world instanceof World && ((World) world).getServer() != null && ((World) world).getServer().getAdvancementManager()
+(world.getWorld().getServer() != null && world.getWorld().getServer().getAdvancementManager()
     .getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}")).equals(advancement))

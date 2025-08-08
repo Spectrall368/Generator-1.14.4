@@ -1,1 +1,1 @@
-(world.getWorld().isRemote)
+(world.getWorld().isRemote())

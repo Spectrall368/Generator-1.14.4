@@ -1,1 +1,1 @@
-(world instanceof World && ((World) world).getScoreboard().getPlayersTeam(${input$name}) != null ? ((World) world).getScoreboard().getPlayersTeam(${input$name}).getAllowFriendlyFire() : false)
+(world instanceof World && world.getWorld().getScoreboard().getPlayersTeam(${input$name}) != null ? world.getWorld().getScoreboard().getPlayersTeam(${input$name}).getAllowFriendlyFire() : false)

@@ -1,1 +1,1 @@
-if(!${input$entity}.world.isRemote) ${input$entity}.remove();
+if(!${input$entity}.world.isRemote()) ${input$entity}.remove();

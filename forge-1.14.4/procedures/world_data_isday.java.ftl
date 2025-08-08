@@ -1,1 +1,1 @@
-(world.getWorld() instanceof World && ((World) world.getWorld()).isDaytime())
+(world.getWorld().isDaytime())
