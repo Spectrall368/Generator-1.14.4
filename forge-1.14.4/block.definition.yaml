@@ -434,4 +434,4 @@ tags:
     condition: "${data.blockBase! == 'Leaves'}"
 
 
-field_exclusions: [immuneToFire, displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
+field_exclusions: [requiresCorrectTool, immuneToFire, displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
