@@ -94,7 +94,7 @@ package ${package}.client.renderer.block;
 	}
 
 	private static void renders() {
-		ClientRegistry.bindTileEntitySpecialRenderer(${name}BlockEntity.class, ${name}Renderer::new);
+		ClientRegistry.bindTileEntitySpecialRenderer(${name}BlockEntity.class, new ${name}Renderer());
 	}
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {

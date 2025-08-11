@@ -58,19 +58,16 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		</#list>
 		if (model == null) return;
 
+		Minecraft.getInstance().getTextureManager().bindTexture(texture);
 		GlStateManager.pushMatrix();
-		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null).handlePerspective(displayContext);
-		GlStateManager.translatef(0.5f, isInventory(displayContext) ? 1.5f : 2f, 0.5f);
-		GlStateManager.scalef(1, -1, displayContext == ItemCameraTransforms.TransformType.GUI ? -1 : 1);
-		model.render(null, 0, 0, 0, 0, 0, 1);
-        if (itemstack.hasEffect())
-            renderEffect(() -> model.render(null, 0, 0, 0, 0, 0, 1));
-
+		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null);
+		GlStateManager.translatef(0.5, 1.5, 0.5);
+		GlStateManager.scalef(1, -1, -1);
+		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
+		if (itemstack.hasEffect()) {
+		    this.renderEffect(() -> model.render(null, 0, 0, 0, 0, 0, 0.0625F));
+		}
 		GlStateManager.popMatrix();
-	}
-
-	private static boolean isInventory(ItemCameraTransforms.TransformType type) {
-		return type == ItemCameraTransforms.TransformType.GUI || type == ItemCameraTransforms.TransformType.FIXED;
 	}
 
 	private void renderEffect(Runnable renderModelFunction) {
