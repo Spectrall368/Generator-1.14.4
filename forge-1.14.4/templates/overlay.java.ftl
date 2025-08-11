@@ -38,8 +38,8 @@ package ${package}.client.screens;
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
         public static void eventHandler(RenderGameOverlayEvent.Post event) {
             if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
-                int w = event.getWindow().getScaledWidth();
-                int h = event.getWindow().getScaledHeight();
+		int w = event.getWindow().getScaledWidth();
+            	int h = event.getWindow().getScaledHeight();
 	<#else>
         public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
             if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
@@ -71,7 +71,7 @@ package ${package}.client.screens;
 
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
             <#if data.baseTexture?has_content>
-		Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
+               Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
                 Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, w, h, w, h);
             </#if>
 
@@ -79,8 +79,8 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
-                    	Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-			Minecraft.getInstance().ingameGUI.blit(<@calculatePosition component/>, 0, 0,
+                   Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
+                    Minecraft.getInstance().ingameGUI.blit(<@calculatePosition component/>, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
                 <#if hasProcedure(component.displayCondition)>}</#if>
@@ -89,7 +89,7 @@ package ${package}.client.screens;
 			<#list data.getComponentsOfType("Sprite") as component>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.sprite}"));
-					Minecraft.getInstance().ingameGUI.blit(<@calculatePosition component/>,
+						Minecraft.getInstance().ingameGUI.blit(<@calculatePosition component/>,
 						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 							<@getSpriteByIndex component "width"/>, 0
 						<#else>
@@ -105,7 +105,7 @@ package ${package}.client.screens;
                     if (<@procedureOBJToConditionCode component.displayCondition/>)
                 </#if>
                 Minecraft.getInstance().fontRenderer.drawString(
-                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString()</#if>,
                     <@calculatePosition component/>, ${component.color.getRGB()});
             </#list>
 
@@ -113,8 +113,9 @@ package ${package}.client.screens;
 			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity) {
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
-                    </#if>
-					InventoryScreen.drawEntityOnScreen(<@calculatePosition component=component x_offset=10 y_offset=20/>,
+		                </#if>
+
+				InventoryScreen.drawEntityOnScreen(<@calculatePosition component=component x_offset=10 y_offset=20/>,
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, (LivingEntity) <@procedureOBJToConditionCode component.entityModel/>);
 			    }
 			</#list>

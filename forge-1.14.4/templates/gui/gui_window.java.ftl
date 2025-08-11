@@ -141,7 +141,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 						this.renderTooltip(Arrays.stream(hoverText.split("\n")).collect(Collectors.toList()), mouseX, mouseY);
 					}
 					<#else>
-						this.renderTooltip(I18n.format("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
+						this.renderTooltip(new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString(), mouseX, mouseY);
 					</#if>
 					customTooltipShown = true;
 				}
@@ -220,8 +220,8 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-			this.font.drawString(
-				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>I18n.format("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+			this.font.drawStringWithShadow(
+				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString()</#if>,
 				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()});
 		</#list>
 	}
@@ -231,14 +231,14 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 
 		<#list textFields as component>
 			${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${component.gx(data.width) + 1}, this.guiTop + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.width - 2}, ${component.height - 2}, new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 			${component.getName()}.setMaxStringLength(8192);
 			${component.getName()}.setResponder(content -> {
 				if (!menuStateUpdateActive)
 					container.sendMenuStateUpdate(entity, 0, "${component.getName()}", content, false);
 			});
 			<#if component.placeholder?has_content>
-			${component.getName()}.setSuggestion(I18n.format("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.getName()}.setSuggestion(new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 			</#if>
 
 			this.children.add(this.${component.getName()});
@@ -250,11 +250,11 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 			${component.getName()} = new Button(
 				this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 				${component.width}, ${component.height},
-				I18n.format("gui.${modid}.${registryname}.${component.getName()}"),
+				new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString(),
 				<@buttonOnClick component/>)<#if component.isUndecorated>{
                     @Override public void renderButton(int mouseX, int mouseY, float partialTick) {
                         String text = this.isHovered() ? (TextFormatting.UNDERLINE + ${component.getName()}.getMessage()) : ${component.getName()}.getMessage();
-                        drawString(this.font, text, ${component.getName()}.x, ${component.getName()}.y, 16777215 | MathHelper.ceil(this.alpha * 255.0F) << 24);
+                        drawString(font, text, ${component.getName()}.x, ${component.getName()}.y, 16777215 | MathHelper.ceil(this.alpha * 255.0F) << 24);
                     }
                 }</#if>;
 
@@ -281,7 +281,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 		<#list checkboxes as component>
 			<#if hasProcedure(component.isCheckedProcedure)>boolean ${component.getName()}Selected = <@procedureOBJToConditionCode component.isCheckedProcedure/>;</#if>
 			${component.getName()} = new CheckboxButton(this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
-				20, 20, I18n.format("gui.${modid}.${registryname}.${component.getName()}"),
+				20, 20, new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString(),
 				<#if hasProcedure(component.isCheckedProcedure)>${component.getName()}Selected<#else>false</#if>) {
 				    @Override public void onPress() {
 				        super.onPress();
