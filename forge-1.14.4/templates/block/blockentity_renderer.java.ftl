@@ -45,43 +45,63 @@ package ${package}.client.renderer.block;
 	@Override public void render(${name}BlockEntity blockEntity, double x, double y, double z, float partialTicks, int destroyStage) {
 		<#compress>
 		GlStateManager.pushMatrix();
-		GlStateManager.scalef(-1, -1, 1);
-		GlStateManager.translatef(-0.5f, -0.5f, 0.5f);
+		GlStateManager.translated(x + 0.5d, y + 0.5d, z + 0.5d);
+		GlStateManager.scalef(-1f, -1f, 1f);
 		<#if data.rotationMode != 0>
 			BlockState state = blockEntity.getBlockState();
         	<#if data.rotationMode != 5>
 				Direction facing = state.get(${name}Block.FACING);
         	    switch (facing) {
 					case NORTH -> {}
-					case EAST -> poseStack.rotate(Axis.YP.rotationDegrees(90));
-					case WEST -> poseStack.rotate(Axis.YP.rotationDegrees(-90));
-					case SOUTH -> poseStack.rotate(Axis.YP.rotationDegrees(180));
+					case EAST -> GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
+					case WEST -> GlStateManager.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+					case SOUTH -> GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
         	    	<#if data.rotationMode == 2 || data.rotationMode == 4>
-        	    		case UP -> poseStack.rotate(Axis.XN.rotationDegrees(90));
-        	    		case DOWN -> poseStack.rotate(Axis.XN.rotationDegrees(-90));
+        	    		case UP -> GlStateManager.rotatef(90.0F, -1.0F, 0.0F, 0.0F);
+        	    		case DOWN -> GlStateManager.rotatef(-90.0F, -1.0F, 0.0F, 0.0F);
 					</#if>
 				}
 				<#if data.enablePitch>
 				if (facing != Direction.UP && facing != Direction.DOWN) {
 					switch (state.get(${name}Block.FACE)) {
 						case FLOOR -> {}
-						case WALL -> poseStack.rotate(Axis.XP.rotationDegrees(90));
-						case CEILING -> poseStack.rotate(Axis.XP.rotationDegrees(180));
+						case WALL -> GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+						case CEILING -> GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
 					};
 				}
 				</#if>
 			<#else>
         	    switch (state.get(${name}Block.AXIS)) {
-					case X -> poseStack.rotate(Axis.ZN.rotationDegrees(90));
+					case X -> GlStateManager.rotatef(90.0F, 0.0F, 0.0F, -1.0F);
 					case Y -> {}
-					case Z -> poseStack.rotate(Axis.XP.rotationDegrees(90));
+					case Z -> GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
 				}
 			</#if>
 		</#if>
-		GlStateManager.translatef(0, -1, 0);
+		GlStateManager.translatef(0f, -1f, 0f);
+		if (destroyStage >= 0) {
+		    this.bindTexture(DESTROY_STAGES[destroyStage]);
+		    GlStateManager.matrixMode(5890);
+		    GlStateManager.pushMatrix();
+		    GlStateManager.scalef(4.0F, 2.0F, 1.0F);
+		    GlStateManager.translatef(0.0625F, 0.0625F, 0.0625F);
+		    GlStateManager.matrixMode(5888);
+		} else {
+		    this.bindTexture(texture);
+		}
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.pushMatrix();
 		model.setupBlockEntityAnim(blockEntity, blockEntity.getWorld().getGameTime() + partialTicks);
-		model.render(null, 0, 0, 0, 0, 0, 1);
+		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
 		GlStateManager.popMatrix();
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.popMatrix();
+
+		if (destroyStage >= 0) {
+		    GlStateManager.matrixMode(5890);
+		    GlStateManager.popMatrix();
+		    GlStateManager.matrixMode(5888);
+		}
 		</#compress>
 	}
 
@@ -103,7 +123,7 @@ package ${package}.client.renderer.block;
 		}
 
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
-			super.setRotationAngles(null, 0, 0, ageInTicks, 0, 0, 1);
+			super.setRotationAngles(null, 0, 0, ageInTicks, 0, 0, 0.0625F);
 		}
 	}
 }

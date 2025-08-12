@@ -221,6 +221,10 @@ public class ${name}Block extends
    	@Override public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.INVISIBLE;
    	}
+
+   	@Override public boolean hasCustomBreakingProgress(BlockState state) {
+		return true;
+   	}
    	</#if>
 
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">

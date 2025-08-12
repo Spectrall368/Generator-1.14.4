@@ -61,8 +61,8 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		Minecraft.getInstance().getTextureManager().bindTexture(texture);
 		GlStateManager.pushMatrix();
 		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null);
-		GlStateManager.translatef(0.5, 1.5, 0.5);
-		GlStateManager.scalef(1, -1, -1);
+		GlStateManager.translatef(0.5f, 1.5f, 0.5f);
+		GlStateManager.scalef(1f, -1f, -1f);
 		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
 		if (itemstack.hasEffect()) {
 		    this.renderEffect(() -> model.render(null, 0, 0, 0, 0, 0, 0.0625F));
