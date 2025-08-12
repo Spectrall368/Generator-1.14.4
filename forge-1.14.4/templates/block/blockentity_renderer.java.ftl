@@ -52,29 +52,47 @@ package ${package}.client.renderer.block;
         	<#if data.rotationMode != 5>
 				Direction facing = state.get(${name}Block.FACING);
         	    switch (facing) {
-					case NORTH -> {}
-					case EAST -> GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
-					case WEST -> GlStateManager.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-					case SOUTH -> GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+					case NORTH: break;
+					case EAST:
+					    GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
+					    break;
+					case WEST:
+					    GlStateManager.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+					    break;
+					case SOUTH:
+					    GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+					    break;
         	    	<#if data.rotationMode == 2 || data.rotationMode == 4>
-        	    		case UP -> GlStateManager.rotatef(90.0F, -1.0F, 0.0F, 0.0F);
-        	    		case DOWN -> GlStateManager.rotatef(-90.0F, -1.0F, 0.0F, 0.0F);
+        	    		case UP:
+        	    		    GlStateManager.rotatef(90.0F, -1.0F, 0.0F, 0.0F);
+        	    		    break;
+        	    		case DOWN:
+        	    		    GlStateManager.rotatef(-90.0F, -1.0F, 0.0F, 0.0F);
+        	    		    break;
 					</#if>
 				}
 				<#if data.enablePitch>
 				if (facing != Direction.UP && facing != Direction.DOWN) {
 					switch (state.get(${name}Block.FACE)) {
-						case FLOOR -> {}
-						case WALL -> GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
-						case CEILING -> GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
+						case FLOOR: break;
+						case WALL:
+						    GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+						    break;
+						case CEILING:
+						    GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
+						    break;
 					};
 				}
 				</#if>
 			<#else>
         	    switch (state.get(${name}Block.AXIS)) {
-					case X -> GlStateManager.rotatef(90.0F, 0.0F, 0.0F, -1.0F);
-					case Y -> {}
-					case Z -> GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+					case X:
+					    GlStateManager.rotatef(90.0F, 0.0F, 0.0F, -1.0F);
+					    break;
+					case Y: break;
+					case Z:
+					    GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+					    break;
 				}
 			</#if>
 		</#if>
