@@ -23,7 +23,6 @@ import_formatter:
   priority_imports:
     Material: net.minecraft.block.material
     Nullable: javax.annotation
-    Codec: com.mojang.serialization
     SoundEvent: net.minecraft.util
     Blocks: net.minecraft.block
     Items: net.minecraft.item
