@@ -154,11 +154,6 @@ templates:
   - template: json/block.json.ftl
     condition: "blockBase %= Wall"
     writer: json
-    variables: "model=template_wall_side_tall;txname=wall"
-    name: "@MODASSETSROOT/models/block/@registryname_side_tall.json"
-  - template: json/block.json.ftl
-    condition: "blockBase %= Wall"
-    writer: json
     variables: "model=template_wall_post;txname=wall"
     name: "@MODASSETSROOT/models/block/@registryname_post.json"
   - template: json/block.json.ftl
@@ -435,3 +430,4 @@ tags:
 
 
 field_exclusions: [requiresCorrectTool, immuneToFire, displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
+
