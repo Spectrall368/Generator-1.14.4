@@ -38,7 +38,6 @@ import org.apache.logging.log4j.Logger;
 		// Start of user code block mod init
 		// End of user code block mod init
 
-		bus.addListener(this::clientSetup);
 		bus.register(this);
 	}
 
@@ -79,9 +78,5 @@ import org.apache.logging.log4j.Logger;
 			workQueue.removeAll(actions);
 		}
 	}
-
-	private void clientSetup(FMLClientSetupEvent event) {
-        	OBJLoader.INSTANCE.addDomain(MODID);
-    	}
 }
 <#-- @formatter:on -->
