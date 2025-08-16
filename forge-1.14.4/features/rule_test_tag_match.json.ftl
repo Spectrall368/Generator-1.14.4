@@ -1,1 +1,1 @@
-(blockAt.getBlock().isIn(BlockTags.makeWrapperTag("${field$tag}")))
+(blockAt.getBlock().isIn(BlockTags.getCollection().getOrCreate(new ResourceLocation("${field$tag}"))))

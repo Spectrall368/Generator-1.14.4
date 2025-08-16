@@ -1,1 +1,1 @@
-/*@Tag*/BlockTags.makeWrapperTag("${field$tag}")
+/*@Tag*/BlockTags.getCollection().getOrCreate(new ResourceLocation("${field$tag}"))

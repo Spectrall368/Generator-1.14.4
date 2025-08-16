@@ -1,4 +1,4 @@
-private static Block getRandomBlock(String name) {
-		Tag<Block> tag = BlockTags.makeWrapperTag(name);
+private static Block getRandomBlock(ResourceLocation name) {
+		Tag<Block> tag = BlockTags.getCollection().getOrCreate(name);
 		return tag.getAllElements().isEmpty() ? Blocks.AIR : tag.getRandomElement(new Random());
 }

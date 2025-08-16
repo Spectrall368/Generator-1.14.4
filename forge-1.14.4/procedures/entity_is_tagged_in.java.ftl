@@ -1,1 +1,2 @@
-(${input$entity}.getType().isContained(EntityTypeTags.func_219763_a("${input$tag}")))
+<#include "mcelements.ftl">
+(${input$entity}.getType().isContained(EntityTypeTags.getCollection().getOrCreate(${toResourceLocation(input$tag)})))

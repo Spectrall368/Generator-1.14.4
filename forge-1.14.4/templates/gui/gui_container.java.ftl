@@ -155,7 +155,7 @@ public class ${name}Menu extends Container implements ${JavaModName}Menus.MenuAc
 								@Override public boolean isItemValid(ItemStack stack) {
 									<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
 										<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\"">
-										return stack.getItem().isIn(ItemTags.makeWrapperTag("${tag}"));
+										return stack.getItem().isIn(ItemTags.getCollection().getOrCreate(new ResourceLocation("${tag}")));
 									<#else>
 										return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();
 									</#if>
@@ -278,7 +278,7 @@ public class ${name}Menu extends Container implements ${JavaModName}Menus.MenuAc
 
 		<#if data.hasSlotEvents()>
 			private void slotChanged(int slotid, int ctype, int meta) {
-				if(this.world != null && this.world.isRemote) {
+				if(this.world != null && this.world.isRemote()) {
 					${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
 					${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 				}

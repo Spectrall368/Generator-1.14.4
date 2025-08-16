@@ -62,9 +62,9 @@
 
 <#function mappedMCItemToIngredient mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "Ingredient.fromTag(ItemTags.makeWrapperTag(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\"))">
+        <#return "Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\")))">
     <#elseif mappedBlock.getMappedValue(1).startsWith("#")>
-        <#return "Ingredient.fromTag(ItemTags.makeWrapperTag(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\"))">
+        <#return "Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\")))">
     <#else>
         <#return "Ingredient.fromStacks(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
     </#if>
@@ -142,7 +142,7 @@
     <#if tags?has_content>
     	<#assign retval += "Stream.of(">
         <#list tags as tag>
-        	<#assign retval += "BlockTags.makeWrapperTag(\"" + tag + "\")">
+        	<#assign retval += "BlockTags.getCollection().getOrCreate(new ResourceLocation(\"" + tag + "\"))">
             <#if tag?has_next><#assign retval += ","></#if>
         </#list>
         <#assign retval += ").anyMatch(" + blockToCheck + "::isIn)">
