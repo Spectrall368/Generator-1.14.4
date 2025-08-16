@@ -200,5 +200,22 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		return <@procedureOBJToConditionCode data.transparentModelCondition false true/>;
 	    }
     </#if>
+
+	<#if data.isShakingCondition?? && (hasProcedure(data.isShakingCondition) || data.isShakingCondition.getFixedValue())>
+        @Override protected void applyRotations(${name}Entity entity, float ageInTicks, float rotationYaw, float partialTicks) {
+        	float f = entityLiving.getSwimAnimation(partialTicks);
+        	super.applyRotations(entity, ageInTicks, rotationYaw, partialTicks);
+        	if (f > 0.0F) {
+        		<#if hasProcedure(data.isShakingCondition)>
+        		World world = entity.world;
+        		double x = entity.getPosX();
+	        	double y = entity.getPosY();
+        		double z = entity.getPosZ();
+        		</#if>
+        		if(<@procedureOBJToConditionCode data.isShakingCondition/>)
+        			GlStateManager.rotatef(MathHelper.lerp(f, entity.rotationPitch, -10.0F - entity.rotationPitch), 1.0F, 0.0F, 0.0F);
+        	}
+        }
+	</#if>
 }
 </#compress>
