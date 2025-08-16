@@ -25,4 +25,4 @@ localizationkeys:
   - key: entity.@modid.@registryname
     mapto: mobName
 
-field_exclusions: [isShakingCondition, raidSpawnsCount, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
+field_exclusions: [raidSpawnsCount, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
