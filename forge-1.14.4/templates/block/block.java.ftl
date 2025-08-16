@@ -478,7 +478,7 @@ public class ${name}Block extends
 	</#if>
 
 
-	<#if data.ignitedByLava || blockSetType == "OAK">
+	<#if (blockSetType == "OAK") != data.ignitedByLava>
 	@Override public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 	    return ${data.ignitedByLava};
 	}
