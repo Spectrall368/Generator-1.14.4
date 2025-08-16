@@ -1,4 +1,4 @@
-private static Item getRandomItem(ResourceLocation name) {
-		Tag<Item> tag = ItemTags.getCollection().getOrCreate(name);
+private static Item getRandomItem(String name) {
+		Tag<Item> tag = ItemTags.makeWrapperTag(name);
 		return tag.getAllElements().isEmpty() ? Items.AIR : tag.getRandomElement(new Random());
 }
