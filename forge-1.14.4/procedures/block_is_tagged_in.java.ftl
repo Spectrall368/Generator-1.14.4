@@ -1,3 +1,2 @@
-<#include "mcelements.ftl">
 <#include "mcitems.ftl">
-(${mappedBlockToBlock(input$a)}.isIn(BlockTags.makeWrapperTag(${toResourceLocation(input$b)})))
+(${mappedBlockToBlock(input$a)}.isIn(BlockTags.makeWrapperTag("${input$b}")))
