@@ -109,7 +109,7 @@ public class ${name}Block extends
 	    <#if blockSetType == "null">
 	    REDSTONE_LIGHT
 	    <#else>
-	    ${blockSetType?replace("OAK", "WOOD")}
+	    ${blockSetType?replace("OAK", "WOOD")?replace("STONE", "ROCK")}
 	    </#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		    , MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
