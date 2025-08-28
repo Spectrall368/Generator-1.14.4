@@ -61,11 +61,15 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			-10380959
 			<#elseif data.tintType == "Water">
 			-13083194
+			<#elseif data.tintType == "Sky">
+			-8214273
+			<#elseif data.tintType == "Fog">
+			-4138753
 			<#else>
 			-16448205
 			</#if>)
 		</#if>)
-		.explosionResistance(${data.resistance}f)
+	    .explosionResistance(${data.resistance}f)
 		<#if data.canMultiply>.canMultiply()</#if>
 		<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
 		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
@@ -74,12 +78,12 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		.block(() -> (FlowingFluidBlock) ${JavaModName}Blocks.${REGISTRYNAME}.get()
 		);
 
-	private ${name}Fluid(Properties properties) {
-		super(properties);
+	private ${name}Fluid() {
+		super(PROPERTIES);
 	}
 
 	<#if data.spawnParticles>
-	@OnlyIn(Dist.CLIENT) @Override public IParticleData getDripParticleData() {
+	@Override @OnlyIn(Dist.CLIENT) public IParticleData getDripParticleData() {
 		return ${data.dripParticle};
 	}
 	</#if>
@@ -93,7 +97,8 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	<#if hasProcedure(data.flowCondition)>
 	@Override protected boolean canFlow(IBlockReader worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, IFluidState toFluidState, Fluid fluidIn) {
 		boolean condition = true;
-		if (worldIn instanceof IWorld world) {
+		if (worldIn instanceof IWorld) {
+			IWorld world = (IWorld) worldIn;
 			int x = fromPos.getX();
 			int y = fromPos.getY();
 			int z = fromPos.getZ();
@@ -116,10 +121,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	</#if>
 
 	public static class Source extends ${name}Fluid {
-		public Source(Properties properties) {
-			super(properties);
-		}
-
 		public int getLevel(IFluidState state) {
 			return 8;
 		}
@@ -130,10 +131,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	}
 
 	public static class Flowing extends ${name}Fluid {
-		public Flowing(Properties properties) {
-			super(properties);
-		}
-
 		protected void fillStateContainer(StateContainer.Builder<Fluid, IFluidState> builder) {
 			super.fillStateContainer(builder);
 			builder.add(LEVEL_1_8);
