@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -39,10 +39,19 @@ public class ${JavaModName}Fluids {
 	public static final DeferredRegister<Fluid> REGISTRY = new DeferredRegister<>(ForgeRegistries.FLUIDS, ${JavaModName}.MODID);
 
 	<#list fluids as fluid>
-	public static final RegistryObject<Fluid> ${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Source(${fluid.getModElement().getName()}Fluid.PROPERTIES));
-	public static final RegistryObject<Fluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Flowing(${fluid.getModElement().getName()}Fluid.PROPERTIES));
+	public static final RegistryObject<FlowingFluid> ${fluid.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Source::new);
+	public static final RegistryObject<FlowingFluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Flowing::new);
 	</#list>
+
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class FluidsClientSideHandler {
+		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
+			<#list fluids as fluid>
+			RenderTypeLookup.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.getTranslucent());
+			</#list>
+		}
+	}
 }
 <#-- @formatter:on -->
