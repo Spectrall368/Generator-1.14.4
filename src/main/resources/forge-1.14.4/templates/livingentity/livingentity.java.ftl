@@ -496,14 +496,14 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 
 						@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
 							PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-							packetBuffer.writeBlockPos(sourceentity.blockPosition());
+							packetBuffer.writeBlockPos(sourceentity.getPosition());
 							packetBuffer.writeByte(0);
 							packetBuffer.writeVarInt(${name}Entity.this.getEntityId());
 							return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 						}
 
 					}, buf -> {
-						buf.writeBlockPos(sourceentity.blockPosition());
+						buf.writeBlockPos(sourceentity.getPosition());
 						buf.writeByte(0);
 						buf.writeVarInt(this.getEntityId());
 					});
