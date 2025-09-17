@@ -273,7 +273,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	@Override public void randomTick(BlockState blockstate, World world, BlockPos pos, Random random) {
 		<#if data.plantType == "growapable">
 		<#if data.isWaterloggable()>
-		boolean flag = world.getBlockState(pos.up()) == Blocks.WATER;
+		boolean flag = world.getBlockState(pos.up()).getBlock() == Blocks.WATER;
 		</#if>
 		if (world.isAirBlock(pos.up()) <#if data.isWaterloggable()>|| flag</#if>) {
 			int i = 1;
