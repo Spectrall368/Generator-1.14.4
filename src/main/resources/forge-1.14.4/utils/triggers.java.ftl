@@ -458,7 +458,7 @@
 	"hitX": "hit.getHitVec().x()",
 	"hitY": "hit.getHitVec().y()",
 	"hitZ": "hit.getHitVec().z()"
-	}, true/>
+	}, false/>
 }
 </#if>
 </#macro>

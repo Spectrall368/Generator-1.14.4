@@ -18,12 +18,12 @@
     ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if semicolon>;</#if>
 </#macro>
 
-<#macro procedureCodeWithOptResult object type defaultResult dependencies={} lie=false>
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={} isNotAction=true>
     <#if hasReturnValueOf(object, type)>
-        return <@procedureCode object dependencies !lie?boolean/><#if lie> != ActionResultType.FAIL;</#if>
+        return <@procedureCode object dependencies isNotAction/><#if !isNotAction> != ActionResultType.FAIL;</#if>
     <#else>
         <@procedureCode object dependencies/>
-        return ${defaultResult}<#if lie> != ActionResultType.FAIL</#if>;
+        return ${defaultResult}<#if !isNotAction> != ActionResultType.FAIL</#if>;
     </#if>
 </#macro>
 
@@ -95,7 +95,6 @@
 <#function hasProcedure object="">
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null" && w.hasModElement(object.getName())>
 </#function>
-
 <#function hasReturnValueOf object="" type="">
     <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
