@@ -497,7 +497,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || data.guiBoundTo?has_content>
 	@Override public boolean processInteract(PlayerEntity sourceentity, Hand hand) {
 		ItemStack itemstack = sourceentity.getHeldItem(hand);
-		ActionResultType retval = ActionResult.newResult(this.world.isRemote()).getType();
+		ActionResultType retval = ActionResult.newResult(ActionResultType.SUCCESS, this.world.isRemote()).getType();
 
 		<#if data.guiBoundTo?has_content>
 			<#if data.ridable>
@@ -533,23 +533,23 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 		<#if (data.tameable && data.breedable)>
 			Item item = itemstack.getItem();
 			if (itemstack.getItem() instanceof SpawnEggItem) {
-				retval = ActionResult.newResult(super.processInteract(sourceentity, hand)).getType();
+				retval = ActionResult.newResult(ActionResultType.SUCCESS, super.processInteract(sourceentity, hand)).getType();
 			} else if (this.world.isRemote()) {
 				retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
-						? ActionResult.newResult(this.world.isRemote()).getType() : ActionResultType.PASS;
+						? ActionResult.newResult(ActionResultType.SUCCESS, this.world.isRemote()).getType() : ActionResultType.PASS;
 			} else {
 				if (this.isTamed()) {
 					if (this.isOwner(sourceentity)) {
 						if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal((float)item.getFood().getHealing());
-							retval = ActionResult.newResult(this.world.isRemote()).getType();
+							retval = ActionResult.newResult(ActionResultType.SUCCESS, this.world.isRemote()).getType();
 						} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal(4);
-							retval = ActionResult.newResult(this.world.isRemote()).getType();
+							retval = ActionResult.newResult(ActionResultType.SUCCESS, this.world.isRemote()).getType();
 						} else {
-							retval = ActionResult.newResult(super.processInteract(sourceentity, hand)).getType();
+							retval = ActionResult.newResult(ActionResultType.SUCCESS, super.processInteract(sourceentity, hand)).getType();
 						}
 					}
 				} else if (this.isBreedingItem(itemstack)) {
@@ -562,9 +562,9 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					}
 
 					this.enablePersistence();
-					retval = ActionResult.newResult(this.world.isRemote()).getType();
+					retval = ActionResult.newResult(ActionResultType.SUCCESS, this.world.isRemote()).getType();
 				} else {
-					retval = ActionResult.newResult(super.processInteract(sourceentity, hand)).getType();
+					retval = ActionResult.newResult(ActionResultType.SUCCESS, super.processInteract(sourceentity, hand)).getType();
 					if (retval == ActionResultType.SUCCESS)
 						this.enablePersistence();
 				}
