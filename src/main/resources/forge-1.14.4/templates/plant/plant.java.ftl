@@ -208,10 +208,10 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 		<#if data.plantType != "growapable">
-		@Override public boolean isValidGround(BlockState groundState, IBlockReader worldIn, BlockPos pos) {
+		@Override public boolean isValidGround(BlockState groundState, IBlockReader world, BlockPos pos) {
 			<#if hasProcedure(data.placingCondition)>
 			boolean additionalCondition = true;
-			if (worldIn instanceof IWorld world) {
+			if (world instanceof IWorld) {
 				int x = pos.getX();
 				int y = pos.getY() + 1;
 				int z = pos.getZ();
