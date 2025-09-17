@@ -20,7 +20,7 @@
 
 <#macro procedureCodeWithOptResult object type defaultResult dependencies={} lie=false>
     <#if hasReturnValueOf(object, type)>
-        return <@procedureCode object dependencies !lie/><#if lie> != ActionResultType.FAIL;</#if>
+        return <@procedureCode object dependencies !lie?boolean/><#if lie> != ActionResultType.FAIL;</#if>
     <#else>
         <@procedureCode object dependencies/>
         return ${defaultResult}<#if lie> != ActionResultType.FAIL</#if>;
