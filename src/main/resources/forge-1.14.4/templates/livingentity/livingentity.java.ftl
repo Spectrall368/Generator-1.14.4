@@ -2,29 +2,29 @@
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
  # Copyright (C) 2020-2023, Pylo, opensource contributors
- # 
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- # 
+ #
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- # 
+ #
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
+ #
  # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
  # exception.
 -->
 
@@ -36,10 +36,10 @@ package ${package}.entity;
 import net.minecraft.network.datasync.DataParameter;
 <#assign interfaces = []>
 <#assign extendsClass = "Creature">
-<#if data.aiBase != "(none)" >
+<#if data.aiBase != "(none)">
 	<#assign extendsClass = data.aiBase>
 <#else>
-	<#assign extendsClass = data.mobBehaviourType.replace("Mob", "Monster").replace("Raider", "AbstractRaider")>
+	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Raider", "AbstractRaider")>
 </#if>
 <#if data.breedable>
 	<#assign extendsClass = "Animal">
@@ -52,6 +52,22 @@ import net.minecraft.network.datasync.DataParameter;
 </#if>
 
 public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt 0>implements ${interfaces?join(",")}</#if> {
+
+	<#if data.spawnThisMob>
+	private static final Set<ResourceLocation> SPAWN_BIOMES =
+	<#if data.restrictionBiomes?has_content>
+	ImmutableSet.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
+		    </#list><#sep>,
+        </#list>
+        )
+        <#else>
+        null
+        </#if>;
+	</#if>
 
 	<#list data.entityDataEntries as entry>
 		<#if entry.value().getClass().getSimpleName() == "Integer">
@@ -69,8 +85,8 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	</#if>
 
 	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, World world) {
-    		this(${JavaModName}Entities.${REGISTRYNAME}.get(), world);
-    	}
+    	this(${JavaModName}Entities.${REGISTRYNAME}.get(), world);
+    }
 
 	public ${name}Entity(EntityType<${name}Entity> type, World world) {
     	super(type, world);
@@ -78,14 +94,14 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 		experienceValue = ${data.xpAmount};
 		setNoAI(${(!data.hasAI)});
 
-		<#if data.mobLabel?has_content >
+		<#if data.mobLabel?has_content>
         	setCustomName(new StringTextComponent("${data.mobLabel}"));
         	setCustomNameVisible(true);
-        	</#if>
+        </#if>
 
 		<#if !data.doesDespawnWhenIdle>
 			enablePersistence();
-        	</#if>
+        </#if>
 
 	<#if !data.equipmentMainHand.isEmpty()>
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, ${mappedMCItemToItemStackCode(data.equipmentMainHand, 1)});
@@ -130,7 +146,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					if (${name}Entity.this.isInWater()) {
 						${name}Entity.this.setAIMoveSpeed((float) ${name}Entity.this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
 
-						float f2 = - (float) (MathHelper.atan2(dy, (float) Math.sqrt(dx * dx + dz * dz)) * (180 / Math.PI));
+						float f2 = - (float) (MathHelper.atan2(dy, (float) MathHelper.sqrt(dx * dx + dz * dz)) * (180 / Math.PI));
 						f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85, 85);
 						${name}Entity.this.rotationPitch = this.limitAngle(${name}Entity.this.rotationPitch, f2, 5);
 						float f3 = MathHelper.cos(${name}Entity.this.rotationPitch * (float) (Math.PI / 180.0));
@@ -235,7 +251,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	<#if !data.mobDrop.isEmpty()>
     	protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
         	super.dropSpecialItems(source, looting, recentlyHitIn);
-       		this.entityDropItem(${mappedMCItemToItemStackCode(data.mobDrop, 1)});
+        	this.entityDropItem(${mappedMCItemToItemStackCode(data.mobDrop, 1)});
    	}
 	</#if>
 
@@ -460,7 +476,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	}
 
 	@Override public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+    		super.readAdditional(compound);
 		<#list data.entityDataEntries as entry>
 			if (compound.contains("Data${entry.property().getName()}"))
 			<#if entry.value().getClass().getSimpleName() == "Integer">
@@ -481,11 +497,11 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || data.guiBoundTo?has_content>
 	@Override public boolean processInteract(PlayerEntity sourceentity, Hand hand) {
 		ItemStack itemstack = sourceentity.getHeldItem(hand);
-		boolean retval = this.world.isRemote;
+		ActionResultType retval = ActionResult.newResult(this.world.isRemote()).getType();
 
 		<#if data.guiBoundTo?has_content>
 			<#if data.ridable>
-				if (sourceentity.isSecondaryUseActive()) {
+				if (sourceentity.isSneaking()) {
 			</#if>
 				if(sourceentity instanceof ServerPlayerEntity) {
 					NetworkHooks.openGui((ServerPlayerEntity) sourceentity, new INamedContainerProvider() {
@@ -509,7 +525,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					});
 				}
 			<#if data.ridable>
-					return this.world.isRemote;
+					return this.world.isRemote();
 				}
 			</#if>
 		</#if>
@@ -517,23 +533,23 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 		<#if (data.tameable && data.breedable)>
 			Item item = itemstack.getItem();
 			if (itemstack.getItem() instanceof SpawnEggItem) {
-				retval = super.processInteract(sourceentity, hand);
+				retval = ActionResult.newResult(super.processInteract(sourceentity, hand)).getType();
 			} else if (this.world.isRemote()) {
 				retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
-						? this.world.isRemote() : true;
+						? ActionResult.newResult(this.world.isRemote()).getType() : ActionResultType.PASS;
 			} else {
 				if (this.isTamed()) {
 					if (this.isOwner(sourceentity)) {
 						if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal((float)item.getFood().getHealing());
-							retval = this.world.isRemote;
+							retval = ActionResult.newResult(this.world.isRemote()).getType();
 						} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal(4);
-							retval = this.world.isRemote;
+							retval = ActionResult.newResult(this.world.isRemote()).getType();
 						} else {
-							retval = super.processInteract(sourceentity, hand);
+							retval = ActionResult.newResult(super.processInteract(sourceentity, hand)).getType();
 						}
 					}
 				} else if (this.isBreedingItem(itemstack)) {
@@ -546,10 +562,10 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					}
 
 					this.enablePersistence();
-					retval = this.world.isRemote;
+					retval = ActionResult.newResult(this.world.isRemote()).getType();
 				} else {
-					retval = super.processInteract(sourceentity, hand);
-					if (retval)
+					retval = ActionResult.newResult(super.processInteract(sourceentity, hand)).getType();
+					if (retval == ActionResultType.SUCCESS)
 						this.enablePersistence();
 				}
 			}
@@ -571,10 +587,10 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/> != ActionResultType.FAIL;
 			<#else>
 				<@procedureOBJToCode data.onRightClickedOn/>
-				return retval;
+				return retval != ActionResultType.FAIL;
 			</#if>
 		<#else>
-			return retval;
+			return retval != ActionResultType.FAIL;
 		</#if>
 	}
     </#if>
@@ -649,7 +665,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	<#if data.breedable>
         @Override public AgeableEntity createChild(AgeableEntity ageable) {
 			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(this.world);
-			retval.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(retval)), SpawnReason.BREEDING, null, null);
+			retval.onInitialSpawn(this.world, this.world.getDifficultyForLocation(retval.getPosition()), SpawnReason.BREEDING, null, null);
 			return retval;
 		}
 
@@ -659,7 +675,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
     </#if>
 
 	<#if data.waterMob>
-	@Override public boolean isNotColliding(IWorldReader world) {
+    	@Override public boolean isNotColliding(IWorldReader world) {
 		return world.checkNoEntityCollision(this);
 	}
 	</#if>
@@ -797,8 +813,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	</#if>
 
 	<#if data.flyingMob>
-	@Override protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-   	}
+	@Override protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {}
 
    	@Override public void setNoGravity(boolean ignored) {
 		super.setNoGravity(true);
@@ -811,22 +826,6 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 
 		this.setNoGravity(true);
 	}
-    </#if>
-
-    <#if data.spawnThisMob>
-        private static final Set<ResourceLocation> SPAWN_BIOMES =
-        <#if data.restrictionBiomes?has_content>
-        ImmutableSet.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
-		    <#list expandedBiomes as expandedBiome>
-			new ResourceLocation("${expandedBiome}")<#sep>,
-		    </#list><#sep>,
-        </#list>
-        )
-        <#else>
-        null
-        </#if>;
     </#if>
 
 	public static void init() {
@@ -1012,5 +1011,3 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
         <#return input?starts_with("#")?then("#" + result, result)/>
     </#if>
 </#function>
-
-
