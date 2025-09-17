@@ -47,7 +47,7 @@ package ${package}.item.extension;
 					int z = blockSource.getBlockPos().getZ();
 
 					<#if hasSuccessCondition>
-						this.successful(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
+						this.successful = <@procedureOBJToConditionCode data.dispenseSuccessCondition/>;
 					</#if>
 
 					<#if hasProcedure(data.dispenseResultItemstack)>

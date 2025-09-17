@@ -37,6 +37,7 @@ import net.minecraftforge.eventbus.api.Event;
 <#if !(data.skipDependencyNullCheck)>
 	<#list dependencies as dependency>
 		<#if dependency.getRawType() != "number"
+			&& dependency.getRawType() != "dimensiontype"
 			&& dependency.getRawType() != "world"
 			&& dependency.getRawType() != "itemstack"
 			&& dependency.getRawType() != "blockstate"

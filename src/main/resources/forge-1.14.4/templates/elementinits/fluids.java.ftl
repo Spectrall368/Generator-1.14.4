@@ -44,14 +44,5 @@ public class ${JavaModName}Fluids {
 	public static final RegistryObject<FlowingFluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
 		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Flowing::new);
 	</#list>
-
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class FluidsClientSideHandler {
-		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
-			<#list fluids as fluid>
-			RenderTypeLookup.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.getTranslucent());
-			RenderTypeLookup.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.getTranslucent());
-			</#list>
-		}
-	}
 }
 <#-- @formatter:on -->

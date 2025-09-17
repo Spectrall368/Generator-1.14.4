@@ -880,7 +880,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					}
 					<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos) == Blocks.WATER && world.getBlockState(pos.up()) == Blocks.WATER)
+							(world.getBlockState(pos).getBlock() == Blocks.WATER && world.getBlockState(pos.up()).getBlock() == Blocks.WATER)
 					</#if>
 			);
 			<#elseif data.mobSpawningType == "undergroundWaterCreature">
@@ -895,7 +895,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					}
 					<#else>
 					(entityType, world, reason, pos, random) -> {
-					    return world.getFluidState(pos.down()).isTagged(FluidTags.WATER) && world.getBlockState(pos.up()) == Blocks.WATER && pos.getY() >= (world.getSeaLevel() - 13) && pos.getY() <= world.getSeaLevel();
+					    return world.getFluidState(pos.down()).isTagged(FluidTags.WATER) && world.getBlockState(pos.up()).getBlock() == Blocks.WATER && pos.getY() >= (world.getSeaLevel() - 13) && pos.getY() <= world.getSeaLevel();
                     }
 					</#if>
 			);

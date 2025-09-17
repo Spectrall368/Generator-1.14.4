@@ -55,15 +55,15 @@ public class ${name}FluidAttributes extends FluidAttributes {
 		<#elseif data.tintType == "Foliage">
 			BiomeColors.getFoliageColor(world, pos)
 		<#elseif data.tintType == "Default foliage">
-			FoliageColor.getDefault()
+			FoliageColors.getDefault()
 		<#elseif data.tintType == "Birch foliage">
-			FoliageColor.getBirch()
+			FoliageColors.getBirch()
 		<#elseif data.tintType == "Spruce foliage">
-			FoliageColor.getSpruce()
+			FoliageColors.getSpruce()
 		<#elseif data.tintType == "Water">
 			BiomeColors.getWaterColor(world, pos)
 		<#else>
-			Minecraft.getInstance().world.getBiome(pos).value().getWaterFogColor()
+			Minecraft.getInstance().world.getBiome(pos).getWaterFogColor()
 		</#if> | 0xFF000000;
 	}
 	</#if>

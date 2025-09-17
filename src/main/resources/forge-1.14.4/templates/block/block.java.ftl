@@ -145,7 +145,7 @@ public class ${name}Block extends
 			<#else>
 			3
 			</#if>)
-			.harvestTool(ToolType.${data.destroyTool?upper_case})
+			.harvestTool(ToolType.<#if data.destroyTool?upper_case == "HOE">get("${data.destroyTool}")<#else>${data.destroyTool?upper_case}</#if>)
 		</#if>
 		<#if data.isNotColidable>
 			.doesNotBlockMovement()

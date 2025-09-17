@@ -233,7 +233,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 			${component.getName()} = new TextFieldWidget(this.font, this.guiLeft + ${component.gx(data.width) + 1}, this.guiTop + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 			${component.getName()}.setMaxStringLength(8192);
-			${component.getName()}.setResponder(content -> {
+			${component.getName()}.func_212954_a(content -> {
 				if (!menuStateUpdateActive)
 					container.sendMenuStateUpdate(entity, 0, "${component.getName()}", content, false);
 			});
