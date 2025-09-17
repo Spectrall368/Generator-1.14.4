@@ -440,7 +440,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 			}
 		}
 	}
-    </#if>
+	</#if>
 
 	<#if data.entityDataEntries?has_content || data.guiBoundTo?has_content>
 	@Override public void writeAdditional(CompoundNBT compound) {
@@ -868,7 +868,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 					MobEntity::func_223315_a
 					</#if>
 			);
-			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient" || data.mobSpawningType == "undergroundWaterCreature">
+			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
 			EntitySpawnPlacementRegistry.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -879,7 +879,24 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					SquidEntity::func_223315_a
+					(entityType, world, reason, pos, random) ->
+							(world.getBlockState(pos).isIn(Blocks.WATER) && world.getBlockState(pos.up()).isIn(Blocks.WATER))
+					</#if>
+			);
+			<#elseif data.mobSpawningType == "undergroundWaterCreature">
+			EntitySpawnPlacementRegistry.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
+					EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+					<#if hasProcedure(data.spawningCondition)>
+					(entityType, world, reason, pos, random) -> {
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						return <@procedureOBJToConditionCode data.spawningCondition/>;
+					}
+					<#else>
+					(entityType, world, reason, pos, random) -> {
+					    return world.getFluidState(pos.down()).isTagged(FluidTags.WATER) && world.getBlockState(pos.up()).isIn(Blocks.WATER) && pos.getY() >= (world.getSeaLevel() - 13) && pos.getY() <= world.getSeaLevel();
+                    }
 					</#if>
 			);
 			<#else>
@@ -893,7 +910,9 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					MonsterEntity::func_223315_a
+						(entityType, world, reason, pos, random) ->
+								(world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.func_223323_a(world, pos, random)
+										&& MobEntity.func_223315_a(entityType, world, reason, pos, random))
 					</#if>
 			);
 			</#if>

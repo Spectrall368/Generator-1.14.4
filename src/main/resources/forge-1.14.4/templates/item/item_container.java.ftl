@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.item.inventory;
 
+<#compress>
 @Mod.EventBusSubscriber public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundNBT> {
 
 	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
@@ -38,7 +39,6 @@ package ${package}.item.inventory;
 			PlayerEntity player = event.getPlayer();
 			if (player.openContainer instanceof ${data.guiBoundTo}Menu)
 				player.closeScreen();
-			}
 		}
 	}
 
@@ -78,4 +78,5 @@ package ${package}.item.inventory;
 		return inventory.orElseThrow(RuntimeException::new);
 	}
 }
+</#compress>
 <#-- @formatter:on -->
