@@ -518,8 +518,9 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 			Item item = itemstack.getItem();
 			if (itemstack.getItem() instanceof SpawnEggItem) {
 				retval = super.processInteract(sourceentity, hand);
-			} else if (this.world.isRemote) {
-				retval = this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack) ? this.world.isRemote;
+			} else if (this.world.isRemote()) {
+				retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
+						? this.world.isRemote() : true;
 			} else {
 				if (this.isTamed()) {
 					if (this.isOwner(sourceentity)) {
