@@ -55,8 +55,8 @@ package ${package}.client.renderer;
 	<#assign rootPart = "">
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
-	<#assign rootPart = "0.0F, false">
-	<#assign model = "BipedModel">
+	<#assign rootPart = "">
+	<#assign model = "ZombieModel">
 	<#assign humanoid = true>
 <#elseif data.mobModelName == "Slime">
 	<#assign rootPart = "16">
