@@ -229,16 +229,16 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		}
 		</#if>
 
-		@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {
+		@Override public boolean isValidPosition(BlockState blockstate, IWorldReader world, BlockPos pos) {
 			BlockPos blockpos = pos.down();
-			BlockState groundState = worldIn.getBlockState(blockpos);
+			BlockState groundState = world.getBlockState(blockpos);
 
 			<#if data.plantType == "normal" || data.plantType == "sapling">
-				return this.isValidGround(groundState, worldIn, blockpos)
+				return this.isValidGround(groundState, world, blockpos)
 			<#elseif data.plantType == "growapable">
 				<#if hasProcedure(data.placingCondition)>
 				boolean additionalCondition = true;
-				if (worldIn instanceof IWorld world) {
+				if (world instanceof IWorld) {
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
@@ -256,7 +256,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				if (blockstate.get(HALF) == DoubleBlockHalf.UPPER)
 					return groundState.getBlock() == this && groundState.get(HALF) == DoubleBlockHalf.LOWER;
 				else
-					return this.isValidGround(groundState, worldIn, blockpos)
+					return this.isValidGround(groundState, world, blockpos)
 			</#if>;
 		}
 	</#if>
