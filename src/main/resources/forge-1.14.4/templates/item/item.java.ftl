@@ -39,7 +39,7 @@ package ${package}.item;
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#elseif data.isMusicDisc>MusicDisc</#if>Item {
 
 	public ${name}Item() {
-    super(<#if data.hasBannerPatterns()>${JavaModName}BannerPatterns.${data.providedBannerPatterns[0]?upper_case},
+    super(<#if data.hasBannerPatterns()>null,
                 <#elseif data.isMusicDisc>
                 ${data.musicDiscAnalogOutput}, <#if data.musicDiscMusic.getUnmappedValue().startsWith("CUSTOM:")>new SoundEvent<#else>ForgeRegistries.SOUND_EVENTS.getValue</#if>(new ResourceLocation("${data.musicDiscMusic}")),
                 </#if>new Item.Properties()

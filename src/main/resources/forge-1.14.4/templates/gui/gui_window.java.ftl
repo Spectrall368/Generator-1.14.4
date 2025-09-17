@@ -78,10 +78,10 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 		menuStateUpdateActive = true;
 
 		<#if textFields?has_content>
-		if (elementType == 0 && elementState instanceof String stringState) {
+		if (elementType == 0 && elementState instanceof String) {
 			<#list textFields as component>
 				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}"))
-					${component.getName()}.setValue(stringState);
+					${component.getName()}.setText((String) elementState);
 			</#list>
 		}
 		</#if>
@@ -299,7 +299,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 	}
 
 	<#if buttons?filter(component -> hasProcedure(component.displayCondition))?size != 0 || imageButtons?filter(component -> hasProcedure(component.displayCondition))?size != 0 || textFields?has_content>
-	@Override protected void tick() {
+	@Override public void tick() {
 		super.tick();
 
 		<#list textFields as component>

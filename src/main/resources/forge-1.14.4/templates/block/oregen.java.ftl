@@ -87,32 +87,6 @@ public class ${name}Feature extends OreFeature {
 		return CONFIGURED_FEATURE;
 	}
 
-    <#if data.restrictionBiomes?has_content && cond>
-	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
-		    DimensionType dimensionType = world.getDimension().getType();
-			boolean dimensionCriteria = false;
-			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-	            <#assign biomeName = fixNamespace(restrictionBiome)>
-				<#if biomeName == "#minecraft:is_overworld">
-				    if(dimensionType == DimensionType.OVERWORLD)
-					    dimensionCriteria = true;
-				<#elseif biomeName == "#minecraft:is_nether">
-				    if(dimensionType == DimensionType.THE_NETHER)
-						dimensionCriteria = true;
-				<#else>
-					if(dimensionType == DimensionType.THE_END)
-			    		dimensionCriteria = true;
-				</#if>
-	    	</#list>
-
-			if(!dimensionCriteria)
-			    return false;
-
-
-	    return super.place(world, generator, random, pos, config);
-	}
-    </#if>
-
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content && !cond>
 	ImmutableSet.of(
@@ -122,9 +96,31 @@ public class ${name}Feature extends OreFeature {
 			new ResourceLocation("${expandedBiome}")<#sep>,
 		    </#list><#sep>,
         </#list>
-	);
+	)
 	<#else>
-	null;
+	null
+	</#if>;
+
+	<#if data.restrictionBiomes?has_content && cond>
+	private final Set<DimensionType> generate_dimensions = ImmutableSet.of(
+			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	        <#assign biomeName = fixNamespace(restrictionBiome)>
+			<#if biomeName == "#minecraft:is_overworld">
+				DimensionType.OVERWORLD
+			<#elseif biomeName == "#minecraft:is_nether">
+				DimensionType.THE_NETHER
+			<#else>
+				DimensionType.THE_END
+			</#if><#sep>,
+		</#list>
+	);
+
+	@Override public boolean generate(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
+		if (!generate_dimensions.contains(world.getDimension().getType()))
+			return false;
+
+		return super.generate(world, generator, random, origin, config);
+	}
 	</#if>
 }
 <#-- @formatter:on -->

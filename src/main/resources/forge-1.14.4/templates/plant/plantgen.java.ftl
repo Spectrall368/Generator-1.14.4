@@ -74,24 +74,8 @@ public class ${name}Feature extends Feature<NoFeatureConfig> {
 
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 	    <#if data.restrictionBiomes?has_content && cond>
-		    DimensionType dimensionType = world.getDimension().getType();
-			boolean dimensionCriteria = false;
-			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-	            <#assign biomeName = fixNamespace(restrictionBiome)>
-				<#if biomeName == "#minecraft:is_overworld">
-				    if(dimensionType == DimensionType.OVERWORLD)
-					    dimensionCriteria = true;
-				<#elseif biomeName == "#minecraft:is_nether">
-				    if(dimensionType == DimensionType.THE_NETHER)
-						dimensionCriteria = true;
-				<#else>
-					if(dimensionType == DimensionType.THE_END)
-			    		dimensionCriteria = true;
-				</#if>
-	    	</#list>
-
-			if(!dimensionCriteria)
-			    return false;
+		if (!generate_dimensions.contains(world.getDimension().getType()))
+			return false;
 	    </#if>
 
 	    <#if data.plantType == "growapable">
@@ -151,9 +135,24 @@ public class ${name}Feature extends Feature<NoFeatureConfig> {
 			new ResourceLocation("${expandedBiome}")<#sep>,
 		    </#list><#sep>,
         </#list>
-	);
+	)
 	<#else>
-	null;
+	null
+	</#if>;
+
+	<#if data.restrictionBiomes?has_content && cond>
+	private final Set<DimensionType> generate_dimensions = ImmutableSet.of(
+			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	        <#assign biomeName = fixNamespace(restrictionBiome)>
+			<#if biomeName == "#minecraft:is_overworld">
+				DimensionType.OVERWORLD
+			<#elseif biomeName == "#minecraft:is_nether">
+				DimensionType.THE_NETHER
+			<#else>
+				DimensionType.THE_END
+			</#if><#sep>,
+		</#list>
+	);
 	</#if>
 }
 <#-- @formatter:on -->

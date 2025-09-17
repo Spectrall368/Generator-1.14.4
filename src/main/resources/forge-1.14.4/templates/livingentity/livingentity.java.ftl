@@ -415,6 +415,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 	<#if data.guiBoundTo?has_content>
 	private final ItemStackHandler inventory = new ItemStackHandler(${data.inventorySize})
 	<#if data.inventoryStackSize != 99>
+	{
 		@Override public int getSlotLimit(int slot) {
 			return ${data.inventoryStackSize};
 		}
@@ -812,7 +813,7 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
     </#if>
 
     <#if data.spawnThisMob>
-        private static final Set<ResourceLocation> GENERATE_BIOMES =
+        private static final Set<ResourceLocation> SPAWN_BIOMES =
         <#if data.restrictionBiomes?has_content>
         ImmutableSet.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
@@ -821,10 +822,10 @@ public class ${name}Entity extends ${extendsClass}Entity <#if interfaces?size gt
 			new ResourceLocation("${expandedBiome}")<#sep>,
 		    </#list><#sep>,
         </#list>
-        );
+        )
         <#else>
-        null;
-        </#if>
+        null
+        </#if>;
     </#if>
 
 	public static void init() {
