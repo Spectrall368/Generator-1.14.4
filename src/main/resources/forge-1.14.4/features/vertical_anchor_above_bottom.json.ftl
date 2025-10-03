@@ -1,1 +1,1 @@
-((1 + ${field$value}) < 257 ? (1 + ${field$value}) : 256)
+<#if field$value == "0">0<#else>(0 + ${field$value})</#if>

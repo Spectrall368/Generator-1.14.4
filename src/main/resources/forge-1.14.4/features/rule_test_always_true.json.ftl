@@ -1,1 +1,1 @@
-true
+AlwaysTrueRuleTest.INSTANCE

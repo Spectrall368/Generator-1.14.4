@@ -1,1 +1,2 @@
-(world.getBlockState(new BlockPos(placePos.getX() + (${field$x}), placePos.getY() + (${field$y}), placePos.getZ() + (${field$z}))).getBlock() == ${input$block})
+<#include "mcitems.ftl">
+${mappedBlockToBlock(input$block)}.isValidPosition(world.getBlockState(origin.down()), world, origin<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>.add(${field$x}, ${field$y}, ${field$z})</#if>)

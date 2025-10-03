@@ -1,1 +1,1 @@
-((256 - ${field$value}) > 0 ? (256 - ${field$value}) : 0)
+<#if field$value == "256">256<#else>(256 - ${field$value})</#if>

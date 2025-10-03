@@ -1,2 +1,2 @@
-if(!(((long) world.getHeight(Heightmap.Type.${field$heightmap}, placePos.getX(), placePos.getZ()) + (long) ${field$min}) <= (long) placePos.getY() && (long) placePos.getY() <= ((long) world.getHeight(Heightmap.Type.${field$heightmap}, placePos.getX(), placePos.getZ()) + (long) ${field$max})))
-  return false;
+$if (!((world.getHeight(Heightmap.Type.${field$heightmap}, origin.getX(), origin.getZ()) + ${field$min}) <= origin.getY() && origin.getY() <= (world.getHeight(Heightmap.Type.${field$heightmap}, origin.getX(), origin.getZ()) + ${field$max})))
+  return false;$
