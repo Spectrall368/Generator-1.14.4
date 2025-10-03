@@ -70,7 +70,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	public static Feature<?> feature() {
 	    Random random = new Random();
 		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.DECORATED, new DecoratedFeatureConfig(FEATURE, <#if featuretype == "configured_feature_reference">${nonHardcodedConfiguration}<#else><#if nonHardcodedConfiguration == "">NoFeatureConfig.NO_FEATURE_CONFIG<#else>${nonHardcodedConfiguration}</#if></#if>, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+		CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.DECORATED, new DecoratedFeatureConfig(FEATURE, <#if featuretype == "configured_feature_reference">${nonHardcodedConfiguration}<#else><#if nonHardcodedConfiguration == "" || generator.map(featuretype, "features") == "BlockPileFeature">NoFeatureConfig.NO_FEATURE_CONFIG<#else>${nonHardcodedConfiguration}</#if></#if>, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 
 		return FEATURE;
 	}
@@ -153,6 +153,12 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	<#elseif generator.map(featuretype, "features")?contains("Feature<")>
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
 	    return true;
+	}
+	</#if>
+
+	<#if generator.map(featuretype, "features") == "BlockPileFeature">
+	@Override protected BlockState getRandomBlock(IWorld worldIn) {
+	    return ${nonHardcodedConfiguration};
 	}
 	</#if>
 }</#compress>

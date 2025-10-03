@@ -362,10 +362,6 @@
     </#if>
 </#function>
 
-<#function toStateProvidertoFeatureState block>
-    <#return toFeatureState(mappedBlockToBlockStateProvider(block))>
-</#function>
-
 <#function toStatetoFeatureState block>
     <#return toFeatureState(mappedBlockToBlockStateCode(block))>
 </#function>

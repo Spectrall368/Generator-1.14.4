@@ -1,1 +1,2 @@
-NoFeatureConfig.NO_FEATURE_CONFIG
+<#include "mcitems.ftl">
+${toStatetoFeatureState(input$block)}
