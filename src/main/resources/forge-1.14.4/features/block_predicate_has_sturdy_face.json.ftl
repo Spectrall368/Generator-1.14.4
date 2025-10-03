@@ -1,13 +1,1 @@
-((new Object() {
-			public Direction getDirection(BlockPos pos) {
-				try {
-					BlockState _bs = world.getBlockState(pos);
-					DirectionProperty property = (DirectionProperty) _bs.getBlock().getStateContainer().getProperty("facing");
-					if (property != null)
-						return _bs.get(property);
-					return Direction.getFacingFromAxisDirection(_bs.get((EnumProperty<Direction.Axis>) _bs.getBlock().getStateContainer().getProperty("axis")), Direction.AxisDirection.POSITIVE);
-				} catch (Exception e) {
-					return Direction.NORTH;
-				}
-			}
-		}.getDirection(new BlockPos(placePos.getX() + (${field$x}), placePos.getY() + (${field$y}), placePos.getZ() + (${field$z})))) == ${generator.map(field$direction, "directions")})
+world.getBlockState(origin<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>.add(${field$x}, ${field$y}, ${field$z})</#if>).func_224755_d(world, origin<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>.add(${field$x}, ${field$y}, ${field$z})</#if>, ${generator.map(field$direction, "directions")})

@@ -1,1 +1,1 @@
-placePos = placePos.add(random.nextInt(16), random.nextInt((${input$max} + ${input$min}) / 2) + random.nextInt((${input$max} + ${input$min}) / 2) - ((${input$max} + ${input$min}) / 2) + (${input$max} + ${input$min}) / 2), random.nextInt(16));
+$origin = origin.add(origin.getX(), random.nextInt((${input$min} + ${input$max}) / 2) + random.nextInt((${input$min} + ${input$max}) / 2) - ((${input$min} + ${input$max}) / 2) + ((${input$max} - ${input$min} + 2) / 2), origin.getZ());$
