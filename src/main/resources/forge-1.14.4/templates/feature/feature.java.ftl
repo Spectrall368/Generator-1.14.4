@@ -152,7 +152,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	}
 	<#elseif generator.map(featuretype, "features")?contains("Feature<")>
 	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
-	    return super.place(world, generator, random, origin, config);
+	    return true;
 	}
 	</#if>
 }</#compress>
