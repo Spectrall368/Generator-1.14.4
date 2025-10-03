@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-new SphereReplaceConfig(${mappedBlockToBlockStateCode(input$newState)}, ${input$radius}, 5, ${mappedBlockToBlockStateCode(input$targetState)})
+new SphereReplaceConfig(${toStatetoFeatureState(input$targetState)}, ${input$radius}, 5, ImmutableList.of(${toStatetoFeatureState(input$newState)}))

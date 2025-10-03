@@ -8,8 +8,8 @@ feature_lake:
   - LakesFeature
   - LakesConfig
 feature_simple_block:
-  - BlockWithContextFeature
-  - BlockWithContextConfig
+  - Feature<LakesConfig>
+  - LakesConfig
 feature_block_pile:
   - BlockPileFeature
   - NoFeatureConfig
@@ -43,24 +43,24 @@ feature_bamboo:
 feature_ore:
   - OreFeature
   - OreFeatureConfig
-feature_replace_single_block:
-  - ReplaceBlockFeature
-  - ReplaceBlockConfig
+feature_scattered_ore:
+  - OreFeature
+  - OreFeatureConfig
 feature_simple_random_selector:
-  - SingleRandomFeature
   - SingleRandomFeatureConfig
+  - SingleRandomFeature
+feature_random_selector:
+  - MultipleWithChanceRandomFeature
+  - MultipleRandomFeatureConfig
+feature_disk_simple:
+  - SphereReplaceFeature
+  - SphereReplaceConfig
+feature_disk:
+  - SphereReplaceFeature
+  - SphereReplaceConfig
 feature_spring:
   - SpringFeature
   - LiquidsConfig
-feature_tree_simple:
-  - AbstractTreeFeature
-  - NoFeatureConfig
-feature_tree_spruce:
-  - AbstractTreeFeature
-  - NoFeatureConfig
-feature_tree_pine:
-  - AbstractTreeFeature
-  - NoFeatureConfig
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:
