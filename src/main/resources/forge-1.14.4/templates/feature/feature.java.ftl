@@ -147,7 +147,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 			}
 			return false;
 		<#else>
-			return super.place(world, generator, random, origin, config);
+			return <#if generator.map(featuretype, "features")?contains("Feature<")>true<#else>super.place(world, generator, random, origin, config)</#if>;
 		</#if>
 	}
 	<#elseif generator.map(featuretype, "features")?contains("Feature<")>

@@ -1,1 +1,1 @@
-new TagMatchRuleTest(BlockTags.createOptional(new ResourceLocation("${field$tag}")))
+new TagMatchRuleTest(BlockTags.getCollection().getOrCreate(new ResourceLocation("${field$tag}")))
