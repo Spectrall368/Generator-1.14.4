@@ -34,7 +34,7 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Attributes {
+@Mod.EventBusSubscriber public class ${JavaModName}Attributes {
     <#list attributes as attribute>
     public static final IAttribute ${attribute.getModElement().getRegistryNameUpper()} = new RangedAttribute(null, "${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setShouldWatch(true);
     </#list>
@@ -47,12 +47,16 @@ package ${package}.init;
                     entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
                     entity.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(${attribute.getModElement().getRegistryNameUpper()}.getDefaultValue());
                 <#else>
-                    <#if attribute.entities?has_content || attribute.addToPlayers>
-                        if (<#if attribute.addToPlayers>entity instanceof PlayerEntity ||</#if>
-                            <#list attribute.entities as entityType>
-                                entity.getType() == ${generator.map(entityType.getUnmappedValue(), "entities", 1)}<#sep> ||
-                            </#list>
-                        ) {
+                    <#if attribute.entities?has_content>if(
+                        <#list attribute.entities as entity>
+                            entity.getType() == ${generator.map(entity.getUnmappedValue(), "entities", 1)}<#sep>||
+                        </#list>) {
+                            entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
+                            entity.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(${attribute.getModElement().getRegistryNameUpper()}.getDefaultValue());
+                        }
+                    </#if>
+                    <#if attribute.addToPlayers>
+                        if(entity.getType() == EntityType.PLAYER) {
                             entity.getAttributes().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
                             entity.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(${attribute.getModElement().getRegistryNameUpper()}.getDefaultValue());
                         }
@@ -64,14 +68,12 @@ package ${package}.init;
 
 	<#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
 	<#if playerAttributes?size != 0>
-	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
-		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
-			PlayerEntity oldPlayer = event.getOriginal();
-			PlayerEntity newPlayer = event.getEntityPlayer();
-			<#list playerAttributes as attribute>
-				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).getBaseValue());
-			</#list>
-		}
+	@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
+		PlayerEntity oldPlayer = event.getOriginal();
+		PlayerEntity newPlayer = event.getEntityPlayer();
+		<#list playerAttributes as attribute>
+			newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}).getBaseValue());
+		</#list>
 	}
 	</#if>
 }
