@@ -1,1 +1,1 @@
-$origin = new BlockPos(random.nextInt(16) + origin.getX(), origin.getY(), random.nextInt(16) + origin.getZ());
+$origin = new BlockPos(random.nextInt(16) + origin.getX(), origin.getY(), random.nextInt(16) + origin.getZ());$
