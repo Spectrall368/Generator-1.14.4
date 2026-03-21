@@ -80,4 +80,3 @@ Win: WinGameScreen
 Advancements: AdvancementsScreen
 ItemCombiner: ContainerScreen<RepairContainer>
 Realms: RealmsScreen
-DisconnectedRealms: DisconnectedRealmsScreen

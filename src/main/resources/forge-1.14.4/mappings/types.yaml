@@ -13,3 +13,4 @@ dimensiontype: int
 actionresulttype: ActionResultType
 cmdcontext: CommandContext<CommandSource>
 damagesource: DamageSource
+vector: Vec3d
