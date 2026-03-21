@@ -33,7 +33,7 @@
 <#include "../procedures.java.ftl">
 package ${package}.world.dimension;
 
-<#compress>
+<@javacompress>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Dimension extends Dimension {
 	private static Biome[] dimensionBiomes;
 	private ${name}BiomeProvider biomeProvider${name} = null;
@@ -229,5 +229,5 @@ package ${package}.world.dimension;
 
 	<#include "biomegen.java.ftl">
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

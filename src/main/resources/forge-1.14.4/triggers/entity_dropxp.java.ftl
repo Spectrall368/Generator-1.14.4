@@ -1,20 +1,20 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onLivingDropXp(LivingExperienceDropEvent event) {
-		if (event != null && event.getEntity() != null) {
-			<#assign dependenciesCode><#compress>
+		if (event != null && event.getEntityLiving() != null) {
+			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.getEntity().posX",
-				"y": "event.getEntity().posY",
-				"z": "event.getEntity().posZ",
+				"x": "event.getEntityLiving().posX",
+				"y": "event.getEntityLiving().posY",
+				"z": "event.getEntityLiving().posZ",
 				"droppedexperience": "event.getDroppedExperience()",
 				"originalexperience": "event.getOriginalExperience()",
 				"sourceentity": "event.getAttackingPlayer()",
-				"world": "event.getEntity().world",
-				"entity": "event.getEntity()",
+				"world": "event.getEntityLiving().world",
+				"entity": "event.getEntityLiving()",
 				"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}

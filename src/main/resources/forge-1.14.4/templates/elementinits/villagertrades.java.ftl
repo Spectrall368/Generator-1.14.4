@@ -41,6 +41,7 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 
 	<#if w.getGElementsOfType("villagertrade")?filter(e -> e.hasVillagerTrades(true))?size != 0>
 	@SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
+		<@javacompress>
 		<#list villagertrades as trade>
 			<#list trade.tradeEntries as tradeEntry>
 				<#if tradeEntry.villagerProfession == "WanderingTrader">
@@ -57,11 +58,13 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 				</#if>
 			</#list>
 		</#list>
+		</@javacompress>
 	}
 	</#if>
 
 	<#if w.getGElementsOfType("villagertrade")?filter(e -> e.hasVillagerTrades(false))?size != 0>
 	@SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
+		<@javacompress>
 		<#list villagertrades as trade>
 			<#list trade.tradeEntries as tradeEntry>
 				<#if tradeEntry.villagerProfession != "WanderingTrader">
@@ -80,6 +83,7 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 				</#if>
 			</#list>
 		</#list>
+		</@javacompress>
 	}
 	</#if>
 }

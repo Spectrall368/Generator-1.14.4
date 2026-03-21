@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.world.features;
 
-<#compress>
 @Mod.EventBusSubscriber public class StructureModFeature extends Feature<StructureModFeatureConfiguration> {
 	public static final DeferredRegister<Feature<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
 	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureModFeature(StructureModFeatureConfiguration::deserialize));
@@ -59,5 +58,4 @@ package ${package}.world.features;
 		return true;
 	}
 }
-</#compress>
 <#-- @formatter:on -->

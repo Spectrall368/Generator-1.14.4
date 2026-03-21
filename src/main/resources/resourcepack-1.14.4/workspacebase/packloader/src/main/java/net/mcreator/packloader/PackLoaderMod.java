@@ -21,10 +21,8 @@ public class PackLoaderMod {
 
     public static final String MODID = "packloader";
 
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientModEvents {
+        @SubscribeEvent public static void onClientSetup(FMLClientSetupEvent event) {
             List<String> resourcePacks = new ArrayList<>();
             Path resourcePacksPath = FMLPaths.getOrCreateGameRelativePath(Paths.get("resourcepacks"), "resourcepacks");
             if (resourcePacksPath.toFile().exists()) {

@@ -41,6 +41,10 @@ public class ${name}Item extends BucketItem {
 		);
 	}
 
+	@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+	    return new FluidBucketWrapper(stack);
+	}
+
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname + "_bucket"/>
 }
 <#-- @formatter:on -->

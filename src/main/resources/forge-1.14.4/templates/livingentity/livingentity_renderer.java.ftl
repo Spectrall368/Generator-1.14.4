@@ -87,7 +87,7 @@ package ${package}.client.renderer;
 <#assign model = model + "<" + name + "Entity>">
 
 import com.mojang.blaze3d.platform.GLX;
-<#compress>
+<@javacompress>
 @OnlyIn(Dist.CLIENT)
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
 
@@ -106,7 +106,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 		this.addLayer(new LayerRenderer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
 
-			<#compress>
+			<@javacompress>
 			@Override public void render(${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 				<#if hasProcedure(layer.condition)>
 				World world = entity.world;
@@ -155,7 +155,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 
 				<#if hasProcedure(layer.condition)>}</#if>
 			}
-			</#compress>
+			</@javacompress>
 		
 			@Override public boolean shouldCombineTextures() {
 				return <#if layer.disableHurtOverlay>true<#else>false</#if>;
@@ -218,4 +218,4 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
         }
 	</#if>
 }
-</#compress>
+</@javacompress>
