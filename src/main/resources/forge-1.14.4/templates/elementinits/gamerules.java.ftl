@@ -34,8 +34,10 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}GameRules {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${JavaModName}GameRules {
 
+	<@javacompress>
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
 	public static final GameRules.RuleKey<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} =
@@ -47,5 +49,6 @@ package ${package}.init;
 				GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
+	</@javacompress>
 }
 <#-- @formatter:on -->
