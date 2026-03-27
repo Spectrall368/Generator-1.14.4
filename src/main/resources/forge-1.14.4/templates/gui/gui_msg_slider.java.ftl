@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,63 +30,59 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
+
 package ${package}.network;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ButtonMessage {
-	private final int buttonID, x, y, z;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}SliderMessage {
+	private final int sliderID, x, y, z;
+	private final double value;
 
-	public ${name}ButtonMessage(int buttonID, int x, int y, int z) {
-		this.buttonID = buttonID;
+	public ${name}SliderMessage(int sliderID, int x, int y, int z, double value) {
+		this.sliderID = sliderID;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.value = value;
 	}
 
-	public ${name}ButtonMessage(PacketBuffer buffer) {
-		this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt());
+	public ${name}SliderMessage(PacketBuffer buffer) {
+		this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readDouble());
 	}
 
-	public static void buffer(${name}ButtonMessage message, PacketBuffer buffer) {
-		buffer.writeInt(message.buttonID);
-		buffer.writeInt(message.x);
-		buffer.writeInt(message.y);
-		buffer.writeInt(message.z);
+	public static void buffer(${name}SliderMessage message, PacketBuffer buffer) {
+	    buffer.writeInt(message.sliderID);
+	    buffer.writeInt(message.x);
+	    buffer.writeInt(message.y);
+	    buffer.writeInt(message.z);
+	    buffer.writeDouble(message.value);
 	}
 
-	public static void handler(${name}ButtonMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
-		NetworkEvent.Context context = contextSupplier.get();
-		context.enqueueWork(() -> handleButtonAction(context.getSender(), message.buttonID, message.x, message.y, message.z));
+	public static void handleData(final ${name}SliderMessage message, final Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+		context.enqueueWork(() -> handleSliderAction(context.getSender(), message.sliderID, message.x, message.y, message.z, message.value));
 		context.setPacketHandled(true);
 	}
 
-	public static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
+	public static void handleSliderAction(PlayerEntity entity, int sliderID, int x, int y, int z, double value) {
 		World world = entity.world;
 
 		// security measure to prevent arbitrary chunk generation
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
 			return;
 
-		<#assign btid = 0>
-		<#list data.getComponentsOfType("Button") as component>
-			<#if hasProcedure(component.onClick)>
-				if (buttonID == ${btid}) {
-					<@procedureOBJToCode component.onClick/>
+		<#assign slid = 0>
+		<#list data.getComponentsOfType("Slider") as component>
+			<#if hasProcedure(component.whenSliderMoves)>
+				if (sliderID == ${slid}) {
+					<@procedureOBJToCode component.whenSliderMoves/>
 				}
 			</#if>
-			<#assign btid +=1>
-		</#list>
-		<#list data.getComponentsOfType("ImageButton") as component>
-			<#if hasProcedure(component.onClick)>
-				if (buttonID == ${btid}) {
-					<@procedureOBJToCode component.onClick/>
-				}
-			</#if>
-			<#assign btid +=1>
+			<#assign slid +=1>
 		</#list>
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}ButtonMessage.class, ${name}ButtonMessage::buffer, ${name}ButtonMessage::new, ${name}ButtonMessage::handler);
+		${JavaModName}.addNetworkMessage(${name}SliderMessage.class, ${name}SliderMessage::buffer, ${name}SliderMessage::new, ${name}SliderMessage::handleData);
 	}
 }
 <#-- @formatter:on -->

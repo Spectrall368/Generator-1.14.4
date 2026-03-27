@@ -35,7 +35,7 @@
 package ${package}.item;
 <#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
 
-<#compress>
+<@javacompress>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#elseif data.isMusicDisc>MusicDisc</#if>Item {
 
 	public ${name}Item() {
@@ -262,6 +262,8 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
+
 	<#if data.hasInventory()>
 	@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT compound) {
 		return new ${name}InventoryCapability();
@@ -306,13 +308,25 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 		}
 	</#if>
 
-	<#if data.enableRanged && data.shootConstantly>
-		@Override public void onUsingTick(ItemStack itemstack, LivingEntity entity, int count) {
-			World world = entity.world;
-			if (!entity.world.isRemote && entity instanceof ServerPlayerEntity) {
-				<@arrowShootCode/>
-				entity.stopActiveHand();
-			}
+	<#if hasProcedure(data.everyTickWhileUsing) || (data.enableRanged && data.shootConstantly)>
+		@Override public void func_219972_a(World world, LivingEntity entity, ItemStack itemstack, int time) {
+			<#if hasProcedure(data.everyTickWhileUsing)>
+				<@procedureCode data.everyTickWhileUsing, {
+            		"x": "entity.posX",
+            		"y": "entity.posY",
+            		"z": "entity.posZ",
+            		"world": "world",
+            		"entity": "entity",
+            		"itemstack": "itemstack",
+            		"time": "time"
+            	}/>
+            </#if>
+			<#if data.enableRanged && data.shootConstantly>
+				if (!world.isRemote() && entity instanceof ServerPlayerEntity) {
+					<@arrowShootCode/>
+					entity.releaseUsingItem();
+				}
+			</#if>
 		}
 	</#if>
 
@@ -385,5 +399,5 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 		</#if>
 	}
 </#macro>
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

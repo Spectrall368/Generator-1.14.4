@@ -43,14 +43,17 @@
         <#assign blockSetType = "LEAVES">
     </#if>
 </#if>
+<#if data.blockBase?has_content && data.blockBase == "Wall">
+	<#assign filteredCustomProperties = []>
+</#if>
 package ${package}.block;
 
-<#compress>
+<@javacompress>
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
 	<#elseif data.blockBase?has_content && data.blockBase == "Button">
-		<#if blockSetType == "OAK">Wood<#else>Stone</#if>ButtonBlock
+		net.minecraft.block.<#if blockSetType == "OAK">Wood<#else>Stone</#if>ButtonBlock
 	<#elseif data.blockBase?has_content>
 		${data.blockBase}Block
 	<#else>
@@ -61,7 +64,7 @@ public class ${name}Block extends
 	<#if data.isWaterloggable>
 		<#assign interfaces += ["IWaterLoggable"]>
 	</#if>
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["IGrowable"]>
 	</#if>
 	<#if interfaces?size gt 0>
@@ -167,6 +170,9 @@ public class ${name}Block extends
 				super(() -> Blocks.AIR.getDefaultState(), <@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate">
 				super(Sensitivity.<#if data.blockSetType == "OAK">EVERYTHING<#else>MOBS</#if>, <@blockProperties/>);
+			<#elseif data.blockBase == "FlowerPot">
+				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
+				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
@@ -507,9 +513,19 @@ public class ${name}Block extends
 	@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
-	<#elseif !data.hasBlockItem>
+	<#elseif !data.hasBlockItem && (data.blockBase! != "FlowerPot")>
 	@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return ItemStack.EMPTY;
+	}
+	</#if>
+
+	<#if data.xpAmountMax != 0>
+	@Override public int getExpDrop(BlockState state, IWorldReader level, BlockPos pos, int fortuneLevel, int silkTouchLevel) {
+		<#if data.xpAmountMin == data.xpAmountMax>
+		return ${data.xpAmountMin};
+		<#else>
+		return ((World) level).random.nextInt(${data.xpAmountMax} - ${data.xpAmountMin} + 1) + ${data.xpAmountMin};
+		</#if>
 	}
 	</#if>
 
@@ -600,6 +616,8 @@ public class ${name}Block extends
 
 	<@onEntityWalksOn data.onEntityWalksOn data.speedFactor/>
 
+	<@onEntityFallsOn data.onEntityFallsOn/>
+
 	<@onHitByProjectile data.onHitByProjectile/>
 
 	<@onBlockPlacedBy data.onBlockPlayedBy/>
@@ -642,7 +660,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 
@@ -758,5 +776,5 @@ public class ${name}Block extends
 		</#if>
 	</#list>
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

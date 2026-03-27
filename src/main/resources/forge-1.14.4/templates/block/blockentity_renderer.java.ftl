@@ -43,10 +43,11 @@ package ${package}.client.renderer.block;
 	}
 
 	@Override public void render(${name}BlockEntity blockEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-		<#compress>
+		<@javacompress>
 		GlStateManager.pushMatrix();
-		GlStateManager.translated(x + 0.5d, y + 0.5d, z + 0.5d);
+		GlStateManager.translated(x, y, z);
 		GlStateManager.scalef(-1f, -1f, 1f);
+		GlStateManager.translatef(-0.5f, -0.5f, 0.5f);
 		<#if data.rotationMode != 0>
 			BlockState state = blockEntity.getBlockState();
         	<#if data.rotationMode != 5>
@@ -120,7 +121,7 @@ package ${package}.client.renderer.block;
 		    GlStateManager.popMatrix();
 		    GlStateManager.matrixMode(5888);
 		}
-		</#compress>
+		</@javacompress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(FMLClientSetupEvent event) {
@@ -136,10 +137,6 @@ package ${package}.client.renderer.block;
 	}
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {
-		public CustomHierarchicalModel() {
-			super();
-		}
-
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
 			super.setRotationAngles(null, 0, 0, ageInTicks, 0, 0, 0.0625F);
 		}

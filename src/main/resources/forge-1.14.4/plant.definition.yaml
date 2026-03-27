@@ -88,4 +88,4 @@ tags:
     condition: "plantType %= sapling"
 
 
-field_exclusions: [immuneToFire, speedFactor]
+field_exclusions: [immuneToFire, speedFactor, strippingResult]

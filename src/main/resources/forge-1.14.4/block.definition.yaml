@@ -491,4 +491,4 @@ tags:
   - tag: BLOCKS:minecraft:flower_pots
     condition: "blockBase %= FlowerPot"
 
-field_exclusions: [requiresCorrectTool, immuneToFire, displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration]
+field_exclusions: [requiresCorrectTool, immuneToFire, displayFluidOverlay, animations, sensitiveToVibration, vibrationSensitivityRadius, vibrationalEvents, canReceiveVibrationCondition, onReceivedVibration, strippingResult]
