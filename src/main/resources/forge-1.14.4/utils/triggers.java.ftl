@@ -410,6 +410,23 @@
 </#if>
 </#macro>
 
+<#macro onEntityFallsOn procedure="">
+<#if hasProcedure(data.onEntityFallsOn)>
+@Override public void onFallenUpon(World world, BlockPos pos, Entity entity, float distance) {
+	super.onFallenUpon(world, pos, entity, distance);
+	<@procedureCode data.onEntityFallsOn, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "world.getBlockState(pos)",
+		"distance": "distance"
+	}/>
+}
+</#if>
+</#macro>
+
 <#macro onBlockPlacedBy procedure="">
 <#if hasProcedure(procedure)>
 @Override public void onBlockPlacedBy(World world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
