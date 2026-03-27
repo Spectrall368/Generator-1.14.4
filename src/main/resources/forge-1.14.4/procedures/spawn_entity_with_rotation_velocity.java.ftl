@@ -3,8 +3,10 @@
 if (world.getWorld() instanceof ServerWorld) {
 	Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(${entity}, world.getWorld());
 	entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, ${opt.toFloat(input$yaw)}, ${opt.toFloat(input$pitch)});
-	entityToSpawn.setRenderYawOffset(${opt.toFloat(input$yaw)});
-	entityToSpawn.setRotationYawHead(${opt.toFloat(input$yaw)});
+	<#if input$yaw != "/*@int*/0">
+		entityToSpawn.setRenderYawOffset(${opt.toFloat(input$yaw)});
+		entityToSpawn.setRotationYawHead(${opt.toFloat(input$yaw)});
+	</#if>
 	entityToSpawn.setMotion(${input$vx}, ${input$vy}, ${input$vz});
 
 	if (entityToSpawn instanceof MobEntity)
