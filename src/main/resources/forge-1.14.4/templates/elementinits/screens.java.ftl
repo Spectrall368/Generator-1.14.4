@@ -67,12 +67,12 @@ import java.text.DecimalFormat;
         this.suffix = suffix;
         this.minValue = minValue;
         this.maxValue = maxValue;
-        this.stepSize = MathHelper.abs(stepSize);
+        this.stepSize = Math.abs(stepSize);
         this.value = this.snapToNearest((currentValue - minValue) / (maxValue - minValue));
         this.drawString = drawString;
 
         if (stepSize == 0D) {
-          precision = MathHelper.min(precision, 4);
+          precision = Math.min(precision, 4);
 
           StringBuilder builder = new StringBuilder("0");
 
@@ -83,7 +83,7 @@ import java.text.DecimalFormat;
             builder.append('0');
 
           this.format = new DecimalFormat(builder.toString());
-        } else if (MathHelper.equal(this.stepSize, MathHelper.floor(this.stepSize))) {
+        } else if (MathHelper.epsilonEquals(this.stepSize, Math.floor(this.stepSize))) {
           this.format = new DecimalFormat("0");
         } else {
           this.format = new DecimalFormat(Double.toString(this.stepSize).replaceAll("\\d", "0"));
@@ -151,7 +151,7 @@ import java.text.DecimalFormat;
       private void setSliderValue(double value) {
         double oldValue = this.value;
         this.value = this.snapToNearest(value);
-        if (!MathHelper.equal(oldValue, this.value))
+        if (!MathHelper.epsilonEquals(oldValue, this.value))
           this.applyValue();
 
         this.updateMessage();
@@ -163,7 +163,7 @@ import java.text.DecimalFormat;
 
         value = MathHelper.lerp(MathHelper.clamp(value, 0D, 1D), this.minValue, this.maxValue);
 
-        value = (stepSize * MathHelper.round(value / stepSize));
+        value = (stepSize * Math.round(value / stepSize));
 
         if (this.minValue > this.maxValue) {
           value = MathHelper.clamp(value, this.maxValue, this.minValue);
@@ -171,7 +171,7 @@ import java.text.DecimalFormat;
           value = MathHelper.clamp(value, this.minValue, this.maxValue);
         }
 
-        return MathHelper.map(value, this.minValue, this.maxValue, 0D, 1D);
+        return MathHelper.lerp(MathHelper.pct(value, this.minValue, this.maxValue), 0D, 1D);
       }
 
       @Override

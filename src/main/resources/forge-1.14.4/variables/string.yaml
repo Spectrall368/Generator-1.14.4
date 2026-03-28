@@ -26,8 +26,8 @@ scopes:
       <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
-    read: instance.${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}", instance.${var.getName()});
+    read: ${var.getName()} = nbt.getString("${var.getName()}");
+    write: nbt.putString("${var.getName()}", ${var.getName()});
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
@@ -37,8 +37,8 @@ scopes:
       }</@tail>
   player_persistent:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
-    read: instance.${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}", instance.${var.getName()});
+    read: ${var.getName()} = nbt.getString("${var.getName()}");
+    write: nbt.putString("${var.getName()}", ${var.getName()});
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>

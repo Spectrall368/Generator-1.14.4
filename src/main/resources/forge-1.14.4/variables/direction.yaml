@@ -26,8 +26,8 @@ scopes:
       <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
-    read: instance.${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}", instance.${var.getName()}.getIndex());
+    read: ${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}", ${var.getName()}.getIndex());
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>
@@ -37,8 +37,8 @@ scopes:
       }</@tail>
   player_persistent:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
-    read: instance.${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}", instance.${var.getName()}.getIndex());
+    read: ${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}", ${var.getName()}.getIndex());
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <@head>{${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).ifPresent(capability -> {</@head>

@@ -243,6 +243,12 @@
 </#if>
 </#macro>
 
+<#-- Not supported -->
+<#macro onItemEntityDestroyed procedure="">
+<#if hasProcedure(procedure)>
+</#if>
+</#macro>
+
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>

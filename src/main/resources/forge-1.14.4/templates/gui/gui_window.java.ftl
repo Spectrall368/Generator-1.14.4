@@ -328,11 +328,11 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 		<#list sliders as component>
 			${component.getName()} = new ${JavaModName}Screens.ForgeSlider(this.guiLeft + ${component.gx(data.width)}, this.guiTop + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, new TranslationTextComponent(
-				"gui.${modid}.${registryname}.${component.getName()}_prefix").getString(), new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}_suffix").getString(),
+				"gui.${modid}.${registryname}.${component.getName()}_prefix"), new TranslationTextComponent("gui.${modid}.${registryname}.${component.getName()}_suffix"),
 				${component.min}, ${component.max}, ${component.value}, ${component.step}, 0, true) {
 					@Override protected void applyValue() {
 						if (!menuStateUpdateActive)
-							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", this.getValue(), false);
+							container.sendMenuStateUpdate(entity, 2, "${component.getName()}", this.getValue(), false);
 						<#if hasProcedure(component.whenSliderMoves)>
 							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SliderMessage(${slid}, x, y, z, this.getValue()));
 							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
@@ -341,7 +341,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 				};
 			this.addButton(${component.getName()});
 			if (!menuStateUpdateActive)
-				menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", ${component.getName()}.getValue(), false);
+				container.sendMenuStateUpdate(entity, 2, "${component.getName()}", ${component.getName()}.getValue(), false);
 
 			<#assign slid +=1>
 		</#list>
