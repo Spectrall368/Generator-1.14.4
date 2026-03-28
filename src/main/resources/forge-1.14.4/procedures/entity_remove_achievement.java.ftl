@@ -4,7 +4,7 @@ if(${input$entity} instanceof ServerPlayerEntity) {
 		AdvancementProgress _ap = ((ServerPlayerEntity) ${input$entity}).getAdvancements().getProgress(_adv);
 		if (_ap.isDone()) {
 			for (String criteria : _ap.getCompletedCriteria())
-				((ServerPlayerEntity) ${input$entity}).getAdvancements().reset(_adv, criteria);
+				((ServerPlayerEntity) ${input$entity}).getAdvancements().revokeCriterion(_adv, criteria);
 		}
 	}
 }

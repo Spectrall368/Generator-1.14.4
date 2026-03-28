@@ -524,7 +524,7 @@ public class ${name}Block extends
 		<#if data.xpAmountMin == data.xpAmountMax>
 		return ${data.xpAmountMin};
 		<#else>
-		return ((World) level).random.nextInt(${data.xpAmountMax} - ${data.xpAmountMin} + 1) + ${data.xpAmountMin};
+		return ((World) level).rand.nextInt(${data.xpAmountMax} - ${data.xpAmountMin} + 1) + ${data.xpAmountMin};
 		</#if>
 	}
 	</#if>

@@ -80,7 +80,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 		GlStateManager.translatef(0.5f, 1.5f, 0.5f);
 		GlStateManager.rotatef(180.0f, 0.0f, 0.0f, 1.0f);
 		GlStateManager.scalef(1.0f, 1.0f, -1.0f);
-		model.setRotationAngles(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0);
+		model.setRotationAngles(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0, 1);
 		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
 		if (itemstack.hasEffect())
 		    this.renderEffect(() -> model.render(null, 0, 0, 0, 0, 0, 0.0625F));

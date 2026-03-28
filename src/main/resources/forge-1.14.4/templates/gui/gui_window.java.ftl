@@ -95,7 +95,7 @@ public class ${name}Screen extends ContainerScreen<${name}Menu> implements ${Jav
 		if (elementType == 1 && elementState instanceof Boolean) {
 			<#list checkboxes as component>
 				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}")) {
-					if (${component.getName()}.selected() != ((Boolean) elementState)) ${component.getName()}.onPress();
+					if (${component.getName()}.func_212942_a() != ((Boolean) elementState)) ${component.getName()}.onPress();
 				}
 			</#list>
 		}

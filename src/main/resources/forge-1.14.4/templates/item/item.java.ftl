@@ -324,7 +324,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 			<#if data.enableRanged && data.shootConstantly>
 				if (!world.isRemote() && entity instanceof ServerPlayerEntity) {
 					<@arrowShootCode/>
-					entity.releaseUsingItem();
+					entity.stopActiveHand();
 				}
 			</#if>
 		}

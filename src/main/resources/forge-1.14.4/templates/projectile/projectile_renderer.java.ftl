@@ -46,7 +46,7 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 		GlStateManager.translatef((float) x, (float) y, (float) z);
 		GlStateManager.rotatef(entityYaw, 0, 1, 0);
 		GlStateManager.rotatef(90f - entity.prevRotationPitch - (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 1, 0, 0);
-		model.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, entity.rotationYaw, entity.rotationPitch);
+		model.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, entity.rotationYaw, entity.rotationPitch, 1);
 		model.render(entity, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 	}
