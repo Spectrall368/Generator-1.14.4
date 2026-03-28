@@ -78,5 +78,5 @@ CreditsAndAttribution: WinGameScreen
 GenericWaiting: ConnectingScreen
 Win: WinGameScreen
 Advancements: AdvancementsScreen
-ItemCombiner: ContainerScreen<RepairContainer>
+ItemCombiner: AnvilScreen
 Realms: RealmsScreen

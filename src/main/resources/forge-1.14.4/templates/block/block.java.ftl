@@ -200,23 +200,6 @@ public class ${name}Block extends
 		</#if>
 	}
 
-		<#if data.blockBase?has_content && data.blockBase == "Fence">
-		@Override public boolean func_220111_a(BlockState state, boolean checkattach, Direction face) {
-	    	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
-	    	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
-	    	  return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
-   		}
-   		<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-		private boolean func_220113_a(BlockState state, boolean checkattach, Direction face) {
-	    	  boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
-	    	  return !cannotAttach(state.getBlock()) && checkattach || flag;
-   		}
-
-	   	@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "getStateForPlacement", "BlockItemUseContext")}
-
-	   	@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "IWorld", "BlockPos", "BlockPos")}
-		</#if>
-
     <#if data.blockBase?has_content && data.blockBase == "Leaves">
    	@Override public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return false;

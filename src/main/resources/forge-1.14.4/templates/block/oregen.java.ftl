@@ -115,11 +115,11 @@ public class ${name}Feature extends OreFeature {
 		</#list>
 	);
 
-	@Override public boolean generate(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
+	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, OreFeatureConfig config) {
 		if (!generate_dimensions.contains(world.getDimension().getType()))
 			return false;
 
-		return super.generate(world, generator, random, origin, config);
+		return super.place(world, generator, random, pos, config);
 	}
 	</#if>
 }
