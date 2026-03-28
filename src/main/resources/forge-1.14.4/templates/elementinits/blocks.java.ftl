@@ -66,7 +66,7 @@ package ${package}.init;
 	<@javacompress>
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
-            public static <#if !has_chunks>final</#if> RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
+            public static <#if !has_chunks>final</#if> RegistryObject<${block.getModElement().getName()}PortalBlock> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
 			public static <#if !has_chunks>final</#if> RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()};
 		</#if>

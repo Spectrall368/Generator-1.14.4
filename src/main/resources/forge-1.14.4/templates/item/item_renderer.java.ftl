@@ -29,21 +29,37 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 package ${package}.client.renderer.item;
 
 import net.minecraft.client.renderer.ItemRenderer;
 
-<#compress>
-@OnlyIn(Dist.CLIENT)
-public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
+<@javacompress>
+@OnlyIn(Dist.CLIENT) public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 	private final Supplier<ItemStack> transformSource;
+
+	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
+	private final long start;
 
 	public ${name}ItemRenderer() {
 		this.transformSource = () -> new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
+
+		this.start = System.currentTimeMillis();
+
+		<#if data.hasCustomJAVAModel()>
+			<#if !data.animations?has_content>
+			this.models.put(0, new ${data.customModelName.split(":")[0]}());
+			</#if>
+		</#if>
+		<#list data.getModels() as model>
+			<#if model.hasCustomJAVAModel()>
+			this.models.put(${model?index + 1}, new ${model.customModelName.split(":")[0]}());
+			</#if>
+		</#list>
 	}
 
 	@Override public void renderByItem(ItemStack itemstack) {
-		EntityModel model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}()<#else>null</#if>;
+		EntityModel<?> model = this.models.get(0);
 		ResourceLocation texture = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
@@ -51,7 +67,7 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 					itemstack.getPropertyGetter(new ResourceLocation("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
 						.call(itemstack, Minecraft.getInstance().world, Minecraft.getInstance().player) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
-				model = new ${model.customModelName.split(":")[0]}();
+				model = models.get(${model?index + 1});
 				texture = new ResourceLocation("${model.texture.format("%s:textures/item/%s")}.png");
 			}
 			</#if>
@@ -62,11 +78,13 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		GlStateManager.pushMatrix();
 		Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(this.transformSource.get(), null, null);
 		GlStateManager.translatef(0.5f, 1.5f, 0.5f);
-		GlStateManager.scalef(1f, -1f, -1f);
+		GlStateManager.rotatef(180.0f, 0.0f, 0.0f, 1.0f);
+		GlStateManager.scalef(1.0f, 1.0f, -1.0f);
+		model.setRotationAngles(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0);
 		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
-		if (itemstack.hasEffect()) {
+		if (itemstack.hasEffect())
 		    this.renderEffect(() -> model.render(null, 0, 0, 0, 0, 0, 0.0625F));
-		}
+
 		GlStateManager.popMatrix();
 	}
 
@@ -76,5 +94,5 @@ public class ${name}ItemRenderer extends ItemStackTileEntityRenderer {
 		ItemRenderer.renderEffect(Minecraft.getInstance().getTextureManager(), renderModelFunction, 1);
 	}
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

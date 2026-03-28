@@ -1,3 +1,3 @@
 ((${input$entity} instanceof ServerPlayerEntity && !((ServerPlayerEntity) ${input$entity}).world.isRemote()) ?
-((_player.getSpawnDimension().equals(_player.world.getDimension().getType()) && _player.getBedLocation(_player.getSpawnDimension()) != null) ?
-_player.getBedLocation(_player.getSpawnDimension()).getX() : _player.world.getWorldInfo().getSpawnX()) : 0)
+((((ServerPlayerEntity) ${input$entity}).getSpawnDimension().equals(((ServerPlayerEntity) ${input$entity}).world.getDimension().getType()) && ((ServerPlayerEntity) ${input$entity}).getBedLocation(((ServerPlayerEntity) ${input$entity}).getSpawnDimension()) != null) ?
+((ServerPlayerEntity) ${input$entity}).getBedLocation(((ServerPlayerEntity) ${input$entity}).getSpawnDimension()).getX() : ((ServerPlayerEntity) ${input$entity}).world.getWorldInfo().getSpawnX()) : 0)

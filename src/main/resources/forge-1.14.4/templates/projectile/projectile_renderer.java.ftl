@@ -32,9 +32,7 @@
 package ${package}.client.renderer;
 
 public class ${name}Renderer extends EntityRenderer<${name}Entity> {
-
 	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");
-
 	private final ${data.entityModel} model;
 
 	public ${name}Renderer(EntityRendererManager context) {
@@ -42,15 +40,14 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 		model = new ${data.entityModel}();
 	}
 
-	@Override public void doRender(${name}Entity entityIn, double d, double d1, double d2, float f, float f1) {
-		this.bindEntityTexture(entityIn);
+	@Override public void doRender(${name}Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		this.bindEntityTexture(entity);
 		GlStateManager.pushMatrix();
-		GlStateManager.translatef((float) d, (float) d1, (float) d2);
-		GlStateManager.rotatef(f, 0, 1, 0);
-		GlStateManager.rotatef(90f - entityIn.prevRotationPitch - (entityIn.rotationPitch - entityIn.prevRotationPitch) * f1, 1, 0, 0);
-		EntityModel model = new ${data.entityModel}();
-		model.setRotationAngles(entityIn, 0, 0, entityIn.ticksExisted + partialTicks, entityIn.rotationYaw, entityIn.rotationPitch);
-		model.render(entityIn, 0, 0, 0, 0, 0, 1);
+		GlStateManager.translatef((float) x, (float) y, (float) z);
+		GlStateManager.rotatef(entityYaw, 0, 1, 0);
+		GlStateManager.rotatef(90f - entity.prevRotationPitch - (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 1, 0, 0);
+		model.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, entity.rotationYaw, entity.rotationPitch);
+		model.render(entity, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 	}
 
