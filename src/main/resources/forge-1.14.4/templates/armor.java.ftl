@@ -80,14 +80,19 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
+		private BipedModel armorModel = null;
+
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel();
-			armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
-			armorModel.bipedHeadwear = new ${data.helmetModelName}().${data.helmetModelPart};
-			armorModel.isSneak = living.isSneaking();
-			armorModel.isSitting = defaultModel.isSitting;
-			armorModel.isChild = living.isChild();
-			return armorModel;
+		    if (armorModel == null) {
+		        armorModel = new BipedModel();
+		        armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
+		        armorModel.bipedHeadwear = new ${data.helmetModelName}().${data.helmetModelPart};
+		        armorModel.isSneak = living.isSneaking();
+		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isChild = living.isChild();
+		    }
+
+		    return armorModel;
 		}
 		</#if>
 
@@ -115,21 +120,26 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
+		private BipedModel armorModel = null;
+
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel();
-			armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
+		    if (armorModel == null) {
+		        armorModel = new BipedModel();
+		        armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
 
-			<#if data.armsModelPartL?has_content>
-			armorModel.bipedLeftArm = new ${data.bodyModelName}().${data.armsModelPartL};
-			</#if>
-			<#if data.armsModelPartR?has_content>
-			armorModel.bipedRightArm = new ${data.bodyModelName}().${data.armsModelPartR};
-			</#if>
+		        <#if data.armsModelPartL?has_content>
+		        armorModel.bipedLeftArm = new ${data.bodyModelName}().${data.armsModelPartL};
+		        </#if>
+		        <#if data.armsModelPartR?has_content>
+		        armorModel.bipedRightArm = new ${data.bodyModelName}().${data.armsModelPartR};
+		        </#if>
 
-			armorModel.isSneak = living.isSneaking();
-			armorModel.isSitting = defaultModel.isSitting;
-			armorModel.isChild = living.isChild();
-			return armorModel;
+		        armorModel.isSneak = living.isSneaking();
+		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isChild = living.isChild();
+		    }
+
+		    return armorModel;
 		}
 		</#if>
 
@@ -157,20 +167,25 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
+		private BipedModel armorModel = null;
+
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel();
+		    if (armorModel == null) {
+		        armorModel = new BipedModel();
 
-			<#if data.leggingsModelPartL?has_content>
-			armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
-			</#if>
-			<#if data.leggingsModelPartR?has_content>
-			armorModel.bipedRightLeg = new ${data.leggingsModelName}().${data.leggingsModelPartR};
-			</#if>
+		        <#if data.leggingsModelPartL?has_content>
+		        armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
+		        </#if>
+		        <#if data.leggingsModelPartR?has_content>
+		        armorModel.bipedRightLeg = new ${data.leggingsModelName}().${data.leggingsModelPartR};
+		        </#if>
 
-			armorModel.isSneak = living.isSneaking();
-			armorModel.isSitting = defaultModel.isSitting;
-			armorModel.isChild = living.isChild();
-			return armorModel;
+		        armorModel.isSneak = living.isSneaking();
+		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isChild = living.isChild();
+		    }
+
+		    return armorModel;
 		}
 		</#if>
 
@@ -198,20 +213,25 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
+		private BipedModel armorModel = null;
+
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
-			BipedModel armorModel = new BipedModel();
+		    if (armorModel == null) {
+		        armorModel = new BipedModel();
 
-			<#if data.bootsModelPartL?has_content>
-			armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
-			</#if>
-			<#if data.bootsModelPartR?has_content>
-			armorModel.bipedRightLeg = new ${data.bootsModelName}().${data.bootsModelPartR};
-			</#if>
+		        <#if data.bootsModelPartL?has_content>
+		        armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
+		        </#if>
+		        <#if data.bootsModelPartR?has_content>
+		        armorModel.bipedRightLeg = new ${data.bootsModelName}().${data.bootsModelPartR};
+		        </#if>
 
-			armorModel.isSneak = living.isSneaking();
-			armorModel.isSitting = defaultModel.isSitting;
-			armorModel.isChild = living.isChild();
-			return armorModel;
+		        armorModel.isSneak = living.isSneaking();
+		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isChild = living.isChild();
+		    }
+
+		    return armorModel;
 		}
 		</#if>
 
