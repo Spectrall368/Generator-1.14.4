@@ -37,8 +37,8 @@ public class ${JavaModName}Boat extends BoatEntity {
 	private static final DataParameter<Integer> DATA_ID_TYPE = EntityDataManager.createKey(${JavaModName}Boat.class, DataSerializers.VARINT);
 
 	public ${JavaModName}Boat(FMLPlayMessages.SpawnEntity packet, World world) {
-    	this(${JavaModName}Entities.${JavaModName?upper_case}_BOAT.get(), world);
-    }
+		this(${JavaModName}Entities.${JavaModName?upper_case}_BOAT.get(), world);
+	}
 
 	public ${JavaModName}Boat(EntityType<? extends BoatEntity> entityType, World level) {
 		super(entityType, level);
