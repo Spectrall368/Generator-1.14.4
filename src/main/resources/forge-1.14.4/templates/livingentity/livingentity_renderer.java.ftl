@@ -91,6 +91,8 @@ import com.mojang.blaze3d.platform.GLX;
 @OnlyIn(Dist.CLIENT)
 public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer<${name}Entity, ${model}> {
 
+	private final ResourceLocation entityTexture = new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+
 	public ${name}Renderer(EntityRendererManager context) {
 		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
 
@@ -186,7 +188,7 @@ public class ${name}Renderer extends <#if humanoid>Biped<#else>Mob</#if>Renderer
 	</#if>
 
 	@Override public ResourceLocation getEntityTexture(${name}Entity entity) {
-		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+		return entityTexture;
 	}
 
 	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>

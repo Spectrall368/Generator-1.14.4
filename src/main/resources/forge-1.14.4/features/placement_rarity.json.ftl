@@ -1,1 +1,1 @@
-$if(!(random.nextFloat() < 1.0F / ((float) ${field$rarity}))) return false;$
+$if(!(${JavaModName}Features.RAND.nextFloat() < 1.0F / ((float) ${field$rarity}))) return false;$

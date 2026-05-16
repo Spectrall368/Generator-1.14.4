@@ -45,13 +45,16 @@ import net.minecraftforge.common.property.Properties;
 <#if data.isWaterloggable()>
 	<#assign interfaces += ["IWaterLoggable"]>
 </#if>
-public class ${name}Block extends ${getPlantClass(data.plantType)}Block
-	<#if interfaces?size gt 0>
-		implements ${interfaces?join(",")}
-	</#if>{
+public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if interfaces?size gt 0>implements ${interfaces?join(",")}</#if> {
+
 	<#if data.isWaterloggable()>
-		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
+
+	<#if data.customBoundingBox && data.boundingBoxes??>
+	private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+	</#if>
+
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">
 		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
@@ -86,18 +89,24 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		<#if data.luminance != 0>
 		.lightValue(${data.luminance})
 		</#if>
-		<#if data.isSolid>
-			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
+		<#if data.isSolid && data.offsetType != "NONE">
 			.variableOpacity()
-			</#if>
 		<#else>
-		.doesNotBlockMovement()
+			.doesNotBlockMovement()
 		</#if>
 		);
+
 		<#if data.isWaterloggable()>
 		<@initStateProperties/>
 		</#if>
 	}
+
+	<#if data.isSolid>
+   	@Override public boolean isSolid(BlockState state) {
+		return false;
+   	}
+	</#if>
+
 	<#if data.isWaterloggable()>
 	@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
@@ -123,12 +132,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return VoxelShapes.empty();
-		<#else>
-			<#if !data.disableOffset> Vec3d offset = state.getOffset(world, pos); </#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
-		</#if>
+		<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+		<#if offset>Vec3d offset = state.getOffset(world, pos);</#if>
+		return SHAPE<#if offset>.withOffset(offset.x, offset.y, offset.z)</#if>;
 	}
 	</#if>
 
@@ -177,15 +183,13 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	</#if>
 
 	<#if data.emissiveRendering>
-        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+	@OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
 		return 15728880;
 	}
-	</#if>
 
-	<#if data.isSolid>
-   	@Override public boolean isSolid(BlockState state) {
-     	 	return true;
-   	}
+	@Override boolean needsPostProcessing(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return true;
+	}
 	</#if>
 
 	<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>

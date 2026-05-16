@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
 buildfileversion: 28.2.28
-subversion: 1.6 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
+subversion: 1.7 # used to force project base regeneration
 
 import:
   - datapack-1.14.x
@@ -28,6 +28,7 @@ import_formatter:
     Items: net.minecraft.item
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
+    ImmutableMap: com.google.common.collect
     Iterables: com.google.common.collect
     Attributes: net.minecraft.entity.ai.attributes
 
@@ -85,6 +86,16 @@ base_templates:
       - "${w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number') || e.type.equals('Logic'))?size != 0}"
       - "${w.getGElementsOfType('projectile')?filter(e -> (e.modelWidth > 0.5) || (e.modelHeight > 0.5))?size != 0}"
       - "${w.hasElementsOfType('villagerprofession')}"
+  - template: modbase/mixin.json.ftl
+    writer: json
+    condition_any:
+      - "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
+    name: "@RESROOT/@modid.mixins.json"
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+    condition_any:
+      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
+      - "${w.hasElementsOfType('specialentity')}"
   - template: elementinits/features.java.ftl
     writer: java
     condition_any:

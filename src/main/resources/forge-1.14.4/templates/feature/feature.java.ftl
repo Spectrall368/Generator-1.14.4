@@ -68,7 +68,6 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	}
 
 	public static Feature<?> feature() {
-	    Random random = new Random();
 		FEATURE = new ${name}Feature();
 		CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.DECORATED, new DecoratedFeatureConfig(FEATURE, <#if featuretype == "configured_feature_reference">${nonHardcodedConfiguration}<#else><#if nonHardcodedConfiguration == "" || generator.map(featuretype, "features") == "BlockPileFeature">NoFeatureConfig.NO_FEATURE_CONFIG<#else>${nonHardcodedConfiguration}</#if></#if>, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 
@@ -120,18 +119,18 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 			return false;
 		</#if>
 
+		<#if data.hasPlacedFeature() && (allHardcodedElements?size > 0)>
+            <#list allHardcodedElements as element>
+            ${element}
+            </#list>
+		</#if>
+
 		<#if hasProcedure(data.generateCondition)>
 		int x = origin.getX();
 		int y = origin.getY();
 		int z = origin.getZ();
 		if (!<@procedureOBJToConditionCode data.generateCondition/>)
 			return false;
-		</#if>
-
-		<#if data.hasPlacedFeature() && (allHardcodedElements?size > 0)>
-            <#list allHardcodedElements as element>
-            ${element}
-            </#list>
 		</#if>
 
 		<#if featuretype == "feature_simple_block">

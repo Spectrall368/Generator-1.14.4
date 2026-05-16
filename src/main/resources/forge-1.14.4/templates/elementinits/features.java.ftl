@@ -35,6 +35,7 @@
 package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Features {
+	public static final Random RAND = new Random();
 
 	public static final DeferredRegister<Feature<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
 

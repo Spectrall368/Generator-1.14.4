@@ -1,8 +1,7 @@
 <#assign mixins = []>
-<#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
-	<#assign mixins = mixins + ['NoiseGeneratorSettingsMixin']>
+<#if w.getGElementsOfType("block")?filter(e -> e.isSign())?size != 0>
+	<#assign mixins = mixins + ['BlockEntityTypeAccessor']>
 </#if>
-
 {
   "required": true,
   "package": "${package}.mixin",

@@ -1,0 +1,1 @@
+(world.getWorld().getEntityByID(${opt.toInt(input$id)}))

@@ -34,6 +34,7 @@
 <#include "triggers.java.ftl">
 package ${package}.item;
 
+<@javacompress>
 public abstract class ${name}Item extends ArmorItem {
 
 	public ${name}Item(EquipmentSlotType type, Item.Properties properties) {
@@ -76,7 +77,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlotType.HEAD, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
+			super(EquipmentSlotType.HEAD, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>););
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -84,7 +85,26 @@ public abstract class ${name}Item extends ArmorItem {
 
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 		    if (armorModel == null) {
-		        armorModel = new BipedModel();
+		        armorModel = new BipedModel()
+                        <#if data.helmetTranslucency>
+                        {
+                            @Override
+                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                                GlStateManager.enableBlend();
+                                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                                Minecraft.getInstance().getTextureManager().bindTexture(
+                                    new ResourceLocation(
+                                    <#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_HELMET.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png"
+                                    </#if>)
+                                );
+                                super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                                GlStateManager.disableBlend();
+                            }
+                        }
+                        </#if>;
 		        armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
 		        armorModel.bipedHeadwear = new ${data.helmetModelName}().${data.helmetModelPart};
 		        armorModel.isSneak = living.isSneaking();
@@ -96,15 +116,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
-
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-			<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.helmetModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
-			</#if>
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+			return "${modid}:textures/<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">entities/${data.helmetModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
+
+		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
 
 		<@hasGlow data.helmetGlowCondition/>
 
@@ -116,7 +132,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlotType.CHEST, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
+			super(EquipmentSlotType.CHEST, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>););
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -124,7 +140,26 @@ public abstract class ${name}Item extends ArmorItem {
 
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 		    if (armorModel == null) {
-		        armorModel = new BipedModel();
+		        armorModel = new BipedModel()
+                        <#if data.bodyTranslucency>
+                        {
+                            @Override
+                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                                GlStateManager.enableBlend();
+                                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                                Minecraft.getInstance().getTextureManager().bindTexture(
+                                    new ResourceLocation(
+                                    <#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png"
+                                    </#if>)
+                                );
+                                super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                                GlStateManager.disableBlend();
+                            }
+                        }
+                        </#if>;
 		        armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
 
 		        <#if data.armsModelPartL?has_content>
@@ -143,15 +178,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
-
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.bodyModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
-			</#if>
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+			return "${modid}:textures/<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">entities/${data.bodyModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
+
+		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
 
 		<@hasGlow data.bodyGlowCondition/>
 
@@ -163,7 +194,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlotType.LEGS, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
+			super(EquipmentSlotType.LEGS, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>););
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -171,7 +202,26 @@ public abstract class ${name}Item extends ArmorItem {
 
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 		    if (armorModel == null) {
-		        armorModel = new BipedModel();
+		        armorModel = new BipedModel()
+                        <#if data.leggingsTranslucency>
+                        {
+                            @Override
+                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                                GlStateManager.enableBlend();
+                                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                                Minecraft.getInstance().getTextureManager().bindTexture(
+                                    new ResourceLocation(
+                                    <#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png"
+                                    </#if>)
+                                );
+                                super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                                GlStateManager.disableBlend();
+                            }
+                        }
+                        </#if>;
 
 		        <#if data.leggingsModelPartL?has_content>
 		        armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
@@ -189,15 +239,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
-
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-			<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.leggingsModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png";
-			</#if>
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+			return "${modid}:textures/<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">entities/${data.leggingsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_2.png</#if>";
 		}
+
+		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
 
 		<@hasGlow data.leggingsGlowCondition/>
 
@@ -209,7 +255,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlotType.FEET, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>));
+			super(EquipmentSlotType.FEET, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>););
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
@@ -217,7 +263,26 @@ public abstract class ${name}Item extends ArmorItem {
 
 		@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 		    if (armorModel == null) {
-		        armorModel = new BipedModel();
+		        armorModel = new BipedModel()
+                        <#if data.bootsTranslucency>
+                        {
+                            @Override
+                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                                GlStateManager.enableBlend();
+                                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                                Minecraft.getInstance().getTextureManager().bindTexture(
+                                    new ResourceLocation(
+                                    <#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_BOOTS.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png"
+                                    </#if>)
+                                );
+                                super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                                GlStateManager.disableBlend();
+                            }
+                        }
+                        </#if>;
 
 		        <#if data.bootsModelPartL?has_content>
 		        armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};
@@ -235,15 +300,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
-
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-			<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.bootsModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
-			</#if>
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+			return "${modid}:textures/<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">entities/${data.bootsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
+
+		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
 
 		<@hasGlow data.bootsGlowCondition/>
 
@@ -251,4 +312,5 @@ public abstract class ${name}Item extends ArmorItem {
 	}
 	</#if>
 }
+</@javacompress>
 <#-- @formatter:on -->

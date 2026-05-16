@@ -3,4 +3,8 @@ scopes:
   local:
     init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
     get: ${name}
-    set: ${name} = ${opt.removeParentheses(value)};
+    set: ${name} = ${opt.removeParentheses(value)};    set: ${name} = ${opt.removeParentheses(value)};
+  global_session:
+    init: public static Vec3d ${var.getName()} = Vec3d.ZERO;
+    get: ${JavaModName}Variables.${name}
+    set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};

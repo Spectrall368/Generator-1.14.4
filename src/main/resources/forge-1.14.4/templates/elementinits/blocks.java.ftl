@@ -54,12 +54,15 @@ package ${package}.init;
 		</#if>
 	</#if>
 </#list>
+
+<#assign signs = w.getGElementsOfType("block")?filter(e -> e.isSign())>
+
 <#assign chunks = blocks?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 <#assign noteBlockInstrument = blocks?filter(block -> block.noteBlockInstrument?? && block.noteBlockInstrument != "harp")>
 <#assign jumpF = blocks?filter(block -> block.jumpFactor?? && block.jumpFactor != 1.0)>
 
-<#if noteBlockInstrument?size != 0 || jumpF?size != 0>@Mod.EventBusSubscriber </#if>public class ${JavaModName}Blocks {
+<#if signs?size != 0>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if>public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister<Block> REGISTRY = new DeferredRegister<>(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
 
@@ -69,6 +72,9 @@ package ${package}.init;
             public static <#if !has_chunks>final</#if> RegistryObject<${block.getModElement().getName()}PortalBlock> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
 			public static <#if !has_chunks>final</#if> RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()};
+			<#if (block.getModElement().getTypeString() == "block") && block.isSign()>
+				public static <#if !has_chunks>final</#if> RegistryObject<Block> ${block.getWallRegistryNameUpper()};
+			</#if>
 		</#if>
 	</#list>
 	</@javacompress>
@@ -82,6 +88,10 @@ package ${package}.init;
 			<#else>
 				${block.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
+				<#if (block.getModElement().getTypeString() == "block") && block.isSign()>
+					${block.getWallRegistryNameUpper()} =
+						REGISTRY.register("${block.getWallRegistryName()}", ${block.getWallName()}Block::new);
+				</#if>
 			</#if>
 		</#list>
 	}
@@ -124,30 +134,51 @@ package ${package}.init;
 	}
 	</#if>
 
-	<#if noteBlockInstrument?size != 0>
-	@SubscribeEvent public static void onNoteBlockPlay(NoteBlockEvent.Play event) {
-        <@javacompress>
-        Block below = event.getWorld().getBlockState(event.getPos().down()).getBlock();
-		<#list noteBlockInstrument as block>
-		if (below == ${JavaModName}Blocks.${block.getModElement().getRegistryNameUpper()}.get()) {
-            event.setInstrument(${generator.map(block.noteBlockInstrument, "noteblockinstruments")});
-        }<#sep>else
-		</#list>
-        </@javacompress>
-    }
+	<#if noteBlockInstrument?size != 0 || jumpF?size != 0>
+	@Mod.EventBusSubscriber public static class BlocksHandler {
+		<#if noteBlockInstrument?size != 0>
+        @SubscribeEvent public static void onNoteBlockPlay(NoteBlockEvent.Play event) {
+            <@javacompress>
+            Block below = event.getWorld().getBlockState(event.getPos().down()).getBlock();
+            <#list noteBlockInstrument as block>
+            if (below == ${JavaModName}Blocks.${block.getModElement().getRegistryNameUpper()}.get()) {
+                event.setInstrument(${generator.map(block.noteBlockInstrument, "noteblockinstruments")});
+            }<#sep>else
+            </#list>
+            </@javacompress>
+        }
+		</#if>
+
+		<#if jumpF?size != 0>
+        @SubscribeEvent public static void onMobJump(LivingEvent.LivingJumpEvent event) {
+            <@javacompress>
+            LivingEntity entity = event.getEntityLiving();
+            BlockState state = entity.world.getBlockState(entity.getPosition().down());
+            BlockState stateUp = entity.world.getBlockState(entity.getPosition());
+            if<#list jumpF as block>
+                (state<#if block.getModElement().getTypeString() == "plant">Up</#if>.getBlock() instanceof ${block.getModElement().getName()}Block)
+                entity.setMotion(entity.getMotion().mul(1.0D, ${block.jumpFactor}D, 1.0D));<#sep>else if
+            </#list>
+            </@javacompress>
+        }
+		</#if>
+	}
 	</#if>
 
-	<#if jumpF?size != 0>
-	@SubscribeEvent public static void onMobJump(LivingEvent.LivingJumpEvent event) {
-        <@javacompress>
-		LivingEntity entity = event.getEntityLiving();
-        BlockState state = entity.world.getBlockState(entity.getPosition().down());
-        BlockState stateUp = entity.world.getBlockState(entity.getPosition());
-		if<#list jumpF as block>
-        (state<#if block.getModElement().getTypeString() == "plant">Up</#if>.getBlock() instanceof ${block.getModElement().getName()}Block)
-            entity.setMotion(entity.getMotion().mul(1.0D, ${block.jumpFactor}D, 1.0D));<#sep>else if
-        </#list>
-        </@javacompress>
+	<#if signs?size != 0>
+	@SubscribeEvent public static void registerSigns(FMLCommonSetupEvent event) {
+            <#list signs as block>
+                modify(TileEntityType.SIGN, ${block.getModElement().getRegistryNameUpper()}.get(), ${block.getWallRegistryNameUpper()}.get());
+            </#list>
+	}
+
+    private static void modify(TileEntityType<?> blockEntityType, Block... blocksToAdd) {
+        Set<Block> currentValidBlocks = new HashSet<>(Collections.unmodifiableSet(((BlockEntityTypeAccessor) blockEntityType).getValidBlocks()));
+
+        for (Block block : blocksToAdd)
+            currentValidBlocks.add(block);
+
+        ((BlockEntityTypeAccessor) blockEntityType).setValidBlocks(currentValidBlocks);
     }
 	</#if>
 }

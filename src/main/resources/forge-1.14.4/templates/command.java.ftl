@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 package ${package}.command;
-@Mod.EventBusSubscriber<#if data.type == "CLIENTSIDE">(value = Dist.CLIENT)</#if>
+@Mod.EventBusSubscriber<#if data.type == "CLIENTSIDE">(Dist.CLIENT)</#if>
 public class ${name}Command {
 
 		@SubscribeEvent public static void registerCommand(FMLServerStartingEvent event) {

@@ -53,7 +53,7 @@ package ${package}.client.particle;
 
 	private final IAnimatedSprite spriteSet;
 	
-	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+	<#if data.hasAngularVelocityOrAcceleration()>
 	private float angularVelocity;
 	private float angularAcceleration;
 	</#if>
@@ -63,8 +63,8 @@ package ${package}.client.particle;
 		this.spriteSet = spriteSet;
 
 		this.setSize(${data.width}f, ${data.height}f);
-		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
-		this.particleScale *= ${data.scale.getFixedValue()}f;
+		<#if (data.scale.getFixedValue() != 1 || data.fixedScale)  && !hasProcedure(data.scale)>
+		this.particleScale <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
@@ -80,7 +80,7 @@ package ${package}.client.particle;
 		this.motionY = vy * ${data.speedFactor};
 		this.motionZ = vz * ${data.speedFactor};
 
-		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+		<#if data.hasAngularVelocityOrAcceleration()>
 		this.angularVelocity = ${data.angularVelocity}f;
 		this.angularAcceleration = ${data.angularAcceleration}f;
 		</#if>
@@ -104,7 +104,7 @@ package ${package}.client.particle;
 
 	<#if hasProcedure(data.scale)>
 	@Override public float getScale(float scale) {
-		return super.getScale(scale) * (float) <@procedureCode data.scale, {
+		return <#if data.fixedScale>0.15f<#else>super.getQuadSize(scale)</#if> * (float) <@procedureCode data.scale, {
             "x": "this.posX",
             "y": "this.posY",
             "z": "this.posZ",

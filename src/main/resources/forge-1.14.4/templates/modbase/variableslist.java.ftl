@@ -5,7 +5,27 @@ import ${package}.${JavaModName};
 
 import net.minecraft.nbt.INBT;
 
+<#assign foundVector = false>
+<#list variables as var>
+    <#if var.getType() == "vector" && var.getScope().name() != "GLOBAL_SESSION">
+        <#assign foundVector = true>
+        <#break>
+    </#if>
+</#list>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
+	<#if foundVector>
+	public static Vec3d read(CompoundNBT compound) {
+		return new Vec3d(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
+	}
+
+	public static CompoundNBT write(Vec3d vec, CompoundNBT nbt) {
+		nbt.putDouble("x", vec.x());
+		nbt.putDouble("y", vec.y());
+		nbt.putDouble("z", vec.z());
+		return nbt;
+	}
+	</#if>
+
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_SESSION">

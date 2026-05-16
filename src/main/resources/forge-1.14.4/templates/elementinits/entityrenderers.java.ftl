@@ -46,19 +46,23 @@ package ${package}.init;
 
 	private static void renders() {
 	<#list entities as entity>
-		<#if entity.getModElement().getTypeString() == "livingentity">
-			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, ${entity.getModElement().getName()}Renderer::new);
-			<#if entity.hasCustomProjectile()>
-			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}EntityProjectile.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
-			</#if>
-		<#elseif entity.getModElement().getTypeString() == "projectile">
+		<#if entity.getModElement().getTypeString() == "projectile">
 			<#if entity.isCustomModel()>
 			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, ${entity.getModElement().getName()}Renderer::new);
 			<#else>
 			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 			</#if>
+		<#elseif entity.getModElement().getTypeString() == "livingentity">
+			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, ${entity.getModElement().getName()}Renderer::new);
+			<#if entity.hasCustomProjectile()>
+			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}EntityProjectile.class, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
+			</#if>
 		</#if>
 	</#list>
+
+		<#if w.getGElementsOfType("specialentity")?size != 0>
+			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Entities.${JavaModName?upper_case}_BOAT.get(), ${JavaModName}BoatRenderer::new);
+		</#if>
 	}
 }
 <#-- @formatter:on -->
