@@ -187,7 +187,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		return 15728880;
 	}
 
-	@Override boolean needsPostProcessing(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	@Override public boolean needsPostProcessing(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return true;
 	}
 	</#if>
@@ -361,10 +361,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		return blockEntity != null && blockEntity.receiveClientEvent(eventID, eventParam);
 	}
 	</#if>
-
-	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
 
 	<#if data.tintType != "No tint">
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(ColorHandlerEvent.Block event) {

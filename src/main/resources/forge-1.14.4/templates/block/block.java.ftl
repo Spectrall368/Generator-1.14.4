@@ -38,7 +38,7 @@
 <#assign blockSetType = "REDSTONE_LIGHT">
 <#if data.blockBase?has_content>
     <#if data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door" || data.blockBase == "Fence" || data.blockBase == "Button">
-        <#assign blockSetType = data.blockSetType>
+        <#assign blockSetType = data.blockSetType?replace("STONE", "ROCK")?replace("OAK", "WOOD")>
     <#elseif data.blockBase == "Stairs" || data.blockBase == "Slab" || data.blockBase == "Wall">
         <#assign blockSetType = "ROCK">
     <#elseif data.blockBase == "Leaves">
@@ -117,7 +117,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#macro blockProperties>
-	    BlockBehaviour.Properties.of(Material.${blockSetType?replace("STONE", "ROCK")?replace("OAK", "WOOD")}
+	    Block.Properties.create(Material.${blockSetType}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		    , MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
 		</#if>)
@@ -285,15 +285,15 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
 
+	<#if data.transparencyType != "SOLID" || data.hasTransparency>
 	@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
 	<#if data.transparencyType != "SOLID">
 		return BlockRenderLayer.${data.transparencyType};
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
 		return BlockRenderLayer.CUTOUT;
-	<#else>
-		return BlockRenderLayer.SOLID;
 	</#if>
 	}
+	</#if>
 
 	<#if data.hasTransparency>
   	@Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
@@ -306,7 +306,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		return 15728880;
 	}
 
-	@Override boolean needsPostProcessing(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	@Override public boolean needsPostProcessing(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return true;
 	}
 	</#if>

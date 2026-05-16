@@ -54,12 +54,14 @@ public class ${JavaModName}Boat extends BoatEntity {
 	}
 
 	@Override public Item getItemBoat() {
-		return switch (getModType()) {
+		switch (getModType()) {
 		<#list specialentities as entity>
-		    case ${entity.getModElement().getRegistryNameUpper()} -> ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get();
+		    case ${entity.getModElement().getRegistryNameUpper()}:
+		        return ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get();
 		</#list>
-		    default -> Items.AIR;
-		};
+		    default:
+		        return Items.AIR;
+		}
 	}
 
 	@Override protected void registerData() {

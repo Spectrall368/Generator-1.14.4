@@ -1,57 +1,49 @@
-<#macro makeBoundingBox positiveBoxes negativeBoxes facing noOffset pitchType="floor">
-	return <#if negativeBoxes?size != 0>VoxelShapes.combineAndSimplify(</#if>
-	<@mergeBoxes positiveBoxes, facing, pitchType/>
-	<#if negativeBoxes?size != 0>
-	, <@mergeBoxes negativeBoxes, facing, pitchType/>, IBooleanFunction.ONLY_FIRST)</#if><#if !noOffset>.withOffset(offset.x, offset.y, offset.z)</#if>
-</#macro>
-
-<#macro checkPitchSupport positiveBoxes negativeBoxes facing enablePitch noOffset>
-	<#if enablePitch>
-		switch ((AttachFace) state.get(FACE)) {
-			case FLOOR:
-			    <@makeBoundingBox positiveBoxes negativeBoxes facing noOffset "floor"/>;
-			case WALL:
-			    <@makeBoundingBox positiveBoxes negativeBoxes facing noOffset "wall"/>;
-			default:
-			    <@makeBoundingBox positiveBoxes negativeBoxes facing noOffset "ceiling"/>;
-		}
-	<#else>
-		<@makeBoundingBox positiveBoxes negativeBoxes facing noOffset/>;
-	</#if>
-</#macro>
-
-<#macro boundingBoxWithRotation positiveBoxes negativeBoxes noOffset rotationMode enablePitch=false>
-	<#if rotationMode == 0>
-	<@makeBoundingBox positiveBoxes negativeBoxes "north" noOffset/>;
+<#macro boundingBoxWithRotation boundingBox rotationMode=0 enablePitch=false>
+	<#assign positiveBoxes = boundingBox.positiveBoundingBoxes()>
+	<#assign negativeBoxes = boundingBox.negativeBoundingBoxes()>
+	<#if boundingBox.isBoundingBoxEmpty()>
+		VoxelShapes.empty()
+	<#elseif rotationMode == 0>
+		<@makeBoundingBox positiveBoxes negativeBoxes "north"/>
 	<#else>
 		<#if rotationMode != 5>
 			<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
-			switch ((Direction) state.get(FACING)) {
-				case NORTH:
-				    <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch noOffset/>
-				case EAST:
-				    <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch noOffset/>
-				case WEST:
-				    <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch noOffset/>
+			switch (state.getValue(FACING)) {
+				default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
+				case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
+				case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
+				case WEST -> <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
 				<#if rotationMode == 2 || rotationMode == 4>
-				    case UP:
-				        <@makeBoundingBox positiveBoxes negativeBoxes "up" noOffset/>;
-				    case DOWN:
-				        <@makeBoundingBox positiveBoxes negativeBoxes "down" noOffset/>;
+					case UP -> <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
+					case DOWN -> <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
 				</#if>
-				default:
-				    <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch noOffset/>
 			}
 		<#else>
-			switch ((Direction.Axis) state.get(AXIS)) {
-				case X:
-				    <@makeBoundingBox positiveBoxes negativeBoxes "x" noOffset/>;
-				case Y:
-				    <@makeBoundingBox positiveBoxes negativeBoxes "y" noOffset/>;
-				default:
-				    <@makeBoundingBox positiveBoxes negativeBoxes "z" noOffset/>;
+			switch (state.getValue(AXIS)) {
+				case X -> <@makeBoundingBox positiveBoxes negativeBoxes "x"/>;
+				case Y -> <@makeBoundingBox positiveBoxes negativeBoxes "y"/>;
+				case Z -> <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
 			}
 		</#if>
+	</#if>
+</#macro>
+
+<#macro makeBoundingBox positiveBoxes negativeBoxes facing pitchType="floor">
+	<#if negativeBoxes?size != 0>VoxelShapes.combineAndSimplify(</#if>
+	<@mergeBoxes positiveBoxes, facing, pitchType/>
+	<#if negativeBoxes?size != 0>
+	, <@mergeBoxes negativeBoxes, facing, pitchType/>, IBooleanFunction.ONLY_FIRST)</#if>
+</#macro>
+
+<#macro checkPitchSupport positiveBoxes negativeBoxes facing enablePitch>
+	<#if enablePitch>
+		switch (state.getValue(FACE)) {
+			case FLOOR -> <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
+			case WALL -> <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
+			case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
+		};
+	<#else>
+		<@makeBoundingBox positiveBoxes negativeBoxes facing/>;
 	</#if>
 </#macro>
 

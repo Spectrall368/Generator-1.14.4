@@ -72,7 +72,7 @@ import org.apache.logging.log4j.Logger;
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
 		if(event.phase == TickEvent.Phase.END) {
-            int currentTick = ServerLifecycleHooks.getCurrentServer().getTickCount();
+            int currentTick = ServerLifecycleHooks.getCurrentServer().getTickCounter();
 
             Map.Entry<Integer, Runnable> work;
             while ((work = workToBeScheduled.poll()) != null) {
@@ -84,5 +84,23 @@ import org.apache.logging.log4j.Logger;
             }
         }
 	}
+
+	private static class TickTask implements Runnable {
+    	private final int tick;
+    	private final Runnable runnable;
+
+    	public TickTask(int tick, Runnable runnable) {
+    		this.tick = tick;
+    		this.runnable = runnable;
+    	}
+
+    	public int getTick() {
+    		return tick;
+    	}
+
+    	public void run() {
+    		runnable.run();
+    	}
+    }
 }
 <#-- @formatter:on -->
