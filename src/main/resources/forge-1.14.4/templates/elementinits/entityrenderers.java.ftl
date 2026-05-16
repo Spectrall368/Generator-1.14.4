@@ -61,7 +61,7 @@ package ${package}.init;
 	</#list>
 
 		<#if w.getGElementsOfType("specialentity")?size != 0>
-			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Entities.${JavaModName?upper_case}_BOAT.get(), ${JavaModName}BoatRenderer::new);
+			RenderingRegistry.registerEntityRenderingHandler(${JavaModName}Boat.class, ${JavaModName}BoatRenderer::new);
 		</#if>
 	}
 }

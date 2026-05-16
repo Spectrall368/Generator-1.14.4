@@ -32,19 +32,29 @@
 package ${package}.client.renderer;
 
 @OnlyIn(Dist.CLIENT)
-public class ${JavaModName}BoatRenderer extends BoatRenderer {
-   private static final ResourceLocation[] BOAT_TEXTURES = new ResourceLocation[]{<#list specialentities as entity>new ResourceLocation("${modid}:boat/${entity.getModElement().getRegistryName()}")<#sep>,</#list>};
+public class ${JavaModName}BoatRenderer extends EntityRenderer<${JavaModName}Boat> {
+	private static final ResourceLocation[] BOAT_TEXTURES = new ResourceLocation[]{<#list specialentities as entity>new ResourceLocation("${modid}:textures/entity/boat/${entity.getModElement().getRegistryName()}.png")<#sep>,</#list>};
+	protected final BoatModel field_76998_a = new BoatModel();
 
 	public ${JavaModName}BoatRenderer(EntityRendererManager context) {
 		super(context);
+		this.shadowSize = 0.8F;
 	}
 
-	@Override public void doRender(${JavaModName}Boat entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
-	}
+	@Override ${mcc.getMethod("net.minecraft.client.renderer.entity.BoatRenderer", "doRender", "BoatEntity", "double", "double", "double", "float", "float").replace("BoatEntity", JavaModName + "Boat")}
+
+	${mcc.getMethod("net.minecraft.client.renderer.entity.BoatRenderer", "setupRotation", "BoatEntity", "float", "float").replace("BoatEntity", JavaModName + "Boat")}
+
+	${mcc.getMethod("net.minecraft.client.renderer.entity.BoatRenderer", "setupTranslation", "double", "double", "double")}
 
 	@Override protected ResourceLocation getEntityTexture(${JavaModName}Boat entity) {
 		return BOAT_TEXTURES[entity.getModType().ordinal()];
 	}
+
+	@Override public boolean isMultipass() {
+		return true;
+	}
+
+	@Override ${mcc.getMethod("net.minecraft.client.renderer.entity.BoatRenderer", "renderMultipass", "BoatEntity", "double", "double", "double", "float", "float").replace("BoatEntity", JavaModName + "Boat")}
 }
 <#-- @formatter:on -->

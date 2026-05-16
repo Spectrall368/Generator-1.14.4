@@ -34,7 +34,7 @@ package ${package}.entity;
 import net.minecraft.network.datasync.DataParameter;
 
 public class ${JavaModName}Boat extends BoatEntity {
-	private static final DataParameter<Integer> DATA_ID_TYPE = EntityDataManager.createKey(${JavaModName}Boat.class, DataSerializers.INT);
+	private static final DataParameter<Integer> DATA_ID_TYPE = EntityDataManager.createKey(${JavaModName}Boat.class, DataSerializers.VARINT);
 
 	public ${JavaModName}Boat(EntityType<? extends BoatEntity> entityType, World level) {
 		super(entityType, level);
@@ -49,7 +49,7 @@ public class ${JavaModName}Boat extends BoatEntity {
         this.prevPosZ = z;
     }
 
-	@Override protected ITextComponent getDisplayName() {
+	@Override public ITextComponent getDisplayName() {
 		return new TranslationTextComponent("entity.minecraft.boat");
 	}
 
@@ -75,11 +75,11 @@ public class ${JavaModName}Boat extends BoatEntity {
 
 	@Override protected void readAdditional(CompoundNBT compound) {
 		if (compound.contains("Type", 8)) {
-			setType(Type.getTypeFromString(compound.getString("Type")));
+			setBoatType(Type.getTypeFromString(compound.getString("Type")));
 		}
 	}
 
-	public void setType(Type variant) {
+	public void setBoatType(Type variant) {
 		this.dataManager.set(DATA_ID_TYPE, variant.ordinal());
 	}
 
