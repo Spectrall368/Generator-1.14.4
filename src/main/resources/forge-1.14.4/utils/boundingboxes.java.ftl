@@ -2,27 +2,36 @@
 	<#assign positiveBoxes = boundingBox.positiveBoundingBoxes()>
 	<#assign negativeBoxes = boundingBox.negativeBoundingBoxes()>
 	<#if boundingBox.isBoundingBoxEmpty()>
-		VoxelShapes.empty()
+		<#if rotationMode == 0>VoxelShapes.empty()<#else>return VoxelShapes.empty();</#if>
 	<#elseif rotationMode == 0>
 		<@makeBoundingBox positiveBoxes negativeBoxes "north"/>
 	<#else>
 		<#if rotationMode != 5>
 			<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
-			switch (state.getValue(FACING)) {
-				default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
-				case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
-				case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
-				case WEST -> <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
+			switch (state.get(FACING)) {
+				case NORTH:
+				    <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
+				case EAST:
+				    <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
+				case WEST:
+				    <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
 				<#if rotationMode == 2 || rotationMode == 4>
-					case UP -> <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
-					case DOWN -> <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
+				case UP:
+				    return <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
+				case DOWN:
+				    return <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
 				</#if>
+				default:
+				    <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
 			}
 		<#else>
-			switch (state.getValue(AXIS)) {
-				case X -> <@makeBoundingBox positiveBoxes negativeBoxes "x"/>;
-				case Y -> <@makeBoundingBox positiveBoxes negativeBoxes "y"/>;
-				case Z -> <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
+			switch (state.get(AXIS)) {
+				case X:
+				    return <@makeBoundingBox positiveBoxes negativeBoxes "x"/>;
+				case Y:
+				    return <@makeBoundingBox positiveBoxes negativeBoxes "y"/>;
+				default:
+				    return <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
 			}
 		</#if>
 	</#if>
@@ -37,13 +46,16 @@
 
 <#macro checkPitchSupport positiveBoxes negativeBoxes facing enablePitch>
 	<#if enablePitch>
-		switch (state.getValue(FACE)) {
-			case FLOOR -> <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
-			case WALL -> <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
-			case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
-		};
+		switch (state.get(FACE)) {
+			case FLOOR:
+			    return <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
+			case WALL:
+			    return <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
+			default:
+			    return <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
+		}
 	<#else>
-		<@makeBoundingBox positiveBoxes negativeBoxes facing/>;
+		return <@makeBoundingBox positiveBoxes negativeBoxes facing/>;
 	</#if>
 </#macro>
 

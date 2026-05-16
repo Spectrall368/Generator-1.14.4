@@ -239,10 +239,10 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 						state.get(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
 					</#list>
 				) {
-					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+					<#if data.rotationMode == 0>return</#if> <@boundingBoxWithRotation state data.rotationMode data.enablePitch/><#if data.rotationMode == 0>;</#if>
 				}
 				</#list>
-				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+				<#if data.rotationMode == 0>return</#if> <@boundingBoxWithRotation data data.rotationMode data.enablePitch/><#if data.rotationMode == 0>;</#if>
 			});
 		}
 
