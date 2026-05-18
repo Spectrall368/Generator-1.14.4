@@ -104,7 +104,7 @@ package ${package}.client.particle;
 
 	<#if hasProcedure(data.scale)>
 	@Override public float getScale(float scale) {
-		return <#if data.fixedScale>0.15f<#else>super.getQuadSize(scale)</#if> * (float) <@procedureCode data.scale, {
+		return <#if data.fixedScale>0.15f<#else>super.getScale(scale)</#if> * (float) <@procedureCode data.scale, {
             "x": "this.posX",
             "y": "this.posY",
             "z": "this.posZ",

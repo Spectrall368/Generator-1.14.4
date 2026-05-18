@@ -116,7 +116,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 			return "${modid}:textures/<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">entities/${data.helmetModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
 
@@ -178,7 +178,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 			return "${modid}:textures/<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">entities/${data.bodyModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
 
@@ -239,7 +239,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 			return "${modid}:textures/<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">entities/${data.leggingsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_2.png</#if>";
 		}
 
@@ -300,7 +300,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 			return "${modid}:textures/<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">entities/${data.bootsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
 

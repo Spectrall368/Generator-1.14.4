@@ -65,7 +65,7 @@ public class ${name}Enchantment extends Enchantment {
 		this(${generator.map(data.supportedSlots, "equipmentslots", 2)});
 	}
 
-	private ${name}Enchantment(EquipmentSlot... slots) {
+	private ${name}Enchantment(EquipmentSlotType... slots) {
 		super(Enchantment.Rarity.<@weightToRarity data.weight/>, ENCHANTMENT_CATEGORY, slots);
 	}
 

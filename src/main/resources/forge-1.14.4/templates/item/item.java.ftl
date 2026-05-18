@@ -463,7 +463,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
         </#if>
 
         <#list validModifiers as modifier>
-        builder.put(${modifier.attribute}, new AttributeModifier(UUID_${modifier?index}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+        builder.put(${modifier.attribute}, new AttributeModifier(UUID_${modifier?index}.getName(), "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
         </#list>
 
         return builder.build();
@@ -526,7 +526,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 
                 </#if>
 
-                builder.put(${modifier.attribute}, new AttributeModifier(UUID_${validModifiers?seq_index_of(modifier)}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+                builder.put(${modifier.attribute}, new AttributeModifier(UUID_${validModifiers?seq_index_of(modifier)}.getName(), "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
             </#list>
 
             <#if currentSlot != "" && !prevGlobal>
