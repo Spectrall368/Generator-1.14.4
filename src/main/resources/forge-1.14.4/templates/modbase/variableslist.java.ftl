@@ -19,9 +19,9 @@ import net.minecraft.nbt.INBT;
 	}
 
 	public static CompoundNBT write(Vec3d vec, CompoundNBT nbt) {
-		nbt.putDouble("x", vec.x());
-		nbt.putDouble("y", vec.y());
-		nbt.putDouble("z", vec.z());
+		nbt.putDouble("x", vec.getX());
+		nbt.putDouble("y", vec.getY());
+		nbt.putDouble("z", vec.getZ());
 		return nbt;
 	}
 	</#if>

@@ -89,7 +89,7 @@ public abstract class ${name}Item extends ArmorItem {
                         <#if data.helmetTranslucency>
                         {
                             @Override
-                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                            public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
                                 GlStateManager.enableBlend();
                                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                                 Minecraft.getInstance().getTextureManager().bindTexture(
@@ -144,7 +144,7 @@ public abstract class ${name}Item extends ArmorItem {
                         <#if data.bodyTranslucency>
                         {
                             @Override
-                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                            public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
                                 GlStateManager.enableBlend();
                                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                                 Minecraft.getInstance().getTextureManager().bindTexture(
@@ -206,7 +206,7 @@ public abstract class ${name}Item extends ArmorItem {
                         <#if data.leggingsTranslucency>
                         {
                             @Override
-                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                            public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
                                 GlStateManager.enableBlend();
                                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                                 Minecraft.getInstance().getTextureManager().bindTexture(
@@ -267,7 +267,7 @@ public abstract class ${name}Item extends ArmorItem {
                         <#if data.bootsTranslucency>
                         {
                             @Override
-                            public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+                            public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
                                 GlStateManager.enableBlend();
                                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                                 Minecraft.getInstance().getTextureManager().bindTexture(

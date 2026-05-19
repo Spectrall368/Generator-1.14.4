@@ -471,11 +471,6 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
-global_templates:
-  - template: block/mixin_sign.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BlockEntityTypeAccessor.java"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
-
 list_templates:
   - name: "Block states"
     listData: data.getDefinedStates()

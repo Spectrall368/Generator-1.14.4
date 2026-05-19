@@ -86,11 +86,7 @@ base_templates:
       - "${w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number') || e.type.equals('Logic'))?size != 0}"
       - "${w.getGElementsOfType('projectile')?filter(e -> (e.modelWidth > 0.5) || (e.modelHeight > 0.5))?size != 0}"
       - "${w.hasElementsOfType('villagerprofession')}"
-  - template: modbase/mixin.json.ftl
-    writer: json
-    condition_any:
       - "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
-    name: "@RESROOT/@modid.mixins.json"
   - template: elementinits/dispensebehaviors.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
     condition_any:
