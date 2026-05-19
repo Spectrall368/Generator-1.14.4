@@ -16,7 +16,7 @@ public net.minecraft.village.PointOfInterestType func_221052_a(Lnet/minecraft/vi
 </#if>
 
 <#if w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0>
-public net.minecraft.tileentity.TileEntityType field_223046_I # validBlocks
+public-f net.minecraft.tileentity.TileEntityType field_223046_I # validBlocks
 </#if>
 
 # Start of user code block custom ATs
