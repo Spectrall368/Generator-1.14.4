@@ -486,7 +486,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
             </#if>
 
             <#if hasMelee>
-            if (equipmentSlot == EquipmentSlot.MAINHAND) {
+            if (equipmentSlot == EquipmentSlotType.MAINHAND) {
                 <#if !hasGlobal>
                 builder = initializeBuilder(builder, defaultModifiers);
                 </#if>
