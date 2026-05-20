@@ -1,1 +1,1 @@
-$origin = new BlockPos(${JavaModName}Features.RAND.nextInt(16) + origin.getX(), origin.getY(), ${JavaModName}Features.RAND.nextInt(16) + origin.getZ());$
+$origin = origin.add(${JavaModName}Features.RAND.nextInt(16), 0, ${JavaModName}Features.RAND.nextInt(16));$

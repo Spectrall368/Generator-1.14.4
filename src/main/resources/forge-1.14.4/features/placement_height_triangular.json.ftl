@@ -1,1 +1,1 @@
-$origin = origin.add(origin.getX(), ${JavaModName}Features.RAND.nextInt((${input$min} + ${input$max}) / 2) + ${JavaModName}Features.RAND.nextInt((${input$min} + ${input$max}) / 2) - ((${input$min} + ${input$max}) / 2) + ((${input$max} - ${input$min} + 2) / 2), origin.getZ());$
+$origin = origin.add(0, ${JavaModName}Features.RAND.nextInt((${input$min} + ${input$max}) / 2) + ${JavaModName}Features.RAND.nextInt((${input$min} + ${input$max}) / 2) - ((${input$min} + ${input$max}) / 2) + ((${input$max} - ${input$min} + 2) / 2), 0);$

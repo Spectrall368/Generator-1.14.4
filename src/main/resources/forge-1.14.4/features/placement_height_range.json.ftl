@@ -1,1 +1,1 @@
-$origin = new BlockPos(origin.getX(), ${input$height}, origin.getZ());$
+$origin = origin.add(0, ${input$height}, 0);$
