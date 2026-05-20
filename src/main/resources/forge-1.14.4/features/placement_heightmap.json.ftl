@@ -1,1 +1,1 @@
-$origin = origin.add(0, world.getHeight(Heightmap.Type.${field$heightmap}, origin.getX(), origin.getZ()), 0);$
+$origin = new BlockPos(origin.getX(), world.getHeight(Heightmap.Type.${field$heightmap}, origin.getX(), origin.getZ()), origin.getZ());$
