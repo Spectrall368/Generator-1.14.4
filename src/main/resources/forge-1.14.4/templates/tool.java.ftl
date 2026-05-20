@@ -315,16 +315,16 @@ public class ${name}Item extends FishingRodItem {
 
         <#if hasMelee>
             <#if validDamage>
-            builder.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Item modifier", ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADDITION));
+            builder.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADDITION));
             </#if>
 
             <#if validAtkSpeed>
-            builder.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Item modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+            builder.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
             </#if>
         </#if>
 
         <#list validModifiers as modifier>
-        builder.put(${modifier.attribute}.getName(), new AttributeModifier(UUID_${modifier?index}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+        builder.put(${modifier.attribute}.getName(), new AttributeModifier(UUID_${modifier?index}, "Tool modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
         </#list>
 
         return builder.build();
@@ -353,11 +353,11 @@ public class ${name}Item extends FishingRodItem {
                 </#if>
 
                 <#if validDamage>
-                builder.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Item modifier", ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADDITION));
+                builder.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADDITION));
                 </#if>
 
                 <#if validAtkSpeed>
-                builder.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Item modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+                builder.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
                 </#if>
             }
             </#if>
@@ -387,7 +387,7 @@ public class ${name}Item extends FishingRodItem {
 
                 </#if>
 
-                builder.put(${modifier.attribute}.getName(), new AttributeModifier(UUID_${validModifiers?seq_index_of(modifier)}, "Item modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
+                builder.put(${modifier.attribute}.getName(), new AttributeModifier(UUID_${validModifiers?seq_index_of(modifier)}, "Tool modifier", ${modifier.amount}, AttributeModifier.Operation.${getAttributeOperation(modifier.operation)}));
             </#list>
 
             <#if currentSlot != "" && !prevGlobal>
