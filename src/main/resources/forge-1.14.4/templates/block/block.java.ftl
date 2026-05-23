@@ -530,7 +530,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 
-	<#if (blockSetType == "OAK") != data.ignitedByLava>
+	<#if (blockSetType == "WOOD") != data.ignitedByLava>
 	@Override public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 	    return ${data.ignitedByLava};
 	}
@@ -832,7 +832,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	<#if var_extends_class??><#return var_extends_class>
 	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Button">
-		<#if blockSetType != "OAK">
+		<#if blockSetType != "WOOD">
             <#return "net.minecraft.block.StoneButtonBlock">
         <#else>
             <#return "net.minecraft.block.WoodButtonBlock">
