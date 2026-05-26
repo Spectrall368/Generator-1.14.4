@@ -1,6 +1,6 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 28.2.28
+buildfileversion: 28.2.30
 subversion: 1.7 # used to force project base regeneration
 
 import:

@@ -138,7 +138,7 @@ public class ${JavaModName}Items {
 			<#elseif item.getModElement().getTypeString() == "livingentity">
 				${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 					REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg",
-						() -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(),
+						() -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
 						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties().group(<@CreativeTabs item.creativeTabs/>)));
 			<#elseif item.getModElement().getTypeString() == "specialentity">
 				${item.getModElement().getRegistryNameUpper()} =
