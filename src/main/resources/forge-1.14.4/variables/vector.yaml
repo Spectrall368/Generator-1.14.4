@@ -30,7 +30,7 @@ scopes:
     write: nbt.put("${var.getName()}", ${JavaModName}Variables.write(${var.getName()}, new CompoundNBT()));
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+      <@head>{${JavaModName}Variables.PlayerVariables _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
         if (_playerVars != null) {</@head>
             _playerVars.${name} = ${opt.removeParentheses(value)};
             <@tail>_playerVars.markSyncDirty();
@@ -42,7 +42,7 @@ scopes:
     write: nbt.put("${var.getName()}", ${JavaModName}Variables.write(${var.getName()}, new CompoundNBT()));
     get: ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
-      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+      <@head>{${JavaModName}Variables.PlayerVariables _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
         if (_playerVars != null) {</@head>
             _playerVars.${name} = ${opt.removeParentheses(value)};
             <@tail>_playerVars.markSyncDirty();

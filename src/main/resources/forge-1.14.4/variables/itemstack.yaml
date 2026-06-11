@@ -33,7 +33,7 @@ scopes:
     get: /*@ItemStack*/${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <#include "mcitems.ftl">
-      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+      <@head>{${JavaModName}Variables.PlayerVariables _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
         if (_playerVars != null) {</@head>
             _playerVars.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
             <@tail>_playerVars.markSyncDirty();
@@ -46,7 +46,7 @@ scopes:
     get: /*@ItemStack*/${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElseGet(${JavaModName}Variables.PlayerVariables::new).${name}
     set: |
       <#include "mcitems.ftl">
-      <@head>{var _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
+      <@head>{${JavaModName}Variables.PlayerVariables _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES).orElse(null);
         if (_playerVars != null) {</@head>
             _playerVars.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
             <@tail>_playerVars.markSyncDirty();
