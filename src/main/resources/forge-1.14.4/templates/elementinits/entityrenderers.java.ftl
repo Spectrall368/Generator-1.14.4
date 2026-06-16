@@ -37,14 +37,6 @@ package ${package}.init;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
 
 	@SubscribeEvent public static void render(FMLClientSetupEvent event) {
-		${JavaModName}EntityRenderers.renders();
-	}
-
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerModels(ModelRegistryEvent event) {
-		${JavaModName}EntityRenderers.renders();
-	}
-
-	private static void renders() {
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "projectile">
 			<#if entity.isCustomModel()>
