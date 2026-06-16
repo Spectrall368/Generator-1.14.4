@@ -1,1 +1,1 @@
-$origin = origin.add(${JavaModName}Features.RAND.nextInt(16), 0, ${JavaModName}Features.RAND.nextInt(16));$
+$origin = origin.add(random.nextInt(16), 0, random.nextInt(16));$

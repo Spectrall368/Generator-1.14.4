@@ -1,1 +1,1 @@
-$origin = new BlockPos(origin.getX(), ${JavaModName}Features.RAND.nextInt((${input$min} + ${input$max}) / 2) + ${JavaModName}Features.RAND.nextInt((${input$min} + ${input$max}) / 2) - ((${input$min} + ${input$max}) / 2) + ((${input$max} - ${input$min} + 2) / 2), origin.getZ());$
+$origin = new BlockPos(origin.getX(), random.nextInt((${input$min} + ${input$max}) / 2) + random.nextInt((${input$min} + ${input$max}) / 2) - ((${input$min} + ${input$max}) / 2) + ((${input$max} - ${input$min} + 2) / 2), origin.getZ());$

@@ -50,6 +50,19 @@ package ${package}.world.features;
 <#list placementMatches as match>
     <#assign placementHardcodedElements = placementHardcodedElements + [match?groups[1]]>
 </#list>
+
+<#assign placementCounts = []>
+<#assign filteredPlacementHardcodedElements = []>
+
+<#list placementHardcodedElements as element>
+    <#if element?starts_with("count=")>
+        <#assign placementCounts = placementCounts + [element?substring(6)?trim]>
+    <#else>
+        <#assign filteredPlacementHardcodedElements = filteredPlacementHardcodedElements + [element]>
+    </#if>
+</#list>
+
+<#assign placementHardcodedElements = filteredPlacementHardcodedElements>
 <#assign nonHardcodedPlacement = placementcode?replace(placementPattern, "", "r")>
 <#assign configurationMatches = configurationcode?matches(placementPattern)>
 <#assign configurationHardcodedElements = []>
@@ -111,7 +124,39 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	</#if>
 
 	<#if featuretype == "feature_simple_block" || (data.hasPlacedFeature() && ((data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions() || (allHardcodedElements?size > 0)))>
-	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos origin, ${configuration} config) {
+        <#if (placementCounts?size > 0)>
+            @Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos origin, ${configuration} config) {
+                boolean placed = false;
+
+                <#list placementCounts as countValue>
+                for (int i = 0; i < ${countValue?replace(JavaModName + "Features.RAND", "random")}; i++)
+                    placed |= doPlace(world, generator, random, origin, config);
+                </#list>
+
+                return placed;
+            }
+
+            private boolean doPlace(IWorld world, ChunkGenerator generator, Random random, BlockPos origin, ${configuration} config) {
+                <@placeBody/>
+            }
+        <#else>
+            @Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos origin, ${configuration} config) {
+                <@placeBody/>
+            }
+        </#if>
+	<#elseif generator.map(featuretype, "features")?contains("Feature<")>
+	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
+	    return true;
+	}
+	</#if>
+
+	<#if generator.map(featuretype, "features") == "BlockPileFeature">
+	@Override protected BlockState getRandomBlock(IWorld worldIn) {
+	    return ${nonHardcodedConfiguration};
+	}
+	</#if>
+}</@javacompress>
+<#macro placeBody>
 		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		<#if data.restrictionBiomes?has_content && cond>
 		if (!generateDimensions.contains(world.getDimension().getType()))
@@ -120,7 +165,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 		<#if data.hasPlacedFeature() && (allHardcodedElements?size > 0)>
             <#list allHardcodedElements as element>
-            ${element}
+            ${element?replace(JavaModName + "Features.RAND", "random")}
             </#list>
 		</#if>
 
@@ -147,19 +192,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		<#else>
 			return <#if generator.map(featuretype, "features")?contains("Feature<")>true<#else>super.place(world, generator, random, origin, config)</#if>;
 		</#if>
-	}
-	<#elseif generator.map(featuretype, "features")?contains("Feature<")>
-	@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, ${configuration} config) {
-	    return true;
-	}
-	</#if>
-
-	<#if generator.map(featuretype, "features") == "BlockPileFeature">
-	@Override protected BlockState getRandomBlock(IWorld worldIn) {
-	    return ${nonHardcodedConfiguration};
-	}
-	</#if>
-}</@javacompress>
+</#macro>
 <#-- @formatter:on -->
 <#function expandBiomeTag biomeTag>
     <#local result = []>
