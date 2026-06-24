@@ -44,7 +44,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 	private final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
 
 	public ${name}ItemRenderer() {
-		this.transformSource = () -> new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
+		this.transformSource = Suppliers.memoize(() -> new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get()));
 
 		this.start = System.currentTimeMillis();
 

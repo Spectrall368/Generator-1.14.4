@@ -33,12 +33,12 @@ package ${package}.mixin;
 
 import org.spongepowered.asm.mixin.Mutable;
 
-@Mixin(BlockEntityType.class) public interface BlockEntityTypeAccessor {
+@Mixin(TileEntityType.class) public interface BlockEntityTypeAccessor {
     @Mutable
-    @Accessor("validBlocks")
+    @Accessor(value = "validBlocks", remap = false)
     void setValidBlocks(Set<Block> validBlocks);
 
-    @Accessor("validBlocks")
+    @Accessor(value = "validBlocks", remap = false)
     Set<Block> getValidBlocks();
 }
 <#-- @formatter:on -->
