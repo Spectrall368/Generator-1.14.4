@@ -1,1 +1,1 @@
-(${input$entity} instanceof PlayerEntity && ((PlayerEntity) ${input$entity}).hasPermissionLevel(${opt.toInt(input$permissionlevel)}))
+(${input$entity}.hasPermissionLevel(${opt.toInt(input$permissionlevel)}))

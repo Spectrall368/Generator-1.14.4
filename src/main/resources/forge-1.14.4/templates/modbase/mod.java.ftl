@@ -63,7 +63,7 @@ import org.apache.logging.log4j.Logger;
 
 	<#-- Wait procedure block support below -->
 	private static final Queue<Map.Entry<Integer, Runnable>> workToBeScheduled = new ConcurrentLinkedQueue<>();
-	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>(Comparator.comparingInt(TickTask::getTick));
+	private static final PriorityQueue<TickDelayedTask> workQueue = new PriorityQueue<>(Comparator.comparingInt(TickDelayedTask::getScheduledTime));
 
 	public static void queueServerWork(int delay, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
@@ -76,31 +76,13 @@ import org.apache.logging.log4j.Logger;
 
             Map.Entry<Integer, Runnable> work;
             while ((work = workToBeScheduled.poll()) != null) {
-                workQueue.add(new TickTask(currentTick + work.getKey(), work.getValue()));
+                workQueue.add(new TickDelayedTask(currentTick + work.getKey(), work.getValue()));
             }
 
-            while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getTick()) {
+            while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getScheduledTime()) {
                 workQueue.poll().run();
             }
         }
 	}
-
-	private static class TickTask implements Runnable {
-    	private final int tick;
-    	private final Runnable runnable;
-
-    	public TickTask(int tick, Runnable runnable) {
-    		this.tick = tick;
-    		this.runnable = runnable;
-    	}
-
-    	public int getTick() {
-    		return tick;
-    	}
-
-    	public void run() {
-    		runnable.run();
-    	}
-    }
 }
 <#-- @formatter:on -->
