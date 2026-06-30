@@ -115,6 +115,68 @@ package ${package}.client.particle;
 	}
 	</#if>
 
+	<#if hasProcedure(data.rotationProvider)>
+	@Override public void renderParticle(BufferBuilder buffer, ActiveRenderInfo camera, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		Vec3d vec = <@procedureCode data.rotationProvider, {
+			"world": "this.world",
+            "x": "this.posX",
+            "y": "this.posY",
+            "z": "this.posZ",
+			"speedX": "this.motionX",
+			"speedY": "this.motionY",
+			"speedZ": "this.motionZ",
+			"angularVelocity": "this.angularVelocity",
+			"angularAcceleration": "this.angularAcceleration",
+			"age": "this.age + partialTicks"
+		}/>
+		Quaternion tilt = fromXYZ((float) vec.getX(), (float) vec.getY(), (float) vec.getZ());
+		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
+		Quaternion flippedTilt = new Quaternion(tilt);
+		flippedTilt.multiply(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float) Math.PI, false));
+		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
+		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks);
+	}
+
+	private static Quaternion fromXYZ(float y, float x, float z) {
+		Quaternion quat = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
+		quat.multiply(new Quaternion(0.0F, (float) Math.sin((double) (y / 2.0F)), 0.0F, (float) Math.cos((double) (y / 2.0F))));
+		quat.multiply(new Quaternion((float) Math.sin((double) (x / 2.0F)), 0.0F, 0.0F, (float) Math.cos((double) (x / 2.0F))));
+		quat.multiply(new Quaternion(0.0F, 0.0F, (float) Math.sin((double) (z / 2.0F)), (float) Math.cos((double) (z / 2.0F))));
+		return quat;
+	}
+
+    private void renderRotatedQuad(BufferBuilder buffer, ActiveRenderInfo camera, Quaternion rotation, float partialTicks) {
+        Vec3d camPos = camera.getProjectedView();
+        float cx = (float)(MathHelper.lerp((double) partialTicks, this.prevPosX, this.posX) - camPos.getX());
+        float cy = (float)(MathHelper.lerp((double) partialTicks, this.prevPosY, this.posY) - camPos.getY());
+        float cz = (float)(MathHelper.lerp((double) partialTicks, this.prevPosZ, this.posZ) - camPos.getZ());
+
+        float size = this.getScale(partialTicks);
+        float u0 = this.getMinU();
+        float u1 = this.getMaxU();
+        float v0 = this.getMinV();
+        float v1 = this.getMaxV();
+        int light = this.getBrightnessForRender(partialTicks);
+        int j = light >> 16 & '\uffff';
+        int k = light & '\uffff';
+
+        float[][] corners = { { 1,-1}, { 1, 1}, {-1, 1}, {-1,-1} };
+        float[][] uvs = { {u1,v1}, {u1,v0}, {u0,v0}, {u0,v1} };
+
+        for (int i = 0; i < 4; i++) {
+            Vector3f v = new Vector3f(corners[i][0], corners[i][1], 0.0F);
+            v.func_214905_a(rotation);
+            v.mul(size);
+            v.add(cx, cy, cz);
+            buffer.pos(v.getX(), v.getY(), v.getZ())
+                .tex(uvs[i][0], uvs[i][1])
+                .color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha)
+                .lightmap(j, k)
+                .endVertex();
+        }
+    }
+	</#if>
+
 	@Override public void tick() {
 		super.tick();
 
