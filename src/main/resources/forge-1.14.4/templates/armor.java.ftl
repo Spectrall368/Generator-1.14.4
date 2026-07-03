@@ -77,7 +77,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlotType.HEAD, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(EquipmentSlotType.HEAD, new Item.Properties()<@addTab data.creativeTabs/><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -132,7 +132,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlotType.CHEST, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(EquipmentSlotType.CHEST, new Item.Properties()<@addTab data.creativeTabs/><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -194,7 +194,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlotType.LEGS, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(EquipmentSlotType.LEGS, new Item.Properties()<@addTab data.creativeTabs/><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -255,7 +255,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlotType.FEET, new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(EquipmentSlotType.FEET, new Item.Properties()<@addTab data.creativeTabs/><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>

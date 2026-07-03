@@ -43,7 +43,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
                 <#elseif data.isMusicDisc>
                 ${data.musicDiscAnalogOutput}, <#if data.musicDiscMusic.getUnmappedValue().startsWith("CUSTOM:")>new SoundEvent<#else>ForgeRegistries.SOUND_EVENTS.getValue</#if>(new ResourceLocation("${data.musicDiscMusic}")),
                 </#if>new Item.Properties()
-				.group(<@CreativeTabs data.creativeTabs/>)
+				<@addTab data.creativeTabs/>
 				<#if data.hasInventory()>
 				.maxStackSize(1)
 				<#elseif data.damageCount != 0>

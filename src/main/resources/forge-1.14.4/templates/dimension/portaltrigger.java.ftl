@@ -36,7 +36,7 @@ package ${package}.item;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().group(<@CreativeTabs data.creativeTabs/>)
+		super(new Item.Properties()<@addTab data.creativeTabs/>
 			<#if data.igniterRarity != "COMMON">.rarity(Rarity.${data.igniterRarity})</#if>
 			.maxDamage(64)
 		);

@@ -1,12 +1,13 @@
 <#include "procedures.java.ftl">
 
 <#-- Item-related triggers -->
-<#macro CreativeTabs tabs="[]">
-	<#if tabs == "[]">
-		null
-	<#else>
-		${tabs[tabs?size - 1]}
-	</#if>
+<#macro addTab tabs="[]">
+    <#local tab><@getTab tabs/></#local>
+	<#if tab?trim != "null">.group(${tab})</#if>
+</#macro>
+
+<#macro getTab tabs="[]">
+	<#if tabs == "[]">null<#else>${tabs[tabs?size - 1]}</#if>
 </#macro>
 
 <#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>

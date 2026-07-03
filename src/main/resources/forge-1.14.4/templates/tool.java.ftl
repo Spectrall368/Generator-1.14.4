@@ -87,7 +87,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			</#if>
 		</#if>
 				new Item.Properties()
-			 	.group(<@CreativeTabs data.creativeTabs/>)
+			 	<@addTab data.creativeTabs/>
 				<#if data.toolType == "Shears" || data.toolType == "Shield">
 				.maxDamage(${data.usageCount})
 				</#if>
@@ -174,7 +174,7 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-			.group(<@CreativeTabs data.creativeTabs/>)
+			<@addTab data.creativeTabs/>
 			.maxDamage(${data.usageCount})
 			<#if data.rarity != "COMMON">
 			.rarity(Rarity.${data.rarity})
@@ -218,7 +218,7 @@ public class ${name}Item extends FishingRodItem {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-			.group(<@CreativeTabs data.creativeTabs/>)
+			<@addTab data.creativeTabs/>
 			.maxDamage(${data.usageCount})
 			<#if data.rarity != "COMMON">
 			.rarity(Rarity.${data.rarity})
