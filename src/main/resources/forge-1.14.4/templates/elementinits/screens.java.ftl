@@ -49,8 +49,8 @@ import java.text.DecimalFormat;
 	}
 
 	public static class ForgeSlider extends AbstractSlider {
-      protected TextComponent prefix;
-      protected TextComponent suffix;
+      protected ITextComponent prefix;
+      protected ITextComponent suffix;
 
       protected double minValue;
       protected double maxValue;
@@ -61,7 +61,7 @@ import java.text.DecimalFormat;
 
       private final DecimalFormat format;
 
-      public ForgeSlider(int x, int y, int width, int height, TextComponent prefix, TextComponent suffix, double minValue, double maxValue, double currentValue, double stepSize, int precision, boolean drawString) {
+      public ForgeSlider(int x, int y, int width, int height, ITextComponent prefix, ITextComponent suffix, double minValue, double maxValue, double currentValue, double stepSize, int precision, boolean drawString) {
         super(x, y, width, height, 0D);
         this.prefix = prefix;
         this.suffix = suffix;
@@ -92,7 +92,7 @@ import java.text.DecimalFormat;
         this.updateMessage();
       }
 
-      public ForgeSlider(int x, int y, int width, int height, TextComponent prefix, TextComponent suffix, double minValue, double maxValue, double currentValue, boolean drawString) {
+      public ForgeSlider(int x, int y, int width, int height, ITextComponent prefix, ITextComponent suffix, double minValue, double maxValue, double currentValue, boolean drawString) {
         this(x, y, width, height, prefix, suffix, minValue, maxValue, currentValue, 1D, 0, drawString);
       }
 
