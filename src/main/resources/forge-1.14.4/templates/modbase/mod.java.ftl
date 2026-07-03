@@ -25,9 +25,9 @@ import org.apache.logging.log4j.Logger;
 		<#if types["base:items"]??>${JavaModName}Items.REGISTRY.register(bus);</#if>
 		<#if types["base:entities"]??>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if types["biomes"]??>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
-		<#if types["dimensions"]??>${JavaModName}Dimensions.REGISTRY.register(bus);</#if>
 		<#if w.getGElementsOfType("block")?filter(e -> e.generateFeature )?size != 0 || w.getGElementsOfType("plant")?filter(e -> e.generateFeature )?size != 0 || types["base:features"]??>${JavaModName}Features.REGISTRY.register(bus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureModFeature.REGISTRY.register(bus);</#if>
+		<#if types["dimensions"]??>${JavaModName}Dimensions.REGISTRY.register(bus);</#if>
 		<#if types["potions"]??>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if types["potioneffects"]??>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
 		<#if types["enchantments"]??>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
