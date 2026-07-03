@@ -568,12 +568,6 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-	@Override public MaterialColor getMaterialColor(BlockState state, IBlockReader blockAccess, BlockPos pos) {
-		return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
-	    	}
-	</#if>
-
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
 	@Override public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, MobEntity entity) {
 		return PathNodeType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
