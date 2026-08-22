@@ -100,23 +100,24 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (<#if hasProcedure(data.portalUseCondition)><@procedureCode data.portalUseCondition, {
+		if (!world.isRemote && entity instanceof ServerPlayerEntity && <#if hasProcedure(data.portalUseCondition)><@procedureCode data.portalUseCondition, {
         		"x": "pos.getX()",
         		"y": "pos.getY()",
         		"z": "pos.getZ()",
         		"entity": "entity",
         		"world": "world"
-        		}, false/> && </#if>!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss() && entity instanceof ServerPlayerEntity && !world.isRemote) {
-			if (((ServerPlayerEntity) entity).timeUntilPortal > 0) {
-				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-			} else if (((ServerPlayerEntity) entity).dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
-				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
-			} else {
-				((ServerPlayerEntity) entity).timeUntilPortal = ((ServerPlayerEntity) entity).getPortalCooldown();
-				teleportToDimension(((ServerPlayerEntity) entity), DimensionType.OVERWORLD);
-			}
+        		}, false/> && </#if>!entity.isPassenger() && !entity.isBeingRidden()) {
+			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 
+			if (player.timeUntilPortal > 0) {
+				player.timeUntilPortal = player.getPortalCooldown();
+			} else if (player.dimension != DimensionType.byName(new ResourceLocation("${modid}:${registryname}"))) {
+				player.timeUntilPortal = player.getPortalCooldown();
+				teleportToDimension(player, DimensionType.byName(new ResourceLocation("${modid}:${registryname}")));
+			} else {
+				player.timeUntilPortal = player.getPortalCooldown();
+				teleportToDimension(player, DimensionType.OVERWORLD);
+			}
 		}
 	}
 
