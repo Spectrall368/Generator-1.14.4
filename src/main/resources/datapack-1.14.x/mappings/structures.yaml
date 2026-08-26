@@ -16,7 +16,6 @@ monument: monument
 ocean_ruin_cold: ocean_ruin_cold
 ocean_ruin_warm: ocean_ruin_warm
 fortress: fortress
-nether_fossil: nether_fossil
 end_city: end_city
 buried_treasure: buried_treasure
 village_plains: village_plains
