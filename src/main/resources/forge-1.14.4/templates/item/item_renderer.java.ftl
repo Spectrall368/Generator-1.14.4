@@ -90,7 +90,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 		GlStateManager.popMatrix();
 	}
 
-	private void renderEffect(Runnable renderModelFunction) {
+	private static void renderEffect(Runnable renderModelFunction) {
 		GlStateManager.color3f(0.5019608F, 0.2509804F, 0.8F);
 		Minecraft.getInstance().getTextureManager().bindTexture(ItemRenderer.RES_ITEM_GLINT);
 		ItemRenderer.renderEffect(Minecraft.getInstance().getTextureManager(), renderModelFunction, 1);
